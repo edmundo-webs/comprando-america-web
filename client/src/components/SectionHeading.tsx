@@ -21,7 +21,7 @@ export default function SectionHeading({ tag, title, subtitle, align = "center",
       className={`mb-12 md:mb-16 ${align === "center" ? "text-center" : "text-left"}`}
     >
       {tag && (
-        <span className="inline-block text-emerald text-sm font-semibold tracking-[0.2em] uppercase mb-3 font-mono">
+        <span className="inline-block text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-3 font-mono">
           {tag}
         </span>
       )}
@@ -33,7 +33,7 @@ export default function SectionHeading({ tag, title, subtitle, align = "center",
           {subtitle}
         </p>
       )}
-      <div className={`mt-6 h-1 w-16 bg-emerald rounded-full ${align === "center" ? "mx-auto" : ""}`} />
+      <div className={`mt-6 h-1 w-16 bg-primary rounded-full ${align === "center" ? "mx-auto" : ""}`} />
     </motion.div>
   );
 }

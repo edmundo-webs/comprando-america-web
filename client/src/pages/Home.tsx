@@ -45,7 +45,7 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
   const count = useCountUp(value, 2000, isInView);
   return (
     <div ref={ref} className="text-center">
-      <div className="stat-number text-4xl md:text-5xl lg:text-6xl text-emerald mb-2">
+      <div className="stat-number text-4xl md:text-5xl lg:text-6xl text-primary mb-2">
         {count}{suffix}
       </div>
       <p className="text-white/50 text-sm leading-relaxed max-w-[200px] mx-auto">{label}</p>
@@ -97,12 +97,12 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <span className="inline-block text-emerald text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+              <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Comunidad Exclusiva de Inversionistas
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
                 Invierte o Crea tu Negocio en{" "}
-                <span className="gradient-text-emerald">Estados Unidos</span>{" "}
+                <span className="gradient-text-primary">Estados Unidos</span>{" "}
                 de Forma Segura
               </h1>
               <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
@@ -110,7 +110,7 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a href="#membresia">
-                  <Button className="bg-emerald hover:bg-emerald-dark text-navy-dark font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
+                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
                     Ver Membresía <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
@@ -158,10 +158,10 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {MEMBERSHIP_PILLARS.map((pillar, i) => (
               <FadeIn key={pillar.title} delay={i * 0.1}>
-                <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-emerald/30 transition-all duration-500 h-full">
+                <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
                   <div className="relative">
-                    <div className="w-12 h-12 rounded-lg bg-emerald/10 text-emerald flex items-center justify-center mb-4 group-hover:bg-emerald/20 transition-colors">
+                    <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                       <PillarIcon icon={pillar.icon} />
                     </div>
                     <h3 className="text-xl font-serif text-white mb-3">{pillar.title}</h3>
@@ -174,7 +174,7 @@ export default function Home() {
 
           {/* Membership Benefits */}
           <FadeIn>
-            <div className="bg-gradient-to-r from-emerald/10 to-gold/10 border border-emerald/20 rounded-2xl p-8 md:p-12 mb-16">
+            <div className="bg-gradient-to-r from-emerald/10 to-gold/10 border border-primary/20 rounded-2xl p-8 md:p-12 mb-16">
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
                   <h3 className="text-2xl md:text-3xl font-serif text-white mb-6">Beneficios de la Membresía</h3>
@@ -188,12 +188,12 @@ export default function Home() {
                       "Membresía vitalicia con cupo limitado",
                     ].map((benefit) => (
                       <li key={benefit} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-emerald shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                         <span className="text-white/70">{benefit}</span>
                       </li>
                     ))}
                   </ul>
-                  <a href={EXTERNAL_LINKS.membresia} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-6 text-emerald hover:text-emerald-dark font-semibold transition-colors">
+                  <a href={EXTERNAL_LINKS.membresia} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-6 text-primary hover:text-primary-dark font-semibold transition-colors">
                     Ver detalles completos <ExternalLink className="w-4 h-4" />
                   </a>
                 </div>
@@ -220,9 +220,9 @@ export default function Home() {
               { num: "04", title: "Crecimiento de Negocios", desc: "Escala tu negocio con estrategias probadas de crecimiento y expansión.", icon: <ArrowRight className="w-6 h-6" /> },
             ].map((item, i) => (
               <FadeIn key={item.num} delay={i * 0.1}>
-                <div className="relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-gold/30 transition-all duration-500 h-full group">
-                  <span className="stat-number text-5xl text-white/5 absolute top-4 right-4 group-hover:text-gold/10 transition-colors">{item.num}</span>
-                  <div className="w-12 h-12 rounded-lg bg-gold/10 text-gold flex items-center justify-center mb-4">
+                <div className="relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full group">
+                  <span className="stat-number text-5xl text-white/5 absolute top-4 right-4 group-hover:text-primary/10 transition-colors">{item.num}</span>
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
                     {item.icon}
                   </div>
                   <h3 className="text-lg font-serif text-white mb-2">{item.title}</h3>
@@ -234,7 +234,7 @@ export default function Home() {
           <FadeIn>
             <div className="text-center">
               <a href={EXTERNAL_LINKS.formacion} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-gold hover:bg-gold-light text-navy-dark font-semibold px-8 py-6 text-base gap-2">
+                <Button className="bg-primary hover:bg-primary-light text-white font-semibold px-8 py-6 text-base gap-2">
                   <GraduationCap className="w-5 h-5" /> Conoce el Programa Completo
                 </Button>
               </a>
@@ -266,13 +266,13 @@ export default function Home() {
                 "Opciones de inversión que califican para la visa",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
-                  <ChevronRight className="w-5 h-5 text-emerald shrink-0 mt-0.5" />
+                  <ChevronRight className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-white/70">{item}</span>
                 </div>
               ))}
             </div>
             <a href={EXTERNAL_LINKS.visaE2} target="_blank" rel="noopener noreferrer">
-              <Button className="bg-emerald hover:bg-emerald-dark text-navy-dark font-semibold px-8 py-6 text-base gap-2">
+              <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
                 Más Información sobre Visa E-2 <ArrowRight className="w-4 h-4" />
               </Button>
             </a>
@@ -300,18 +300,18 @@ export default function Home() {
                   </p>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white/5 backdrop-blur rounded-lg p-3 text-center">
-                      <span className="stat-number text-2xl text-emerald block">+12.5%</span>
+                      <span className="stat-number text-2xl text-primary block">+12.5%</span>
                       <span className="text-white/50 text-xs">ROI Promedio</span>
                     </div>
                     <div className="bg-white/5 backdrop-blur rounded-lg p-3 text-center">
-                      <span className="stat-number text-2xl text-emerald block">4.2%</span>
+                      <span className="stat-number text-2xl text-primary block">4.2%</span>
                       <span className="text-white/50 text-xs">Yield de Renta</span>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="mt-6">
-                <a href={EXTERNAL_LINKS.bienesRaices} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-emerald hover:text-emerald-dark font-semibold transition-colors">
+                <a href={EXTERNAL_LINKS.bienesRaices} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-semibold transition-colors">
                   Ver más sobre Bienes Raíces <ExternalLink className="w-4 h-4" />
                 </a>
               </div>
@@ -376,14 +376,14 @@ export default function Home() {
                   { value: "70%", label: "De los negocios listados no encuentran comprador" },
                 ].map((stat) => (
                   <div key={stat.label} className="text-center">
-                    <span className="stat-number text-3xl md:text-4xl text-gold block mb-2">{stat.value}</span>
+                    <span className="stat-number text-3xl md:text-4xl text-primary block mb-2">{stat.value}</span>
                     <p className="text-white/50 text-xs leading-relaxed">{stat.label}</p>
                   </div>
                 ))}
               </div>
               <div className="mt-8 text-center">
                 <a href={EXTERNAL_LINKS.estructura} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="border-gold/30 text-gold hover:bg-gold/10 px-8 py-5 gap-2">
+                  <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 px-8 py-5 gap-2">
                     Conoce la Estructura de Inversión <ExternalLink className="w-4 h-4" />
                   </Button>
                 </a>
@@ -416,19 +416,19 @@ export default function Home() {
                 "Estrategias de entrada al mercado y posicionamiento de marca",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
-                  <Handshake className="w-5 h-5 text-gold shrink-0 mt-0.5" />
+                  <Handshake className="w-5 h-5 text-primary shrink-0 mt-0.5" />
                   <span className="text-white/70">{item}</span>
                 </div>
               ))}
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href={EXTERNAL_LINKS.expansion} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-gold hover:bg-gold-light text-navy-dark font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
+                <Button className="bg-primary hover:bg-primary-light text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
                   Más Información <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
               <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="border-gold/30 text-gold hover:bg-gold/10 px-8 py-6 text-base gap-2 w-full sm:w-auto">
+                <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 px-8 py-6 text-base gap-2 w-full sm:w-auto">
                   Agendar Mentoría Privada <ExternalLink className="w-4 h-4" />
                 </Button>
               </a>
@@ -448,14 +448,14 @@ export default function Home() {
           <FadeIn>
             <div className="max-w-4xl mx-auto">
               <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-2xl p-8 md:p-12 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-emerald/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                 <div className="relative grid md:grid-cols-[200px_1fr] gap-8 items-start">
                   <div className="text-center">
                     <div className="w-40 h-40 mx-auto rounded-2xl bg-gradient-to-br from-emerald/20 to-gold/20 flex items-center justify-center mb-4 border border-white/10">
                       <span className="text-5xl font-serif text-white/80">ET</span>
                     </div>
                     <h3 className="text-xl font-serif text-white">Edmundo Treviño</h3>
-                    <p className="text-emerald text-sm font-semibold">Director General</p>
+                    <p className="text-primary text-sm font-semibold">Director General</p>
                   </div>
                   <div>
                     <p className="text-white/70 leading-relaxed mb-6">
@@ -470,19 +470,19 @@ export default function Home() {
                         "Más de 8 empresas operando en Estados Unidos y México",
                       ].map((item) => (
                         <li key={item} className="flex items-start gap-3 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-emerald shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                           <span className="text-white/60">{item}</span>
                         </li>
                       ))}
                     </ul>
                     <div className="flex flex-wrap gap-3">
                       <a href={EXTERNAL_LINKS.edmundoTrevino} target="_blank" rel="noopener noreferrer">
-                        <Button variant="outline" className="border-emerald/30 text-emerald hover:bg-emerald/10 gap-2">
+                        <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 gap-2">
                           Conoce más <ExternalLink className="w-4 h-4" />
                         </Button>
                       </a>
                       <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                        <Button className="bg-emerald hover:bg-emerald-dark text-navy-dark font-semibold gap-2">
+                        <Button className="bg-primary hover:bg-primary-dark text-white font-semibold gap-2">
                           Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
                         </Button>
                       </a>
@@ -511,8 +511,8 @@ export default function Home() {
               { title: "Detección de oportunidades", desc: "La falta de herramientas para detectar oportunidades de adquisición, cómo analizarlas, cómo negociarlas y cómo cerrarlas.", icon: <TrendingUp className="w-6 h-6" /> },
             ].map((item, i) => (
               <FadeIn key={item.title} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-emerald/20 transition-all duration-500 h-full">
-                  <div className="w-12 h-12 rounded-lg bg-emerald/10 text-emerald flex items-center justify-center mb-4">
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/20 transition-all duration-500 h-full">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
                     {item.icon}
                   </div>
                   <h3 className="text-lg font-serif text-white mb-2">{item.title}</h3>
@@ -538,9 +538,9 @@ export default function Home() {
                   <AccordionItem
                     key={i}
                     value={`faq-${i}`}
-                    className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl px-6 data-[state=open]:border-emerald/20"
+                    className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl px-6 data-[state=open]:border-primary/20"
                   >
-                    <AccordionTrigger className="text-white hover:text-emerald text-left py-5 font-serif text-lg">
+                    <AccordionTrigger className="text-white hover:text-primary text-left py-5 font-serif text-lg">
                       {faq.question}
                     </AccordionTrigger>
                     <AccordionContent className="text-white/60 leading-relaxed pb-5">
@@ -564,7 +564,7 @@ export default function Home() {
           />
           <FadeIn>
             <div className="max-w-3xl mx-auto bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-2xl p-8 md:p-12 text-center">
-              <div className="w-20 h-20 mx-auto rounded-2xl bg-emerald/10 text-emerald flex items-center justify-center mb-6">
+              <div className="w-20 h-20 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6">
                 <Mic className="w-10 h-10" />
               </div>
               <h3 className="text-2xl font-serif text-white mb-4">Comprando América Podcast</h3>
@@ -573,7 +573,7 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href={EXTERNAL_LINKS.podcast} target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-emerald hover:bg-emerald-dark text-navy-dark font-semibold px-8 py-5 gap-2">
+                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-5 gap-2">
                     <Play className="w-5 h-5" /> Escuchar Episodios
                   </Button>
                 </a>
@@ -595,7 +595,7 @@ export default function Home() {
             {BLOG_POSTS.map((post, i) => (
               <FadeIn key={post.title} delay={i * 0.1}>
                 <a href={post.url} target="_blank" rel="noopener noreferrer" className="group block h-full">
-                  <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-emerald/20 transition-all duration-500 h-full flex flex-col">
+                  <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/20 transition-all duration-500 h-full flex flex-col">
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={post.image}
@@ -605,10 +605,10 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] to-transparent" />
                     </div>
                     <div className="p-6 flex flex-col flex-1">
-                      <span className="text-emerald text-xs font-mono tracking-wider mb-2">{post.date}</span>
-                      <h3 className="text-lg font-serif text-white mb-2 group-hover:text-emerald transition-colors">{post.title}</h3>
+                      <span className="text-primary text-xs font-mono tracking-wider mb-2">{post.date}</span>
+                      <h3 className="text-lg font-serif text-white mb-2 group-hover:text-primary transition-colors">{post.title}</h3>
                       <p className="text-white/50 text-sm leading-relaxed flex-1">{post.excerpt}</p>
-                      <span className="inline-flex items-center gap-1 text-emerald text-sm font-semibold mt-4 group-hover:gap-2 transition-all">
+                      <span className="inline-flex items-center gap-1 text-primary text-sm font-semibold mt-4 group-hover:gap-2 transition-all">
                         Leer más <ArrowRight className="w-4 h-4" />
                       </span>
                     </div>
@@ -620,8 +620,8 @@ export default function Home() {
 
           {/* Newsletter */}
           <FadeIn>
-            <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald/10 to-gold/10 border border-emerald/20 rounded-2xl p-8 md:p-12 text-center">
-              <Mail className="w-12 h-12 text-emerald mx-auto mb-4" />
+            <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald/10 to-gold/10 border border-primary/20 rounded-2xl p-8 md:p-12 text-center">
+              <Mail className="w-12 h-12 text-primary mx-auto mb-4" />
               <h3 className="text-2xl font-serif text-white mb-3">Suscríbete al Newsletter</h3>
               <p className="text-white/60 mb-6">
                 Recibe las últimas oportunidades de inversión, artículos y noticias directamente en tu bandeja de entrada.
@@ -632,10 +632,10 @@ export default function Home() {
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
                   placeholder="tu@email.com"
-                  className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:border-emerald focus:outline-none transition-colors"
+                  className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:border-primary focus:outline-none transition-colors"
                   required
                 />
-                <Button type="submit" className="bg-emerald hover:bg-emerald-dark text-navy-dark font-semibold px-6 py-3 whitespace-nowrap">
+                <Button type="submit" className="bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 whitespace-nowrap">
                   Suscribirse
                 </Button>
               </form>
@@ -652,7 +652,7 @@ export default function Home() {
         </div>
         <div className="container relative z-10 text-center">
           <FadeIn>
-            <span className="inline-block text-emerald text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
               Da el Primer Paso
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6 max-w-3xl mx-auto">
@@ -663,7 +663,7 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href={EXTERNAL_LINKS.membresia} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-emerald hover:bg-emerald-dark text-navy-dark font-semibold px-10 py-6 text-lg gap-2 w-full sm:w-auto">
+                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-10 py-6 text-lg gap-2 w-full sm:w-auto">
                   Solicitar Información <ArrowRight className="w-5 h-5" />
                 </Button>
               </a>

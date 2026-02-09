@@ -79,7 +79,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
             <Input
               value={formData.nombre}
               onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald"
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary"
               placeholder="Tu nombre"
               required
             />
@@ -89,7 +89,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
             <Input
               value={formData.apellido}
               onChange={(e) => setFormData({ ...formData, apellido: e.target.value })}
-              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald"
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary"
               placeholder="Tu apellido"
             />
           </div>
@@ -101,7 +101,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald"
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary"
               placeholder="tu@email.com"
               required
             />
@@ -112,7 +112,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
               type="tel"
               value={formData.telefono}
               onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-emerald"
+              className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary"
               placeholder="+52 123 456 7890"
             />
           </div>
@@ -132,7 +132,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
                       : formData.interes.filter((i) => i !== opt);
                     setFormData({ ...formData, interes: newInteres });
                   }}
-                  className="mt-0.5 rounded border-white/20 bg-white/5 text-emerald focus:ring-emerald"
+                  className="mt-0.5 rounded border-white/20 bg-white/5 text-primary focus:ring-emerald"
                 />
                 <span>{opt}</span>
               </label>
@@ -151,7 +151,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
                   value={opt}
                   checked={formData.etapa === opt}
                   onChange={(e) => setFormData({ ...formData, etapa: e.target.value })}
-                  className="border-white/20 bg-white/5 text-emerald focus:ring-emerald"
+                  className="border-white/20 bg-white/5 text-primary focus:ring-emerald"
                 />
                 <span>{opt}</span>
               </label>
@@ -170,7 +170,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
                   value={opt}
                   checked={formData.tipoInversionista === opt}
                   onChange={(e) => setFormData({ ...formData, tipoInversionista: e.target.value })}
-                  className="border-white/20 bg-white/5 text-emerald focus:ring-emerald"
+                  className="border-white/20 bg-white/5 text-primary focus:ring-emerald"
                 />
                 <span>{opt}</span>
               </label>
@@ -189,7 +189,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
                   value={opt}
                   checked={formData.capacidad === opt}
                   onChange={(e) => setFormData({ ...formData, capacidad: e.target.value })}
-                  className="border-white/20 bg-white/5 text-emerald focus:ring-emerald"
+                  className="border-white/20 bg-white/5 text-primary focus:ring-emerald"
                 />
                 <span>{opt}</span>
               </label>
@@ -199,7 +199,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
 
         <Button
           type="submit"
-          className="w-full bg-emerald hover:bg-emerald-dark text-navy-dark font-semibold py-3 text-base gap-2"
+          className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 text-base gap-2"
         >
           <Send className="w-4 h-4" />
           Enviar Solicitud

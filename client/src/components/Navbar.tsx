@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { NAV_ITEMS } from "@/lib/constants";
+import { NAV_ITEMS, IMAGES } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -24,14 +24,8 @@ export default function Navbar() {
     >
       <div className="container flex items-center justify-between h-20">
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-lg bg-emerald flex items-center justify-center text-navy-dark font-bold text-xl font-serif transition-transform group-hover:scale-105">
-            $
-          </div>
-          <div className="flex flex-col">
-            <span className="text-white font-bold text-lg leading-tight tracking-wide">COMPRANDO</span>
-            <span className="text-emerald text-xs font-semibold tracking-[0.3em] uppercase">AMÉRICA</span>
-          </div>
+        <a href="#hero" className="flex items-center gap-2 group">
+          <img src={IMAGES.logo} alt="Comprando América" className="h-12 w-12 transition-transform group-hover:scale-105" />
         </a>
 
         {/* Desktop Nav */}
@@ -45,7 +39,7 @@ export default function Navbar() {
             >
               <a
                 href={item.href}
-                className="px-4 py-2 text-sm font-medium text-white/80 hover:text-emerald transition-colors flex items-center gap-1"
+                className="px-4 py-2 text-sm font-medium text-white/80 hover:text-primary transition-colors flex items-center gap-1"
               >
                 {item.label}
                 {item.children && <ChevronDown className="w-3 h-3" />}
@@ -61,7 +55,7 @@ export default function Navbar() {
                     <a
                       key={child.label}
                       href={child.href}
-                      className="block px-4 py-2.5 text-sm text-white/70 hover:text-emerald hover:bg-white/5 transition-colors"
+                      className="block px-4 py-2.5 text-sm text-white/70 hover:text-primary hover:bg-white/5 transition-colors"
                     >
                       {child.label}
                     </a>
@@ -72,7 +66,7 @@ export default function Navbar() {
           ))}
           <a
             href="#contacto"
-            className="ml-4 px-5 py-2.5 bg-emerald text-navy-dark font-semibold text-sm rounded-lg hover:bg-emerald-dark transition-colors"
+            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-primary-dark transition-colors"
           >
             Solicitar Información
           </a>
@@ -102,7 +96,7 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={() => !item.children && setIsOpen(false)}
-                    className="block px-4 py-3 text-white/80 hover:text-emerald transition-colors font-medium"
+                    className="block px-4 py-3 text-white/80 hover:text-primary transition-colors font-medium"
                   >
                     {item.label}
                   </a>
@@ -113,7 +107,7 @@ export default function Navbar() {
                           key={child.label}
                           href={child.href}
                           onClick={() => setIsOpen(false)}
-                          className="block px-4 py-2 text-sm text-white/60 hover:text-emerald transition-colors"
+                          className="block px-4 py-2 text-sm text-white/60 hover:text-primary transition-colors"
                         >
                           {child.label}
                         </a>
@@ -125,7 +119,7 @@ export default function Navbar() {
               <a
                 href="#contacto"
                 onClick={() => setIsOpen(false)}
-                className="block mx-4 mt-4 px-5 py-3 bg-emerald text-navy-dark font-semibold text-sm rounded-lg text-center"
+                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center"
               >
                 Solicitar Información
               </a>
