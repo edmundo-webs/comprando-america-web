@@ -6,55 +6,175 @@ import { z } from "zod";
 import * as db from "./db";
 import { TRPCError } from "@trpc/server";
 import { NOT_ADMIN_ERR_MSG } from "@shared/const";
+import bcrypt from "bcryptjs";
+import { ENV } from "./_core/env";
+import { sdk } from "./_core/sdk";
+
+// Helper: create CMS session cookie using the SDK's signSession
+// The SDK verifySession expects { openId, appId, name } in the JWT payload
+async function createCmsSessionToken(user: { id: number; openId: string; email: string | null; name: string | null; role: string }) {
+  const token = await sdk.signSession({
+    openId: user.openId,
+    appId: ENV.appId,
+    name: user.name || user.email || "CMS User",
+  }, { expiresInMs: 7 * 24 * 60 * 60 * 1000 }); // 7 days
+  return token;
+}
+
+// Helper: check if user has CMS access (both admin and user roles have access for now)
+function requireCmsAccess(role: string) {
+  if (role !== "admin" && role !== "user") {
+    throw new TRPCError({ code: "FORBIDDEN", message: "Acceso denegado al CMS" });
+  }
+}
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
-      return {
-        success: true,
-      } as const;
+      return { success: true } as const;
     }),
+  }),
+
+  // ═══ CMS AUTH ROUTER ═══
+  cmsAuth: router({
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email("Email inválido"),
+        password: z.string().min(1, "La contraseña es requerida"),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const user = await db.getUserByEmail(input.email);
+        if (!user || !user.passwordHash) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o contraseña incorrectos" });
+        }
+
+        const valid = await bcrypt.compare(input.password, user.passwordHash);
+        if (!valid) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Email o contraseña incorrectos" });
+        }
+
+        // Update last signed in
+        await db.updateUser(user.id, { lastSignedIn: new Date() });
+
+        // Create session token and set cookie
+        const token = await createCmsSessionToken(user);
+        const cookieOptions = getSessionCookieOptions(ctx.req);
+        ctx.res.cookie(COOKIE_NAME, token, {
+          ...cookieOptions,
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        return {
+          success: true,
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+        };
+      }),
+
+    register: publicProcedure
+      .input(z.object({
+        name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
+        email: z.string().email("Email inválido"),
+        password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
+        role: z.enum(["admin", "user"]).default("user"),
+      }))
+      .mutation(async ({ input }) => {
+        // Check if email already exists
+        const existing = await db.getUserByEmail(input.email);
+        if (existing) {
+          throw new TRPCError({ code: "CONFLICT", message: "Ya existe un usuario con este email" });
+        }
+
+        const passwordHash = await bcrypt.hash(input.password, 12);
+        const result = await db.createCmsUser({
+          name: input.name,
+          email: input.email,
+          passwordHash,
+          role: input.role,
+        });
+
+        if (!result) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error al crear usuario" });
+        }
+
+        return { success: true, userId: result.id };
+      }),
   }),
 
   // ═══ USERS ROUTER ═══
   users: router({
     list: protectedProcedure.query(async ({ ctx }) => {
-      if (ctx.user.role !== "admin") {
-        throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
-      }
-      return await db.getAllUsers();
+      requireCmsAccess(ctx.user.role);
+      const allUsers = await db.getAllUsers();
+      // Remove passwordHash from response
+      return allUsers.map(({ passwordHash, ...rest }) => rest);
     }),
     getById: protectedProcedure.input(z.object({ id: z.number() })).query(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") {
-        throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+      requireCmsAccess(ctx.user.role);
+      const user = await db.getUserById(input.id);
+      if (user) {
+        const { passwordHash, ...rest } = user;
+        return rest;
       }
-      return await db.getUserById(input.id);
+      return undefined;
     }),
-    update: protectedProcedure
-      .input(
-        z.object({
-          id: z.number(),
-          name: z.string().optional(),
-          email: z.string().email().optional(),
-          role: z.enum(["user", "admin"]).optional(),
-        })
-      )
+    create: protectedProcedure
+      .input(z.object({
+        name: z.string().min(2),
+        email: z.string().email(),
+        password: z.string().min(6),
+        role: z.enum(["admin", "user"]).default("user"),
+      }))
       .mutation(async ({ ctx, input }) => {
-        if (ctx.user.role !== "admin") {
-          throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+        requireCmsAccess(ctx.user.role);
+        // Check if email already exists
+        const existing = await db.getUserByEmail(input.email);
+        if (existing) {
+          throw new TRPCError({ code: "CONFLICT", message: "Ya existe un usuario con este email" });
         }
-        const { id, ...data } = input;
-        await db.updateUser(id, data);
+        const passwordHash = await bcrypt.hash(input.password, 12);
+        const result = await db.createCmsUser({
+          name: input.name,
+          email: input.email,
+          passwordHash,
+          role: input.role,
+        });
+        if (!result) {
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Error al crear usuario" });
+        }
+        return { success: true, userId: result.id };
+      }),
+    update: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        email: z.string().email().optional(),
+        role: z.enum(["user", "admin"]).optional(),
+        password: z.string().min(6).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        requireCmsAccess(ctx.user.role);
+        const { id, password, ...data } = input;
+        const updateData: Record<string, unknown> = { ...data };
+        if (password) {
+          updateData.passwordHash = await bcrypt.hash(password, 12);
+        }
+        await db.updateUser(id, updateData as any);
         return { success: true };
       }),
     delete: protectedProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") {
-        throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+      requireCmsAccess(ctx.user.role);
+      // Prevent self-deletion
+      if (ctx.user.id === input.id) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "No puedes eliminar tu propia cuenta" });
       }
       await db.deleteUser(input.id);
       return { success: true };
@@ -71,67 +191,53 @@ export const appRouter = router({
     getBySlug: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
       return await db.getBlogPostBySlug(input.slug);
     }),
-    // Admin: list all posts
+    // CMS: list all posts
     listAll: protectedProcedure.query(async ({ ctx }) => {
-      if (ctx.user.role !== "admin") {
-        throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
-      }
+      requireCmsAccess(ctx.user.role);
       return await db.getAllBlogPosts();
     }),
-    // Admin: get post by id
+    // CMS: get post by id
     getById: protectedProcedure.input(z.object({ id: z.number() })).query(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") {
-        throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
-      }
+      requireCmsAccess(ctx.user.role);
       return await db.getBlogPostById(input.id);
     }),
-    // Admin: create post
+    // CMS: create post
     create: protectedProcedure
-      .input(
-        z.object({
-          title: z.string(),
-          slug: z.string(),
-          excerpt: z.string().optional(),
-          content: z.string(),
-          featuredImage: z.string().optional(),
-          status: z.enum(["draft", "published", "archived"]).default("draft"),
-          publishedAt: z.date().optional(),
-        })
-      )
+      .input(z.object({
+        title: z.string(),
+        slug: z.string(),
+        excerpt: z.string().optional(),
+        content: z.string(),
+        featuredImage: z.string().optional(),
+        status: z.enum(["draft", "published", "archived"]).default("draft"),
+        publishedAt: z.date().optional(),
+      }))
       .mutation(async ({ ctx, input }) => {
-        if (ctx.user.role !== "admin") {
-          throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
-        }
+        requireCmsAccess(ctx.user.role);
         await db.createBlogPost({ ...input, authorId: ctx.user.id });
         return { success: true };
       }),
-    // Admin: update post
+    // CMS: update post
     update: protectedProcedure
-      .input(
-        z.object({
-          id: z.number(),
-          title: z.string().optional(),
-          slug: z.string().optional(),
-          excerpt: z.string().optional(),
-          content: z.string().optional(),
-          featuredImage: z.string().optional(),
-          status: z.enum(["draft", "published", "archived"]).optional(),
-          publishedAt: z.date().optional(),
-        })
-      )
+      .input(z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        slug: z.string().optional(),
+        excerpt: z.string().optional(),
+        content: z.string().optional(),
+        featuredImage: z.string().optional(),
+        status: z.enum(["draft", "published", "archived"]).optional(),
+        publishedAt: z.date().optional(),
+      }))
       .mutation(async ({ ctx, input }) => {
-        if (ctx.user.role !== "admin") {
-          throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
-        }
+        requireCmsAccess(ctx.user.role);
         const { id, ...data } = input;
         await db.updateBlogPost(id, data);
         return { success: true };
       }),
-    // Admin: delete post
+    // CMS: delete post
     delete: protectedProcedure.input(z.object({ id: z.number() })).mutation(async ({ ctx, input }) => {
-      if (ctx.user.role !== "admin") {
-        throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
-      }
+      requireCmsAccess(ctx.user.role);
       await db.deleteBlogPost(input.id);
       return { success: true };
     }),

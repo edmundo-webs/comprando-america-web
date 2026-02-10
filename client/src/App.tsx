@@ -9,23 +9,26 @@ import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Users from "./pages/admin/Users";
 import BlogPosts from "./pages/admin/BlogPosts";
+import CmsLogin from "./pages/cms/CmsLogin";
+import BlogPost from "./pages/BlogPost";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/admin"} component={() => (
+      <Route path="/blog/:slug" component={BlogPost} />
+      <Route path={"/cms/login"} component={CmsLogin} />
+      <Route path={"/cms"} component={() => (
         <DashboardLayout>
           <Dashboard />
         </DashboardLayout>
       )} />
-      <Route path={"/admin/users"} component={() => (
+      <Route path={"/cms/users"} component={() => (
         <DashboardLayout>
           <Users />
         </DashboardLayout>
       )} />
-      <Route path={"/admin/blog-posts"} component={() => (
+      <Route path={"/cms/blog-posts"} component={() => (
         <DashboardLayout>
           <BlogPosts />
         </DashboardLayout>

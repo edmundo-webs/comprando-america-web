@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import RichTextEditor from "@/components/RichTextEditor";
 import {
   Select,
   SelectContent,
@@ -242,13 +243,11 @@ export default function BlogPosts() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="content">Contenido *</Label>
-              <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                placeholder="Contenido completo del blog (soporta Markdown)"
-                rows={10}
+              <Label>Contenido *</Label>
+              <RichTextEditor
+                content={formData.content}
+                onChange={(html) => setFormData({ ...formData, content: html })}
+                placeholder="Escribe el contenido del blog aquí..."
               />
             </div>
             <div className="space-y-2">

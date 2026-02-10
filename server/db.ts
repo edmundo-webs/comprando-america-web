@@ -89,6 +89,37 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+// ═══ AUTH QUERIES ═══
+export async function getUserByEmail(email: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get user by email: database not available");
+    return undefined;
+  }
+  const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createCmsUser(data: { name: string; email: string; passwordHash: string; role: "admin" | "user" }) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create CMS user: database not available");
+    return undefined;
+  }
+  const { nanoid } = await import("nanoid");
+  const openId = `cms_${nanoid(16)}`;
+  const result = await db.insert(users).values({
+    openId,
+    name: data.name,
+    email: data.email,
+    passwordHash: data.passwordHash,
+    loginMethod: "email",
+    role: data.role,
+    lastSignedIn: new Date(),
+  });
+  return { id: Number(result[0].insertId), openId };
+}
+
 // ═══ USERS QUERIES ═══
 export async function getAllUsers() {
   const db = await getDb();
