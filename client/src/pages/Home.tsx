@@ -10,8 +10,7 @@ import SectionHeading from "@/components/SectionHeading";
 import ProspectForm from "@/components/ProspectForm";
 import { useInView } from "@/hooks/useInView";
 import { useCountUp } from "@/hooks/useCountUp";
-import { IMAGES, EXTERNAL_LINKS, STATS, MEMBERSHIP_PILLARS, FAQ_ITEMS } from "@/lib/constants";
-import { trpc } from "@/lib/trpc";
+import { IMAGES, EXTERNAL_LINKS, STATS, MEMBERSHIP_PILLARS, BLOG_POSTS, FAQ_ITEMS } from "@/lib/constants";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -72,7 +71,6 @@ function PillarIcon({ icon }: { icon: string }) {
 // ═══════════════════════════════════════════════════════
 export default function Home() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
-  const { data: blogPosts } = trpc.blogPosts.listPublished.useQuery();
 
   const handleNewsletter = (e: React.FormEvent) => {
     e.preventDefault();
@@ -594,44 +592,30 @@ export default function Home() {
             subtitle="Artículos, análisis y guías para inversionistas latinos en Estados Unidos."
           />
           <div className="grid md:grid-cols-3 gap-6 mb-16">
-            {blogPosts && blogPosts.length > 0 ? (
-              blogPosts.slice(0, 3).map((post, i) => (
-                <FadeIn key={post.id} delay={i * 0.1}>
-                  <a href={`/blog/${post.slug}`} className="group block h-full">
-                    <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/20 transition-all duration-500 h-full flex flex-col">
-                      {post.featuredImage && (
-                        <div className="relative h-48 overflow-hidden">
-                          <img
-                            src={post.featuredImage}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] to-transparent" />
-                        </div>
-                      )}
-                      <div className="p-6 flex flex-col flex-1">
-                        <span className="text-primary text-xs font-mono tracking-wider mb-2">
-                          {new Date(post.publishedAt || post.createdAt).toLocaleDateString()}
-                        </span>
-                        <h3 className="text-lg font-serif text-white mb-2 group-hover:text-primary transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-white/50 text-sm leading-relaxed flex-1">
-                          {post.excerpt || post.content.substring(0, 150) + "..."}
-                        </p>
-                        <span className="inline-flex items-center gap-1 text-primary text-sm font-semibold mt-4 group-hover:gap-2 transition-all">
-                          Leer más <ArrowRight className="w-4 h-4" />
-                        </span>
-                      </div>
+            {BLOG_POSTS.map((post, i) => (
+              <FadeIn key={post.title} delay={i * 0.1}>
+                <a href={post.url} target="_blank" rel="noopener noreferrer" className="group block h-full">
+                  <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/20 transition-all duration-500 h-full flex flex-col">
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] to-transparent" />
                     </div>
-                  </a>
-                </FadeIn>
-              ))
-            ) : (
-              <div className="col-span-3 text-center py-12">
-                <p className="text-white/50">No hay blogs publicados aún</p>
-              </div>
-            )}
+                    <div className="p-6 flex flex-col flex-1">
+                      <span className="text-primary text-xs font-mono tracking-wider mb-2">{post.date}</span>
+                      <h3 className="text-lg font-serif text-white mb-2 group-hover:text-primary transition-colors">{post.title}</h3>
+                      <p className="text-white/50 text-sm leading-relaxed flex-1">{post.excerpt}</p>
+                      <span className="inline-flex items-center gap-1 text-primary text-sm font-semibold mt-4 group-hover:gap-2 transition-all">
+                        Leer más <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              </FadeIn>
+            ))}
           </div>
 
           {/* Newsletter */}
