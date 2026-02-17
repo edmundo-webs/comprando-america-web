@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { NAV_ITEMS, IMAGES } from "@/lib/constants";
+import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -64,12 +65,12 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <a
-            href="#contacto"
-            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-primary-dark transition-colors"
+          <button
+            onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-primary-dark transition-colors cursor-pointer"
           >
             Solicitar Información
-          </a>
+          </button>
         </div>
 
         {/* Mobile Toggle */}
@@ -116,13 +117,15 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
-              <a
-                href="#contacto"
-                onClick={() => setIsOpen(false)}
-                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center"
+              <button
+                onClick={() => {
+                  openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE);
+                  setIsOpen(false);
+                }}
+                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)] cursor-pointer"
               >
                 Solicitar Información
-              </a>
+              </button>
             </div>
           </motion.div>
         )}

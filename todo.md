@@ -48,3 +48,10 @@
 - [x] Incluir CTA al final del artículo
 - [x] Agregar metadatos (fecha, tiempo de lectura, autor)
 - [x] Botón de volver al blog
+
+
+## Integración WhatsApp
+- [x] Crear función auxiliar para generar URL de WhatsApp con mensaje automático
+- [x] Actualizar botón "Solicitar Información" en Home.tsx para redireccionar a WhatsApp
+- [x] Actualizar botón "Solicitar Información" en Navbar.tsx para redireccionar a WhatsApp
+- [x] Verificar funcionamiento del enlace en navegador

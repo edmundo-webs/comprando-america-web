@@ -11,6 +11,7 @@ import ProspectForm from "@/components/ProspectForm";
 import { useInView } from "@/hooks/useInView";
 import { useCountUp } from "@/hooks/useCountUp";
 import { IMAGES, EXTERNAL_LINKS, STATS, MEMBERSHIP_PILLARS, FAQ_ITEMS } from "@/lib/constants";
+import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
 import { trpc } from "@/lib/trpc";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -678,11 +679,12 @@ export default function Home() {
               Contacta a nuestro equipo para conocer más detalles. Nuestra comunidad es un grupo exclusivo con cupo limitado para mantener la cercanía entre nuestros miembros y una alta calidad en nuestros servicios.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href={EXTERNAL_LINKS.membresia} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-10 py-6 text-lg gap-2 w-full sm:w-auto">
-                  Solicitar Información <ArrowRight className="w-5 h-5" />
-                </Button>
-              </a>
+              <Button 
+                onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+                className="bg-primary hover:bg-primary-dark text-white font-semibold px-10 py-6 text-lg gap-2 w-full sm:w-auto"
+              >
+                Solicitar Información <ArrowRight className="w-5 h-5" />
+              </Button>
               <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
                 <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-10 py-6 text-lg gap-2 w-full sm:w-auto">
                   Agendar Asesoría con Edmundo
