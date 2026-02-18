@@ -55,3 +55,12 @@
 - [x] Actualizar botón "Solicitar Información" en Home.tsx para redireccionar a WhatsApp
 - [x] Actualizar botón "Solicitar Información" en Navbar.tsx para redireccionar a WhatsApp
 - [x] Verificar funcionamiento del enlace en navegador
+
+
+## Página de Membresía Detallada
+- [x] Crear página /membresia/ con contenido extraído y adaptado
+- [x] Implementar sección "¿Qué incluye tu membresía?" con 6 pilares
+- [x] Implementar sección de planes (Entry, Growth, Legacy) con detalles
+- [x] Implementar sección de inversiones estratégicas y áreas de inversión
+- [x] Implementar sección de preguntas frecuentes
+- [x] Verificar diseño responsive y consistencia visual
