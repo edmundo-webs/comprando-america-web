@@ -64,3 +64,12 @@
 - [x] Implementar sección de inversiones estratégicas y áreas de inversión
 - [x] Implementar sección de preguntas frecuentes
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Página de Listado de Blog
+- [x] Crear página /blog/ con grid de artículos publicados
+- [x] Implementar búsqueda de artículos por título y contenido
+- [x] Mostrar fecha, imagen y título de cada artículo
+- [x] Mostrar tiempo de lectura estimado
+- [x] Integrar con CMS para mostrar blogs dinámicamente
+- [x] Verificar diseño responsive y consistencia visual
