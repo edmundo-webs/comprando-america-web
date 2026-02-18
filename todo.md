@@ -73,3 +73,7 @@
 - [x] Mostrar tiempo de lectura estimado
 - [x] Integrar con CMS para mostrar blogs dinámicamente
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Favicon y Branding
+- [x] Configurar favicon con logotipo de Comprando América en la pestaña del navegador
