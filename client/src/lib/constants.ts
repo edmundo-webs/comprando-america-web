@@ -15,28 +15,28 @@ export const EXTERNAL_LINKS = {
   bienesRaices: "https://comprandoamerica.com/bienes-raices-en-usa/",
   estructura: "https://comprandoamerica.com/estructura-de-inversion-en-usa/",
   expansion: "https://comprandoamerica.com/expansion-internacional-empresas/",
-  blog: "https://comprandoamerica.com/blog/",
-  podcast: "https://comprandoamerica.com/podcast/",
-  quienesSomos: "https://comprandoamerica.com/quienes-somos/",
+  blog: "https://www.comprandoamerica.com/blog",
+  podcast: "https://www.comprandoamerica.com/podcast",
+  quienesSomos: "https://www.comprandoamerica.com/quienes-somos",
   edmundoTrevino: "https://edmundotrevino.com",
   mentoria: "https://edmundotrevino.com/asesoria",
   whatsapp: "https://wa.me/message/COMPRANDO",
 };
 
 export const NAV_ITEMS = [
-  { label: "Inicio", href: "#hero" },
-  { label: "Membresía", href: "#membresia" },
-  { label: "Formación", href: "#formacion" },
-  { label: "Asesorías", href: "#asesorias", children: [
-    { label: "Visa E-2", href: "#visa-e2" },
-    { label: "Bienes Raíces", href: "#bienes-raices" },
-    { label: "Inversiones", href: "#inversiones" },
-    { label: "Expansión Internacional", href: "#expansion" },
+  { label: "Inicio", href: "/" },
+  { label: "Membresía", href: EXTERNAL_LINKS.membresia },
+  { label: "Formación", href: EXTERNAL_LINKS.formacion },
+  { label: "Asesorías", href: "#", children: [
+    { label: "Visa E-2", href: EXTERNAL_LINKS.visaE2 },
+    { label: "Bienes Raíces", href: EXTERNAL_LINKS.bienesRaices },
+    { label: "Inversiones", href: EXTERNAL_LINKS.estructura },
+    { label: "Expansión Internacional", href: EXTERNAL_LINKS.expansion },
   ]},
-  { label: "Recursos", href: "#recursos", children: [
-    { label: "Blog", href: "#blog" },
-    { label: "Podcast", href: "#podcast" },
-    { label: "Quiénes Somos", href: "#quienes-somos" },
+  { label: "Recursos", href: "#", children: [
+    { label: "Blog", href: EXTERNAL_LINKS.blog },
+    { label: "Podcast", href: EXTERNAL_LINKS.podcast },
+    { label: "Quiénes Somos", href: EXTERNAL_LINKS.quienesSomos },
   ]},
 ];
 
