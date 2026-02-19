@@ -364,13 +364,20 @@ export default function QuienesSomos() {
               >
                 <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-500 h-full flex flex-col">
                   {/* Image */}
-                  <div className="relative w-full h-40 overflow-hidden bg-gradient-to-b from-primary/10 to-transparent flex items-center justify-center">
+                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-b from-primary/5 to-primary/10 flex items-center justify-center group">
+                    {/* Subtle border accent */}
+                    <div className="absolute inset-0 border border-white/10 group-hover:border-primary/30 transition-colors duration-500 pointer-events-none" />
+                    
                     {expert.image ? (
-                      <img
-                        src={expert.image}
-                        alt={expert.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
+                      <>
+                        <img
+                          src={expert.image}
+                          alt={expert.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                        />
+                        {/* Overlay gradient for sophistication */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.6)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </>
                     ) : (
                       <Users className="w-12 h-12 text-primary/30" />
                     )}
