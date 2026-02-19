@@ -146,7 +146,7 @@
 
 
 ## Sección de Expertos Adicionales
-- [x] Agregar perfil de Tomás Resendez (Abogado inmigración)
+- [x] Agregar perfil de Tomás Resendez (Abogado inmigración) con foto profesional
 - [x] Agregar perfil de John Mckee (Consultor comercial)
 - [x] Agregar perfil de Destiny Bounds (Abogada corporativa y propiedad intelectual)
 - [x] Agregar perfil de Aubrey Dwyer (Abogada corporativa)

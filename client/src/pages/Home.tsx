@@ -503,6 +503,7 @@ export default function Home() {
                 name: "Tomás Resendez",
                 title: "Abogado inmigración",
                 description: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/TudnzYtNSkbiAEjH.jpg",
               },
               {
                 name: "John Mckee",
@@ -537,6 +538,11 @@ export default function Home() {
             ].map((expert, i) => (
               <FadeIn key={expert.name} delay={i * 0.1}>
                 <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
+                  {expert.image && (
+                    <div className="w-24 h-24 mx-auto rounded-lg overflow-hidden mb-4 border border-white/10">
+                      <img src={expert.image} alt={expert.name} className="w-full h-full object-cover" />
+                    </div>
+                  )}
                   <h3 className="text-lg font-serif text-white mb-1">{expert.name}</h3>
                   <p className="text-primary text-sm font-semibold mb-4">{expert.title}</p>
                   <p className="text-white/60 text-sm leading-relaxed">{expert.description}</p>
