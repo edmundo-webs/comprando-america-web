@@ -157,26 +157,101 @@ export default function Home() {
       <section id="membresia" className="section-darker py-24 md:py-32">
         <div className="container">
           <SectionHeading
-            tag="Membresía Vitalicia"
-            title="Los Pilares Fundamentales de Nuestra Comunidad"
-            subtitle="Todas las solicitudes de ingreso son revisadas para mantener la exclusividad, valores e integridad del grupo."
+            tag="El Sistema detrás de Comprando América"
+            title="Seis Pilares Estratégicos"
+            subtitle="Invertir en Estados Unidos sin estructura es costoso. Por eso diseñamos una metodología basada en seis pilares estratégicos."
           />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {MEMBERSHIP_PILLARS.map((pillar, i) => (
-              <FadeIn key={pillar.title} delay={i * 0.1}>
+            {[
+              {
+                num: "1",
+                title: "Criterio de Inversión",
+                subtitle: "Decidimos con proceso, no con emoción.",
+                desc: "Analizamos tesis, números, riesgos y escenarios antes de avanzar. Resultado: decisiones más sólidas y menor exposición a errores costosos."
+              },
+              {
+                num: "2",
+                title: "Curación Estratégica",
+                subtitle: "Descartamos la mayoría de oportunidades antes de presentarlas.",
+                desc: "Nuestro enfoque es proteger el capital, no vender proyectos. Resultado: solo se analizan oportunidades con ventaja real."
+              },
+              {
+                num: "3",
+                title: "Acompañamiento Integral",
+                subtitle: "Estructura legal, fiscal, bancaria y migratoria alineada desde el inicio.",
+                desc: "Resultado: operaciones ordenadas y sostenibles en EE.UU."
+              },
+              {
+                num: "4",
+                title: "Comunidad Ejecutora",
+                subtitle: "Empresarios que ya están tomando acción comparten experiencia real.",
+                desc: "Resultado: menos curva de aprendizaje y decisiones mejor respaldadas."
+              },
+              {
+                num: "5",
+                title: "Velocidad de Activación",
+                subtitle: "Diagnóstico claro y plan estructurado desde los primeros 30 días.",
+                desc: "Resultado: inversión en 60–90 días cuando existe encaje."
+              },
+              {
+                num: "6",
+                title: "Transferencia Patrimonial Estratégica",
+                subtitle: "Diversificación internacional con visión de largo plazo.",
+                desc: "Resultado: patrimonio protegido y estructurado para expansión o migración."
+              },
+            ].map((pillar, i) => (
+              <FadeIn key={pillar.num} delay={i * 0.1}>
                 <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
                   <div className="relative">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                      <PillarIcon icon={pillar.icon} />
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors font-serif font-bold text-lg">
+                      {pillar.num}
                     </div>
-                    <h3 className="text-xl font-serif text-white mb-3">{pillar.title}</h3>
-                    <p className="text-white/50 text-sm leading-relaxed">{pillar.description}</p>
+                    <h3 className="text-lg font-serif text-white mb-2">{pillar.title}</h3>
+                    <p className="text-primary text-sm font-semibold mb-3">{pillar.subtitle}</p>
+                    <p className="text-white/50 text-sm leading-relaxed">{pillar.desc}</p>
                   </div>
                 </div>
               </FadeIn>
             ))}
           </div>
+
+          {/* Tagline */}
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl mx-auto">
+                <span className="font-semibold">No vendemos promesas.</span> Construimos estructura.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Fit Check */}
+          <FadeIn>
+            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-8 md:p-12 mb-16">
+              <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 text-center">¿Encajas con este sistema?</h3>
+              <p className="text-center text-white/70 mb-8 max-w-2xl mx-auto">Si eres empresario o inversionista y:</p>
+              <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-8">
+                {[
+                  "Valoras el proceso",
+                  "Buscas acompañamiento real",
+                  "Entiendes el riesgo",
+                  "Quieres ejecutar con orden"
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
+                    <span className="text-white/70">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center">
+                <a href={EXTERNAL_LINKS.membresia}>
+                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                    Solicitar Información <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </FadeIn>
 
           {/* Membership Benefits */}
           <FadeIn>
