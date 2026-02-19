@@ -125,3 +125,15 @@
 - [x] Copiar foto de Edmundo Treviño a carpeta pública
 - [x] Actualizar sección "Dedicación. Experiencia. Pasión" con foto de Edmundo
 - [x] Verificar que la foto se muestre correctamente en la página de inicio
+
+
+## Página de Expansión Internacional de Empresas
+- [x] Crear página /expansion-internacional-empresas/ con contenido adaptado
+- [x] Implementar sección hero con imagen y descripción de expansión
+- [x] Implementar sección "¿Por qué apostar por la expansión internacional?" con 4 puntos
+- [x] Implementar sección "Estrategias de expansión internacional" con 4 items
+- [x] Implementar sección "Cómo internacionalizar una empresa paso a paso" con 5 pasos
+- [x] Implementar sección "Inversionistas: conviertan la expansión en su ventaja"
+- [x] Implementar FAQ con 3 preguntas expandibles
+- [x] Integrar formulario de contacto con campos específicos
+- [x] Verificar diseño responsive y consistencia visual
