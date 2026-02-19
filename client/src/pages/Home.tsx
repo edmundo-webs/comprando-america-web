@@ -521,6 +521,7 @@ export default function Home() {
                 name: "Aubrey Dwyer",
                 title: "Abogada corporativa",
                 description: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/uRCdCxJPRKyOnHVG.jpg",
               },
               {
                 name: "Daniel Palacios",
