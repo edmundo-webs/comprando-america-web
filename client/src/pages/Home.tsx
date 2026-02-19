@@ -534,6 +534,7 @@ export default function Home() {
                 name: "Joe Faraci",
                 title: "Inversionista en bienes raíces",
                 description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en USA.",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/XbopLcBxxcFrEnFM.jpg",
               },
             ].map((expert, i) => (
               <FadeIn key={expert.name} delay={i * 0.1}>
