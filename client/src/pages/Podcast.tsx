@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
 import { motion } from "framer-motion";
-import { Play, ArrowRight, CheckCircle2, Mic } from "lucide-react";
+import { Play, ArrowRight, CheckCircle2, Mic, BookOpen } from "lucide-react";
 
 // ─── Animated wrapper ───
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -331,17 +331,13 @@ export default function Podcast() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://www.youtube.com/@ComprandoAmerica" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
-                  Empieza a escuchar hoy
+                <a href="https://comprandoamerica.com/podcast" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-primary hover:bg-primary-dark text-white font-semibold rounded transition-colors">
+                  <Mic className="w-5 h-5" />
+                  Escuchar el podcast ahora
                 </a>
-                <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded transition-colors">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-12.061-1.573-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15.079 10.561 18.739 12.84c.361.21.599.659.301 1.1zm.179-3.362C13.134 11.249 7.994 11.209 5.794 12.212c-.624.229-1.289-.355-1.06-.979.228-.624.978-.289 1.602-.06 2.457-1.073 7.929-1.033 11.861 1.134.719.425 1.404-.557.692-1.039z"/>
-                  </svg>
-                  Spotify
+                <a href="https://comprandoamerica.com/formacion/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded transition-colors">
+                  <BookOpen className="w-5 h-5" />
+                  Conoce nuestro programa educativo
                 </a>
               </div>
             </div>
