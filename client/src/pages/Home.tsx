@@ -502,11 +502,18 @@ export default function Home() {
               <p className="text-lg text-white/70 leading-relaxed mb-8">
                 Contenido educativo para empresarios que quieren entender el mercado estadounidense antes de actuar.
               </p>
-              <a href={EXTERNAL_LINKS.formacion}>
-                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                  Escuchar Podcast <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://comprandoamerica.com/podcast">
+                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                    Escuchar Podcast <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+                <a href="https://comprandoamerica.com/formacion/">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-6 text-base gap-2">
+                    Conoce nuestro programa educativo <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
             </div>
           </FadeIn>
         </div>
