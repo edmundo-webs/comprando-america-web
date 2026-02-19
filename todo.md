@@ -119,3 +119,9 @@
 - [x] Implementar FAQ con 4 preguntas expandibles
 - [x] Integrar formulario de contacto con campos específicos
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Foto de Edmundo Treviño
+- [x] Copiar foto de Edmundo Treviño a carpeta pública
+- [x] Actualizar sección "Dedicación. Experiencia. Pasión" con foto de Edmundo
+- [x] Verificar que la foto se muestre correctamente en la página de inicio

@@ -454,8 +454,8 @@ export default function Home() {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                 <div className="relative grid md:grid-cols-[200px_1fr] gap-8 items-start">
                   <div className="text-center">
-                    <div className="w-40 h-40 mx-auto rounded-2xl bg-gradient-to-br from-emerald/20 to-gold/20 flex items-center justify-center mb-4 border border-white/10">
-                      <span className="text-5xl font-serif text-white/80">ET</span>
+                    <div className="w-40 h-40 mx-auto rounded-2xl overflow-hidden mb-4 border border-white/10">
+                      <img src="/edmundo-trevino.jpg" alt="Edmundo Treviño" className="w-full h-full object-cover" />
                     </div>
                     <h3 className="text-xl font-serif text-white">Edmundo Treviño</h3>
                     <p className="text-primary text-sm font-semibold">Director General</p>
