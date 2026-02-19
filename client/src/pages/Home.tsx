@@ -532,6 +532,7 @@ export default function Home() {
                 name: "Sebastián Jara",
                 title: "Consultor de marketing digital",
                 description: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/MzUQRLgWVcfkVsfg.avif",
               },
               {
                 name: "Joe Faraci",
