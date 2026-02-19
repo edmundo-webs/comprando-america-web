@@ -216,6 +216,140 @@ export default function QuienesSomos() {
         </div>
       </section>
 
+      {/* Expertos Section */}
+      <section className="section-darker py-24 md:py-32">
+        <div className="container">
+          <motion.div {...fadeIn} className="text-center mb-16">
+            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+              Dedicación. Experiencia. Pasión.
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Nuestros Expertos</h2>
+            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+              Conoce al equipo que lidera Comprando América y acompaña a cada inversionista en su camino.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                name: "Edmundo Treviño",
+                title: "Director General",
+                description: "Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.",
+                credentials: [
+                  "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
+                  "Maestría en Sistema Fiscal en Estados Unidos",
+                  "10 años de experiencia en contabilidad y administración de empresas",
+                  "20 años de experiencia en comercio internacional",
+                  "Más de 8 empresas operando en Estados Unidos y México",
+                ],
+                image: "https://cdn.manus.im/uploads/edmundo-trevino.jpg",
+                showCredentials: true,
+                showButtons: true,
+              },
+              {
+                name: "Tomás Resendez",
+                title: "Abogado inmigración",
+                description: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
+                image: "https://cdn.manus.im/uploads/tomas-resendez.jpg",
+              },
+              {
+                name: "John Mckee",
+                title: "Consultor comercial",
+                description: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
+                image: "https://cdn.manus.im/uploads/john-mckee.avif",
+              },
+              {
+                name: "Destiny Bounds",
+                title: "Abogada corporativa y PI",
+                description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
+                image: "https://cdn.manus.im/uploads/destiny-bounds.avif",
+              },
+              {
+                name: "Aubrey Dwyer",
+                title: "Abogada corporativa",
+                description: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
+                image: "https://cdn.manus.im/uploads/aubrey-dwyer.jpg",
+              },
+              {
+                name: "Daniel Palacios",
+                title: "Contador CPA y fiscalista",
+                description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
+                image: "https://cdn.manus.im/uploads/daniel-palacios.png",
+              },
+              {
+                name: "Sebastián Jara",
+                title: "Consultor de marketing digital",
+                description: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
+                image: "https://cdn.manus.im/uploads/sebastian-jara.avif",
+              },
+              {
+                name: "Joe Faraci",
+                title: "Inversionista en bienes raíces",
+                description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en USA.",
+                image: "https://cdn.manus.im/uploads/joe-faraci.jpg",
+              },
+            ].map((expert, i) => (
+              <motion.div
+                key={expert.name}
+                {...fadeIn}
+                transition={{ delay: i * 0.1 }}
+                className="group relative"
+              >
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-500 h-full flex flex-col">
+                  {/* Image */}
+                  <div className="relative w-full h-48 overflow-hidden bg-gradient-to-b from-primary/10 to-transparent flex items-center justify-center">
+                    {expert.image ? (
+                      <img
+                        src={expert.image}
+                        alt={expert.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <Users className="w-16 h-16 text-primary/30" />
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 flex flex-col flex-1">
+                    <h3 className="text-lg font-serif text-white mb-1">{expert.name}</h3>
+                    <p className="text-primary text-sm font-semibold mb-4">{expert.title}</p>
+                    <p className="text-white/60 text-sm leading-relaxed mb-4 flex-1">{expert.description}</p>
+
+                    {/* Credentials */}
+                    {expert.showCredentials && (
+                      <div className="space-y-2 mb-6 pt-4 border-t border-white/10">
+                        {expert.credentials?.map((cred, idx) => (
+                          <div key={idx} className="flex items-start gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                            <span className="text-white/70 text-xs leading-tight">{cred}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Buttons */}
+                    {expert.showButtons && (
+                      <div className="space-y-2">
+                        <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer" className="block">
+                          <Button className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-2 text-sm">
+                            Conoce más
+                          </Button>
+                        </a>
+                        <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer" className="block">
+                          <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/5 font-semibold py-2 text-sm">
+                            Agendar Asesoría 1:1
+                          </Button>
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
