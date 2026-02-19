@@ -145,9 +145,11 @@ export default function Formacion() {
               className="hidden lg:block"
             >
               <div className="relative rounded-2xl overflow-hidden border border-white/10">
-                <div className="aspect-video bg-gradient-to-br from-primary/20 to-emerald/20 flex items-center justify-center">
-                  <BookOpen className="w-24 h-24 text-primary/30" />
-                </div>
+                <img
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/dfTXGLgkYJpoVIzE.png"
+                  alt="Educación Estratégica"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </motion.div>
           </div>
