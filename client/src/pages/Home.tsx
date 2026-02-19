@@ -575,9 +575,14 @@ export default function Home() {
                 Cada episodio exploramos temas clave para inversionistas latinos: desde cómo encontrar negocios rentables hasta estrategias de visa y expansión internacional.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href={EXTERNAL_LINKS.podcast} target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-5 gap-2">
-                    <Play className="w-5 h-5" /> Escuchar Episodios
+                <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-5 gap-2">
+                    <Play className="w-5 h-5" /> YouTube
+                  </Button>
+                </a>
+                <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-5 gap-2">
+                    <Play className="w-5 h-5" /> Spotify
                   </Button>
                 </a>
               </div>

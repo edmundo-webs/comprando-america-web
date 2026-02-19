@@ -137,3 +137,9 @@
 - [x] Implementar FAQ con 3 preguntas expandibles
 - [x] Integrar formulario de contacto con campos específicos
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Sección de Podcast
+- [x] Agregar botón YouTube en sección de Podcast (https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9)
+- [x] Agregar botón Spotify en sección de Podcast (https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7)
+- [x] Verificar que los botones se muestren correctamente
