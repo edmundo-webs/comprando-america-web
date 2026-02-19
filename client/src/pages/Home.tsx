@@ -407,38 +407,24 @@ export default function Home() {
             ].map((testimonial, i) => (
               <FadeIn key={i} delay={i * 0.1}>
                 <div className="relative group rounded-xl overflow-hidden bg-[oklch(0.15_0.03_250)] border border-white/5 hover:border-primary/30 transition-all duration-500">
-                  {/* Video Thumbnail */}
-                  <a 
-                    href={`https://www.youtube.com/watch?v=${testimonial.videoId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block relative w-full aspect-video overflow-hidden"
-                  >
-                    <img 
-                      src={`https://img.youtube.com/vi/${testimonial.videoId}/maxresdefault.jpg`}
-                      alt={testimonial.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  {/* Embedded YouTube Video */}
+                  <div className="relative w-full aspect-video overflow-hidden">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={`https://www.youtube.com/embed/${testimonial.videoId}?rel=0&modestbranding=1`}
+                      title={testimonial.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0"
                     />
-                    {/* Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition-colors">
-                      <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <div className="w-0 h-0 border-l-8 border-l-white border-t-5 border-t-transparent border-b-5 border-b-transparent ml-1" />
-                      </div>
-                    </div>
-                  </a>
+                  </div>
                   
                   {/* Info Section */}
                   <div className="p-6">
                     <h3 className="text-lg font-serif text-white mb-2">{testimonial.name}</h3>
-                    <p className="text-sm text-white/70 mb-4">{testimonial.title}</p>
-                    <a 
-                      href={`https://www.youtube.com/watch?v=${testimonial.videoId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary-light transition-colors text-sm font-semibold"
-                    >
-                      Ver testimonio <ArrowRight className="w-4 h-4" />
-                    </a>
+                    <p className="text-sm text-white/70">{testimonial.title}</p>
                   </div>
                 </div>
               </FadeIn>
