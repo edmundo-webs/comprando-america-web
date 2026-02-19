@@ -509,11 +509,13 @@ export default function Home() {
                 name: "John Mckee",
                 title: "Consultor comercial",
                 description: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/YZwbYSbDGLoXJCpB.avif",
               },
               {
                 name: "Destiny Bounds",
                 title: "Abogada corporativa y PI",
                 description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/EhWRcdaSCGZJrcJC.jpeg",
               },
               {
                 name: "Aubrey Dwyer",
