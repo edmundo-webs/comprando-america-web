@@ -13,6 +13,7 @@ import Users from "./pages/admin/Users";
 import BlogPosts from "./pages/admin/BlogPosts";
 import CmsLogin from "./pages/cms/CmsLogin";
 import BlogPost from "./pages/BlogPost";
+import BienesRaices from "./pages/BienesRaices";
 
 function Router() {
   return (
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/membresia" component={Membresia} />
       <Route path="/blog" component={BlogList} />
       <Route path="/blog/:slug" component={BlogPost} />
+      <Route path="/bienes-raices-en-usa" component={BienesRaices} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>

@@ -77,3 +77,14 @@
 
 ## Favicon y Branding
 - [x] Configurar favicon con logotipo de Comprando América en la pestaña del navegador
+
+
+## Página de Bienes Raíces en USA
+- [x] Crear página /bienes-raices-en-usa/ con contenido adaptado
+- [x] Implementar sección de pilares de inversión (6 items)
+- [x] Implementar sección de acompañamiento experto
+- [x] Implementar sección de errores comunes
+- [x] Implementar FAQ con 3 preguntas
+- [x] Implementar sección de criterios de membresía
+- [x] Implementar formulario de contacto con campos específicos
+- [x] Verificar diseño responsive y consistencia visual
