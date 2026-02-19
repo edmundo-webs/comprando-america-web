@@ -266,7 +266,7 @@ export default function QuienesSomos() {
                   "20 años de experiencia en comercio internacional",
                   "Más de 8 empresas operando en Estados Unidos y México",
                 ],
-                image: "https://cdn.manus.im/uploads/edmundo-trevino.jpg",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/INQMtHnxZUpqoHhX.png",
                 showCredentials: true,
                 showButtons: true,
               },
