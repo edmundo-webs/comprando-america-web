@@ -156,11 +156,12 @@ export default function Podcast() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
-                <Button className="bg-white hover:bg-gray-100 text-black font-bold px-8 py-6 text-base gap-2 w-full sm:w-auto border-2 border-gray-300 rounded-lg transition-all">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
+                <Button className="bg-white hover:bg-gray-50 text-black font-medium px-6 py-3 text-sm gap-2 w-full sm:w-auto border-2 border-gray-300 rounded-full transition-all flex items-center justify-center">
+                  <span className="text-xs text-gray-700">Escuchar en</span>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
                     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
-                  <span>Escuchar en YouTube</span>
+                  <span className="font-black text-black">YouTube</span>
                 </Button>
               </a>
               <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer">
@@ -288,11 +289,12 @@ export default function Podcast() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
-                <Button className="bg-white hover:bg-gray-100 text-black font-bold px-8 py-6 text-base gap-2 border-2 border-gray-300 rounded-lg transition-all">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
+                <Button className="bg-white hover:bg-gray-50 text-black font-medium px-6 py-3 text-sm gap-2 border-2 border-gray-300 rounded-full transition-all flex items-center justify-center">
+                  <span className="text-xs text-gray-700">Escuchar en</span>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#FF0000" xmlns="http://www.w3.org/2000/svg">
                     <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                   </svg>
-                  <span>Escuchar en YouTube</span>
+                  <span className="font-black text-black">YouTube</span>
                 </Button>
               </a>
               <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer">
