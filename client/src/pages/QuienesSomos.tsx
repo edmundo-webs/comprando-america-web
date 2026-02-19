@@ -216,6 +216,30 @@ export default function QuienesSomos() {
         </div>
       </section>
 
+      {/* Team Photo Section */}
+      <section className="section-dark py-24 md:py-32">
+        <div className="container">
+          <motion.div {...fadeIn} className="text-center mb-12">
+            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+              El Equipo
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Somos una comunidad de ejecución</h2>
+            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+              Profesionales especializados trabajando juntos para transformar tu visión en realidad.
+            </p>
+          </motion.div>
+
+          <motion.div {...fadeIn} className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <img
+              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/ZCsPWjMTupqNFLuJ.avif"
+              alt="Equipo Comprando América"
+              className="w-full h-auto object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250)] via-transparent to-transparent" />
+          </motion.div>
+        </div>
+      </section>
+
       {/* Expertos Section */}
       <section className="section-darker py-24 md:py-32">
         <div className="container">
