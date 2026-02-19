@@ -1,5 +1,5 @@
 import { EXTERNAL_LINKS } from "@/lib/constants";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -52,11 +52,15 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <span>info@comprandoamerica.com</span>
+                <a href="mailto:ventas@comprandoamerica.com" className="hover:text-primary transition-colors">ventas@comprandoamerica.com</a>
               </li>
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <MapPin className="w-4 h-4 text-primary shrink-0" />
-                <span>Estados Unidos</span>
+                <span>Houston, Texas</span>
+              </li>
+              <li className="flex items-center gap-3 text-white/50 text-sm">
+                <MessageCircle className="w-4 h-4 text-primary shrink-0" />
+                <a href="https://wa.me/523346766178" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">WhatsApp</a>
               </li>
             </ul>
           </div>
