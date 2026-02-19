@@ -526,6 +526,7 @@ export default function Home() {
                 name: "Daniel Palacios",
                 title: "Contador CPA y fiscalista",
                 description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/FcmgGJqLhSBfLmJp.png",
               },
               {
                 name: "Sebastián Jara",
