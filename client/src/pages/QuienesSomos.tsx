@@ -253,23 +253,66 @@ export default function QuienesSomos() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Edmundo - Featured Expert */}
+          <motion.div {...fadeIn} className="mb-16">
+            <div className="bg-[oklch(0.15_0.03_250)] border border-white/10 rounded-2xl p-8 md:p-12">
+              <div className="grid md:grid-cols-3 gap-8 items-start">
+                {/* Photo */}
+                <div className="flex justify-center md:justify-start">
+                  <div className="relative rounded-xl overflow-hidden w-48 h-56">
+                    <img
+                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/INQMtHnxZUpqoHhX.png"
+                      alt="Edmundo Treviño"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="md:col-span-2">
+                  <h3 className="text-2xl font-serif text-white mb-2">Edmundo Treviño</h3>
+                  <p className="text-primary text-sm font-semibold tracking-widest uppercase mb-4">Director General</p>
+                  <p className="text-white/70 leading-relaxed mb-6">
+                    Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.
+                  </p>
+
+                  {/* Credentials */}
+                  <div className="space-y-3 mb-8 pb-8 border-b border-white/10">
+                    {[
+                      "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
+                      "Maestría en Sistema Fiscal en Estados Unidos",
+                      "10 años de experiencia en contabilidad y administración de empresas",
+                      "20 años de experiencia en comercio internacional",
+                      "Más de 8 empresas operando en Estados Unidos y México",
+                    ].map((cred, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                        <span className="text-white/70 text-sm leading-tight">{cred}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
+                      <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-2 text-sm gap-2">
+                        Conoce más <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </a>
+                    <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 font-semibold px-6 py-2 text-sm gap-2">
+                        Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Other Experts Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              {
-                name: "Edmundo Treviño",
-                title: "Director General",
-                description: "Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.",
-                credentials: [
-                  "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
-                  "Maestría en Sistema Fiscal en Estados Unidos",
-                  "10 años de experiencia en contabilidad y administración de empresas",
-                  "20 años de experiencia en comercio internacional",
-                  "Más de 8 empresas operando en Estados Unidos y México",
-                ],
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/INQMtHnxZUpqoHhX.png",
-                showCredentials: true,
-                showButtons: true,
-              },
               {
                 name: "Tomás Resendez",
                 title: "Abogado inmigración",
@@ -321,7 +364,7 @@ export default function QuienesSomos() {
               >
                 <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-500 h-full flex flex-col">
                   {/* Image */}
-                  <div className="relative w-full h-48 overflow-hidden bg-gradient-to-b from-primary/10 to-transparent flex items-center justify-center">
+                  <div className="relative w-full h-40 overflow-hidden bg-gradient-to-b from-primary/10 to-transparent flex items-center justify-center">
                     {expert.image ? (
                       <img
                         src={expert.image}
@@ -329,43 +372,15 @@ export default function QuienesSomos() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     ) : (
-                      <Users className="w-16 h-16 text-primary/30" />
+                      <Users className="w-12 h-12 text-primary/30" />
                     )}
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 flex flex-col flex-1">
-                    <h3 className="text-lg font-serif text-white mb-1">{expert.name}</h3>
-                    <p className="text-primary text-sm font-semibold mb-4">{expert.title}</p>
-                    <p className="text-white/60 text-sm leading-relaxed mb-4 flex-1">{expert.description}</p>
-
-                    {/* Credentials */}
-                    {expert.showCredentials && (
-                      <div className="space-y-2 mb-6 pt-4 border-t border-white/10">
-                        {expert.credentials?.map((cred, idx) => (
-                          <div key={idx} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                            <span className="text-white/70 text-xs leading-tight">{cred}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Buttons */}
-                    {expert.showButtons && (
-                      <div className="space-y-2">
-                        <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer" className="block">
-                          <Button className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-2 text-sm">
-                            Conoce más
-                          </Button>
-                        </a>
-                        <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer" className="block">
-                          <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/5 font-semibold py-2 text-sm">
-                            Agendar Asesoría 1:1
-                          </Button>
-                        </a>
-                      </div>
-                    )}
+                  <div className="p-5 flex flex-col flex-1">
+                    <h3 className="text-base font-serif text-white mb-1">{expert.name}</h3>
+                    <p className="text-primary text-xs font-semibold mb-3">{expert.title}</p>
+                    <p className="text-white/60 text-xs leading-relaxed flex-1">{expert.description}</p>
                   </div>
                 </div>
               </motion.div>
