@@ -233,9 +233,9 @@ export default function Formacion() {
               <p className="text-white/70 text-lg mb-8 max-w-2xl mx-auto">
                 Completa el formulario y accede a toda la información sobre nuestro programa educativo. Nuestro equipo se pondrá en contacto contigo para guiarte en el siguiente paso.
               </p>
-              <a href="#formulario">
+              <a href="https://comprandoamerica.com/formacion/" target="_blank" rel="noopener noreferrer">
                 <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                  Ver Membresía Completa <ArrowRight className="w-4 h-4" />
+                  Conoce el Programa Completo <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>

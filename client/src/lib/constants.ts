@@ -35,7 +35,7 @@ export const NAV_ITEMS = [
   ]},
   { label: "Recursos", href: "#", children: [
     { label: "Blog", href: EXTERNAL_LINKS.blog },
-    { label: "Podcast", href: EXTERNAL_LINKS.podcast },
+    { label: "Podcast", href: "/podcast" },
     { label: "Quiénes Somos", href: EXTERNAL_LINKS.quienesSomos },
   ]},
 ];
