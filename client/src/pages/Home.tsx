@@ -515,7 +515,7 @@ export default function Home() {
                 name: "Destiny Bounds",
                 title: "Abogada corporativa y PI",
                 description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/EhWRcdaSCGZJrcJC.jpeg",
+                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/lAIFNGdnhjoKVGhU.avif",
               },
               {
                 name: "Aubrey Dwyer",
