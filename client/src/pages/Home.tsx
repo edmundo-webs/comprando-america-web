@@ -253,6 +253,99 @@ export default function Home() {
             </div>
           </FadeIn>
 
+          {/* NUESTRA PROPUESTA */}
+          <FadeIn>
+            <div className="mb-24">
+              <div className="text-center mb-16">
+                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Nuestra Propuesta</p>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">¿Cuáles son los obstáculos reales para invertir en Estados Unidos?</h2>
+                <p className="text-lg text-white/70 leading-relaxed max-w-3xl mx-auto">
+                  Muchos empresarios e inversionistas latinos tienen capital, intención y visión.
+                  Lo que falta no es oportunidad… Lo que falta es criterio, estructura y acompañamiento para decidir con confianza y velocidad.
+                  En Comprando América transformamos esas barreras en ventajas estratégicas.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    num: "1️⃣",
+                    title: "Falta de criterio para decidir inversiones",
+                    problem: "Invertir en Estados Unidos sin metodología suele llevar a decisiones impulsivas o mal evaluadas.",
+                    solution: "En Comprando América aplicamos un proceso estructurado que analiza: Tesis real de inversión, Números financieros verificables, Evaluación de riesgos, Escenarios posibles, Red flags, Plan de salida.",
+                    result: "Decisiones más sólidas y menor exposición a errores costosos."
+                  },
+                  {
+                    num: "2️⃣",
+                    title: "Exceso de opciones sin filtro estratégico",
+                    problem: "El mercado estadounidense está lleno de oportunidades… pero no todas tienen ventaja real.",
+                    solution: "Nosotros descartamos la mayoría antes de presentarlas. Nuestro enfoque no es vender proyectos, sino proteger capital.",
+                    result: "Menos ruido, mejores decisiones y acceso a oportunidades con criterio."
+                  },
+                  {
+                    num: "3️⃣",
+                    title: "Estructuras legales y fiscales mal diseñadas",
+                    problem: "Una inversión puede ser buena… pero si está mal estructurada, el riesgo aumenta.",
+                    solution: "Acompañamos la articulación estratégica de: Estructura LLC adecuada, Planeación fiscal correcta, Relación bancaria inicial, Estrategia migratoria cuando aplica.",
+                    result: "Inversiones ordenadas, sostenibles y correctamente estructuradas desde el inicio."
+                  },
+                  {
+                    num: "4️⃣",
+                    title: "Soledad en la toma de decisiones",
+                    problem: "Invertir en otro país puede sentirse aislado y riesgoso.",
+                    solution: "En la membresía accedes a una comunidad privada de empresarios que ya están ejecutando, además de expertos legales, fiscales y operativos.",
+                    result: "Menos curva de aprendizaje y decisiones respaldadas por experiencia real."
+                  },
+                  {
+                    num: "5️⃣",
+                    title: "Lentitud entre intención y acción",
+                    problem: "Muchos inversionistas pasan meses —o años— evaluando sin ejecutar.",
+                    solution: "Nuestro proceso de diagnóstico y activación permite que, cuando hay encaje, la inversión ocurra en 60–90 días con estructura y claridad.",
+                    result: "Capital trabajando con orden y momentum."
+                  },
+                  {
+                    num: "6️⃣",
+                    title: "Falta de visión patrimonial internacional",
+                    problem: "Invertir no es solo generar retorno. Es diversificar geográficamente y proteger patrimonio familiar.",
+                    solution: "Comprando América integra inversión, estructura y visión de largo plazo.",
+                    result: "Patrimonio diversificado, protegido y preparado para expansión o migración estratégica."
+                  }
+                ].map((obstacle, i) => (
+                  <FadeIn key={i} delay={i * 0.05}>
+                    <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 md:p-8 hover:border-primary/30 transition-all duration-500">
+                      <div className="flex items-start gap-4">
+                        <span className="text-2xl shrink-0">{obstacle.num}</span>
+                        <div className="flex-1">
+                          <h3 className="text-xl font-serif text-white mb-3">{obstacle.title}</h3>
+                          <p className="text-white/60 text-sm mb-3">{obstacle.problem}</p>
+                          <p className="text-primary text-sm font-semibold mb-2">Nuestra solución:</p>
+                          <p className="text-white/70 text-sm mb-3">{obstacle.solution}</p>
+                          <p className="text-emerald text-sm"><span className="font-semibold">Resultado:</span> {obstacle.result}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+
+              <FadeIn>
+                <div className="text-center mt-16">
+                  <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl mx-auto mb-8">
+                    <span className="font-semibold">No vendemos promesas.</span> Construimos estructura.
+                  </p>
+                  <p className="text-white/60 text-base mb-8 max-w-2xl mx-auto">
+                    Si estás listo para invertir con criterio, acompañado por proceso y comunidad real, el siguiente paso es validar si encajas en la Membresía Comprando América 2026.
+                  </p>
+                  <a href={EXTERNAL_LINKS.membresia}>
+                    <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                      Solicitar Evaluación <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </a>
+                </div>
+              </FadeIn>
+            </div>
+          </FadeIn>
+
           {/* Membership Benefits */}
           <FadeIn>
             <div className="bg-gradient-to-r from-emerald/10 to-gold/10 border border-primary/20 rounded-2xl p-8 md:p-12 mb-16">
