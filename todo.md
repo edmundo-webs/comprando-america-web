@@ -108,3 +108,14 @@
 - [x] Implementar FAQ con 3 preguntas expandibles
 - [x] Integrar formulario de contacto con campos específicos
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Página de Visa E-2 Inversionista USA
+- [x] Crear página /visa-e2-inversionista-usa/ con contenido adaptado
+- [x] Implementar sección hero con descripción de asesoría migratoria
+- [x] Implementar sección "Errores que evitamos" con 4 puntos clave
+- [x] Implementar sección "Qué incluye la asesoría" con 6 items
+- [x] Implementar sección "¿Por qué elegir Comprando América?" con 4 puntos
+- [x] Implementar FAQ con 4 preguntas expandibles
+- [x] Integrar formulario de contacto con campos específicos
+- [x] Verificar diseño responsive y consistencia visual

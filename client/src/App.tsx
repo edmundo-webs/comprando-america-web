@@ -16,6 +16,7 @@ import BlogPost from "./pages/BlogPost";
 import BienesRaices from "./pages/BienesRaices";
 import Formacion from "./pages/Formacion";
 import EstructuraInversion from "./pages/EstructuraInversion";
+import VisaE2 from "./pages/VisaE2";
 
 function Router() {
   return (
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/bienes-raices-en-usa" component={BienesRaices} />
       <Route path="/formacion" component={Formacion} />
       <Route path="/estructura-de-inversion-en-usa" component={EstructuraInversion} />
+      <Route path="/visa-e2-inversionista-usa" component={VisaE2} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
