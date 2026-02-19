@@ -392,43 +392,53 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {[
               {
-                name: "Carlos M.",
-                city: "Miami, FL",
-                result: "Adquirió 2 propiedades en 90 días",
-                before: "Buscaba estructura sin intermediarios",
-                after: "Patrimonio diversificado y protegido"
+                name: "Arturo Orozco",
+                videoId: "WYNwoTzG8Ss",
+                title: "Testimonial de Arturo Orozco"
               },
               {
-                name: "Alejandra R.",
-                city: "Austin, TX",
-                result: "Visa E-2 aprobada en 6 meses",
-                before: "Inversión sin claridad legal",
-                after: "Operando negocio con estructura sólida"
-              },
-              {
-                name: "Roberto L.",
-                city: "Dallas, TX",
-                result: "3 LLCs estructuradas correctamente",
-                before: "Errores costosos en primeras inversiones",
-                after: "Sistema replicable para expansión"
+                name: "Gerardo Bejarano",
+                videoId: "6J6IIPFsTD0",
+                title: "Testimonial de Gerardo Bejarano"
               }
             ].map((testimonial, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    {[...Array(5)].map((_, j) => (
-                      <Star key={j} className="w-4 h-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <h3 className="text-lg font-serif text-white mb-1">{testimonial.name}</h3>
-                  <p className="text-sm text-primary mb-4">{testimonial.city}</p>
-                  <p className="text-white/80 font-semibold mb-4">{testimonial.result}</p>
-                  <div className="space-y-2 text-sm text-white/60">
-                    <p><span className="text-white/80">Antes:</span> {testimonial.before}</p>
-                    <p><span className="text-white/80">Después:</span> {testimonial.after}</p>
+                <div className="relative group rounded-xl overflow-hidden bg-[oklch(0.15_0.03_250)] border border-white/5 hover:border-primary/30 transition-all duration-500">
+                  {/* Video Thumbnail */}
+                  <a 
+                    href={`https://www.youtube.com/watch?v=${testimonial.videoId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block relative w-full aspect-video overflow-hidden"
+                  >
+                    <img 
+                      src={`https://img.youtube.com/vi/${testimonial.videoId}/maxresdefault.jpg`}
+                      alt={testimonial.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition-colors">
+                      <div className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className="w-0 h-0 border-l-8 border-l-white border-t-5 border-t-transparent border-b-5 border-b-transparent ml-1" />
+                      </div>
+                    </div>
+                  </a>
+                  
+                  {/* Info Section */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-serif text-white mb-2">{testimonial.name}</h3>
+                    <p className="text-sm text-white/70 mb-4">{testimonial.title}</p>
+                    <a 
+                      href={`https://www.youtube.com/watch?v=${testimonial.videoId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary-light transition-colors text-sm font-semibold"
+                    >
+                      Ver testimonio <ArrowRight className="w-4 h-4" />
+                    </a>
                   </div>
                 </div>
               </FadeIn>
