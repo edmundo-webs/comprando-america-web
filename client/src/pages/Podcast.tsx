@@ -1,10 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SectionHeading from "@/components/SectionHeading";
 import { useInView } from "@/hooks/useInView";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Music, Play, Volume2, ArrowRight } from "lucide-react";
+import { Play, ArrowRight } from "lucide-react";
 
 // ─── Animated wrapper ───
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -22,269 +20,155 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
   );
 }
 
-// ─── Video Card ───
-function VideoCard({ 
-  videoId, 
-  title, 
-  description, 
-  duration 
+// ─── Episode Card ───
+function EpisodeCard({ 
+  title,
+  videoUrl
 }: { 
-  videoId: string; 
-  title: string; 
-  description: string; 
-  duration: string;
+  title: string;
+  videoUrl: string;
 }) {
   return (
-    <FadeIn>
-      <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-500 h-full flex flex-col">
-        {/* Video Thumbnail */}
-        <div className="relative w-full aspect-video bg-black overflow-hidden">
-          <img
-            src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`}
-            alt={title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          
-          {/* Play Button Overlay */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <a
-              href={`https://www.youtube.com/watch?v=${videoId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-16 h-16 rounded-full bg-primary hover:bg-primary-dark transition-colors flex items-center justify-center shadow-lg"
-            >
-              <Play className="w-7 h-7 text-white fill-white ml-1" />
-            </a>
-          </div>
-
-          {/* Duration Badge */}
-          <div className="absolute bottom-3 right-3 bg-black/80 px-2 py-1 rounded text-xs text-white font-medium">
-            {duration}
-          </div>
+    <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+      <div className="group relative bg-[oklch(0.12_0.03_250)] border border-white/10 rounded-lg p-4 hover:border-primary/40 transition-all duration-500 flex items-center gap-4 cursor-pointer">
+        {/* Play Button */}
+        <div className="flex-shrink-0 w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center group-hover:bg-red-700 transition-colors">
+          <Play className="w-6 h-6 text-white fill-white" />
         </div>
-
-        {/* Content */}
-        <div className="p-6 flex flex-col flex-grow">
-          <h3 className="text-lg font-serif text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-            {title}
-          </h3>
-          <p className="text-white/60 text-sm leading-relaxed mb-4 flex-grow line-clamp-3">
-            {description}
-          </p>
-          <a
-            href={`https://www.youtube.com/watch?v=${videoId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-semibold transition-colors"
-          >
-            Ver en YouTube <ArrowRight className="w-4 h-4" />
-          </a>
+        
+        {/* Title */}
+        <div className="flex-1 min-w-0">
+          <p className="text-white/80 text-sm group-hover:text-white transition-colors line-clamp-2">{title}</p>
         </div>
       </div>
-    </FadeIn>
+    </a>
   );
 }
 
 export default function Podcast() {
-  // Videos destacados de Comprando América
-  const featuredVideos = [
+  const episodes = [
     {
-      videoId: "HAZVutSO7cI",
-      title: "Brian Tracy: ¿Quieres invertir en Estados Unidos? Esto puede hacerte triunfar",
-      description: "Aprende de uno de los expertos en inversión más reconocidos del mundo. Brian Tracy comparte sus mejores estrategias para tener éxito en el mercado estadounidense.",
-      duration: "28:45"
+      title: "El Dólar Sigue Siendo El Rey (y Aquí Te Digo Por Qué)",
+      videoUrl: "https://www.youtube.com/watch?v=HAZVutSO7cI&t=17s"
     },
     {
-      videoId: "aZwXyxaEWKc",
-      title: "Impuestos en la era Trump: Descifrando la nueva reforma del ISR",
-      description: "Entiende cómo la nueva reforma fiscal impacta tus inversiones en Estados Unidos. Análisis completo de cambios tributarios y estrategias de optimización.",
-      duration: "35:20"
+      title: "Impuestos en la era Trump: Nueva reforma del ISR",
+      videoUrl: "https://www.youtube.com/watch?v=aZwXyxaEWKc"
     },
     {
-      videoId: "MVweDe87IEA",
-      title: "¿Cuánto dinero realmente necesitas para la visa E2?",
-      description: "Descubre los requisitos reales de inversión para la visa E-2. Análisis detallado de montos, estructuras y opciones disponibles para inversionistas.",
-      duration: "42:15"
-    },
-    {
-      videoId: "VZH2JzhVaCk",
-      title: "Deberías COMPRAR un negocio en Estados Unidos — Con Diego Alcalá",
-      description: "Conversación profunda sobre las ventajas y desafíos de comprar negocios en USA. Diego Alcalá comparte casos reales y lecciones aprendidas.",
-      duration: "31:50"
-    },
-    {
-      videoId: "HAZVutSO7cI",
-      title: "Cómo Encontrar Negocios Rentables en USA",
-      description: "Aprende las estrategias clave para identificar oportunidades de inversión en el mercado estadounidense. Técnicas de prospección y análisis de mercado.",
-      duration: "39:30"
-    },
-    {
-      videoId: "aZwXyxaEWKc",
-      title: "Estructura Legal y Fiscal para Inversionistas Latinos",
-      description: "Entiende cómo estructurar tus inversiones para optimizar resultados fiscales y proteger tu patrimonio. Opciones legales y consideraciones importantes.",
-      duration: "33:45"
+      title: "¿Cuánto dinero necesitas para la visa E2?",
+      videoUrl: "https://www.youtube.com/watch?v=MVweDe87IEA&t=3s"
     }
+  ];
+
+  const categories = [
+    "Inversiones en Estados Unidos",
+    "Visas E-2",
+    "Real Estate",
+    "Emprendimiento",
+    "Estrategia Fiscal"
   ];
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
 
-      {/* ═══ HERO ═══ */}
-      <section className="relative min-h-[60vh] flex items-center pt-28 pb-20">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] via-transparent to-transparent" />
-        </div>
-        <div className="container relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-3xl"
-          >
-            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-              Podcast
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
-              Escucha Nuestro{" "}
-              <span className="gradient-text-primary">Podcast</span>
-            </h1>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
-              El espacio donde los latinoamericanos aprenden a invertir estratégicamente en el mercado más competitivo del mundo. Conversaciones con expertos, casos de éxito y análisis de sectores.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer" className="inline-block">
-                <img src="https://private-us-east-1.manuscdn.com/sessionFile/rH3nUXiDzGJaE39MncmP5b/sandbox/PUdOkncPg8WZVX7RkaJcm3-img-1_1771538533000_na1fn_YnV0dG9uLXlvdXR1YmU.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvckgzblVYaUR6R0phRTM5TW5jbVA1Yi9zYW5kYm94L1BVZE9rbmNQZzhXWlZYN1JrYUpjbTMtaW1nLTFfMTc3MTUzODUzMzAwMF9uYTFmbl9ZblYwZEc5dUxYbHZkWFIxWW1VLnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE5MjAsaF8xOTIwL2Zvcm1hdCx3ZWJwL3F1YWxpdHkscV84MCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5ODc2MTYwMH19fV19&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=rf6gDIEJEFQueE03vpUHoFR8jbIH3uoxafFmsvfQ3xgNoQmgoqnYOeoktCgY7YXALrhPeNLPuZJqu4DUqu6FjvHu~4wC2LkZBj7pkweoAiuDGJrlqnKsmWfvJMM2h4ue8pLESFCmRf1em34-Lk~KBOHWU4023g61t3LcVVQdEKHEL0UFo-eaV4JkOPVibcghS8-HaTMHLu2w9sdjpHovL~~Kl-h7drBzB~vuaZ4yPp67~Lqfwv730rgtqTF2781uxJAGdS5NIgTwdX2nrZ3DRI7hykJ2qZHkKuadsfIe-Pk5qt1E0QE0rtiQdCFSvI5cnTfgEjnLLlksr4SPxXftDw__" alt="Escuchar en YouTube" className="h-20 sm:h-24 hover:opacity-80 transition-opacity" />
-              </a>
-              <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="inline-block">
-                <img src="https://private-us-east-1.manuscdn.com/sessionFile/rH3nUXiDzGJaE39MncmP5b/sandbox/PUdOkncPg8WZVX7RkaJcm3-img-2_1771538538000_na1fn_YnV0dG9uLXNwb3RpZnk.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvckgzblVYaUR6R0phRTM5TW5jbVA1Yi9zYW5kYm94L1BVZE9rbmNQZzhXWlZYN1JrYUpjbTMtaW1nLTJfMTc3MTUzODUzODAwMF9uYTFmbl9ZblYwZEc5dUxYTndiM1JwWm5rLnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE5MjAsaF8xOTIwL2Zvcm1hdCx3ZWJwL3F1YWxpdHkscV84MCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5ODc2MTYwMH19fV19&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=b19ciSxohRUjmfNHgRx91yp-HIwuWvj2XMty1XLL7~TkLhVGguyDK-wpv~EgzlAQGF8gosdPxgZpoQVuSsg1DcrJjdRc6DnnzVyRDBxswDGp4byW2BKg7p0mzTkvSmxWRiMXto~HpK2EKvGfCA21Yws6hbbTy7RUZCX5jNTF~HYzIGrdQL9bsEgpfAIbyCb034182ioGosBzu5I1ovg7dT7Fwiz7dPw77m1zcY17WUM8lMGrh0PJOvyE0Ts4Fb1RIGAHZ9euiNeWh9~TYSz3aFAAF6Qm18lL0wiJQolhUqzLK4nKB9oER6kTDDHzRHQB7CFcYGlAnh7ZPWQQNJO~EA__" alt="Escuchar en Spotify" className="h-20 sm:h-24 hover:opacity-80 transition-opacity" />
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ═══ DESCRIPCIÓN ═══ */}
-      <section className="section-darker py-16 md:py-20">
+      {/* ═══ MAIN SECTION ═══ */}
+      <section className="section-darker py-20 md:py-32">
         <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto bg-gradient-to-r from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-8 md:p-12">
-              <div className="flex gap-4 items-start">
-                <Volume2 className="w-8 h-8 text-primary shrink-0 mt-1" />
-                <div>
-                  <h3 className="text-2xl font-serif text-white mb-3">Comprando América Podcast</h3>
-                  <p className="text-white/70 leading-relaxed mb-4">
-                    Cada episodio está diseñado para aportar valor real: entrevistas con expertos, casos de éxito, análisis de sectores y consejos prácticos para invertir, adquirir negocios o expandirse en el entorno empresarial estadounidense.
-                  </p>
-                  <p className="text-white/70 leading-relaxed">
-                    Invertir en Estados Unidos no se trata solo de capital: se trata de estrategia, contexto y conexiones. En este podcast te ayudamos a entender el entorno legal, fiscal y migratorio; identificar modelos de negocio con potencial; escuchar de primera mano a empresarios latinos que ya dieron el paso; evitar errores comunes; y prepararte para estructurar inversiones que generen estabilidad y crecimiento.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ VIDEOS DESTACADOS ═══ */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Contenido Destacado"
-            title="Videos Más Vistos"
-            subtitle="Accede a nuestros episodios más populares. Disponibles en YouTube y Spotify."
-          />
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredVideos.map((video, i) => (
-              <VideoCard
-                key={i}
-                videoId={video.videoId}
-                title={video.title}
-                description={video.description}
-                duration={video.duration}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ ¿POR QUÉ ESCUCHAR? ═══ */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
+            {/* LEFT SIDE */}
             <FadeIn>
               <div>
-                <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">¿Por qué escuchar este podcast?</h2>
-                <p className="text-white/70 text-lg mb-6">
-                  Cada episodio está diseñado para aportar valor real: entrevistas con expertos, casos de éxito, análisis de sectores y consejos prácticos para invertir, adquirir negocios o expandirse en el entorno empresarial estadounidense.
+                {/* Tag */}
+                <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+                  Podcast
+                </span>
+
+                {/* Title */}
+                <h1 className="text-4xl md:text-5xl font-serif text-white leading-[1.1] mb-6">
+                  Conquistadores de América
+                </h1>
+
+                {/* Underline */}
+                <div className="w-16 h-1 bg-primary mb-6" />
+
+                {/* Description */}
+                <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  Escucha estrategias de negocio, inversiones y emprendimiento para el mercado americano. Entrevistas con empresarios exitosos, análisis de oportunidades y consejos prácticos basados en más de 24 años de experiencia.
                 </p>
-                <ul className="space-y-4">
-                  {[
-                    "Entender el entorno legal, fiscal y migratorio para inversionistas extranjeros",
-                    "Identificar modelos de negocio con potencial en distintos estados y sectores",
-                    "Escuchar de primera mano a empresarios latinos que ya dieron el paso",
-                    "Evitar errores comunes al comprar o operar empresas en Estados Unidos",
-                    "Prepararte para estructurar inversiones que generen estabilidad y crecimiento"
-                  ].map((benefit) => (
-                    <li key={benefit} className="flex items-start gap-3">
-                      <span className="text-primary font-bold mt-1">✓</span>
-                      <span className="text-white/70">{benefit}</span>
-                    </li>
+
+                {/* Categories */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {categories.map((cat) => (
+                    <span key={cat} className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-white/60 text-xs font-medium">
+                      {cat}
+                    </span>
                   ))}
-                </ul>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded transition-colors">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                    YouTube
+                  </a>
+                  <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded transition-colors">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-12.061-1.573-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15.079 10.561 18.739 12.84c.361.21.599.659.301 1.1zm.179-3.362C13.134 11.249 7.994 11.209 5.794 12.212c-.624.229-1.289-.355-1.06-.979.228-.624.978-.289 1.602-.06 2.457-1.073 7.929-1.033 11.861 1.134.719.425 1.404-.557.692-1.039z"/>
+                    </svg>
+                    Spotify
+                  </a>
+                </div>
               </div>
             </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="bg-gradient-to-br from-primary/20 to-emerald/20 border border-primary/30 rounded-2xl p-8 md:p-10">
-                <h3 className="text-2xl font-serif text-white mb-6">¿Para quién es este podcast?</h3>
-                <ul className="space-y-4">
-                  {[
-                    "Eres empresario o inversionista y estás considerando diversificar en Estados Unidos",
-                    "Quieres entender cómo operan los negocios en el mercado americano",
-                    "Buscas una guía práctica, en español, sin promesas vacías ni fórmulas mágicas",
-                    "Valoras aprender de experiencias reales, no solo de teoría"
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span className="text-primary text-xl">✅</span>
-                      <span className="text-white/70">{item}</span>
-                    </li>
+
+            {/* RIGHT SIDE - EPISODES */}
+            <FadeIn delay={0.2}>
+              <div className="space-y-4">
+                {/* Platform Cards */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer" className="group">
+                    <div className="bg-[oklch(0.15_0.03_250)] border border-white/10 rounded-lg p-4 hover:border-red-600/50 transition-all">
+                      <div className="flex items-center gap-3 mb-2">
+                        <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                        </svg>
+                        <span className="text-white font-semibold">YouTube</span>
+                      </div>
+                      <p className="text-white/50 text-xs">365+ suscriptores</p>
+                    </div>
+                  </a>
+                  <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="group">
+                    <div className="bg-[oklch(0.15_0.03_250)] border border-white/10 rounded-lg p-4 hover:border-green-600/50 transition-all">
+                      <div className="flex items-center gap-3 mb-2">
+                        <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-12.061-1.573-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15.079 10.561 18.739 12.84c.361.21.599.659.301 1.1zm.179-3.362C13.134 11.249 7.994 11.209 5.794 12.212c-.624.229-1.289-.355-1.06-.979.228-.624.978-.289 1.602-.06 2.457-1.073 7.929-1.033 11.861 1.134.719.425 1.404-.557.692-1.039z"/>
+                        </svg>
+                        <span className="text-white font-semibold">Spotify</span>
+                      </div>
+                      <p className="text-white/50 text-xs">Podcast disponible</p>
+                    </div>
+                  </a>
+                </div>
+
+                {/* Episodes */}
+                <div className="space-y-3">
+                  {episodes.map((episode, i) => (
+                    <EpisodeCard key={i} title={episode.title} videoUrl={episode.videoUrl} />
                   ))}
-                </ul>
+                </div>
+
+                {/* View All Link */}
+                <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:text-primary-light transition-colors mt-4 font-semibold">
+                  Ver todos los episodios
+                  <ArrowRight className="w-4 h-4" />
+                </a>
               </div>
             </FadeIn>
           </div>
-        </div>
-      </section>
-
-      {/* ═══ CTA FINAL ═══ */}
-      <section className="section-darker py-24 md:py-32">
-        <div className="container">
-          <FadeIn>
-            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-12 md:p-16 text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
-                Da el siguiente paso con información, estrategia y visión
-              </h2>
-              <p className="text-white/70 text-lg mb-4 max-w-3xl mx-auto">
-                Invertir en Estados Unidos no es solo una meta, es una decisión que transforma tu futuro personal y empresarial.
-              </p>
-              <p className="text-white/70 text-lg mb-8 max-w-3xl mx-auto">
-                A través de nuestro podcast, te damos acceso directo al conocimiento que antes solo estaba reservado para expertos: experiencias reales, análisis sin filtros y herramientas prácticas para avanzar con seguridad.
-              </p>
-              <p className="text-white/70 text-lg mb-8 max-w-3xl mx-auto font-semibold">
-                🎙️ Suscríbete al Podcast de Comprando América y acompáñanos en cada episodio a descubrir cómo empresarios latinos están conquistando el mercado estadounidense — uno negocio a la vez.
-              </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer" className="inline-block">
-                <img src="https://private-us-east-1.manuscdn.com/sessionFile/rH3nUXiDzGJaE39MncmP5b/sandbox/PUdOkncPg8WZVX7RkaJcm3-img-1_1771538533000_na1fn_YnV0dG9uLXlvdXR1YmU.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvckgzblVYaUR6R0phRTM5TW5jbVA1Yi9zYW5kYm94L1BVZE9rbmNQZzhXWlZYN1JrYUpjbTMtaW1nLTFfMTc3MTUzODUzMzAwMF9uYTFmbl9ZblYwZEc5dUxYbHZkWFIxWW1VLnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE5MjAsaF8xOTIwL2Zvcm1hdCx3ZWJwL3F1YWxpdHkscV84MCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5ODc2MTYwMH19fV19&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=rf6gDIEJEFQueE03vpUHoFR8jbIH3uoxafFmsvfQ3xgNoQmgoqnYOeoktCgY7YXALrhPeNLPuZJqu4DUqu6FjvHu~4wC2LkZBj7pkweoAiuDGJrlqnKsmWfvJMM2h4ue8pLESFCmRf1em34-Lk~KBOHWU4023g61t3LcVVQdEKHEL0UFo-eaV4JkOPVibcghS8-HaTMHLu2w9sdjpHovL~~Kl-h7drBzB~vuaZ4yPp67~Lqfwv730rgtqTF2781uxJAGdS5NIgTwdX2nrZ3DRI7hykJ2qZHkKuadsfIe-Pk5qt1E0QE0rtiQdCFSvI5cnTfgEjnLLlksr4SPxXftDw__" alt="Escuchar en YouTube" className="h-20 sm:h-24 hover:opacity-80 transition-opacity" />
-              </a>
-              <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="inline-block">
-                <img src="https://private-us-east-1.manuscdn.com/sessionFile/rH3nUXiDzGJaE39MncmP5b/sandbox/PUdOkncPg8WZVX7RkaJcm3-img-2_1771538538000_na1fn_YnV0dG9uLXNwb3RpZnk.png?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvckgzblVYaUR6R0phRTM5TW5jbVA1Yi9zYW5kYm94L1BVZE9rbmNQZzhXWlZYN1JrYUpjbTMtaW1nLTJfMTc3MTUzODUzODAwMF9uYTFmbl9ZblYwZEc5dUxYTndiM1JwWm5rLnBuZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE5MjAsaF8xOTIwL2Zvcm1hdCx3ZWJwL3F1YWxpdHkscV84MCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5ODc2MTYwMH19fV19&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=b19ciSxohRUjmfNHgRx91yp-HIwuWvj2XMty1XLL7~TkLhVGguyDK-wpv~EgzlAQGF8gosdPxgZpoQVuSsg1DcrJjdRc6DnnzVyRDBxswDGp4byW2BKg7p0mzTkvSmxWRiMXto~HpK2EKvGfCA21Yws6hbbTy7RUZCX5jNTF~HYzIGrdQL9bsEgpfAIbyCb034182ioGosBzu5I1ovg7dT7Fwiz7dPw77m1zcY17WUM8lMGrh0PJOvyE0Ts4Fb1RIGAHZ9euiNeWh9~TYSz3aFAAF6Qm18lL0wiJQolhUqzLK4nKB9oER6kTDDHzRHQB7CFcYGlAnh7ZPWQQNJO~EA__" alt="Escuchar en Spotify" className="h-20 sm:h-24 hover:opacity-80 transition-opacity" />
-              </a>
-            </div>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
