@@ -104,12 +104,15 @@ export default function Home() {
                 Comunidad Exclusiva de Inversionistas
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
-                Invierte o Crea tu Negocio en{" "}
+                Estructura tu Patrimonio en{" "}
                 <span className="gradient-text-primary">Estados Unidos</span>{" "}
-                de Forma Segura
+                con Método, Comunidad y Ejecución Real
               </h1>
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-3 max-w-2xl">
+                Comprando América es una comunidad privada de empresarios e inversionistas latinos que toman decisiones estratégicas en Estados Unidos mediante un proceso claro, análisis riguroso y acompañamiento experto continuo.
+              </p>
               <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
-                Comprando América es una comunidad exclusiva de inversionistas que buscan elevar su patrimonio a través de adquisiciones empresariales en Estados Unidos, brindando acceso a oportunidades de inversión filtradas por nuestros expertos.
+                <span className="font-semibold">No vendemos oportunidades.</span> Construimos decisiones patrimoniales sostenibles.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a href="#membresia">
