@@ -6,23 +6,16 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SectionHeading from "@/components/SectionHeading";
 import ProspectForm from "@/components/ProspectForm";
 import { useInView } from "@/hooks/useInView";
 import { useCountUp } from "@/hooks/useCountUp";
-import { IMAGES, EXTERNAL_LINKS, STATS, MEMBERSHIP_PILLARS, FAQ_ITEMS } from "@/lib/constants";
-import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
-import { trpc } from "@/lib/trpc";
+import { IMAGES, EXTERNAL_LINKS } from "@/lib/constants";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { toast } from "sonner";
 import { useState } from "react";
 import {
-  ArrowRight, Calendar, Search, Globe, Shield, Users, Building2,
-  BookOpen, Mic, Play, TrendingUp, Briefcase, Home as HomeIcon,
-  GraduationCap, ChevronRight, Star, Target, Handshake, ExternalLink,
-  Mail, CheckCircle2
+  ArrowRight, CheckCircle2, Home as HomeIcon, Building2, Globe, Users,
+  GraduationCap, Briefcase, Shield, TrendingUp, Star, ChevronRight
 } from "lucide-react";
 
 // ─── Animated wrapper ───
@@ -55,38 +48,17 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
   );
 }
 
-// ─── Pillar Icon ───
-function PillarIcon({ icon }: { icon: string }) {
-  const icons: Record<string, React.ReactNode> = {
-    calendar: <Calendar className="w-6 h-6" />,
-    search: <Search className="w-6 h-6" />,
-    globe: <Globe className="w-6 h-6" />,
-    shield: <Shield className="w-6 h-6" />,
-    users: <Users className="w-6 h-6" />,
-    building: <Building2 className="w-6 h-6" />,
-  };
-  return <>{icons[icon] || <Star className="w-6 h-6" />}</>;
-}
-
 // ═══════════════════════════════════════════════════════
-// MAIN PAGE
+// MAIN PAGE - NUEVA ESTRUCTURA 2026
 // ═══════════════════════════════════════════════════════
 export default function Home() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
-  const { data: blogPosts } = trpc.blogPosts.listPublished.useQuery();
-
-  const handleNewsletter = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newsletterEmail) { toast.error("Ingresa tu email"); return; }
-    toast.success("¡Te has suscrito al newsletter exitosamente!");
-    setNewsletterEmail("");
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
 
-      {/* ═══ HERO ═══ */}
+      {/* ═══ 1️⃣ HERO - NUEVO ═══ */}
       <section id="hero" className="relative min-h-screen flex items-center">
         <div className="absolute inset-0">
           <img src={IMAGES.hero} alt="Skyline" className="w-full h-full object-cover" />
@@ -101,28 +73,39 @@ export default function Home() {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Comunidad Exclusiva de Inversionistas
+                Membresía Privada para Inversionistas
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
-                Estructura tu Patrimonio en{" "}
-                <span className="gradient-text-primary">Estados Unidos</span>{" "}
-                con Método, Comunidad y Ejecución Real
+                Invierte en Estados Unidos con{" "}
+                <span className="gradient-text-primary">criterio, estructura</span>{" "}
+                y acompañamiento real
               </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-3 max-w-2xl">
-                Comprando América es una comunidad privada de empresarios e inversionistas latinos que toman decisiones estratégicas en Estados Unidos mediante un proceso claro, análisis riguroso y acompañamiento experto continuo.
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-6 max-w-2xl">
+                Comprando América es una membresía privada para empresarios e inversionistas latinos que buscan expandir, diversificar o proteger su patrimonio en EE.UU. sin improvisar ni cometer errores costosos.
               </p>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
-                <span className="font-semibold">No vendemos oportunidades.</span> Construimos decisiones patrimoniales sostenibles.
-              </p>
+              <div className="flex flex-col sm:flex-row gap-3 mb-8 max-w-2xl">
+                <div className="flex items-center gap-2 text-white/80">
+                  <CheckCircle2 className="w-5 h-5 text-primary" />
+                  <span className="text-sm">+50 estructuras creadas</span>
+                </div>
+                <div className="flex items-center gap-2 text-white/80">
+                  <CheckCircle2 className="w-5 h-5 text-primary" />
+                  <span className="text-sm">Viajes de inspección reales</span>
+                </div>
+                <div className="flex items-center gap-2 text-white/80">
+                  <CheckCircle2 className="w-5 h-5 text-primary" />
+                  <span className="text-sm">Inversiones ejecutadas</span>
+                </div>
+              </div>
               <div className="flex flex-col sm:flex-row gap-4">
-                <a href="#membresia">
+                <a href={EXTERNAL_LINKS.membresia}>
                   <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
-                    Ver Membresía <ArrowRight className="w-4 h-4" />
+                    Solicitar Evaluación <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <a href="#quienes-somos">
+                <a href="#sistema">
                   <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base w-full sm:w-auto">
-                    Conoce Más
+                    Ver cómo funciona
                   </Button>
                 </a>
               </div>
@@ -137,279 +120,230 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ STATS ═══ */}
-      <section className="section-dark py-20">
+      {/* ═══ 2️⃣ EL PROBLEMA ═══ */}
+      <section className="section-dark py-20 md:py-24">
         <div className="container">
           <FadeIn>
-            <p className="text-center text-white/40 text-sm tracking-[0.2em] uppercase mb-12 font-mono">
-              Resultados y proyecciones de nuestra comunidad
-            </p>
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+                El error no es invertir en EE.UU.
+              </h2>
+              <p className="text-2xl md:text-3xl font-serif text-primary mb-8">
+                El error es hacerlo sin estructura.
+              </p>
+              <p className="text-lg text-white/70 leading-relaxed">
+                Muchos inversionistas cometen errores evitables que cuestan dinero y tiempo.
+              </p>
+            </div>
           </FadeIn>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
-            {STATS.map((stat, i) => (
-              <StatCounter key={i} {...stat} />
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              "Compran tarde activos sobrevalorados",
+              "Invierten solo por la visa",
+              "Confían en propuestas sin due diligence real",
+              "Estructuran mal su LLC",
+              "No tienen plan de salida"
+            ].map((problem, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 font-semibold text-sm">
+                    ✕
+                  </div>
+                  <p className="text-white/80">{problem}</p>
+                </div>
+              </FadeIn>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ MEMBRESÍA ═══ */}
-      <section id="membresia" className="section-darker py-24 md:py-32">
+      {/* ═══ 3️⃣ QUÉ ES COMPRANDO AMÉRICA ═══ */}
+      <section className="section-darker py-20 md:py-24">
         <div className="container">
-          <SectionHeading
-            tag="El Sistema detrás de Comprando América"
-            title="Seis Pilares Estratégicos"
-            subtitle="Invertir en Estados Unidos sin estructura es costoso. Por eso diseñamos una metodología basada en seis pilares estratégicos."
-          />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Sistema Privado</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-8">
+                Qué es Comprando América
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            <FadeIn delay={0.1}>
+              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8">
+                <h3 className="text-xl font-serif text-white mb-4">No es...</h3>
+                <ul className="space-y-3">
+                  {[
+                    "Un curso",
+                    "Un despacho migratorio",
+                    "Un intermediario de comisiones"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-white/70">
+                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <div className="bg-gradient-to-br from-primary/20 to-transparent border border-primary/30 rounded-xl p-8">
+                <h3 className="text-xl font-serif text-white mb-4">Es...</h3>
+                <p className="text-white/80 mb-6">
+                  Un sistema privado para decidir mejor.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    "Metodología estructurada",
+                    "Filtro estratégico riguroso",
+                    "Acompañamiento integral"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-white/80">
+                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+          </div>
+
+          <FadeIn>
+            <div className="text-center bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-xl p-8 max-w-2xl mx-auto">
+              <p className="text-lg text-white/80 mb-2">
+                <span className="font-semibold">Aquí no decidimos por ti.</span>
+              </p>
+              <p className="text-lg text-primary font-semibold">
+                Decidimos contigo.
+              </p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 4️⃣ VITRINA ESTRATÉGICA ═══ */}
+      <section id="sistema" className="section-dark py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Nuestro Enfoque</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                Nuestro enfoque integral en Estados Unidos
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                icon: <Building2 className="w-8 h-8" />,
+                title: "Bienes Raíces Estratégicos",
+                desc: "Single family homes y tierra estratégica con análisis real de entrada."
+              },
+              {
+                icon: <Globe className="w-8 h-8" />,
+                title: "Migración con estructura",
+                desc: "Visa E-1, E-2 o expansión empresarial alineada a inversión sostenible."
+              },
+              {
+                icon: <Shield className="w-8 h-8" />,
+                title: "Estructuración LLC",
+                desc: "Diseño correcto desde el inicio para proteger patrimonio."
+              },
+              {
+                icon: <GraduationCap className="w-8 h-8" />,
+                title: "Educación Ejecutiva",
+                desc: "Deal Days, mentorías y análisis práctico."
+              },
+              {
+                icon: <Users className="w-8 h-8" />,
+                title: "Red de Expertos",
+                desc: "Abogados, contadores, brokers y consultores con experiencia real."
+              }
+            ].map((item, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
+                  <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-lg font-serif text-white mb-2">{item.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 5️⃣ NUESTROS PILARES 2026 ═══ */}
+      <section className="section-darker py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Metodología</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                El sistema detrás de la membresía
+              </h2>
+              <p className="text-lg text-white/60 mt-4 max-w-2xl mx-auto">
+                6 pilares que transforman barreras en ventajas estratégicas
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {[
               {
                 num: "1",
                 title: "Criterio de Inversión",
-                subtitle: "Decidimos con proceso, no con emoción.",
-                desc: "Analizamos tesis, números, riesgos y escenarios antes de avanzar. Resultado: decisiones más sólidas y menor exposición a errores costosos."
+                desc: "Decidimos con proceso, no con emoción. Analizamos tesis, números, riesgos y escenarios."
               },
               {
                 num: "2",
                 title: "Curación Estratégica",
-                subtitle: "Descartamos la mayoría de oportunidades antes de presentarlas.",
-                desc: "Nuestro enfoque es proteger el capital, no vender proyectos. Resultado: solo se analizan oportunidades con ventaja real."
+                desc: "Descartamos la mayoría de oportunidades. Protegemos capital, no vendemos proyectos."
               },
               {
                 num: "3",
                 title: "Acompañamiento Integral",
-                subtitle: "Estructura legal, fiscal, bancaria y migratoria alineada desde el inicio.",
-                desc: "Resultado: operaciones ordenadas y sostenibles en EE.UU."
+                desc: "Estructura legal, fiscal, bancaria y migratoria alineada desde el inicio."
               },
               {
                 num: "4",
                 title: "Comunidad Ejecutora",
-                subtitle: "Empresarios que ya están tomando acción comparten experiencia real.",
-                desc: "Resultado: menos curva de aprendizaje y decisiones mejor respaldadas."
+                desc: "Empresarios que ya están tomando acción comparten experiencia real."
               },
               {
                 num: "5",
                 title: "Velocidad de Activación",
-                subtitle: "Diagnóstico claro y plan estructurado desde los primeros 30 días.",
-                desc: "Resultado: inversión en 60–90 días cuando existe encaje."
+                desc: "Diagnóstico claro y plan estructurado. Inversión en 60–90 días cuando hay encaje."
               },
               {
                 num: "6",
-                title: "Transferencia Patrimonial Estratégica",
-                subtitle: "Diversificación internacional con visión de largo plazo.",
-                desc: "Resultado: patrimonio protegido y estructurado para expansión o migración."
-              },
+                title: "Transferencia Patrimonial",
+                desc: "Diversificación internacional con visión de largo plazo y protección estructurada."
+              }
             ].map((pillar, i) => (
-              <FadeIn key={pillar.num} delay={i * 0.1}>
-                <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
-                  <div className="relative">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors font-serif font-bold text-lg">
-                      {pillar.num}
-                    </div>
-                    <h3 className="text-lg font-serif text-white mb-2">{pillar.title}</h3>
-                    <p className="text-primary text-sm font-semibold mb-3">{pillar.subtitle}</p>
-                    <p className="text-white/50 text-sm leading-relaxed">{pillar.desc}</p>
-                  </div>
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500">
+                  <div className="text-3xl font-serif text-primary mb-3">{pillar.num}</div>
+                  <h3 className="text-lg font-serif text-white mb-2">{pillar.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed">{pillar.desc}</p>
                 </div>
               </FadeIn>
             ))}
           </div>
 
-          {/* Tagline */}
-          <FadeIn>
-            <div className="text-center mb-16">
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl mx-auto">
-                <span className="font-semibold">No vendemos promesas.</span> Construimos estructura.
-              </p>
-            </div>
-          </FadeIn>
-
-          {/* Fit Check */}
-          <FadeIn>
-            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-8 md:p-12 mb-16">
-              <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 text-center">¿Encajas con este sistema?</h3>
-              <p className="text-center text-white/70 mb-8 max-w-2xl mx-auto">Si eres empresario o inversionista y:</p>
-              <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-8">
-                {[
-                  "Valoras el proceso",
-                  "Buscas acompañamiento real",
-                  "Entiendes el riesgo",
-                  "Quieres ejecutar con orden"
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                    <span className="text-white/70">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="text-center">
-                <a href={EXTERNAL_LINKS.membresia}>
-                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                    Solicitar Información <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* NUESTRA PROPUESTA */}
-          <FadeIn>
-            <div className="mb-24">
-              <div className="text-center mb-16">
-                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Nuestra Propuesta</p>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">¿Cuáles son los obstáculos reales para invertir en Estados Unidos?</h2>
-                <p className="text-lg text-white/70 leading-relaxed max-w-3xl mx-auto">
-                  Muchos empresarios e inversionistas latinos tienen capital, intención y visión.
-                  Lo que falta no es oportunidad… Lo que falta es criterio, estructura y acompañamiento para decidir con confianza y velocidad.
-                  En Comprando América transformamos esas barreras en ventajas estratégicas.
-                </p>
-              </div>
-
-              <div className="space-y-6">
-                {[
-                  {
-                    num: "1️⃣",
-                    title: "Falta de criterio para decidir inversiones",
-                    problem: "Invertir en Estados Unidos sin metodología suele llevar a decisiones impulsivas o mal evaluadas.",
-                    solution: "En Comprando América aplicamos un proceso estructurado que analiza: Tesis real de inversión, Números financieros verificables, Evaluación de riesgos, Escenarios posibles, Red flags, Plan de salida.",
-                    result: "Decisiones más sólidas y menor exposición a errores costosos."
-                  },
-                  {
-                    num: "2️⃣",
-                    title: "Exceso de opciones sin filtro estratégico",
-                    problem: "El mercado estadounidense está lleno de oportunidades… pero no todas tienen ventaja real.",
-                    solution: "Nosotros descartamos la mayoría antes de presentarlas. Nuestro enfoque no es vender proyectos, sino proteger capital.",
-                    result: "Menos ruido, mejores decisiones y acceso a oportunidades con criterio."
-                  },
-                  {
-                    num: "3️⃣",
-                    title: "Estructuras legales y fiscales mal diseñadas",
-                    problem: "Una inversión puede ser buena… pero si está mal estructurada, el riesgo aumenta.",
-                    solution: "Acompañamos la articulación estratégica de: Estructura LLC adecuada, Planeación fiscal correcta, Relación bancaria inicial, Estrategia migratoria cuando aplica.",
-                    result: "Inversiones ordenadas, sostenibles y correctamente estructuradas desde el inicio."
-                  },
-                  {
-                    num: "4️⃣",
-                    title: "Soledad en la toma de decisiones",
-                    problem: "Invertir en otro país puede sentirse aislado y riesgoso.",
-                    solution: "En la membresía accedes a una comunidad privada de empresarios que ya están ejecutando, además de expertos legales, fiscales y operativos.",
-                    result: "Menos curva de aprendizaje y decisiones respaldadas por experiencia real."
-                  },
-                  {
-                    num: "5️⃣",
-                    title: "Lentitud entre intención y acción",
-                    problem: "Muchos inversionistas pasan meses —o años— evaluando sin ejecutar.",
-                    solution: "Nuestro proceso de diagnóstico y activación permite que, cuando hay encaje, la inversión ocurra en 60–90 días con estructura y claridad.",
-                    result: "Capital trabajando con orden y momentum."
-                  },
-                  {
-                    num: "6️⃣",
-                    title: "Falta de visión patrimonial internacional",
-                    problem: "Invertir no es solo generar retorno. Es diversificar geográficamente y proteger patrimonio familiar.",
-                    solution: "Comprando América integra inversión, estructura y visión de largo plazo.",
-                    result: "Patrimonio diversificado, protegido y preparado para expansión o migración estratégica."
-                  }
-                ].map((obstacle, i) => (
-                  <FadeIn key={i} delay={i * 0.05}>
-                    <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 md:p-8 hover:border-primary/30 transition-all duration-500">
-                      <div className="flex items-start gap-4">
-                        <span className="text-2xl shrink-0">{obstacle.num}</span>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-serif text-white mb-3">{obstacle.title}</h3>
-                          <p className="text-white/60 text-sm mb-3">{obstacle.problem}</p>
-                          <p className="text-primary text-sm font-semibold mb-2">Nuestra solución:</p>
-                          <p className="text-white/70 text-sm mb-3">{obstacle.solution}</p>
-                          <p className="text-emerald text-sm"><span className="font-semibold">Resultado:</span> {obstacle.result}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </FadeIn>
-                ))}
-              </div>
-
-              <FadeIn>
-                <div className="text-center mt-16">
-                  <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl mx-auto mb-8">
-                    <span className="font-semibold">No vendemos promesas.</span> Construimos estructura.
-                  </p>
-                  <p className="text-white/60 text-base mb-8 max-w-2xl mx-auto">
-                    Si estás listo para invertir con criterio, acompañado por proceso y comunidad real, el siguiente paso es validar si encajas en la Membresía Comprando América 2026.
-                  </p>
-                  <a href={EXTERNAL_LINKS.membresia}>
-                    <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                      Solicitar Evaluación <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </a>
-                </div>
-              </FadeIn>
-            </div>
-          </FadeIn>
-
-          {/* Membership Benefits */}
-          <FadeIn>
-            <div className="bg-gradient-to-r from-emerald/10 to-gold/10 border border-primary/20 rounded-2xl p-8 md:p-12 mb-16">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-6">Beneficios de la Membresía</h3>
-                  <ul className="space-y-4">
-                    {[
-                      "Apertura de empresa + cuentas bancarias en USA",
-                      "Inversiones exclusivas para miembros",
-                      "Consultorías 1:1 con expertos",
-                      "Construcción de crédito para extranjeros",
-                      "Acceso a eventos presenciales y viajes de inspección",
-                      "Membresía vitalicia con cupo limitado",
-                    ].map((benefit) => (
-                      <li key={benefit} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-white/70">{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a href={EXTERNAL_LINKS.membresia} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-6 text-primary hover:text-primary-dark font-semibold transition-colors">
-                    Ver detalles completos <ExternalLink className="w-4 h-4" />
-                  </a>
-                </div>
-                <ProspectForm title="¿Quieres ser parte?" />
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ FORMACIÓN ═══ */}
-      <section id="formacion" className="section-dark py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Educación"
-            title="Programa de Formación"
-            subtitle="Contenido educativo diseñado para prepararte en cada etapa del proceso de inversión en Estados Unidos."
-          />
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {[
-              { num: "01", title: "Detección de Oportunidades", desc: "Aprende a identificar y evaluar oportunidades de negocio en el mercado americano.", icon: <Target className="w-6 h-6" /> },
-              { num: "02", title: "Valuación de Oportunidades", desc: "Domina las técnicas de valuación para tomar decisiones de inversión informadas.", icon: <TrendingUp className="w-6 h-6" /> },
-              { num: "03", title: "Operación de Negocios", desc: "Estrategias para operar exitosamente negocios adquiridos en Estados Unidos.", icon: <Briefcase className="w-6 h-6" /> },
-              { num: "04", title: "Crecimiento de Negocios", desc: "Escala tu negocio con estrategias probadas de crecimiento y expansión.", icon: <ArrowRight className="w-6 h-6" /> },
-            ].map((item, i) => (
-              <FadeIn key={item.num} delay={i * 0.1}>
-                <div className="relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full group">
-                  <span className="stat-number text-5xl text-white/5 absolute top-4 right-4 group-hover:text-primary/10 transition-colors">{item.num}</span>
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-lg font-serif text-white mb-2">{item.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
           <FadeIn>
             <div className="text-center">
-              <a href={EXTERNAL_LINKS.formacion} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-primary hover:bg-primary-light text-white font-semibold px-8 py-6 text-base gap-2">
-                  <GraduationCap className="w-5 h-5" /> Conoce el Programa Completo
+              <p className="text-lg text-white/70 mb-6 max-w-2xl mx-auto">
+                <span className="font-semibold">No vendemos promesas.</span> Construimos estructura.
+              </p>
+              <a href={EXTERNAL_LINKS.membresia}>
+                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                  Conocer el Sistema <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
@@ -417,518 +351,213 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ VISA E-2 ═══ */}
-      <section id="visa-e2" className="relative py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={IMAGES.visa} alt="Visa E-2" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.95)] to-[oklch(0.08_0.03_250/0.80)]" />
-        </div>
-        <div className="container relative z-10">
-          <div className="max-w-2xl">
-            <SectionHeading
-              tag="Asesoría Migratoria"
-              title="Visa E-2 Inversionista USA"
-              subtitle="Accede a la visa de inversionista que te permite vivir y operar tu negocio en Estados Unidos de forma legal."
-              align="left"
-            />
-            <div className="space-y-6 mb-10">
-              {[
-                "Asesoría personalizada para calificar a la visa E-2",
-                "Esquemas confiables con costos justos y bajo riesgo",
-                "Acompañamiento en todo el proceso migratorio",
-                "Conexión con abogados de inmigración especializados",
-                "Opciones de inversión que califican para la visa",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3">
-                  <ChevronRight className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                  <span className="text-white/70">{item}</span>
-                </div>
-              ))}
+      {/* ═══ 6️⃣ RESULTADOS Y MÉTRICAS ═══ */}
+      <section className="section-dark py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Autoridad</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                Ejecutamos. No solo analizamos.
+              </h2>
             </div>
-            <a href={EXTERNAL_LINKS.visaE2} target="_blank" rel="noopener noreferrer">
-              <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                Más Información sobre Visa E-2 <ArrowRight className="w-4 h-4" />
-              </Button>
-            </a>
+          </FadeIn>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-12">
+            {[
+              { value: 38, suffix: "+", label: "Miembros activos" },
+              { value: 50, suffix: "+", label: "LLCs estructuradas" },
+              { value: 6, suffix: "", label: "Viajes de inspección" },
+              { value: 7, suffix: "", label: "Eventos presenciales" },
+              { value: 11, suffix: "+", label: "Visas tramitadas" },
+              { value: 7, suffix: "", label: "Visas en proceso" }
+            ].map((stat, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <StatCounter {...stat} />
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ BIENES RAÍCES ═══ */}
-      <section id="bienes-raices" className="section-darker py-24 md:py-32">
+      {/* ═══ 7️⃣ TESTIMONIOS ═══ */}
+      <section className="section-darker py-20 md:py-24">
         <div className="container">
-          <SectionHeading
-            tag="Real Estate"
-            title="Bienes Raíces en USA"
-            subtitle="Invierte en el mercado inmobiliario más grande del mundo con estrategias optimizadas para inversionistas latinos."
-          />
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-            <FadeIn>
-              <div className="relative rounded-2xl overflow-hidden">
-                <img src={IMAGES.realEstate} alt="Real Estate" className="w-full h-[400px] object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250)] to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="text-2xl font-serif text-white mb-3">Oportunidades en Real Estate</h3>
-                  <p className="text-white/70 text-sm leading-relaxed mb-4">
-                    Desde propiedades residenciales hasta parques de casas móviles, exploramos las mejores oportunidades del mercado inmobiliario americano con enfoque en rentabilidad y apreciación de capital.
-                  </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/5 backdrop-blur rounded-lg p-3 text-center">
-                      <span className="stat-number text-2xl text-primary block">+12.5%</span>
-                      <span className="text-white/50 text-xs">ROI Promedio</span>
-                    </div>
-                    <div className="bg-white/5 backdrop-blur rounded-lg p-3 text-center">
-                      <span className="stat-number text-2xl text-primary block">4.2%</span>
-                      <span className="text-white/50 text-xs">Yield de Renta</span>
-                    </div>
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Comunidad</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                Historias reales de miembros
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                name: "Carlos M.",
+                city: "Miami, FL",
+                result: "Adquirió 2 propiedades en 90 días",
+                before: "Buscaba estructura sin intermediarios",
+                after: "Patrimonio diversificado y protegido"
+              },
+              {
+                name: "Alejandra R.",
+                city: "Austin, TX",
+                result: "Visa E-2 aprobada en 6 meses",
+                before: "Inversión sin claridad legal",
+                after: "Operando negocio con estructura sólida"
+              },
+              {
+                name: "Roberto L.",
+                city: "Dallas, TX",
+                result: "3 LLCs estructuradas correctamente",
+                before: "Errores costosos en primeras inversiones",
+                after: "Sistema replicable para expansión"
+              }
+            ].map((testimonial, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    {[...Array(5)].map((_, j) => (
+                      <Star key={j} className="w-4 h-4 fill-primary text-primary" />
+                    ))}
+                  </div>
+                  <h3 className="text-lg font-serif text-white mb-1">{testimonial.name}</h3>
+                  <p className="text-sm text-primary mb-4">{testimonial.city}</p>
+                  <p className="text-white/80 font-semibold mb-4">{testimonial.result}</p>
+                  <div className="space-y-2 text-sm text-white/60">
+                    <p><span className="text-white/80">Antes:</span> {testimonial.before}</p>
+                    <p><span className="text-white/80">Después:</span> {testimonial.after}</p>
                   </div>
                 </div>
-              </div>
-              <div className="mt-6">
-                <a href={EXTERNAL_LINKS.bienesRaices} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-semibold transition-colors">
-                  Ver más sobre Bienes Raíces <ExternalLink className="w-4 h-4" />
-                </a>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 8️⃣ PARA QUIÉN ES / NO ES ═══ */}
+      <section className="section-dark py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                ¿Para quién es Comprando América?
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <FadeIn delay={0.1}>
+              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8">
+                <h3 className="text-xl font-serif text-primary mb-6">✓ Es para ti si...</h3>
+                <ul className="space-y-3">
+                  {[
+                    "Valoras el proceso sobre la velocidad",
+                    "Buscas acompañamiento real",
+                    "Entiendes el riesgo",
+                    "Quieres ejecutar con orden",
+                    "Tienes capital para invertir",
+                    "Buscas diversificación internacional"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-white/80">
+                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </FadeIn>
+
             <FadeIn delay={0.2}>
-              <ProspectForm title="Interesado en Bienes Raíces" variant="light" />
+              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8">
+                <h3 className="text-xl font-serif text-red-400 mb-6">✕ No es para ti si...</h3>
+                <ul className="space-y-3">
+                  {[
+                    "Buscas oportunidades rápidas sin análisis",
+                    "Esperas que otros tomen decisiones por ti",
+                    "No tienes capital suficiente",
+                    "Quieres comisiones o intermediarios",
+                    "Buscas cursos o mentoría genérica",
+                    "No estás comprometido con la ejecución"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-white/80">
+                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* ═══ INVERSIONES / ESTRUCTURA ═══ */}
-      <section id="inversiones" className="section-dark py-24 md:py-32">
+      {/* ═══ 9️⃣ PODCAST / EDUCACIÓN ═══ */}
+      <section className="section-darker py-20 md:py-24">
         <div className="container">
-          <SectionHeading
-            tag="Inversiones"
-            title="Estructura de Inversión en USA"
-            subtitle="Diseñamos la estructura legal y financiera óptima para proteger y maximizar tu inversión en Estados Unidos."
-          />
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                icon: <Building2 className="w-7 h-7" />,
-                title: "Constitución de Empresas",
-                desc: "Apertura de LLC, Corp o la estructura ideal para tu inversión. Incluye cuentas bancarias personales y empresariales.",
-                color: "emerald",
-              },
-              {
-                icon: <Shield className="w-7 h-7" />,
-                title: "Protección Patrimonial",
-                desc: "Estructuras legales diseñadas para proteger tu patrimonio y optimizar la carga fiscal tanto en USA como en tu país de origen.",
-                color: "gold",
-              },
-              {
-                icon: <TrendingUp className="w-7 h-7" />,
-                title: "Inversión en Negocios",
-                desc: "Exploramos y presentamos solo negocios que nos hacen sentido y sinergia con la experiencia de nuestro equipo. Cada oportunidad es filtrada rigurosamente antes de ser compartida con la comunidad.",
-                color: "emerald",
-              },
-            ].map((item, i) => (
-              <FadeIn key={item.title} delay={i * 0.15}>
-                <div className={`bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 hover:border-${item.color}/30 transition-all duration-500 h-full group`}>
-                  <div className={`w-14 h-14 rounded-xl bg-${item.color}/10 text-${item.color} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}>
-                    {item.icon}
-                  </div>
-                  <h3 className="text-xl font-serif text-white mb-3">{item.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-
-          {/* Market Opportunity Stats */}
           <FadeIn>
-            <div className="bg-[oklch(0.12_0.03_250)] border border-white/5 rounded-2xl p-8 md:p-12">
-              <h3 className="text-2xl font-serif text-white mb-8 text-center">Oportunidades Reales de Negocios en Estados Unidos</h3>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                {[
-                  { value: "80%", label: "De los negocios pequeños se venden con financiamiento" },
-                  { value: "10M+", label: "De negocios nuevos en venta en los próximos 5 años" },
-                  { value: "12M+", label: "De negocios a la venta en Estados Unidos" },
-                  { value: "70%", label: "De los negocios listados no encuentran comprador" },
-                ].map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <span className="stat-number text-3xl md:text-4xl text-primary block mb-2">{stat.value}</span>
-                    <p className="text-white/50 text-xs leading-relaxed">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 text-center">
-                <a href={EXTERNAL_LINKS.estructura} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 px-8 py-5 gap-2">
-                    Conoce la Estructura de Inversión <ExternalLink className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ EXPANSIÓN INTERNACIONAL ═══ */}
-      <section id="expansion" className="relative py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={IMAGES.expansion} alt="Expansión Global" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-l from-[oklch(0.08_0.03_250/0.95)] to-[oklch(0.08_0.03_250/0.80)]" />
-        </div>
-        <div className="container relative z-10">
-          <div className="max-w-2xl ml-auto">
-            <SectionHeading
-              tag="Internacionalización"
-              title="Expansión Internacional de Empresas"
-              subtitle="Lleva tu negocio al mercado americano con una estrategia probada y el acompañamiento de expertos."
-              align="left"
-            />
-            <div className="space-y-4 mb-10">
-              {[
-                "Americaniza tu operación con estrategias adaptadas al mercado USA",
-                "Acceso a una red de contactos y proveedores en Estados Unidos",
-                "Asesoría en regulaciones, licencias y cumplimiento normativo",
-                "Mentoría 1 a 1 con empresarios que ya operan en USA",
-                "Estrategias de entrada al mercado y posicionamiento de marca",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-3">
-                  <Handshake className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                  <span className="text-white/70">{item}</span>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href={EXTERNAL_LINKS.expansion} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-primary hover:bg-primary-light text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
-                  Más Información <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
-              <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 px-8 py-6 text-base gap-2 w-full sm:w-auto">
-                  Agendar Mentoría Privada <ExternalLink className="w-4 h-4" />
-                </Button>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ NUESTROS EXPERTOS ═══ */}
-      <section id="quienes-somos" className="section-darker py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Nuestros Expertos"
-            title="Dedicación. Experiencia. Pasión."
-            subtitle="Conoce al equipo que lidera Comprando América y acompaña a cada inversionista en su camino."
-          />
-          <FadeIn>
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-2xl p-8 md:p-12 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                <div className="relative grid md:grid-cols-[200px_1fr] gap-8 items-start">
-                  <div className="text-center">
-                    <div className="w-40 h-40 mx-auto rounded-2xl overflow-hidden mb-4 border border-white/10">
-                      <img src="/edmundo-trevino.jpg" alt="Edmundo Treviño" className="w-full h-full object-cover" />
-                    </div>
-                    <h3 className="text-xl font-serif text-white">Edmundo Treviño</h3>
-                    <p className="text-primary text-sm font-semibold">Director General</p>
-                  </div>
-                  <div>
-                    <p className="text-white/70 leading-relaxed mb-6">
-                      Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.
-                    </p>
-                    <ul className="space-y-3 mb-6">
-                      {[
-                        "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
-                        "Maestría en Sistema Fiscal en Estados Unidos",
-                        "10 años de experiencia en contabilidad y administración de empresas",
-                        "20 años de experiencia en comercio internacional",
-                        "Más de 8 empresas operando en Estados Unidos y México",
-                      ].map((item) => (
-                        <li key={item} className="flex items-start gap-3 text-sm">
-                          <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                          <span className="text-white/60">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="flex flex-wrap gap-3">
-                      <a href={EXTERNAL_LINKS.edmundoTrevino} target="_blank" rel="noopener noreferrer">
-                        <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 gap-2">
-                          Conoce más <ExternalLink className="w-4 h-4" />
-                        </Button>
-                      </a>
-                      <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                        <Button className="bg-primary hover:bg-primary-dark text-white font-semibold gap-2">
-                          Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
-                        </Button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Otros Expertos */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-            {[
-              {
-                name: "Tomás Resendez",
-                title: "Abogado inmigración",
-                description: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/TudnzYtNSkbiAEjH.jpg",
-              },
-              {
-                name: "John Mckee",
-                title: "Consultor comercial",
-                description: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/YZwbYSbDGLoXJCpB.avif",
-              },
-              {
-                name: "Destiny Bounds",
-                title: "Abogada corporativa y PI",
-                description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/lAIFNGdnhjoKVGhU.avif",
-              },
-              {
-                name: "Aubrey Dwyer",
-                title: "Abogada corporativa",
-                description: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/uRCdCxJPRKyOnHVG.jpg",
-              },
-              {
-                name: "Daniel Palacios",
-                title: "Contador CPA y fiscalista",
-                description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/FcmgGJqLhSBfLmJp.png",
-              },
-              {
-                name: "Sebastián Jara",
-                title: "Consultor de marketing digital",
-                description: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/MzUQRLgWVcfkVsfg.avif",
-              },
-              {
-                name: "Joe Faraci",
-                title: "Inversionista en bienes raíces",
-                description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en USA.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/XbopLcBxxcFrEnFM.jpg",
-              },
-            ].map((expert, i) => (
-              <FadeIn key={expert.name} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
-                  {expert.image && (
-                    <div className="w-24 h-24 mx-auto rounded-lg overflow-hidden mb-4 border border-white/10">
-                      <img src={expert.image} alt={expert.name} className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                  <h3 className="text-lg font-serif text-white mb-1">{expert.name}</h3>
-                  <p className="text-primary text-sm font-semibold mb-4">{expert.title}</p>
-                  <p className="text-white/60 text-sm leading-relaxed">{expert.description}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ PROPUESTA ═══ */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Nuestra Propuesta"
-            title="¿Qué Resolvemos en Comprando América?"
-            subtitle="Muchos empresarios latinos enfrentan barreras para invertir en Estados Unidos. Nosotros las eliminamos."
-          />
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {[
-              { title: "Desconocimiento de oportunidades", desc: "El desconocimiento sobre cómo encontrar y negociar las oportunidades de inversión y adquisición que existen en el mercado americano.", icon: <Search className="w-6 h-6" /> },
-              { title: "Esquemas de acceso a visas", desc: "La mayoría de los trámites y esquemas que se ofertan en línea para calificar a la visa de inversionista son poco fiables y excesivamente costosos.", icon: <Shield className="w-6 h-6" /> },
-              { title: "Elección entre oportunidades", desc: "La amplia gama de posibilidades y negocios que existen para adquirir en Estados Unidos nos deja ante la pregunta: ¿Cuál es el ideal para mí?", icon: <Target className="w-6 h-6" /> },
-              { title: "Detección de oportunidades", desc: "La falta de herramientas para detectar oportunidades de adquisición, cómo analizarlas, cómo negociarlas y cómo cerrarlas.", icon: <TrendingUp className="w-6 h-6" /> },
-            ].map((item, i) => (
-              <FadeIn key={item.title} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/20 transition-all duration-500 h-full">
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
-                    {item.icon}
-                  </div>
-                  <h3 className="text-lg font-serif text-white mb-2">{item.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ FAQ ═══ */}
-      <section className="section-darker py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Preguntas Frecuentes"
-            title="Todo lo que Necesitas Saber"
-          />
-          <FadeIn>
-            <div className="max-w-3xl mx-auto">
-              <Accordion type="single" collapsible className="space-y-3">
-                {FAQ_ITEMS.map((faq, i) => (
-                  <AccordionItem
-                    key={i}
-                    value={`faq-${i}`}
-                    className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl px-6 data-[state=open]:border-primary/20"
-                  >
-                    <AccordionTrigger className="text-white hover:text-primary text-left py-5 font-serif text-lg">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-white/60 leading-relaxed pb-5">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ RECURSOS: PODCAST ═══ */}
-      <section id="podcast" className="section-dark py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Podcast"
-            title="Escucha Nuestro Podcast"
-            subtitle="Conversaciones con expertos sobre inversión, negocios y oportunidades en Estados Unidos."
-          />
-          <FadeIn>
-            <div className="max-w-3xl mx-auto bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-2xl p-8 md:p-12 text-center">
-              <div className="w-20 h-20 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-6">
-                <Mic className="w-10 h-10" />
-              </div>
-              <h3 className="text-2xl font-serif text-white mb-4">Comprando América Podcast</h3>
-              <p className="text-white/60 leading-relaxed mb-8 max-w-xl mx-auto">
-                Cada episodio exploramos temas clave para inversionistas latinos: desde cómo encontrar negocios rentables hasta estrategias de visa y expansión internacional.
+            <div className="max-w-3xl mx-auto text-center">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Aprendizaje</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+                Aprendizaje continuo
+              </h2>
+              <p className="text-lg text-white/70 leading-relaxed mb-8">
+                Contenido educativo para empresarios que quieren entender el mercado estadounidense antes de actuar.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-5 gap-2">
-                    <Play className="w-5 h-5" /> YouTube
-                  </Button>
-                </a>
-                <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-5 gap-2">
-                    <Play className="w-5 h-5" /> Spotify
-                  </Button>
-                </a>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ BLOG + NEWSLETTER ═══ */}
-      <section id="blog" className="section-darker py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Blog"
-            title="Últimas Publicaciones"
-            subtitle="Artículos, análisis y guías para inversionistas latinos en Estados Unidos."
-          />
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
-            {blogPosts && blogPosts.length > 0 ? (
-              blogPosts.slice(0, 3).map((post, i) => (
-                <FadeIn key={post.id} delay={i * 0.1}>
-                  <a href={`/blog/${post.slug}`} className="group block h-full">
-                    <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/20 transition-all duration-500 h-full flex flex-col">
-                      {post.featuredImage && (
-                        <div className="relative h-48 overflow-hidden">
-                          <img
-                            src={post.featuredImage}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] to-transparent" />
-                        </div>
-                      )}
-                      <div className="p-6 flex flex-col flex-1">
-                        <span className="text-primary text-xs font-mono tracking-wider mb-2">
-                          {new Date(post.publishedAt || post.createdAt).toLocaleDateString()}
-                        </span>
-                        <h3 className="text-lg font-serif text-white mb-2 group-hover:text-primary transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-white/50 text-sm leading-relaxed flex-1">
-                          {post.excerpt || post.content.substring(0, 150) + "..."}
-                        </p>
-                        <span className="inline-flex items-center gap-1 text-primary text-sm font-semibold mt-4 group-hover:gap-2 transition-all">
-                          Leer más <ArrowRight className="w-4 h-4" />
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </FadeIn>
-              ))
-            ) : (
-              <div className="col-span-3 text-center py-12">
-                <p className="text-white/50">No hay blogs publicados aún</p>
-              </div>
-            )}
-          </div>
-
-          {/* Newsletter */}
-          <FadeIn>
-            <div className="max-w-2xl mx-auto bg-gradient-to-r from-emerald/10 to-gold/10 border border-primary/20 rounded-2xl p-8 md:p-12 text-center">
-              <Mail className="w-12 h-12 text-primary mx-auto mb-4" />
-              <h3 className="text-2xl font-serif text-white mb-3">Suscríbete al Newsletter</h3>
-              <p className="text-white/60 mb-6">
-                Recibe las últimas oportunidades de inversión, artículos y noticias directamente en tu bandeja de entrada.
-              </p>
-              <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input
-                  type="email"
-                  value={newsletterEmail}
-                  onChange={(e) => setNewsletterEmail(e.target.value)}
-                  placeholder="tu@email.com"
-                  className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder:text-white/30 focus:border-primary focus:outline-none transition-colors"
-                  required
-                />
-                <Button type="submit" className="bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 whitespace-nowrap">
-                  Suscribirse
-                </Button>
-              </form>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ CTA FINAL ═══ */}
-      <section id="contacto" className="relative py-24 md:py-32 overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={IMAGES.investmentBusiness} alt="Inversión" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-[oklch(0.08_0.03_250/0.90)]" />
-        </div>
-        <div className="container relative z-10 text-center">
-          <FadeIn>
-            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-              Da el Primer Paso
-            </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6 max-w-3xl mx-auto">
-              ¿Quieres Saber si Puedes Formar Parte de Esta Comunidad?
-            </h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-              Contacta a nuestro equipo para conocer más detalles. Nuestra comunidad es un grupo exclusivo con cupo limitado para mantener la cercanía entre nuestros miembros y una alta calidad en nuestros servicios.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
-                className="bg-primary hover:bg-primary-dark text-white font-semibold px-10 py-6 text-lg gap-2 w-full sm:w-auto"
-              >
-                Solicitar Información <ArrowRight className="w-5 h-5" />
-              </Button>
-              <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-10 py-6 text-lg gap-2 w-full sm:w-auto">
-                  Agendar Asesoría con Edmundo
+              <a href={EXTERNAL_LINKS.formacion}>
+                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                  Escuchar Podcast <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 🔟 CTA FINAL FUERTE ═══ */}
+      <section className="section-dark py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+                ¿Estás listo?
+              </h2>
+              <p className="text-lg text-white/70 leading-relaxed mb-6">
+                Si entiendes que invertir en EE.UU. requiere estructura, el siguiente paso es validar tu encaje.
+              </p>
+              <p className="text-lg text-white/60 mb-8">
+                <span className="font-semibold">No es pagar.</span> Es evaluar si perteneces al grupo.
+              </p>
+              <a href={EXTERNAL_LINKS.membresia}>
+                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                  Solicitar Evaluación <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ MEMBRESÍA FORM ═══ */}
+      <section id="membresia" className="section-darker py-24 md:py-32">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Siguiente Paso</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+                Validar tu encaje
+              </h2>
+              <p className="text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
+                Completa el formulario y nos pondremos en contacto para evaluar si eres un buen fit para la membresía.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="max-w-2xl mx-auto">
+            <ProspectForm title="Solicitud de Membresía" />
+          </div>
         </div>
       </section>
 
