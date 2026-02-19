@@ -116,7 +116,8 @@ export default function Podcast() {
     "Visas E-2",
     "Real Estate",
     "Emprendimiento",
-    "Estrategia Fiscal"
+    "Estrategia Fiscal",
+    "Estructura de Inversión"
   ];
 
   const whyListen = [
@@ -152,15 +153,19 @@ export default function Podcast() {
 
                 {/* Title */}
                 <h1 className="text-4xl md:text-5xl font-serif text-white leading-[1.1] mb-6">
-                  Conquistadores de América
+                  Comprando América<br />
+                  <span className="text-base md:text-lg font-sans font-normal text-white/80">Podcast de Inversión en Estados Unidos</span>
                 </h1>
 
                 {/* Underline */}
                 <div className="w-16 h-1 bg-primary mb-6" />
 
                 {/* Description */}
+                <p className="text-lg text-white/70 leading-relaxed mb-4">
+                  El espacio donde los latinos aprenden a invertir estratégicamente en el mercado más competitivo del mundo.
+                </p>
                 <p className="text-lg text-white/70 leading-relaxed mb-8">
-                  Escucha estrategias de negocio, inversiones y emprendimiento para el mercado americano. Entrevistas con empresarios exitosos, análisis de oportunidades y consejos prácticos basados en más de 24 años de experiencia.
+                  Comprando América presenta su podcast oficial: un espacio creado para empresarios e inversionistas latinoamericanos que quieren entender, planear y ejecutar inversiones sólidas en Estados Unidos.
                 </p>
 
                 {/* Categories */}
