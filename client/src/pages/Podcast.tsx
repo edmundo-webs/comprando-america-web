@@ -273,10 +273,16 @@ export default function Podcast() {
                 ))}
               </div>
 
-              <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded transition-colors">
-                <Mic className="w-5 h-5" />
-                Escuchar el podcast ahora
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a href="https://comprandoamerica.com/podcast" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold rounded transition-colors">
+                  <Mic className="w-5 h-5" />
+                  Escuchar el podcast ahora
+                </a>
+                <a href="https://comprandoamerica.com/formacion/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded transition-colors">
+                  <BookOpen className="w-5 h-5" />
+                  Conoce nuestro programa educativo
+                </a>
+              </div>
             </div>
           </FadeIn>
         </div>
