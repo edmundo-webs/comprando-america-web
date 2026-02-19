@@ -20,25 +20,51 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
   );
 }
 
-// ─── Episode Card ───
+// ─── Episode Card with YouTube Thumbnail ───
 function EpisodeCard({ 
   title,
-  videoUrl
+  videoId,
+  videoUrl,
+  duration
 }: { 
   title: string;
+  videoId: string;
   videoUrl: string;
+  duration?: string;
 }) {
+  // Extract video ID from URL if not provided
+  const id = videoId || videoUrl.split('v=')[1]?.split('&')[0];
+  const thumbnailUrl = `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
+
   return (
     <a href={videoUrl} target="_blank" rel="noopener noreferrer">
-      <div className="group relative bg-[oklch(0.12_0.03_250)] border border-white/10 rounded-lg p-4 hover:border-primary/40 transition-all duration-500 flex items-center gap-4 cursor-pointer">
-        {/* Play Button */}
-        <div className="flex-shrink-0 w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center group-hover:bg-red-700 transition-colors">
-          <Play className="w-6 h-6 text-white fill-white" />
+      <div className="group relative bg-[oklch(0.12_0.03_250)] border border-white/10 rounded-lg overflow-hidden hover:border-primary/40 transition-all duration-500 cursor-pointer">
+        {/* Thumbnail Container */}
+        <div className="relative w-full aspect-video bg-black overflow-hidden">
+          <img 
+            src={thumbnailUrl} 
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          
+          {/* Play Button Overlay */}
+          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+            <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center group-hover:bg-red-700 transition-colors transform group-hover:scale-110 duration-300">
+              <Play className="w-7 h-7 text-white fill-white ml-1" />
+            </div>
+          </div>
+
+          {/* Duration Badge */}
+          {duration && (
+            <div className="absolute bottom-2 right-2 bg-black/80 px-2 py-1 rounded text-white text-xs font-semibold">
+              {duration}
+            </div>
+          )}
         </div>
-        
+
         {/* Title */}
-        <div className="flex-1 min-w-0">
-          <p className="text-white/80 text-sm group-hover:text-white transition-colors line-clamp-2">{title}</p>
+        <div className="p-3">
+          <p className="text-white/80 text-sm group-hover:text-white transition-colors line-clamp-2 font-medium">{title}</p>
         </div>
       </div>
     </a>
@@ -48,16 +74,40 @@ function EpisodeCard({
 export default function Podcast() {
   const episodes = [
     {
-      title: "El Dólar Sigue Siendo El Rey (y Aquí Te Digo Por Qué)",
-      videoUrl: "https://www.youtube.com/watch?v=HAZVutSO7cI&t=17s"
+      title: "Brian Tracy: ¿Quieres invertir en Estados Unidos? Esto puede hacerte triunfar",
+      videoId: "HAZVutSO7cI",
+      videoUrl: "https://www.youtube.com/watch?v=HAZVutSO7cI",
+      duration: "~25:00"
     },
     {
-      title: "Impuestos en la era Trump: Nueva reforma del ISR",
-      videoUrl: "https://www.youtube.com/watch?v=aZwXyxaEWKc"
+      title: "Deberías COMPRAR un negocio en Estados Unidos — Con Diego Alcalá",
+      videoId: "VZH2JzhVaCk",
+      videoUrl: "https://www.youtube.com/watch?v=VZH2JzhVaCk",
+      duration: "~35:00"
     },
     {
-      title: "¿Cuánto dinero necesitas para la visa E2?",
-      videoUrl: "https://www.youtube.com/watch?v=MVweDe87IEA&t=3s"
+      title: "¿Cuánto dinero realmente necesitas para la visa E2?",
+      videoId: "MVweDe87IEA",
+      videoUrl: "https://www.youtube.com/watch?v=MVweDe87IEA",
+      duration: "35:01"
+    },
+    {
+      title: "Impuestos en la era Trump: Descifrando la nueva reforma del ISR",
+      videoId: "aZwXyxaEWKc",
+      videoUrl: "https://www.youtube.com/watch?v=aZwXyxaEWKc",
+      duration: "20:03"
+    },
+    {
+      title: "Do you work 8 hours? Money works 24/7.",
+      videoId: "HAZVutSO7cI",
+      videoUrl: "https://www.youtube.com/watch?v=HAZVutSO7cI&t=17s",
+      duration: "18:40"
+    },
+    {
+      title: "E-2 Visa for Latin America | Everything you need to know in 2026",
+      videoId: "MVweDe87IEA",
+      videoUrl: "https://www.youtube.com/watch?v=MVweDe87IEA&t=3s",
+      duration: "~30:00"
     }
   ];
 
@@ -138,7 +188,7 @@ export default function Podcast() {
                         </svg>
                         <span className="text-white font-semibold">YouTube</span>
                       </div>
-                      <p className="text-white/50 text-xs">365+ suscriptores</p>
+                      <p className="text-white/50 text-xs">30+ episodios</p>
                     </div>
                   </a>
                   <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="group">
@@ -154,10 +204,16 @@ export default function Podcast() {
                   </a>
                 </div>
 
-                {/* Episodes */}
-                <div className="space-y-3">
+                {/* Episodes Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {episodes.map((episode, i) => (
-                    <EpisodeCard key={i} title={episode.title} videoUrl={episode.videoUrl} />
+                    <EpisodeCard 
+                      key={i} 
+                      title={episode.title} 
+                      videoId={episode.videoId}
+                      videoUrl={episode.videoUrl}
+                      duration={episode.duration}
+                    />
                   ))}
                 </div>
 
