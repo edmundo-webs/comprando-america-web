@@ -156,10 +156,10 @@ export default function Podcast() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/yKfXiAEeReCmSayd.png" alt="Escuchar en YouTube" className="h-12 hover:opacity-80 transition-opacity" />
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/yKfXiAEeReCmSayd.png" alt="Escuchar en YouTube" className="h-16 sm:h-20 hover:opacity-80 transition-opacity" />
               </a>
               <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zGZTEpXqCTQyAXFe.png" alt="Escuchar en Spotify" className="h-12 hover:opacity-80 transition-opacity" />
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zGZTEpXqCTQyAXFe.png" alt="Escuchar en Spotify" className="h-16 sm:h-20 hover:opacity-80 transition-opacity" />
               </a>
             </div>
           </motion.div>
@@ -277,10 +277,10 @@ export default function Podcast() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/yKfXiAEeReCmSayd.png" alt="Escuchar en YouTube" className="h-12 hover:opacity-80 transition-opacity" />
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/yKfXiAEeReCmSayd.png" alt="Escuchar en YouTube" className="h-16 sm:h-20 hover:opacity-80 transition-opacity" />
               </a>
               <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zGZTEpXqCTQyAXFe.png" alt="Escuchar en Spotify" className="h-12 hover:opacity-80 transition-opacity" />
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zGZTEpXqCTQyAXFe.png" alt="Escuchar en Spotify" className="h-16 sm:h-20 hover:opacity-80 transition-opacity" />
               </a>
               </div>
             </div>
