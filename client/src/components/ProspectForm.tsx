@@ -64,8 +64,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
   ];
 
   const capacidadOptions = [
-    "De 10,000 a 50,000 dólares",
-    "De 50,001 a 100,000 dólares",
+    "100,000 dólares",
     "Más de 100,000 dólares",
   ];
 
