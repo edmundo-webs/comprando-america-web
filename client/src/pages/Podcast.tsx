@@ -90,39 +90,39 @@ export default function Podcast() {
   // Videos destacados de Comprando América
   const featuredVideos = [
     {
-      videoId: "dQw4w9WgXcQ", // Placeholder - reemplazar con IDs reales
-      title: "Cómo Encontrar Negocios Rentables en USA",
-      description: "Aprende las estrategias clave para identificar oportunidades de inversión en el mercado estadounidense. Edmundo Treviño comparte sus mejores técnicas de prospección.",
+      videoId: "HAZVutSO7cI",
+      title: "Brian Tracy: ¿Quieres invertir en Estados Unidos? Esto puede hacerte triunfar",
+      description: "Aprende de uno de los expertos en inversión más reconocidos del mundo. Brian Tracy comparte sus mejores estrategias para tener éxito en el mercado estadounidense.",
       duration: "28:45"
     },
     {
-      videoId: "dQw4w9WgXcQ",
-      title: "Estructura Legal y Fiscal para Inversionistas Latinos",
-      description: "Entiende cómo estructurar tus inversiones para optimizar resultados fiscales y proteger tu patrimonio. Análisis completo de opciones legales.",
+      videoId: "aZwXyxaEWKc",
+      title: "Impuestos en la era Trump: Descifrando la nueva reforma del ISR",
+      description: "Entiende cómo la nueva reforma fiscal impacta tus inversiones en Estados Unidos. Análisis completo de cambios tributarios y estrategias de optimización.",
       duration: "35:20"
     },
     {
-      videoId: "dQw4w9WgXcQ",
-      title: "Visa E-2: Tu Camino a la Residencia en USA",
-      description: "Descubre cómo la visa E-2 puede ayudarte a vivir y operar tu negocio en Estados Unidos. Requisitos, proceso y ventajas explicadas.",
+      videoId: "MVweDe87IEA",
+      title: "¿Cuánto dinero realmente necesitas para la visa E2?",
+      description: "Descubre los requisitos reales de inversión para la visa E-2. Análisis detallado de montos, estructuras y opciones disponibles para inversionistas.",
       duration: "42:15"
     },
     {
-      videoId: "dQw4w9WgXcQ",
-      title: "Análisis Financiero: Valuación de Empresas",
-      description: "Domina los métodos de valuación para tomar decisiones informadas. Aprende a calcular el SDE y otros indicadores clave de valor.",
+      videoId: "VZH2JzhVaCk",
+      title: "Deberías COMPRAR un negocio en Estados Unidos — Con Diego Alcalá",
+      description: "Conversación profunda sobre las ventajas y desafíos de comprar negocios en USA. Diego Alcalá comparte casos reales y lecciones aprendidas.",
       duration: "31:50"
     },
     {
-      videoId: "dQw4w9WgXcQ",
-      title: "Operación de Negocios Adquiridos en USA",
-      description: "Estrategias prácticas para administrar y optimizar negocios que has adquirido. Desde gestión de personal hasta digitalización de procesos.",
+      videoId: "HAZVutSO7cI",
+      title: "Cómo Encontrar Negocios Rentables en USA",
+      description: "Aprende las estrategias clave para identificar oportunidades de inversión en el mercado estadounidense. Técnicas de prospección y análisis de mercado.",
       duration: "39:30"
     },
     {
-      videoId: "dQw4w9WgXcQ",
-      title: "Crecimiento y Expansión: Escalando tu Negocio",
-      description: "Descubre cómo crecer tu negocio en Estados Unidos. Estrategias de financiamiento, diferenciación de marca y adquisición de clientes.",
+      videoId: "aZwXyxaEWKc",
+      title: "Estructura Legal y Fiscal para Inversionistas Latinos",
+      description: "Entiende cómo estructurar tus inversiones para optimizar resultados fiscales y proteger tu patrimonio. Opciones legales y consideraciones importantes.",
       duration: "33:45"
     }
   ];
@@ -152,7 +152,7 @@ export default function Podcast() {
               <span className="gradient-text-primary">Podcast</span>
             </h1>
             <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8">
-              Conversaciones con expertos sobre inversión, negocios y oportunidades en Estados Unidos. Aprende estrategias probadas de emprendedores e inversionistas latinos exitosos.
+              El espacio donde los latinoamericanos aprenden a invertir estratégicamente en el mercado más competitivo del mundo. Conversaciones con expertos, casos de éxito y análisis de sectores.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
@@ -179,8 +179,11 @@ export default function Podcast() {
                 <Volume2 className="w-8 h-8 text-primary shrink-0 mt-1" />
                 <div>
                   <h3 className="text-2xl font-serif text-white mb-3">Comprando América Podcast</h3>
+                  <p className="text-white/70 leading-relaxed mb-4">
+                    Cada episodio está diseñado para aportar valor real: entrevistas con expertos, casos de éxito, análisis de sectores y consejos prácticos para invertir, adquirir negocios o expandirse en el entorno empresarial estadounidense.
+                  </p>
                   <p className="text-white/70 leading-relaxed">
-                    Cada episodio explora temas clave para inversionistas latinos: desde cómo encontrar negocios rentables hasta estrategias de visa, estructura legal y operación de empresas en Estados Unidos. Escucha a Edmundo Treviño y nuestro equipo de expertos compartir experiencias reales, casos de éxito y lecciones aprendidas en el mercado estadounidense.
+                    Invertir en Estados Unidos no se trata solo de capital: se trata de estrategia, contexto y conexiones. En este podcast te ayudamos a entender el entorno legal, fiscal y migratorio; identificar modelos de negocio con potencial; escuchar de primera mano a empresarios latinos que ya dieron el paso; evitar errores comunes; y prepararte para estructurar inversiones que generen estabilidad y crecimiento.
                   </p>
                 </div>
               </div>
@@ -211,26 +214,80 @@ export default function Podcast() {
         </div>
       </section>
 
-      {/* ═══ CTA ═══ */}
+      {/* ═══ ¿POR QUÉ ESCUCHAR? ═══ */}
+      <section className="section-dark py-24 md:py-32">
+        <div className="container">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <FadeIn>
+              <div>
+                <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">¿Por qué escuchar este podcast?</h2>
+                <p className="text-white/70 text-lg mb-6">
+                  Cada episodio está diseñado para aportar valor real: entrevistas con expertos, casos de éxito, análisis de sectores y consejos prácticos para invertir, adquirir negocios o expandirse en el entorno empresarial estadounidense.
+                </p>
+                <ul className="space-y-4">
+                  {[
+                    "Entender el entorno legal, fiscal y migratorio para inversionistas extranjeros",
+                    "Identificar modelos de negocio con potencial en distintos estados y sectores",
+                    "Escuchar de primera mano a empresarios latinos que ya dieron el paso",
+                    "Evitar errores comunes al comprar o operar empresas en Estados Unidos",
+                    "Prepararte para estructurar inversiones que generen estabilidad y crecimiento"
+                  ].map((benefit) => (
+                    <li key={benefit} className="flex items-start gap-3">
+                      <span className="text-primary font-bold mt-1">✓</span>
+                      <span className="text-white/70">{benefit}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <div className="bg-gradient-to-br from-primary/20 to-emerald/20 border border-primary/30 rounded-2xl p-8 md:p-10">
+                <h3 className="text-2xl font-serif text-white mb-6">¿Para quién es este podcast?</h3>
+                <ul className="space-y-4">
+                  {[
+                    "Eres empresario o inversionista y estás considerando diversificar en Estados Unidos",
+                    "Quieres entender cómo operan los negocios en el mercado americano",
+                    "Buscas una guía práctica, en español, sin promesas vacías ni fórmulas mágicas",
+                    "Valoras aprender de experiencias reales, no solo de teoría"
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="text-primary text-xl">✅</span>
+                      <span className="text-white/70">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CTA FINAL ═══ */}
       <section className="section-darker py-24 md:py-32">
         <div className="container">
           <FadeIn>
             <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-12 md:p-16 text-center">
               <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
-                Suscríbete para Nuevos Episodios
+                Da el siguiente paso con información, estrategia y visión
               </h2>
-              <p className="text-white/70 text-lg mb-8 max-w-2xl mx-auto">
-                Mantente actualizado con nuestros últimos episodios. Disponibles en YouTube, Spotify y todas las plataformas de podcast.
+              <p className="text-white/70 text-lg mb-4 max-w-3xl mx-auto">
+                Invertir en Estados Unidos no es solo una meta, es una decisión que transforma tu futuro personal y empresarial.
+              </p>
+              <p className="text-white/70 text-lg mb-8 max-w-3xl mx-auto">
+                A través de nuestro podcast, te damos acceso directo al conocimiento que antes solo estaba reservado para expertos: experiencias reales, análisis sin filtros y herramientas prácticas para avanzar con seguridad.
+              </p>
+              <p className="text-white/70 text-lg mb-8 max-w-3xl mx-auto font-semibold">
+                🎙️ Suscríbete al Podcast de Comprando América y acompáñanos en cada episodio a descubrir cómo empresarios latinos están conquistando el mercado estadounidense — uno negocio a la vez.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer">
                   <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-6 text-base gap-2">
-                    <Play className="w-5 h-5 fill-white" /> Suscribirse en YouTube
+                    <Play className="w-5 h-5 fill-white" /> Escuchar en YouTube
                   </Button>
                 </a>
                 <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" className="border-primary text-primary hover:bg-primary/10 font-semibold px-8 py-6 text-base gap-2">
-                    <Music className="w-5 h-5" /> Suscribirse en Spotify
+                    <Music className="w-5 h-5" /> Escuchar en Spotify
                   </Button>
                 </a>
               </div>
