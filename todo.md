@@ -88,3 +88,12 @@
 - [x] Implementar sección de criterios de membresía
 - [x] Implementar formulario de contacto con campos específicos
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Página de Formación
+- [x] Crear página /formacion/ con contenido adaptado
+- [x] Implementar sección hero con descripción de formación
+- [x] Implementar 4 módulos de temario (Detección, Evaluación, Operación, Crecimiento)
+- [x] Mostrar 6 temas por módulo con estructura clara
+- [x] Integrar formulario de contacto con campos específicos
+- [x] Verificar diseño responsive y consistencia visual
