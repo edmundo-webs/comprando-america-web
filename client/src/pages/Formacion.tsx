@@ -92,7 +92,7 @@ export default function Formacion() {
       title: "Crecimiento de Negocios Adquiridos",
       icon: TrendingUp,
       topics: [
-        "¿Para qué crecer tu negocio? Diferencias culturales USA vs Latinoamérica",
+        "¿Para qué crecer tu negocio? Diferencias culturales Estados Unidos vs Latinoamérica",
         "Etapas de los negocios en Estados Unidos según su giro",
         "Traer el futuro al presente en la evolución de tu negocio",
         "Estrategias de financiamiento para el crecimiento",

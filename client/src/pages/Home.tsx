@@ -81,7 +81,7 @@ export default function Home() {
                 y acompañamiento real
               </h1>
               <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-6 max-w-2xl">
-                Comprando América es una membresía privada para empresarios e inversionistas latinos que buscan expandir, diversificar o proteger su patrimonio en EE.UU. sin improvisar ni cometer errores costosos.
+                Comprando América es una membresía privada para empresarios e inversionistas latinos que buscan expandir, diversificar o proteger su patrimonio en Estados Unidos sin improvisar ni cometer errores costosos.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 mb-8 max-w-2xl">
                 <div className="flex items-center gap-2 text-white/80">
@@ -126,7 +126,7 @@ export default function Home() {
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center mb-16">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
-                El error no es invertir en EE.UU.
+                El error no es invertir en Estados Unidos
               </h2>
               <p className="text-2xl md:text-3xl font-serif text-primary mb-8">
                 El error es hacerlo sin estructura.
@@ -521,7 +521,7 @@ export default function Home() {
                 ¿Estás listo?
               </h2>
               <p className="text-lg text-white/70 leading-relaxed mb-6">
-                Si entiendes que invertir en EE.UU. requiere estructura, el siguiente paso es validar tu encaje.
+                Si entiendes que invertir en Estados Unidos requiere estructura, el siguiente paso es validar tu encaje.
               </p>
               <p className="text-lg text-white/60 mb-8">
                 <span className="font-semibold">No es pagar.</span> Es evaluar si perteneces al grupo.

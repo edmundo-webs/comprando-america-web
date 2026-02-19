@@ -352,7 +352,7 @@ export default function QuienesSomos() {
               {
                 name: "Joe Faraci",
                 title: "Inversionista en bienes raíces",
-                description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en USA.",
+                description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
                 image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SLCApXDNVruIMYzi.jpg",
               },
             ].map((expert, i) => (

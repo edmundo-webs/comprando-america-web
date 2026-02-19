@@ -80,7 +80,7 @@ export default function Podcast() {
       duration: "40:09"
     },
     {
-      title: "BRRRR vs. Flipping: ¿Cuál es la mejor estrategia de inversión inmobiliaria en USA?",
+      title: "BRRRR vs. Flipping: ¿Cuál es la mejor estrategia de inversión inmobiliaria en Estados Unidos?",
       videoId: "asOMFCvUZNc",
       videoUrl: "https://www.youtube.com/watch?v=asOMFCvUZNc",
       duration: "25:16"
