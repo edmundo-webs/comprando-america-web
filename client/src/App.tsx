@@ -15,6 +15,7 @@ import CmsLogin from "./pages/cms/CmsLogin";
 import BlogPost from "./pages/BlogPost";
 import BienesRaices from "./pages/BienesRaices";
 import Formacion from "./pages/Formacion";
+import EstructuraInversion from "./pages/EstructuraInversion";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/bienes-raices-en-usa" component={BienesRaices} />
       <Route path="/formacion" component={Formacion} />
+      <Route path="/estructura-de-inversion-en-usa" component={EstructuraInversion} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>

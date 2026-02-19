@@ -97,3 +97,14 @@
 - [x] Mostrar 6 temas por módulo con estructura clara
 - [x] Integrar formulario de contacto con campos específicos
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Página de Estructura de Inversión en USA
+- [x] Crear página /estructura-de-inversion-en-usa/ con contenido adaptado
+- [x] Implementar sección hero con descripción de estructuración legal
+- [x] Implementar sección "Por qué muchos fallan" con 3 puntos clave
+- [x] Implementar sección "Qué incluye nuestro acompañamiento" con 5 items
+- [x] Implementar sección "¿Para quién es este servicio?" con criterios
+- [x] Implementar FAQ con 3 preguntas expandibles
+- [x] Integrar formulario de contacto con campos específicos
+- [x] Verificar diseño responsive y consistencia visual
