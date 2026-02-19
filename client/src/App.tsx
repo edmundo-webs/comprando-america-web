@@ -18,6 +18,7 @@ import Formacion from "./pages/Formacion";
 import EstructuraInversion from "./pages/EstructuraInversion";
 import VisaE2 from "./pages/VisaE2";
 import ExpansionInternacional from "./pages/ExpansionInternacional";
+import QuienesSomos from "./pages/QuienesSomos";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/estructura-de-inversion-en-usa" component={EstructuraInversion} />
       <Route path="/visa-e2-inversionista-usa" component={VisaE2} />
       <Route path="/expansion-internacional-empresas" component={ExpansionInternacional} />
+      <Route path="/quienes-somos" component={QuienesSomos} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
