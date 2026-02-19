@@ -495,10 +495,59 @@ export default function Home() {
               </div>
             </div>
           </FadeIn>
+
+          {/* Otros Expertos */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+            {[
+              {
+                name: "Tomás Resendez",
+                title: "Abogado inmigración",
+                description: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
+              },
+              {
+                name: "John Mckee",
+                title: "Consultor comercial",
+                description: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
+              },
+              {
+                name: "Destiny Bounds",
+                title: "Abogada corporativa y PI",
+                description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
+              },
+              {
+                name: "Aubrey Dwyer",
+                title: "Abogada corporativa",
+                description: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
+              },
+              {
+                name: "Daniel Palacios",
+                title: "Contador CPA y fiscalista",
+                description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
+              },
+              {
+                name: "Sebastián Jara",
+                title: "Consultor de marketing digital",
+                description: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
+              },
+              {
+                name: "Joe Faraci",
+                title: "Inversionista en bienes raíces",
+                description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en USA.",
+              },
+            ].map((expert, i) => (
+              <FadeIn key={expert.name} delay={i * 0.1}>
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
+                  <h3 className="text-lg font-serif text-white mb-1">{expert.name}</h3>
+                  <p className="text-primary text-sm font-semibold mb-4">{expert.title}</p>
+                  <p className="text-white/60 text-sm leading-relaxed">{expert.description}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ═══ QUÉ RESOLVEMOS ═══ */}
+      {/* ═══ PROPUESTA ═══ */}
       <section className="section-dark py-24 md:py-32">
         <div className="container">
           <SectionHeading

@@ -143,3 +143,14 @@
 - [x] Agregar botón YouTube en sección de Podcast (https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9)
 - [x] Agregar botón Spotify en sección de Podcast (https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7)
 - [x] Verificar que los botones se muestren correctamente
+
+
+## Sección de Expertos Adicionales
+- [x] Agregar perfil de Tomás Resendez (Abogado inmigración)
+- [x] Agregar perfil de John Mckee (Consultor comercial)
+- [x] Agregar perfil de Destiny Bounds (Abogada corporativa y propiedad intelectual)
+- [x] Agregar perfil de Aubrey Dwyer (Abogada corporativa)
+- [x] Agregar perfil de Daniel Palacios (Contador público certificado)
+- [x] Agregar perfil de Sebastián Jara (Consultor de marketing digital)
+- [x] Agregar perfil de Joe Faraci (Inversionista en bienes raíces)
+- [x] Verificar que todos los expertos se muestren correctamente en la página
