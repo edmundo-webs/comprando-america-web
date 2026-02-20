@@ -146,7 +146,7 @@ export default function Formacion() {
             >
               <div className="relative rounded-2xl overflow-hidden border border-white/10">
                 <img
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/dfTXGLgkYJpoVIzE.png"
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/gIkDHHfSsRMuETsG.png"
                   alt="Educación Estratégica"
                   className="w-full h-full object-cover"
                 />

@@ -154,3 +154,9 @@
 - [x] Agregar perfil de Sebastián Jara (Consultor de marketing digital)
 - [x] Agregar perfil de Joe Faraci (Inversionista en bienes raíces)
 - [x] Verificar que todos los expertos se muestren correctamente en la página
+
+
+## Actualizacion de Imagenes - Sesion Febrero 2026
+- [x] Cambiar imagen de pagina de Formacion por foto de mujer con graficos de analisis financiero
+- [x] Subir nueva imagen a S3 (gIkDHHfSsRMuETsG.png)
+- [x] Actualizar Formacion.tsx con nueva URL de CDN
