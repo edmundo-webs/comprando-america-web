@@ -163,7 +163,7 @@ export default function Membresia() {
       <Navbar />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative min-h-[60vh] flex items-center pt-32 pb-20" style={{backgroundImage: 'url(https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/DdxHhXtKXaepQxeF.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <section className="relative min-h-[60vh] flex items-center pt-32 pb-20" style={{backgroundImage: 'url(https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zZWJVBWgqoMtbRaV.png)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
         <div className="absolute inset-0 -z-10 bg-black/85" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
 
