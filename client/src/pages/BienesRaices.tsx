@@ -115,6 +115,11 @@ export default function BienesRaices() {
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-screen flex items-center pt-28 pb-20">
         <div className="absolute inset-0 -z-10">
+          <img
+            src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/UEcLjYyFixTUEbdp.jpeg"
+            alt="Bienes Raices en Estados Unidos"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
           <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] via-transparent to-transparent" />
         </div>

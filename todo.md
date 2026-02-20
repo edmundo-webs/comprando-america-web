@@ -160,3 +160,8 @@
 - [x] Cambiar imagen de pagina de Formacion por foto de mujer con graficos de analisis financiero
 - [x] Subir nueva imagen a S3 (gIkDHHfSsRMuETsG.png)
 - [x] Actualizar Formacion.tsx con nueva URL de CDN
+
+## Actualizacion de Fondos de Paginas - Sesion Febrero 2026
+- [x] Agregar imagen de bienes raices como fondo del hero de Bienes Raices en USA
+- [x] Subir imagen a S3 (UEcLjYyFixTUEbdp.jpeg)
+- [x] Actualizar BienesRaices.tsx con imagen de fondo
