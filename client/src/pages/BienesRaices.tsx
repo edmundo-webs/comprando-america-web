@@ -114,7 +114,7 @@ export default function BienesRaices() {
 
       {/* ═══ HERO ═══ */}
       <section className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden" style={{backgroundImage: 'url(https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/UEcLjYyFixTUEbdp.jpeg)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
-        <div className="absolute inset-0 -z-10 bg-black/75" />
+        <div className="absolute inset-0 -z-10 bg-black/40" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[oklch(0.10_0.03_250)] via-transparent to-transparent" />
         <div className="container relative z-10">
