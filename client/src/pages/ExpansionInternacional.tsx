@@ -63,9 +63,11 @@ export default function ExpansionInternacional() {
               className="hidden lg:block"
             >
               <div className="relative rounded-2xl overflow-hidden border-4 border-primary/30">
-                <div className="w-full h-[400px] bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                  <Globe className="w-32 h-32 text-primary/40" />
-                </div>
+                <img
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/UuPRQKelKRuzBwXd.jpg"
+                  alt="Expansión Internacional de Empresas"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </motion.div>
           </div>
