@@ -122,8 +122,8 @@ export default function VisaE2() {
             >
               <div className="relative rounded-2xl overflow-hidden border border-white/10">
                 <img
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/AIyuEahRFXQSFZVu.jpg"
-                  alt="E2 Visa Program"
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/CfxPxjlhrDPuEwyR.webp"
+                  alt="Visa E-2 Inversionista"
                   className="w-full h-full object-cover"
                 />
               </div>
