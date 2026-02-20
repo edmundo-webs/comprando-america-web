@@ -111,12 +111,11 @@ export default function EstructuraInversion() {
               className="hidden lg:block"
             >
               <div className="relative rounded-2xl overflow-hidden border border-white/10">
-                <div className="aspect-video bg-gradient-to-br from-primary/20 to-emerald/20 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="text-6xl mb-4">📋</div>
-                    <p className="text-white/60">Documentación Legal & Fiscal</p>
-                  </div>
-                </div>
+                <img
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/NxiBRNllQxYRemFM.jpg"
+                  alt="Estructura de Inversión en Estados Unidos"
+                  className="w-full h-full object-cover"
+                />
               </div>
             </motion.div>
           </div>
