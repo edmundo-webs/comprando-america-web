@@ -49,17 +49,21 @@ export type InsertBlogPost = typeof blogPosts.$inferInsert;
 
 /**
  * News articles table
- * Stores automatically fetched news articles from RSS feeds
+ * Stores editorial news articles written by the Comprando América team
  */
 export const newsArticles = mysqlTable("news_articles", {
   id: int("id").autoincrement().primaryKey(),
   title: varchar("title", { length: 500 }).notNull(),
+  slug: varchar("slug", { length: 500 }).notNull().unique(),
   description: text("description"),
   content: text("content"),
-  url: varchar("url", { length: 1000 }).notNull().unique(),
+  body: text("body"), // Full HTML editorial content
+  url: varchar("url", { length: 1000 }).notNull(),
   source: varchar("source", { length: 255 }).notNull(),
+  author: varchar("author", { length: 255 }).default("Equipo Comprando América").notNull(),
   category: mysqlEnum("category", ["visas-migracion", "economia-finanzas", "bienes-raices", "llc-negocios", "inversiones"]).notNull(),
   imageUrl: varchar("image_url", { length: 1000 }),
+  ctaType: varchar("cta_type", { length: 100 }), // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
   publishedAt: timestamp("published_at").notNull(),
   fetchedAt: timestamp("fetched_at").defaultNow().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),

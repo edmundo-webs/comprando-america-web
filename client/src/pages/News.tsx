@@ -1,22 +1,37 @@
 import { useState, useMemo, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
-import { NewsFilter } from "@/components/NewsFilter";
 import { NewsList } from "@/components/NewsList";
 import { NewsletterSignup } from "@/components/NewsletterSignup";
-import { Loader2, Globe, Plane, TrendingUp, Home, Building2, DollarSign } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { Loader2, Globe, Plane, TrendingUp, Home, Building2, DollarSign, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useSearch } from "wouter";
 
 export default function News() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  // Read initial category from URL query params
+  const searchString = useSearch();
+  const urlParams = new URLSearchParams(searchString);
+  const initialCategory = urlParams.get("category") || "all";
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // SEO Meta Tags - Update on mount and category change
+  const categories = [
+    { id: "all", label: "Todas", icon: Globe },
+    { id: "visas-migracion", label: "Visas y Migraciones", icon: Plane },
+    { id: "economia-finanzas", label: "Economía y Finanzas", icon: TrendingUp },
+    { id: "bienes-raices", label: "Bienes Raíces", icon: Home },
+    { id: "llc-negocios", label: "LLC y Negocios", icon: Building2 },
+    { id: "inversiones", label: "Inversiones", icon: DollarSign },
+  ];
+
+  // SEO Meta Tags
   useEffect(() => {
     const categoryName = categories.find(c => c.id === selectedCategory)?.label || "Noticias";
     document.title = `${categoryName} | Comprando América - Portal de Noticias`;
-    
-    // Update meta description
+
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       const descriptions: Record<string, string> = {
@@ -30,21 +45,6 @@ export default function News() {
       metaDescription.setAttribute('content', descriptions[selectedCategory] || descriptions.all);
     }
 
-    // Update meta keywords
-    const metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      const keywords: Record<string, string> = {
-        all: "visas E-2, economía USA, bienes raíces, LLC, inversiones, migraciones, emprendimiento",
-        "visas-migracion": "visa E-2, EB-5, trámites migratorios, USCIS, inversionista extranjero",
-        "economia-finanzas": "economía USA, inflación, tipo de cambio, PIB, Reserva Federal",
-        "bienes-raices": "bienes raíces USA, precios vivienda, hipotecas, inversión inmobiliaria",
-        "llc-negocios": "LLC, Delaware, estructura empresarial, impuestos, responsabilidad limitada",
-        "inversiones": "inversiones USA, bolsa de valores, S&P 500, REITs, portafolio",
-      };
-      metaKeywords.setAttribute('content', keywords[selectedCategory] || keywords.all);
-    }
-
-    // Add canonical URL
     let canonicalUrl = "https://comprandoamerica.com/news";
     if (selectedCategory !== "all") {
       canonicalUrl += `?category=${selectedCategory}`;
@@ -58,20 +58,17 @@ export default function News() {
     canonical.href = canonicalUrl;
   }, [selectedCategory]);
 
-  // Inject Schema.org markup for SEO
+  // Schema.org markup
   useEffect(() => {
     const schemaScript = document.getElementById('news-schema');
-    if (schemaScript) {
-      schemaScript.remove();
-    }
+    if (schemaScript) schemaScript.remove();
 
     const schema = {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
       "name": "Portal de Noticias - Comprando América",
-      "description": "Noticias sobre visas, economía, bienes raíces, LLC e inversiones en Estados Unidos",
+      "description": "Noticias editoriales sobre visas, economía, bienes raíces, LLC e inversiones en Estados Unidos",
       "url": "https://comprandoamerica.com/news",
-      "image": "https://comprandoamerica.com/logo.png",
       "publisher": {
         "@type": "Organization",
         "name": "Comprando América",
@@ -85,15 +82,6 @@ export default function News() {
     script.textContent = JSON.stringify(schema);
     document.head.appendChild(script);
   }, []);
-
-  const categories = [
-    { id: "all", label: "Todas", icon: Globe },
-    { id: "visas-migracion", label: "Visas y Migraciones", icon: Plane },
-    { id: "economia-finanzas", label: "Economía y Finanzas", icon: TrendingUp },
-    { id: "bienes-raices", label: "Bienes Raíces", icon: Home },
-    { id: "llc-negocios", label: "LLC y Negocios", icon: Building2 },
-    { id: "inversiones", label: "Inversiones", icon: DollarSign },
-  ];
 
   // Fetch latest news
   const { data: latestNews = [], isLoading: isLoadingLatest } = trpc.news.getLatest.useQuery({
@@ -109,17 +97,13 @@ export default function News() {
   // Fetch search results
   const { data: searchResults = [], isLoading: isLoadingSearch } = trpc.news.search.useQuery(
     { query: searchQuery, limit: 100 },
-    { enabled: searchQuery.length > 0 }
+    { enabled: searchQuery.length > 2 }
   );
 
   // Determine which data to display
   const displayNews = useMemo(() => {
-    if (searchQuery.length > 0) {
-      return searchResults;
-    }
-    if (selectedCategory !== "all") {
-      return categoryNews;
-    }
+    if (searchQuery.length > 2) return searchResults;
+    if (selectedCategory !== "all") return categoryNews;
     return latestNews;
   }, [searchQuery, selectedCategory, searchResults, categoryNews, latestNews]);
 
@@ -127,51 +111,66 @@ export default function News() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <Navbar />
+
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-primary/10 to-primary/5 py-12 md:py-16">
-        <div className="container">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">
-            Noticias y Actualizaciones
+      <section className="relative pt-28 pb-16 section-dark overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-gold/5" />
+        <div className="container relative z-10">
+          <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+            Portal de Noticias
+          </span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-4">
+            Noticias para{" "}
+            <span className="gradient-text-primary">Inversionistas</span>
           </h1>
-          <p className="text-lg text-foreground/70 max-w-2xl">
-            Mantente informado sobre visas, economía, bienes raíces, LLC e inversiones en Estados Unidos.
+          <p className="text-lg text-white/60 max-w-2xl leading-relaxed">
+            Análisis editorial sobre visas, economía, bienes raíces, negocios e inversiones en Estados Unidos.
+            Cada noticia explicada desde la perspectiva del inversionista latinoamericano.
           </p>
         </div>
       </section>
 
-      {/* Search Bar */}
-      <section className="py-8 border-b border-border">
-        <div className="container">
-          <div className="flex gap-2">
+      {/* Search & Filter Bar */}
+      <section className="sticky top-20 z-40 bg-[oklch(0.12_0.03_250/0.95)] backdrop-blur-xl border-b border-white/5">
+        <div className="container py-4">
+          {/* Search */}
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
             <Input
               placeholder="Buscar noticias..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1"
+              className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary/50"
             />
-            <Button variant="outline" onClick={() => setSearchQuery("")}>
-              Limpiar
-            </Button>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
-        </div>
-      </section>
 
-      {/* Category Filter */}
-      <section className="py-8 border-b border-border">
-        <div className="container">
+          {/* Category Filters */}
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => {
               const IconComponent = category.icon;
+              const isActive = selectedCategory === category.id;
               return (
-                <Button
+                <button
                   key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
                   onClick={() => setSelectedCategory(category.id)}
-                  className="gap-2"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                    isActive
+                      ? "bg-primary text-white shadow-lg shadow-primary/20"
+                      : "bg-white/5 text-white/60 hover:bg-white/10 hover:text-white"
+                  }`}
                 >
                   <IconComponent className="w-4 h-4" />
                   {category.label}
-                </Button>
+                </button>
               );
             })}
           </div>
@@ -179,7 +178,7 @@ export default function News() {
       </section>
 
       {/* News List */}
-      <section className="py-12">
+      <section className="py-12 section-darker">
         <div className="container">
           {isLoading ? (
             <div className="flex justify-center items-center py-20">
@@ -188,16 +187,23 @@ export default function News() {
           ) : displayNews.length > 0 ? (
             <>
               <div className="mb-6">
-                <p className="text-sm text-foreground/60">
-                  Mostrando {displayNews.length} artículos
+                <p className="text-sm text-white/40">
+                  {searchQuery.length > 2
+                    ? `${displayNews.length} resultados para "${searchQuery}"`
+                    : `Mostrando ${displayNews.length} artículos`}
                 </p>
               </div>
               <NewsList articles={displayNews} />
             </>
           ) : (
             <div className="text-center py-20">
-              <p className="text-lg text-foreground/60">
-                No se encontraron noticias en esta categoría.
+              <p className="text-xl text-white/40 font-serif mb-2">
+                {searchQuery.length > 2
+                  ? "No se encontraron resultados"
+                  : "No hay noticias en esta categoría"}
+              </p>
+              <p className="text-sm text-white/30">
+                Pronto publicaremos contenido nuevo. ¡Suscríbete para no perdértelo!
               </p>
             </div>
           )}
@@ -205,9 +211,11 @@ export default function News() {
       </section>
 
       {/* Newsletter Signup */}
-      <section className="py-12 bg-foreground/5">
+      <section className="py-16 section-dark">
         <div className="container max-w-2xl">
-          <NewsletterSignup />
+          <div className="bg-gradient-to-r from-primary/10 to-gold/10 border border-primary/20 rounded-2xl p-8 md:p-10">
+            <NewsletterSignup />
+          </div>
         </div>
       </section>
 
@@ -226,6 +234,8 @@ export default function News() {
           <meta itemProp="position" content="2" />
         </span>
       </div>
+
+      <Footer />
     </div>
   );
 }

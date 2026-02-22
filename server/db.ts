@@ -269,6 +269,16 @@ export async function getNewsArticleById(id: number) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function getNewsArticleBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news article: database not available");
+    return undefined;
+  }
+  const result = await db.select().from(newsArticles).where(eq(newsArticles.slug, slug)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
 export async function createNewsArticle(data: InsertNewsArticle) {
   const db = await getDb();
   if (!db) {

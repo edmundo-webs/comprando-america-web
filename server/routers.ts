@@ -263,29 +263,45 @@ export const appRouter = router({
       .query(async ({ input }) => {
         return await db.searchNewsArticles(input.query, input.limit);
       }),
-    // Public: get single article
+    // Public: get single article by id
     getById: publicProcedure
       .input(z.object({ id: z.number() }))
       .query(async ({ input }) => {
         return await db.getNewsArticleById(input.id);
       }),
+    // Public: get single article by slug
+    getBySlug: publicProcedure
+      .input(z.object({ slug: z.string() }))
+      .query(async ({ input }) => {
+        return await db.getNewsArticleBySlug(input.slug);
+      }),
     // Admin: create article (manual)
     create: protectedProcedure
       .input(z.object({
         title: z.string(),
+        slug: z.string().optional(),
         description: z.string().optional(),
         content: z.string().optional(),
+        body: z.string().optional(),
         url: z.string(),
         source: z.string(),
+        author: z.string().optional(),
         category: z.string(),
         imageUrl: z.string().optional(),
+        ctaType: z.string().optional(),
         publishedAt: z.date(),
       }))
       .mutation(async ({ ctx, input }) => {
         if (ctx.user.role !== "admin") {
           throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
         }
-        await db.createNewsArticle(input as any);
+        // Auto-generate slug if not provided
+        const slug = input.slug || input.title
+          .toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '');
+        await db.createNewsArticle({ ...input, slug } as any);
         return { success: true };
       }),
     // Admin: delete article

@@ -1,0 +1,13 @@
+{
+  "query": "SELECT COUNT(*) as total FROM news_articles;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 47hAhXzy8pHCHjL.7d144706ec84 --database TXKhhi3qa3kqCbF2c9sawS --execute SELECT COUNT(*) as total FROM news_articles;",
+  "rows": [
+    {
+      "total": "0"
+    }
+  ],
+  "messages": [],
+  "stdout": "total\n0\n",
+  "stderr": "",
+  "execution_time_ms": 55
+}

@@ -21,6 +21,7 @@ import ExpansionInternacional from "./pages/ExpansionInternacional";
 import QuienesSomos from "./pages/QuienesSomos";
 import Podcast from "./pages/Podcast";
 import News from "./pages/News";
+import NewsArticle from "./pages/NewsArticle";
 
 function Router() {
   return (
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/quienes-somos" component={QuienesSomos} />
       <Route path="/podcast" component={Podcast} />
       <Route path="/news" component={News} />
+      <Route path="/news/:slug" component={NewsArticle} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>

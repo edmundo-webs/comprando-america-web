@@ -1,0 +1,100 @@
+{
+  "query": "SELECT id, title, category, slug FROM news_articles ORDER BY published_at DESC;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway03.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 47hAhXzy8pHCHjL.7d144706ec84 --database TXKhhi3qa3kqCbF2c9sawS --execute SELECT id, title, category, slug FROM news_articles ORDER BY published_at DESC;",
+  "rows": [
+    {
+      "id": "42",
+      "title": "Hispanos Rompen Récord: 441,000 Nuevos Propietarios en 2025 Mientras el Resto del Mercado Cae",
+      "category": "bienes-raices",
+      "slug": "hispanos-rompen-record-441-000-nuevos-propietarios-en-2025-mientras-el-resto-del-mercado-cae"
+    },
+    {
+      "id": "36",
+      "title": "Visa E-2 en 2026: Lo Que Todo Inversionista Latino Debe Saber Antes de Aplicar",
+      "category": "visas-migracion",
+      "slug": "visa-e-2-en-2026-lo-que-todo-inversionista-latino-debe-saber-antes-de-aplicar"
+    },
+    {
+      "id": "45",
+      "title": "FinCEN Elimina Reporte BOI Para Empresas Domésticas: Lo Que Cambia Para Tu LLC en 2026",
+      "category": "llc-negocios",
+      "slug": "fincen-elimina-reporte-boi-para-empresas-domesticas-lo-que-cambia-para-tu-llc-en-2026"
+    },
+    {
+      "id": "48",
+      "title": "SelectUSA 2026: El Evento de Inversión Extranjera Más Grande del Mundo y Por Qué Deberías Estar Ahí",
+      "category": "inversiones",
+      "slug": "selectusa-2026-el-evento-de-inversion-extranjera-mas-grande-del-mundo-y-por-que-deberias-estar-ahi"
+    },
+    {
+      "id": "39",
+      "title": "La Fed Mantiene Tasas en 3.5%-3.75%: Qué Significa Para Tu Inversión en USA",
+      "category": "economia-finanzas",
+      "slug": "la-fed-mantiene-tasas-en-3-5-3-75-que-significa-para-tu-inversion-en-usa"
+    },
+    {
+      "id": "37",
+      "title": "EB-5: La Fecha Límite de Septiembre 2026 Que No Puedes Ignorar",
+      "category": "visas-migracion",
+      "slug": "eb-5-la-fecha-limite-de-septiembre-2026-que-no-puedes-ignorar"
+    },
+    {
+      "id": "40",
+      "title": "Economía en Forma de K: Por Qué Algunos Inversionistas Ganan y Otros Pierden en 2026",
+      "category": "economia-finanzas",
+      "slug": "economia-en-forma-de-k-por-que-algunos-inversionistas-ganan-y-otros-pierden-en-2026"
+    },
+    {
+      "id": "43",
+      "title": "Mercado Inmobiliario USA 2026: Precios Estancados, Oportunidad Para Inversionistas Inteligentes",
+      "category": "bienes-raices",
+      "slug": "mercado-inmobiliario-usa-2026-precios-estancados-oportunidad-para-inversionistas-inteligentes"
+    },
+    {
+      "id": "46",
+      "title": "94% de Pequeños Negocios en USA Proyectan Crecimiento en 2026: Las Tendencias Clave",
+      "category": "llc-negocios",
+      "slug": "94-de-pequenos-negocios-en-usa-proyectan-crecimiento-en-2026-las-tendencias-clave"
+    },
+    {
+      "id": "38",
+      "title": "Visa Bulletin Marzo 2026: Avances en Categorías de Empleo Que Benefician a Latinos",
+      "category": "visas-migracion",
+      "slug": "visa-bulletin-marzo-2026-avances-en-categorias-de-empleo-que-benefician-a-latinos"
+    },
+    {
+      "id": "41",
+      "title": "¿Viene una Corrección del S&P 500 en 2026? Lo Que Dicen los Mercados de Predicción",
+      "category": "economia-finanzas",
+      "slug": "viene-una-correccion-del-s-p-500-en-2026-lo-que-dicen-los-mercados-de-prediccion"
+    },
+    {
+      "id": "49",
+      "title": "Perspectivas de Inversión 2026: Dónde Poner Tu Dinero Según los Expertos",
+      "category": "inversiones",
+      "slug": "perspectivas-de-inversion-2026-donde-poner-tu-dinero-segun-los-expertos"
+    },
+    {
+      "id": "44",
+      "title": "Inversionistas Extranjeros Siguen Apostando por el Real Estate en USA: Las Razones Detrás del Boom",
+      "category": "bienes-raices",
+      "slug": "inversionistas-extranjeros-siguen-apostando-por-el-real-estate-en-usa-las-razones-detras-del-boom"
+    },
+    {
+      "id": "47",
+      "title": "Guía de Compliance 2026 Para Tu LLC en USA: Lo Que Todo Extranjero Debe Cumplir",
+      "category": "llc-negocios",
+      "slug": "guia-de-compliance-2026-para-tu-llc-en-usa-lo-que-todo-extranjero-debe-cumplir"
+    },
+    {
+      "id": "50",
+      "title": "Cómo los Latinos Están Cambiando el Panorama de Inversión en Estados Unidos",
+      "category": "inversiones",
+      "slug": "como-los-latinos-estan-cambiando-el-panorama-de-inversion-en-estados-unidos"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\ttitle\tcategory\tslug\n42\tHispanos Rompen Récord: 441,000 Nuevos Propietarios en 2025 Mientras el Resto del Mercado Cae\tbienes-raices\thispanos-rompen-record-441-000-nuevos-propietarios-en-2025-mientras-el-resto-del-mercado-cae\n36\tVisa E-2 en 2026: Lo Que Todo Inversionista Latino Debe Saber Antes de Aplicar\tvisas-migracion\tvisa-e-2-en-2026-lo-que-todo-inversionista-latino-debe-saber-antes-de-aplicar\n45\tFinCEN Elimina Reporte BOI Para Empresas Domésticas: Lo Que Cambia Para Tu LLC en 2026\tllc-negocios\tfincen-elimina-reporte-boi-para-empresas-domesticas-lo-que-cambia-para-tu-llc-en-2026\n48\tSelectUSA 2026: El Evento de Inversión Extranjera Más Grande del Mundo y Por Qué Deberías Estar Ahí\tinversiones\tselectusa-2026-el-evento-de-inversion-extranjera-mas-grande-del-mundo-y-por-que-deberias-estar-ahi\n39\tLa Fed Mantiene Tasas en 3.5%-3.75%: Qué Significa Para Tu Inversión en USA\teconomia-finanzas\tla-fed-mantiene-tasas-en-3-5-3-75-que-significa-para-tu-inversion-en-usa\n37\tEB-5: La Fecha Límite de Septiembre 2026 Que No Puedes Ignorar\tvisas-migracion\teb-5-la-fecha-limite-de-septiembre-2026-que-no-puedes-ignorar\n40\tEconomía en Forma de K: Por Qué Algunos Inversionistas Ganan y Otros Pierden en 2026\teconomia-finanzas\teconomia-en-forma-de-k-por-que-algunos-inversionistas-ganan-y-otros-pierden-en-2026\n43\tMercado Inmobiliario USA 2026: Precios Estancados, Oportunidad Para Inversionistas Inteligentes\tbienes-raices\tmercado-inmobiliario-usa-2026-precios-estancados-oportunidad-para-inversionistas-inteligentes\n46\t94% de Pequeños Negocios en USA Proyectan Crecimiento en 2026: Las Tendencias Clave\tllc-negocios\t94-de-pequenos-negocios-en-usa-proyectan-crecimiento-en-2026-las-tendencias-clave\n38\tVisa Bulletin Marzo 2026: Avances en Categorías de Empleo Que Benefician a Latinos\tvisas-migracion\tvisa-bulletin-marzo-2026-avances-en-categorias-de-empleo-que-benefician-a-latinos\n41\t¿Viene una Corrección del S&P 500 en 2026? Lo Que Dicen los Mercados de Predicción\teconomia-finanzas\tviene-una-correccion-del-s-p-500-en-2026-lo-que-dicen-los-mercados-de-prediccion\n49\tPerspectivas de Inversión 2026: Dónde Poner Tu Dinero Según los Expertos\tinversiones\tperspectivas-de-inversion-2026-donde-poner-tu-dinero-segun-los-expertos\n44\tInversionistas Extranjeros Siguen Apostando por el Real Estate en USA: Las Razones Detrás del Boom\tbienes-raices\tinversionistas-extranjeros-siguen-apostando-por-el-real-estate-en-usa-las-razones-detras-del-boom\n47\tGuía de Compliance 2026 Para Tu LLC en USA: Lo Que Todo Extranjero Debe Cumplir\tllc-negocios\tguia-de-compliance-2026-para-tu-llc-en-usa-lo-que-todo-extranjero-debe-cumplir\n50\tCómo los Latinos Están Cambiando el Panorama de Inversión en Estados Unidos\tinversiones\tcomo-los-latinos-estan-cambiando-el-panorama-de-inversion-en-estados-unidos\n",
+  "stderr": "",
+  "execution_time_ms": 135
+}

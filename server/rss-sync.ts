@@ -66,8 +66,13 @@ export async function fetchAndParseFeed(feed: RssFeed): Promise<void> {
           continue;
         }
 
+        // Generate slug from title
+        const slugify = (text: string) => text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 200);
+        const slug = `${slugify(item.title)}-${Date.now()}`;
+
         const article: InsertNewsArticle = {
           title: item.title,
+          slug,
           description: item.contentSnippet || (item as any).summary || "",
           content: item.content || (item as any).description || "",
           url: item.link,

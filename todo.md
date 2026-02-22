@@ -197,3 +197,17 @@
 - [ ] Implementar servicio de envío de emails
 - [ ] Crear email template para notificaciones de noticias
 - [ ] Configurar cron job para enviar notificaciones diarias
+
+
+## Reestructuración Portal de Noticias - Febrero 2026
+- [x] Borrar todas las noticias actuales de la base de datos
+- [x] Actualizar schema para soportar contenido editorial completo (body HTML)
+- [x] Crear página de detalle de artículo /news/:slug con contenido completo
+- [x] Agregar CTA al final de cada artículo según categoría
+- [x] Agregar navbar de Comprando América al portal de noticias
+- [x] Investigar noticias reales recientes para cada categoría
+- [x] Redactar contenido editorial con tono casual-profesional
+- [x] Incluir mención de fuente original en la redacción
+- [x] Agregar perspectiva de Comprando América en cada nota
+- [x] Poblar base de datos con artículos editoriales completos
+- [x] Actualizar tests para nueva estructura
