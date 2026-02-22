@@ -86,3 +86,23 @@ export const newsFeeds = mysqlTable("news_feeds", {
 
 export type NewsFeed = typeof newsFeeds.$inferSelect;
 export type InsertNewsFeed = typeof newsFeeds.$inferInsert;
+
+/**
+ * News subscribers table
+ * Stores email subscriptions for news notifications
+ */
+export const newsSubscribers = mysqlTable("news_subscribers", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  name: varchar("name", { length: 255 }),
+  categories: text("categories").notNull(), // JSON array of subscribed categories
+  isActive: mysqlEnum("is_active", ["true", "false"]).default("true").notNull(),
+  verificationToken: varchar("verification_token", { length: 255 }),
+  isVerified: mysqlEnum("is_verified", ["true", "false"]).default("false").notNull(),
+  unsubscribeToken: varchar("unsubscribe_token", { length: 255 }).unique(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NewsSubscriber = typeof newsSubscribers.$inferSelect;
+export type InsertNewsSubscriber = typeof newsSubscribers.$inferInsert;

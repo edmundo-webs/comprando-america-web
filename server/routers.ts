@@ -330,6 +330,45 @@ export const appRouter = router({
         return { success: true };
       }),
   }),
+
+  // NEWS SUBSCRIBERS ROUTER
+  newsSubscriber: router({
+    // Public: subscribe to news
+    subscribe: publicProcedure
+      .input(z.object({
+        email: z.string().email("Email invalido"),
+        name: z.string().optional(),
+        categories: z.array(z.string()).default(["all"]),
+      }))
+      .mutation(async ({ input }) => {
+        const existing = await db.getNewsSubscriber(input.email);
+        if (existing) {
+          throw new TRPCError({ code: "CONFLICT", message: "Este email ya esta suscrito" });
+        }
+        await db.createNewsSubscriber(input.email, input.name, input.categories);
+        return { success: true, message: "Verifica tu email para confirmar la suscripcion" };
+      }),
+    // Public: verify subscription
+    verify: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        const subscriber = await db.verifyNewsSubscriber(input.token);
+        if (!subscriber) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Token de verificacion invalido" });
+        }
+        return { success: true, message: "Suscripcion verificada" };
+      }),
+    // Public: unsubscribe
+    unsubscribe: publicProcedure
+      .input(z.object({ token: z.string() }))
+      .mutation(async ({ input }) => {
+        const subscriber = await db.unsubscribeNewsSubscriber(input.token);
+        if (!subscriber) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Token de desuscripcion invalido" });
+        }
+        return { success: true, message: "Te has desuscrito correctamente" };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

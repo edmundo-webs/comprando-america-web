@@ -1,6 +1,6 @@
 import { eq, desc, and, like, inArray, lt } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed } from "../drizzle/schema";
+import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed, newsSubscribers, NewsSubscriber, InsertNewsSubscriber } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -382,4 +382,114 @@ export async function deleteNewsFeed(id: number) {
     return;
   }
   await db.delete(newsFeeds).where(eq(newsFeeds.id, id));
+}
+
+// ═══ NEWS SUBSCRIBERS QUERIES ═══
+export async function createNewsSubscriber(
+  email: string,
+  name: string | undefined,
+  categories: string[]
+) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create news subscriber: database not available");
+    return;
+  }
+  const verificationToken = Math.random().toString(36).substring(2, 15);
+  const unsubscribeToken = Math.random().toString(36).substring(2, 15);
+
+  const result = await db.insert(newsSubscribers).values({
+    email,
+    name,
+    categories: JSON.stringify(categories),
+    verificationToken,
+    unsubscribeToken,
+    isActive: "true",
+    isVerified: "false",
+  });
+  return result;
+}
+
+export async function getNewsSubscriber(email: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news subscriber: database not available");
+    return undefined;
+  }
+  const result = await db.select().from(newsSubscribers).where(eq(newsSubscribers.email, email)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function verifyNewsSubscriber(token: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot verify news subscriber: database not available");
+    return undefined;
+  }
+  const subscriber = await db.select().from(newsSubscribers).where(eq(newsSubscribers.verificationToken, token)).limit(1);
+
+  if (subscriber.length === 0) return null;
+
+  await db
+    .update(newsSubscribers)
+    .set({ isVerified: "true", verificationToken: null })
+    .where(eq(newsSubscribers.id, subscriber[0].id));
+
+  // Fetch and return the updated subscriber
+  const updated = await db.select().from(newsSubscribers).where(eq(newsSubscribers.id, subscriber[0].id)).limit(1);
+  return updated.length > 0 ? updated[0] : subscriber[0];
+}
+
+export async function updateSubscriberCategories(
+  email: string,
+  categories: string[]
+) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update subscriber categories: database not available");
+    return;
+  }
+  return await db
+    .update(newsSubscribers)
+    .set({ categories: JSON.stringify(categories) })
+    .where(eq(newsSubscribers.email, email));
+}
+
+export async function unsubscribeNewsSubscriber(token: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot unsubscribe news subscriber: database not available");
+    return undefined;
+  }
+  const subscriber = await db.select().from(newsSubscribers).where(eq(newsSubscribers.unsubscribeToken, token)).limit(1);
+
+  if (subscriber.length === 0) return null;
+
+  await db
+    .update(newsSubscribers)
+    .set({ isActive: "false" })
+    .where(eq(newsSubscribers.id, subscriber[0].id));
+
+  // Fetch and return the updated subscriber
+  const updated = await db.select().from(newsSubscribers).where(eq(newsSubscribers.id, subscriber[0].id)).limit(1);
+  return updated.length > 0 ? updated[0] : subscriber[0];
+}
+
+export async function getVerifiedSubscribersByCategory(category: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get verified subscribers: database not available");
+    return [];
+  }
+  const subscribers = await db.select().from(newsSubscribers).where(
+    and(
+      eq(newsSubscribers.isVerified, "true"),
+      eq(newsSubscribers.isActive, "true")
+    )
+  );
+
+  return subscribers.filter((sub) => {
+    const categories = JSON.parse(sub.categories);
+    return categories.includes(category) || categories.includes("all");
+  });
 }

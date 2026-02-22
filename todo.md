@@ -182,3 +182,18 @@
 - [ ] Optimizar para SEO (meta tags, keywords, sitemap)
 - [x] Crear tests para sincronización de feeds
 - [x] Crear tests para procedimientos tRPC de noticias
+
+
+## Mejoras del Portal de Noticias - Fase 2
+- [x] Poblar base de datos con noticias reales de cada categoría
+- [x] Crear script seed-news.mjs para insertar noticias iniciales
+- [x] Agregar meta tags dinámicos a página /news para SEO
+- [x] Implementar schema.org markup (NewsArticle, BreadcrumbList)
+- [ ] Crear sitemap XML para noticias
+- [x] Agregar sección "Noticias Destacadas" en página de inicio
+- [x] Crear componente NewsHighlights para mostrar 3 noticias por categoría
+- [x] Implementar tabla news_subscribers en base de datos
+- [x] Crear procedimiento tRPC para suscribirse a notificaciones
+- [ ] Implementar servicio de envío de emails
+- [ ] Crear email template para notificaciones de noticias
+- [ ] Configurar cron job para enviar notificaciones diarias
