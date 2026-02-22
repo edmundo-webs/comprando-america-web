@@ -34,6 +34,7 @@ export const NAV_ITEMS = [
     { label: "Expansión Internacional", href: EXTERNAL_LINKS.expansion },
   ]},
   { label: "Recursos", href: "#", children: [
+    { label: "Noticias", href: "/news" },
     { label: "Blog", href: EXTERNAL_LINKS.blog },
     { label: "Podcast", href: "/podcast" },
     { label: "Quiénes Somos", href: EXTERNAL_LINKS.quienesSomos },

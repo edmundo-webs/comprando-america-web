@@ -165,3 +165,20 @@
 - [x] Agregar imagen de bienes raices como fondo del hero de Bienes Raices en USA
 - [x] Subir imagen a S3 (UEcLjYyFixTUEbdp.jpeg)
 - [x] Actualizar BienesRaices.tsx con imagen de fondo
+
+
+## Portal de Noticias Automatizado - Febrero 2026
+- [x] Actualizar schema de base de datos para tabla de artículos de noticias
+- [x] Crear tabla news_articles con campos: id, title, description, url, source, category, published_at, image_url, content
+- [x] Crear tabla news_feeds con URLs de feeds RSS por categoría
+- [x] Crear procedimientos tRPC para gestionar noticias (getByCategory, getLatest, search)
+- [x] Implementar RSS parser con librería rss-parser
+- [x] Crear cron job para sincronizar feeds cada 4 horas
+- [x] Crear componentes React: NewsCard, NewsFilter, NewsList
+- [x] Implementar página /news con layout de categorías
+- [x] Agregar filtros por categoría (visas, economía, bienes-raices, llc, inversiones)
+- [x] Implementar búsqueda de noticias
+- [x] Agregar paginación a lista de noticias
+- [ ] Optimizar para SEO (meta tags, keywords, sitemap)
+- [x] Crear tests para sincronización de feeds
+- [x] Crear tests para procedimientos tRPC de noticias

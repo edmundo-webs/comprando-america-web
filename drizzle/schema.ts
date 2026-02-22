@@ -46,3 +46,43 @@ export const blogPosts = mysqlTable("blog_posts", {
 
 export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertBlogPost = typeof blogPosts.$inferInsert;
+
+/**
+ * News articles table
+ * Stores automatically fetched news articles from RSS feeds
+ */
+export const newsArticles = mysqlTable("news_articles", {
+  id: int("id").autoincrement().primaryKey(),
+  title: varchar("title", { length: 500 }).notNull(),
+  description: text("description"),
+  content: text("content"),
+  url: varchar("url", { length: 1000 }).notNull().unique(),
+  source: varchar("source", { length: 255 }).notNull(),
+  category: mysqlEnum("category", ["visas-migracion", "economia-finanzas", "bienes-raices", "llc-negocios", "inversiones"]).notNull(),
+  imageUrl: varchar("image_url", { length: 1000 }),
+  publishedAt: timestamp("published_at").notNull(),
+  fetchedAt: timestamp("fetched_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NewsArticle = typeof newsArticles.$inferSelect;
+export type InsertNewsArticle = typeof newsArticles.$inferInsert;
+
+/**
+ * News feeds table
+ * Stores RSS feed URLs and configuration
+ */
+export const newsFeeds = mysqlTable("news_feeds", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  url: varchar("url", { length: 1000 }).notNull().unique(),
+  category: mysqlEnum("category", ["visas-migracion", "economia-finanzas", "bienes-raices", "llc-negocios", "inversiones"]).notNull(),
+  isActive: mysqlEnum("is_active", ["true", "false"]).default("true").notNull(),
+  lastFetchedAt: timestamp("last_fetched_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NewsFeed = typeof newsFeeds.$inferSelect;
+export type InsertNewsFeed = typeof newsFeeds.$inferInsert;

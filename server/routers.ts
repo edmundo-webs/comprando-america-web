@@ -242,6 +242,94 @@ export const appRouter = router({
       return { success: true };
     }),
   }),
+
+  // ═══ NEWS ROUTER ═══
+  news: router({
+    // Public: get latest news
+    getLatest: publicProcedure
+      .input(z.object({ limit: z.number().default(20) }))
+      .query(async ({ input }) => {
+        return await db.getLatestNewsArticles(input.limit);
+      }),
+    // Public: get news by category
+    getByCategory: publicProcedure
+      .input(z.object({ category: z.string(), limit: z.number().default(20) }))
+      .query(async ({ input }) => {
+        return await db.getNewsArticlesByCategory(input.category, input.limit);
+      }),
+    // Public: search news
+    search: publicProcedure
+      .input(z.object({ query: z.string(), limit: z.number().default(20) }))
+      .query(async ({ input }) => {
+        return await db.searchNewsArticles(input.query, input.limit);
+      }),
+    // Public: get single article
+    getById: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => {
+        return await db.getNewsArticleById(input.id);
+      }),
+    // Admin: create article (manual)
+    create: protectedProcedure
+      .input(z.object({
+        title: z.string(),
+        description: z.string().optional(),
+        content: z.string().optional(),
+        url: z.string(),
+        source: z.string(),
+        category: z.string(),
+        imageUrl: z.string().optional(),
+        publishedAt: z.date(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+        }
+        await db.createNewsArticle(input as any);
+        return { success: true };
+      }),
+    // Admin: delete article
+    delete: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+        }
+        await db.deleteNewsArticle(input.id);
+        return { success: true };
+      }),
+    // Admin: get all feeds
+    getFeeds: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user.role !== "admin") {
+        throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+      }
+      return await db.getAllNewsFeeds();
+    }),
+    // Admin: create feed
+    createFeed: protectedProcedure
+      .input(z.object({
+        name: z.string(),
+        url: z.string(),
+        category: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+        }
+        await db.createNewsFeed({ ...input, isActive: "true" } as any);
+        return { success: true };
+      }),
+    // Admin: delete feed
+    deleteFeed: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user.role !== "admin") {
+          throw new TRPCError({ code: "FORBIDDEN", message: NOT_ADMIN_ERR_MSG });
+        }
+        await db.deleteNewsFeed(input.id);
+        return { success: true };
+      }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

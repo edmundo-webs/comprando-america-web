@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, desc, and, like, inArray, lt } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost } from "../drizzle/schema";
+import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -223,4 +223,163 @@ export async function deleteBlogPost(id: number) {
     return;
   }
   await db.delete(blogPosts).where(eq(blogPosts.id, id));
+}
+
+// ═══ NEWS ARTICLES QUERIES ═══
+export async function getLatestNewsArticles(limit: number = 20) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news articles: database not available");
+    return [];
+  }
+  return await db.select().from(newsArticles).orderBy(desc(newsArticles.publishedAt)).limit(limit);
+}
+
+export async function getNewsArticlesByCategory(category: string, limit: number = 20) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news articles: database not available");
+    return [];
+  }
+  return await db.select().from(newsArticles)
+    .where(eq(newsArticles.category, category as any))
+    .orderBy(desc(newsArticles.publishedAt))
+    .limit(limit);
+}
+
+export async function searchNewsArticles(query: string, limit: number = 20) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot search news articles: database not available");
+    return [];
+  }
+  return await db.select().from(newsArticles)
+    .where(like(newsArticles.title, `%${query}%`))
+    .orderBy(desc(newsArticles.publishedAt))
+    .limit(limit);
+}
+
+export async function getNewsArticleById(id: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news article: database not available");
+    return undefined;
+  }
+  const result = await db.select().from(newsArticles).where(eq(newsArticles.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createNewsArticle(data: InsertNewsArticle) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create news article: database not available");
+    return;
+  }
+  try {
+    await db.insert(newsArticles).values(data);
+    // Fetch the created article to return it
+    const result = await db.select().from(newsArticles).where(eq(newsArticles.url, data.url)).limit(1);
+    return result.length > 0 ? result[0] : undefined;
+  } catch (error) {
+    // Handle duplicate URL constraint
+    console.warn("[Database] Article URL already exists:", data.url);
+    return null;
+  }
+}
+
+export async function updateNewsArticle(id: number, data: Partial<InsertNewsArticle>) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update news article: database not available");
+    return;
+  }
+  await db.update(newsArticles).set(data).where(eq(newsArticles.id, id));
+}
+
+export async function deleteNewsArticle(id: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete news article: database not available");
+    return;
+  }
+  await db.delete(newsArticles).where(eq(newsArticles.id, id));
+}
+
+export async function deleteOldNewsArticles(daysOld: number = 30) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete old news articles: database not available");
+    return;
+  }
+  const cutoffDate = new Date(Date.now() - daysOld * 24 * 60 * 60 * 1000);
+  await db.delete(newsArticles).where(lt(newsArticles.publishedAt, cutoffDate));
+}
+
+// ═══ NEWS FEEDS QUERIES ═══
+export async function getAllNewsFeeds() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news feeds: database not available");
+    return [];
+  }
+  return await db.select().from(newsFeeds);
+}
+
+export async function getActiveNewsFeeds() {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get active news feeds: database not available");
+    return [];
+  }
+  return await db.select().from(newsFeeds).where(eq(newsFeeds.isActive, "true"));
+}
+
+export async function getNewsFeedsByCategory(category: string) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news feeds: database not available");
+    return [];
+  }
+  return await db.select().from(newsFeeds)
+    .where(and(eq(newsFeeds.category, category as any), eq(newsFeeds.isActive, "true" as any)));
+}
+
+export async function getNewsFeedById(id: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get news feed: database not available");
+    return undefined;
+  }
+  const result = await db.select().from(newsFeeds).where(eq(newsFeeds.id, id)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function createNewsFeed(data: InsertNewsFeed) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create news feed: database not available");
+    return;
+  }
+  await db.insert(newsFeeds).values(data);
+  // Fetch the created feed to return it
+  const result = await db.select().from(newsFeeds).where(eq(newsFeeds.url, data.url)).limit(1);
+  return result.length > 0 ? result[0] : undefined;
+}
+
+export async function updateNewsFeed(id: number, data: Partial<InsertNewsFeed>) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot update news feed: database not available");
+    return;
+  }
+  await db.update(newsFeeds).set(data).where(eq(newsFeeds.id, id));
+}
+
+export async function deleteNewsFeed(id: number) {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot delete news feed: database not available");
+    return;
+  }
+  await db.delete(newsFeeds).where(eq(newsFeeds.id, id));
 }
