@@ -211,3 +211,21 @@
 - [x] Agregar perspectiva de Comprando América en cada nota
 - [x] Poblar base de datos con artículos editoriales completos
 - [x] Actualizar tests para nueva estructura
+
+
+## Página de Ruta Inmobiliaria en Estados Unidos - Febrero 2026
+- [x] Crear nueva página /ruta-inmobiliaria-en-estados-unidos con contenido de evento privado
+- [x] Implementar sección hero con información del evento (fecha, hora, ubicación, cupo)
+- [x] Agregar descripción de qué trata el evento y a quién está dirigido
+- [x] Implementar sección de agenda (mañana y tarde)
+- [x] Agregar sección de oportunidades (Fondo de Tierra + Single Family Homes)
+- [x] Implementar sección de precios con descuento por fecha
+- [x] Integrar botón de registro por WhatsApp
+- [x] Integrar botón de pago con Clover
+- [x] Agregar sección FAQ con preguntas frecuentes expandibles
+- [ ] Incluir perfil de Edmundo Treviño con foto (placeholder)
+- [ ] Agregar sección de evidencia/testimonios de eventos anteriores
+- [ ] Implementar sección de "Por qué asistir" con beneficios clave
+- [x] Agregar sección de requisitos y perfil ideal del inversionista
+- [ ] Crear componente de contador de cupos disponibles
+- [x] Verificar diseño responsive y consistencia visual
