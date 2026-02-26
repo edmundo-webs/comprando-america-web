@@ -7,7 +7,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProspectForm from "@/components/ProspectForm";
-import { NewsHighlights } from "@/components/NewsHighlights";
+
 import { useInView } from "@/hooks/useInView";
 import { useCountUp } from "@/hooks/useCountUp";
 import { IMAGES, EXTERNAL_LINKS } from "@/lib/constants";
@@ -565,8 +565,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Noticias Destacadas */}
-      <NewsHighlights />
+
 
       <Footer />
     </div>

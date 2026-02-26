@@ -229,3 +229,12 @@
 - [x] Agregar sección de requisitos y perfil ideal del inversionista
 - [ ] Crear componente de contador de cupos disponibles
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Reorganización de Navegación - Febrero 2026
+- [x] Actualizar componente Navbar con nueva estructura de menú
+- [x] Mover "Formación" dentro del desplegable de "Recursos"
+- [x] Crear nuevo botón "Próximos Eventos" con desplegable
+- [x] Agregar "Ruta Inmobiliaria" dentro del desplegable de "Próximos Eventos"
+- [x] Eliminar sección "Noticias Destacadas" de la página Home
+- [x] Verificar todos los enlaces de navegación funcionan correctamente
