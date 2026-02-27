@@ -238,3 +238,7 @@
 - [x] Agregar "Ruta Inmobiliaria" dentro del desplegable de "Próximos Eventos"
 - [x] Eliminar sección "Noticias Destacadas" de la página Home
 - [x] Verificar todos los enlaces de navegación funcionan correctamente
+
+
+## Agregar Imágenes a Ruta Inmobiliaria - Febrero 2026
+- [x] Agregar imagen de Fondo de Tierra Estratégica a la sección de Oportunidades

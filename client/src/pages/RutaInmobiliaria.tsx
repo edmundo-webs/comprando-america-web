@@ -358,7 +358,15 @@ export default function RutaInmobiliaria() {
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {/* Fondo de Tierra */}
               <FadeIn delay={0.1}>
-                <Card className="bg-[oklch(0.15_0.03_250)] border-white/5 hover:border-primary/30 transition-all">
+                <Card className="bg-[oklch(0.15_0.03_250)] border-white/5 hover:border-primary/30 transition-all overflow-hidden">
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SUszecpwsJYLzngp.jpg"
+                      alt="Fondo de Tierra Estratégica"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250)] to-transparent" />
+                  </div>
                   <CardContent className="p-8">
                     <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
                       <Home className="w-6 h-6" />
