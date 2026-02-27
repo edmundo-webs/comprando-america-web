@@ -242,3 +242,4 @@
 
 ## Agregar Imágenes a Ruta Inmobiliaria - Febrero 2026
 - [x] Agregar imagen de Fondo de Tierra Estratégica a la sección de Oportunidades
+- [x] Agregar imagen de Single Family Homes a la sección de Oportunidades
