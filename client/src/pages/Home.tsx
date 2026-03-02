@@ -577,18 +577,18 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
             <FadeIn delay={0.1}>
               <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8">
                 <h3 className="text-xl font-serif text-primary mb-6">✓ Es para ti si...</h3>
                 <ul className="space-y-3">
                   {[
-                    "Valoras el proceso sobre la velocidad",
-                    "Buscas acompañamiento real",
-                    "Entiendes el riesgo",
-                    "Quieres ejecutar con orden",
-                    "Tienes capital para invertir",
-                    "Buscas diversificación internacional"
+                    "Puedes invertir $100,000 USD o más",
+                    "Buscas diversificación internacional estructurada",
+                    "Valoras proceso sobre improvisación",
+                    "Entiendes que proteger capital es prioridad",
+                    "Quieres acompañamiento real, no teoría",
+                    "Buscas ejecutar con orden y criterio"
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-white/80">
                       <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
@@ -606,10 +606,11 @@ export default function Home() {
                   {[
                     "Buscas oportunidades rápidas sin análisis",
                     "Esperas que otros tomen decisiones por ti",
-                    "No tienes capital suficiente",
+                    "No tienes capital disponible",
                     "Quieres comisiones o intermediarios",
                     "Buscas cursos o mentoría genérica",
-                    "No estás comprometido con la ejecución"
+                    "No estás comprometido con la ejecución",
+                    "Buscas resultados inmediatos sin estructura"
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-white/80">
                       <span className="text-red-400 font-bold mt-0.5">✕</span>
@@ -620,6 +621,20 @@ export default function Home() {
               </div>
             </FadeIn>
           </div>
+
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 rounded-xl p-8">
+              <p className="text-lg text-white/80 mb-4">
+                Esto no es para todos.
+              </p>
+              <p className="text-xl md:text-2xl font-serif text-white mb-6">
+                Es para quien entiende que <span className="text-primary font-bold">estructurar bien es más importante que entrar rápido</span>.
+              </p>
+              <p className="text-lg text-white/70">
+                El siguiente paso no es pagar. <span className="text-primary font-semibold">Es validar si tu perfil encaja</span>.
+              </p>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
