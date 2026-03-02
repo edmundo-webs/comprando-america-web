@@ -82,20 +82,20 @@ export default function Home() {
                 y acompañamiento real
               </h1>
               <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-6 max-w-2xl">
-                Comprando América es una membresía privada para empresarios e inversionistas latinos que buscan expandir, diversificar o proteger su patrimonio en Estados Unidos sin improvisar ni cometer errores costosos.
+                Invierte desde $100,000 dólares en Estados Unidos con estructura legal, fiscal y migratoria correcta desde el inicio.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 mb-8 max-w-2xl">
                 <div className="flex items-center gap-2 text-white/80">
                   <CheckCircle2 className="w-5 h-5 text-primary" />
-                  <span className="text-sm">+50 estructuras creadas</span>
+                  <span className="text-sm">Diagnóstico estratégico personalizado</span>
                 </div>
                 <div className="flex items-center gap-2 text-white/80">
                   <CheckCircle2 className="w-5 h-5 text-primary" />
-                  <span className="text-sm">Viajes de inspección reales</span>
+                  <span className="text-sm">Plan de inversión en 30 días</span>
                 </div>
                 <div className="flex items-center gap-2 text-white/80">
                   <CheckCircle2 className="w-5 h-5 text-primary" />
-                  <span className="text-sm">Inversiones ejecutadas</span>
+                  <span className="text-sm">Ejecución estructurada en 60–90 días</span>
                 </div>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">

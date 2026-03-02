@@ -243,3 +243,10 @@
 ## Agregar Imágenes a Ruta Inmobiliaria - Febrero 2026
 - [x] Agregar imagen de Fondo de Tierra Estratégica a la sección de Oportunidades
 - [x] Agregar imagen de Single Family Homes a la sección de Oportunidades
+
+
+## Actualización de Textos - Página de Inicio - Febrero 2026
+- [x] Cambiar descripción principal de membresía en sección hero
+- [x] Actualizar stats de "+50 estructuras creadas" a "Diagnóstico estratégico personalizado"
+- [x] Actualizar stats de "Viajes de inspección todos los meses" a "Plan de inversión en 30 días"
+- [x] Actualizar stats de "Inversiones ejecutadas" a "Ejecución estructurada en 60–90 días"
