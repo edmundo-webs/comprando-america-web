@@ -368,6 +368,81 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ 5.5️⃣ PERFIL IDEAL DEL MIEMBRO ═══ */}
+      <section className="section-darker py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Perfil Ideal</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-8">
+                Esta membresía es para ti si:
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
+            <FadeIn delay={0.1}>
+              <div className="bg-gradient-to-br from-primary/20 to-transparent border border-primary/30 rounded-xl p-8">
+                <h3 className="text-xl font-serif text-white mb-6 flex items-center gap-2">
+                  <CheckCircle2 className="w-6 h-6 text-primary" />
+                  Para ti
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Puedes invertir $100,000 USD o más",
+                    "Buscas diversificación internacional estructurada",
+                    "Valoras proceso sobre improvisación",
+                    "Entiendes que proteger capital es prioridad",
+                    "Quieres acompañamiento real, no teoría"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-white/80">
+                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8">
+                <h3 className="text-xl font-serif text-white mb-6 flex items-center gap-2">
+                  <span className="text-red-400 font-bold text-lg">✕</span>
+                  No es para
+                </h3>
+                <ul className="space-y-4">
+                  {[
+                    "Quien busca oportunidades rápidas",
+                    "Quien no tiene capital disponible",
+                    "Quien espera que otros decidan por él",
+                    "Quien busca cursos"
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-white/70">
+                      <span className="text-red-400 font-bold text-lg mt-0.5">✕</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+          </div>
+
+          <FadeIn>
+            <div className="text-center bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-xl p-8 max-w-2xl mx-auto">
+              <p className="text-lg text-white/80 mb-4">
+                <span className="font-semibold">Esto no es para todos.</span>
+              </p>
+              <p className="text-lg text-primary font-semibold mb-6">
+                Es para quien entiende que estructurar bien es más importante que entrar rápido.
+              </p>
+              <p className="text-white/70">
+                El siguiente paso no es pagar. Es validar si tu perfil encaja.
+              </p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ 6️⃣ RESULTADOS Y MÉTRICAS ═══ */}
       <section className="section-dark py-20 md:py-24">
         <div className="container">
