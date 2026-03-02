@@ -118,7 +118,7 @@ export default function RutaInmobiliaria() {
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
           >
-            <source src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/XJAQfZyAnMnSwlpM.mp4" type="video/mp4" />
+            <source src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/gyTEyuXRYfIMlAUS.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.95)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
         </div>
