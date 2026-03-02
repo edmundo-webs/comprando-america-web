@@ -271,3 +271,8 @@
 - [x] Agregar sección "No es para..." con 4 perfiles que no encajan
 - [x] Agregar conclusión sobre estructura vs rapidez
 - [x] Incluir CTA final sobre validación de perfil
+
+
+## Agregar Sección "¿Por Qué es Diferente?" - Marzo 2026
+- [x] Crear sección con 5 puntos diferenciadores
+- [x] Agregar mensaje final "Somos sistema de inversión. No marketing de proyectos."

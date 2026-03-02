@@ -368,6 +368,47 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ 4.5️⃣ POR QUÉ ES DIFERENTE ═══ */}
+      <section className="section-darker py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-12 text-center">
+                ¿Por qué es diferente?
+              </h2>
+
+              <div className="space-y-6 mb-12">
+                {[
+                  "No vivimos de comisiones por vender activos.",
+                  "No promovemos cualquier oportunidad.",
+                  "No mezclamos migración con improvisación.",
+                  "No dejamos que inviertas sin estructura bancaria y fiscal clara.",
+                  "Solo el 20% de las oportunidades evaluadas son presentadas."
+                ].map((item, i) => (
+                  <FadeIn key={i} delay={i * 0.1}>
+                    <div className="flex items-start gap-4 bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-lg p-6 hover:border-primary/20 transition-all duration-500">
+                      <div className="text-primary text-2xl font-bold shrink-0 mt-1">✓</div>
+                      <p className="text-white/80 text-lg leading-relaxed">{item}</p>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+
+              <FadeIn>
+                <div className="text-center bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 rounded-xl p-8">
+                  <p className="text-xl md:text-2xl font-serif text-white">
+                    Somos <span className="text-primary font-bold">sistema de inversión</span>.
+                  </p>
+                  <p className="text-xl md:text-2xl font-serif text-white mt-2">
+                    No <span className="text-primary font-bold">marketing de proyectos</span>.
+                  </p>
+                </div>
+              </FadeIn>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ 5.5️⃣ PERFIL IDEAL DEL MIEMBRO ═══ */}
       <section className="section-darker py-20 md:py-24">
         <div className="container">
