@@ -294,3 +294,5 @@
 - [x] Cambiar "a través de una membresía anual" a "Membresía privada de acceso por pago único" en página Quiénes Somos
 - [x] Mantener texto original del hero en página de inicio: "Invierte desde $100,000 dólares..."
 - [x] Agregar nuevo copy estratégico a página Quiénes Somos (comunidad privada, puente estratégico, no somos brokers)
+
+- [x] Mejorar imágenes de oportunidades (Fondo de Tierra y Single Family Homes) con ajustes de contraste, brillo, saturación y nitidez

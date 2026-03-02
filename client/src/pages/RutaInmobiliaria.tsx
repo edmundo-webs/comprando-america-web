@@ -361,7 +361,7 @@ export default function RutaInmobiliaria() {
                 <Card className="bg-[oklch(0.15_0.03_250)] border-white/5 hover:border-primary/30 transition-all overflow-hidden">
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SUszecpwsJYLzngp.jpg"
+                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/AJaAcwphYIqTLsYA.jpg"
                       alt="Fondo de Tierra Estratégica"
                       className="w-full h-full object-cover"
                     />
@@ -388,7 +388,7 @@ export default function RutaInmobiliaria() {
                 <Card className="bg-[oklch(0.15_0.03_250)] border-primary/20 hover:border-primary/50 transition-all overflow-hidden">
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/wtJPexOdTgsCpioB.jpeg"
+                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/VtIUGxjVltVLlaTv.jpg"
                       alt="Single Family Homes"
                       className="w-full h-full object-cover"
                     />
