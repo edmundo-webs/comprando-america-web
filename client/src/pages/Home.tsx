@@ -190,15 +190,15 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
             <FadeIn delay={0.1}>
               <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8">
-                <h3 className="text-xl font-serif text-white mb-4">No es...</h3>
-                <ul className="space-y-3">
+                <h3 className="text-xl font-serif text-white mb-6">No es...</h3>
+                <ul className="space-y-4">
                   {[
                     "Un curso",
-                    "Un despacho migratorio",
-                    "Un intermediario de comisiones"
+                    "Una asesoría genérica",
+                    "Un despacho migratorio"
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-white/70">
-                      <span className="text-red-400 font-bold mt-0.5">✕</span>
+                      <span className="text-red-400 font-bold text-lg mt-0.5">✕</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -208,11 +208,11 @@ export default function Home() {
 
             <FadeIn delay={0.2}>
               <div className="bg-gradient-to-br from-primary/20 to-transparent border border-primary/30 rounded-xl p-8">
-                <h3 className="text-xl font-serif text-white mb-4">Es...</h3>
+                <h3 className="text-xl font-serif text-white mb-6">Es...</h3>
                 <p className="text-white/80 mb-6">
-                  Un sistema privado para decidir mejor.
+                  Un sistema privado de decisión y ejecución para inversionistas latinoamericanos que quieren diversificar patrimonio en Estados Unidos con estructura profesional.
                 </p>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   {[
                     "Metodología estructurada",
                     "Filtro estratégico riguroso",

@@ -260,7 +260,7 @@
 
 
 ## Actualizar Sección "Qué es Comprando América" - Marzo 2026
-- [ ] Reescribir sección con formato de comparación "No es..." vs "Es..."
-- [ ] Agregar tarjeta "No es..." con 3 items negativos
-- [ ] Agregar tarjeta "Es..." con descripción y 3 características positivas
-- [ ] Agregar sección final "Aquí no decidimos por ti. Decidimos contigo."
+- [x] Reescribir sección con formato de comparación "No es..." vs "Es..."
+- [x] Agregar tarjeta "No es..." con 3 items negativos
+- [x] Agregar tarjeta "Es..." con descripción y 3 características positivas
+- [x] Agregar sección final "Aquí no decidimos por ti. Decidimos contigo."
