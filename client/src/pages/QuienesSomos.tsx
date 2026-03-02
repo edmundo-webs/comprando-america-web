@@ -32,7 +32,7 @@ export default function QuienesSomos() {
               <span className="gradient-text-primary">estadounidense</span>
             </h1>
             <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl">
-              Comprando América es una comunidad privada de empresarios e inversionistas latinos que, a través de una membresía anual, acceden a oportunidades de inversión en Estados Unidos.
+              Comprando América es una comunidad privada de empresarios e inversionistas latinos que, a través de una membresía privada de acceso por pago único, acceden a oportunidades de inversión en Estados Unidos.
             </p>
           </motion.div>
         </div>

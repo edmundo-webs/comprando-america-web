@@ -282,3 +282,13 @@
 - [x] Expandir lista "Es para ti si..." con 6 características
 - [x] Expandir lista "No es para ti si..." con 7 características
 - [x] Actualizar mensaje final sobre validación de perfil
+
+
+## Actualizar Copy del Sitio Web - Marzo 2026
+- [ ] Cambiar "Inversión mínima desde 25,000 USD" por "Inversión mínima por oportunidad: 100,000 dólares."
+- [ ] Cambiar "Membresía anual privada" por "Membresía privada de acceso por pago único."
+- [ ] Cambiar "Compra y adquisición de negocios en Estados Unidos" por "Inversión estratégica en oportunidades previamente filtradas y curadas en Estados Unidos."
+
+
+## Actualizar Copy del Sitio - Marzo 2026
+- [x] Cambiar "a través de una membresía anual" a "Membresía privada de acceso por pago único" en página Quiénes Somos
