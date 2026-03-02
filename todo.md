@@ -292,4 +292,5 @@
 
 ## Actualizar Copy del Sitio - Marzo 2026
 - [x] Cambiar "a través de una membresía anual" a "Membresía privada de acceso por pago único" en página Quiénes Somos
-- [x] Actualizar subtítulo del hero en página de inicio con nueva propuesta de valor (comunidad privada, puente estratégico, no somos brokers)
+- [x] Mantener texto original del hero en página de inicio: "Invierte desde $100,000 dólares..."
+- [x] Agregar nuevo copy estratégico a página Quiénes Somos (comunidad privada, puente estratégico, no somos brokers)
