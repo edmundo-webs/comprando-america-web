@@ -121,43 +121,59 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ 2️⃣ EL PROBLEMA ═══ */}
+      {/* ═══ 2️⃣ EL PROBLEMA REAL ═══ */}
       <section className="section-dark py-20 md:py-24">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6 font-mono">El Problema Real</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
                 El error no es invertir en Estados Unidos
               </h2>
               <p className="text-2xl md:text-3xl font-serif text-primary mb-8">
                 El error es hacerlo sin estructura.
               </p>
-              <p className="text-lg text-white/70 leading-relaxed">
-                Muchos inversionistas cometen errores evitables que cuestan dinero y tiempo.
+              <p className="text-lg text-white/70 leading-relaxed mb-8">
+                Cada año, inversionistas latinos pierden capital por:
               </p>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
             {[
-              "Compran tarde activos sobrevalorados",
-              "Invierten solo por la visa",
-              "Confían en propuestas sin due diligence real",
-              "Estructuran mal su LLC",
-              "No tienen plan de salida"
+              { title: "Comprar activos sobrevalorados", desc: "Sin análisis real del mercado" },
+              { title: "Invertir solo por la visa", desc: "Sin estrategia de inversión clara" },
+              { title: "Confiar en propuestas sin due diligence real", desc: "Sin validación de oportunidades" },
+              { title: "Estructurar mal su LLC", desc: "Y pagar impuestos innecesarios" },
+              { title: "No tener plan de salida", desc: "Sin estrategia de liquidez" }
             ].map((problem, i) => (
               <FadeIn key={i} delay={i * 0.05}>
                 <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 font-semibold text-sm">
+                  <div className="w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0 font-semibold text-sm mt-1">
                     ✕
                   </div>
-                  <p className="text-white/80">{problem}</p>
+                  <div>
+                    <p className="text-white font-semibold">{problem.title}</p>
+                    <p className="text-white/60 text-sm mt-1">{problem.desc}</p>
+                  </div>
                 </div>
               </FadeIn>
             ))}
           </div>
+
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center">
+              <p className="text-lg text-white/70 leading-relaxed">
+                <span className="text-white font-semibold">Invertir sin sistema cuesta más que no invertir.</span>
+              </p>
+              <p className="text-lg text-white/70 leading-relaxed mt-4">
+                Nosotros evitamos esos errores desde el día uno.
+              </p>
+            </div>
+          </FadeIn>
         </div>
       </section>
+
 
       {/* ═══ 3️⃣ QUÉ ES COMPRANDO AMÉRICA ═══ */}
       <section className="section-darker py-20 md:py-24">

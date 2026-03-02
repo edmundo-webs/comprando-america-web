@@ -250,3 +250,17 @@
 - [x] Actualizar stats de "+50 estructuras creadas" a "Diagnóstico estratégico personalizado"
 - [x] Actualizar stats de "Viajes de inspección todos los meses" a "Plan de inversión en 30 días"
 - [x] Actualizar stats de "Inversiones ejecutadas" a "Ejecución estructurada en 60–90 días"
+
+
+## Agregar Sección "El Problema Real" - Marzo 2026
+- [x] Crear nueva sección "El Problema Real" en la página de inicio
+- [x] Agregar título y subtítulo con el mensaje principal
+- [x] Crear tarjetas de errores comunes (5 tarjetas con iconos de error)
+- [x] Agregar conclusión sobre evitar errores desde el día uno
+
+
+## Actualizar Sección "Qué es Comprando América" - Marzo 2026
+- [ ] Reescribir sección con formato de comparación "No es..." vs "Es..."
+- [ ] Agregar tarjeta "No es..." con 3 items negativos
+- [ ] Agregar tarjeta "Es..." con descripción y 3 características positivas
+- [ ] Agregar sección final "Aquí no decidimos por ti. Decidimos contigo."
