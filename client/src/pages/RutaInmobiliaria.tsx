@@ -365,7 +365,7 @@ export default function RutaInmobiliaria() {
                       alt="Fondo de Tierra Estratégica"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250)] to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.2)] to-transparent" />
                   </div>
                   <CardContent className="p-8">
                     <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
@@ -392,7 +392,7 @@ export default function RutaInmobiliaria() {
                       alt="Single Family Homes"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250)] to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.2)] to-transparent" />
                   </div>
                   <CardContent className="p-8">
                     <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
