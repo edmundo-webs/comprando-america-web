@@ -109,18 +109,19 @@ export default function RutaInmobiliaria() {
       <Navbar />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative min-h-screen flex items-center pt-20 pb-20 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
+      <section className="relative isolate min-h-screen flex items-center pt-20 pb-20 overflow-hidden">
+        <div className="absolute inset-0 z-0">
           <video
             autoPlay
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover"
+            preload="auto"
+            className="h-full w-full object-cover"
           >
             <source src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/gyTEyuXRYfIMlAUS.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.95)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.95)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)] pointer-events-none" />
         </div>
         <div className="container relative z-10">
           <div className="max-w-3xl">
