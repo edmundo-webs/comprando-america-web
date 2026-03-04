@@ -99,14 +99,14 @@ export default function LLC() {
                 </p>
 
                 <h3 className="text-2xl font-serif text-white mb-6">Te permite:</h3>
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-4 mb-8">
                   {[
-                    "Proteger tu patrimonio personal",
-                    "Operar legalmente",
-                    "Abrir cuentas bancarias empresariales",
-                    "Facturar y firmar contratos",
-                    "Construir crédito comercial",
-                    "Acceder a beneficios fiscales (según tu actividad)",
+                    "Proteger tu patrimonio personal.",
+                    "Operar legalmente.",
+                    "Abrir cuentas bancarias empresariales.",
+                    "Facturar y firmar contratos.",
+                    "Construir crédito comercial.",
+                    "Acceder a beneficios fiscales (según tu actividad).",
                   ].map((benefit) => (
                     <div key={benefit} className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
@@ -114,22 +114,10 @@ export default function LLC() {
                     </div>
                   ))}
                 </div>
-              </div>
 
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  { title: "No necesitas residencia", desc: "Puedes vivir en cualquier país" },
-                  { title: "No necesitas vivir en EE.UU.", desc: "Operación 100% remota" },
-                  { title: "Abre de manera remota", desc: "Proceso completamente digital" },
-                ].map((item) => (
-                  <div
-                    key={item.title}
-                    className="bg-white/5 border border-white/10 rounded-lg p-6 hover:border-primary/30 transition-colors"
-                  >
-                    <h4 className="font-semibold text-white mb-2">{item.title}</h4>
-                    <p className="text-white/60 text-sm">{item.desc}</p>
-                  </div>
-                ))}
+                <h3 className="text-lg font-semibold text-white mb-4">No necesitas residencia.</h3>
+                <p className="text-white/80 mb-4">No necesitas vivir en Estados Unidos.</p>
+                <p className="text-white/80">Puedes abrirla de manera remota.</p>
               </div>
             </motion.div>
           </div>
@@ -148,22 +136,19 @@ export default function LLC() {
             <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 text-center">
               ¿Qué incluye nuestro servicio?
             </h2>
-            <p className="text-center text-white/60 mb-12 text-lg">
-              Costo del servicio: <span className="text-primary font-semibold">$1,499.00 USD</span>
-            </p>
-            <p className="text-center text-white/50 mb-12 text-sm">
-              Disponible para Texas y Florida
+            <p className="text-center text-white/60 mb-4 text-lg">
+              Desde <span className="text-primary font-semibold">$1,499 USD</span>
             </p>
 
             <div className="max-w-3xl mx-auto bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 rounded-2xl p-8 md:p-12 mb-12">
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {[
-                  "Registro de tu LLC en Texas o Florida",
-                  "Registered Agent (1 año)",
-                  "Solicitud de EIN (número fiscal federal)",
-                  "Introducción bancaria para cuenta empresarial",
-                  "Asistencia para tarjeta de crédito garantizada",
-                  "Virtual Office (opcional) - Te acompañamos en todo el proceso",
+                  "Registro de tu LLC en Texas o Florida.",
+                  "Registered Agent (1 año).",
+                  "Solicitud de EIN (número fiscal federal).",
+                  "Introducción bancaria para cuenta empresarial.",
+                  "Asistencia para tarjeta de crédito garantizada.",
+                  "Virtual Office (opcional) Te acompañamos en todo el proceso.",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-4">
                     <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
@@ -174,7 +159,7 @@ export default function LLC() {
 
               <div className="mt-8 pt-8 border-t border-white/10">
                 <p className="text-white font-semibold text-lg">
-                  🎯 NO SOLO LA REGISTRAMOS. LA DEJAMOS LISTA PARA OPERAR.
+                  NO SOLO LA REGISTRAMOS. LA DEJAMOS LISTA PARA OPERAR.
                 </p>
               </div>
             </div>
@@ -198,11 +183,11 @@ export default function LLC() {
             <div className="max-w-4xl mx-auto">
               <div className="space-y-6">
                 {[
-                  { num: "1", title: "Confirmas tu pago", desc: "" },
-                  { num: "2", title: "Llenas nuestro formulario", desc: "(5-10 minutos)" },
-                  { num: "3", title: "Registramos tu LLC", desc: "(24-72 hrs)" },
-                  { num: "4", title: "Tramitamos tu EIN", desc: "(8-12 semanas si eres extranjero)" },
-                  { num: "5", title: "Te conectamos con banco", desc: "" },
+                  { num: "1", title: "Confirmas tu pago.", desc: "" },
+                  { num: "2", title: "Llenas nuestro formulario", desc: "(5–10 minutos)" },
+                  { num: "3", title: "Registramos tu LLC", desc: "(24–72 hrs)" },
+                  { num: "4", title: "Tramitamos tu EIN", desc: "(8–12 semanas si eres extranjero)" },
+                  { num: "5", title: "Te conectamos con banco.", desc: "" },
                   { num: "6", title: "Empiezas a operar", desc: "" },
                 ].map((step) => (
                   <div key={step.num} className="flex gap-6">
@@ -242,7 +227,7 @@ export default function LLC() {
                 {[
                   "Una LLC no es una visa.",
                   "No sustituye asesoría legal o fiscal.",
-                  "Sí es el primer paso serio para operar en Estados Unidos.",
+                  "Sí es el primer paso serio para operar en Estados Unidos",
                 ].map((item) => (
                   <div key={item} className="flex items-start gap-3">
                     <div className="w-2 h-2 rounded-full bg-primary mt-2 shrink-0" />
@@ -253,7 +238,10 @@ export default function LLC() {
 
               <div className="bg-primary/20 border border-primary/40 rounded-lg p-6">
                 <p className="text-white/90 text-lg leading-relaxed mb-6">
-                  Si quieres operar, invertir o proteger activos en Estados Unidos, es momento de hacerlo bien.
+                  Si quieres operar, invertir o proteger activos en Estados Unidos, es momento de hacerlo bien. Escríbenos por WhatsApp: <span className="text-primary font-semibold">+52 1 33 4676 6178</span>
+                </p>
+                <p className="text-white/90 text-lg leading-relaxed mb-6">
+                  email: <span className="text-primary font-semibold">contact@comprandoamerica.com</span>
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
