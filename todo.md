@@ -300,3 +300,21 @@
 - [x] Crear nueva página /llc basada en PDF de Apertura de LLC (incluye hero, qué es LLC, servicios, proceso y sección importante)
 
 - [x] Actualizar página /llc con información completa (costo $1,499.00 USD, disponible para Texas y Florida, link de pago Clover)
+
+
+## Rediseño Landing Page LLC - Marzo 2026
+
+- [x] Rediseñar hero section con título "Abre tu LLC en Estados Unidos de forma correcta desde el inicio"
+- [x] Agregar sección de problemas: "Abrir una LLC no es solo llenar un formulario"
+- [x] Implementar sección de solución: "Así estructuramos tu LLC correctamente" con 5 pasos
+- [x] Crear comparativa visual Texas vs Florida
+- [x] Agregar sección de beneficios del servicio
+- [x] Implementar sección de proceso visual (4 pasos)
+- [x] Agregar sección de autoridad con Edmundo Treviño
+- [ ] Agregar sección de testimonios de clientes
+- [x] Implementar FAQ con 4 preguntas frecuentes
+- [x] Agregar CTA final "Empieza tu empresa en Estados Unidos hoy"
+- [ ] Optimizar imágenes profesionales (empresarios, skylines, documentos)
+- [ ] Implementar botón sticky con CTA principal
+- [ ] Agregar formulario de conversión y pixel Meta
+- [ ] Configurar eventos de conversión en Google Analytics
