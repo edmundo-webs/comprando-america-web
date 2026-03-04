@@ -337,4 +337,4 @@
 - [x] Optimizar para mobile first (70-85% del tráfico será móvil)
 - [x] Agregar microtexto bajo CTA: "✔ Proceso guiado ✔ Soporte en español ✔ Servicio especializado"
 
-- [x] Agregar imagen de firma/documentos en el hero de página LLC (lado derecho, visible en desktop)
+- [x] Agregar imagen de documentos de incorporación en el hero de página LLC (lado derecho, visible en desktop)
