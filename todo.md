@@ -318,3 +318,21 @@
 - [ ] Implementar botón sticky con CTA principal
 - [ ] Agregar formulario de conversión y pixel Meta
 - [ ] Configurar eventos de conversión en Google Analytics
+
+
+## Rediseño Landing Page LLC v2.0 - Marzo 2026
+
+- [x] Agregar comparador interactivo "¿Qué estado es mejor para tu LLC?" con 3 opciones (negocio físico, digital, inversión)
+- [x] Implementar calculadora simple "¿Qué estructura necesitas?" con 2 preguntas
+- [x] Agregar prueba social dinámica: notificaciones de empresarios creando LLC
+- [ ] Implementar contador visual (empresarios atendidos, empresas estructuradas, países)
+- [ ] Agregar testimonios con foto, nombre, ciudad y comentario
+- [x] Reemplazar botones genéricos por botones separados: "Crear mi LLC en Texas" y "Crear mi LLC en Florida"
+- [x] Vincular botón Texas a: https://www.clover.com/pay-widgets/b3f65360-1554-4b11-9175-f415a63ff74a
+- [x] Vincular botón Florida a: https://link.clover.com/urlshortener/SFHYf2
+- [x] Agregar botón sticky mobile "Crear mi LLC" en barra inferior
+- [x] Agregar botón flotante WhatsApp
+- [x] Implementar Meta Pixel con eventos (ViewContent, InitiateCheckout, Purchase)
+- [ ] Implementar Google Analytics con eventos de conversión
+- [x] Optimizar para mobile first (70-85% del tráfico será móvil)
+- [x] Agregar microtexto bajo CTA: "✔ Proceso guiado ✔ Soporte en español ✔ Servicio especializado"
