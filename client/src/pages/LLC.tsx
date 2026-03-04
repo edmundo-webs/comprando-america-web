@@ -69,7 +69,8 @@ export default function LLC() {
         </div>
         
         <div className="container">
-          <div className="max-w-3xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="max-w-3xl">
             <motion.div {...fadeInUp}>
               <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Solución Empresarial
@@ -131,6 +132,21 @@ export default function LLC() {
                   <span>Servicio especializado</span>
                 </div>
               </div>
+            </motion.div>
+            </div>
+
+            {/* Imagen del hero */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="hidden lg:block"
+            >
+              <img
+                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/UFsBMIDSmOkQvHZT.jpg"
+                alt="Firma de documentos LLC"
+                className="w-full h-auto rounded-xl shadow-2xl"
+              />
             </motion.div>
           </div>
         </div>
