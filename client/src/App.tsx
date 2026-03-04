@@ -23,6 +23,7 @@ import Podcast from "./pages/Podcast";
 import News from "./pages/News";
 import NewsArticle from "./pages/NewsArticle";
 import RutaInmobiliaria from "./pages/RutaInmobiliaria";
+import LLC from "./pages/LLC";
 
 function Router() {
   return (
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/news" component={News} />
       <Route path="/news/:slug" component={NewsArticle} />
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
+      <Route path="/llc" component={LLC} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>

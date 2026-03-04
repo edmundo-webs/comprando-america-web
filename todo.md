@@ -296,3 +296,5 @@
 - [x] Agregar nuevo copy estratégico a página Quiénes Somos (comunidad privada, puente estratégico, no somos brokers)
 
 - [x] Mejorar imágenes de oportunidades (Fondo de Tierra y Single Family Homes) con ajustes de contraste, brillo, saturación y nitidez
+
+- [x] Crear nueva página /llc basada en PDF de Apertura de LLC (incluye hero, qué es LLC, servicios, proceso y sección importante)
