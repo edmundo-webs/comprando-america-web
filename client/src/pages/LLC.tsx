@@ -76,7 +76,7 @@ export default function LLC() {
                 Solución Empresarial
               </span>
               
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white leading-[1.2] mb-6">
                 Abre tu empresa en Estados Unidos de forma <span className="gradient-text-primary">correcta</span> desde el inicio
               </h1>
               
