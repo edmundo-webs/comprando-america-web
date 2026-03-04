@@ -27,22 +27,22 @@ export default function LLC() {
               </span>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
                 Abre tu Empresa en{" "}
-                <span className="gradient-text-primary">Estados Unidos</span>
+                <span className="gradient-text-primary">Estados Unidos</span>.
               </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8 max-w-2xl">
-                De forma legal, simple y segura. Nosotros registramos tu LLC y la dejamos lista para operar.
+              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-2 max-w-2xl font-semibold">
+                De forma legal, simple y segura.
               </p>
 
               {/* Si quieres section */}
               <div className="bg-white/5 border border-white/10 rounded-lg p-8 mb-10 backdrop-blur-sm">
                 <h3 className="text-white font-semibold mb-4">Si quieres:</h3>
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-3">
                   {[
-                    "Operar un negocio",
-                    "Comprar un inmueble",
-                    "Invertir en Estados Unidos",
-                    "Separar tus activos personales",
-                    "Empezar a construir crédito",
+                    "Operar un negocio.",
+                    "Comprar un inmueble.",
+                    "Invertir en Estados Unidos.",
+                    "Separar tus activos personales.",
+                    "Empezar a construir crédito.",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
@@ -53,9 +53,11 @@ export default function LLC() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
-                  Solicitar Información <ArrowRight className="w-4 h-4" />
-                </Button>
+                <a href="https://link.clover.com/urlshortener/8nf2xj" target="_blank" rel="noopener noreferrer">
+                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
+                    Registrar tu LLC <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
                 <a href="https://wa.me/5213346766178" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base w-full sm:w-auto">
                     Contactar por WhatsApp
@@ -63,8 +65,14 @@ export default function LLC() {
                 </a>
               </div>
 
-              <p className="text-white/50 text-sm mt-8">
-                <strong>Probablemente necesitas una LLC.</strong> Nosotros la abrimos por ti. <strong>Sin complicaciones.</strong> ✓
+              <p className="text-white/70 text-base mt-8 leading-relaxed">
+                <strong>Probablemente necesitas una LLC.</strong>
+              </p>
+              <p className="text-white/70 text-base leading-relaxed">
+                <strong>Nosotros la abrimos por ti.</strong>
+              </p>
+              <p className="text-white/70 text-base leading-relaxed">
+                <strong>Sin complicaciones</strong>
               </p>
             </motion.div>
           </div>
@@ -141,7 +149,10 @@ export default function LLC() {
               ¿Qué incluye nuestro servicio?
             </h2>
             <p className="text-center text-white/60 mb-12 text-lg">
-              Desde <span className="text-primary font-semibold">$1,499 USD</span>
+              Costo del servicio: <span className="text-primary font-semibold">$1,499.00 USD</span>
+            </p>
+            <p className="text-center text-white/50 mb-12 text-sm">
+              Disponible para Texas y Florida
             </p>
 
             <div className="max-w-3xl mx-auto bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20 rounded-2xl p-8 md:p-12 mb-12">
@@ -246,14 +257,16 @@ export default function LLC() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="https://wa.me/5213346766178" target="_blank" rel="noopener noreferrer">
+                  <a href="https://link.clover.com/urlshortener/8nf2xj" target="_blank" rel="noopener noreferrer">
                     <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base w-full sm:w-auto">
-                      Escribir por WhatsApp
+                      Registrar tu LLC
                     </Button>
                   </a>
-                  <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base w-full sm:w-auto">
-                    contact@comprandoamerica.com
-                  </Button>
+                  <a href="https://wa.me/5213346766178" target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base w-full sm:w-auto">
+                      Contactar por WhatsApp
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>

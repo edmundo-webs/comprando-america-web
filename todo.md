@@ -298,3 +298,5 @@
 - [x] Mejorar imágenes de oportunidades (Fondo de Tierra y Single Family Homes) con ajustes de contraste, brillo, saturación y nitidez
 
 - [x] Crear nueva página /llc basada en PDF de Apertura de LLC (incluye hero, qué es LLC, servicios, proceso y sección importante)
+
+- [x] Actualizar página /llc con información completa (costo $1,499.00 USD, disponible para Texas y Florida, link de pago Clover)
