@@ -257,17 +257,17 @@ export default function Home() {
           </FadeIn>
 
           {/* Miembros destacados */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             {[
-              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-edmundo-1-ZBHsUeN5XWcFYnorWZhVBP.webp", name: "Edmundo", role: "Fundador, Cumbres" },
-              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-investor-1-XnkaAYzPskueaVkbiqdfDh.webp", name: "María", role: "Empresaria, Real Estate" },
-              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-investor-2-LktLD79F6FnYJsmMLUqfxN.webp", name: "Carlos", role: "Inversionista, Startups" },
-              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-investor-3-JBVXUB7CiWzYZTpBpJd6v6.webp", name: "Alejandra", role: "CEO, Tech Ventures" }
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-edmundo-natural-6GCimzhH43ZHfHpiPxchXK.webp", name: "Edmundo", role: "Fundador, Cumbres" },
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-maria-natural-ntb2ZHwfmdHa9s5Twxni6n.webp", name: "María", role: "Empresaria, Real Estate" },
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-carlos-natural-FkNYZdx7EF8Tbz5XxdNzos.webp", name: "Carlos", role: "Inversionista, Startups" },
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-alejandra-natural-dGMFdfBEmYRRxo6XKoABHF.webp", name: "Alejandra", role: "CEO, Tech Ventures" }
             ].map((member, i) => (
               <FadeIn key={i} delay={i * 0.1}>
                 <div className="text-center group">
                   <div className="relative mb-4 overflow-hidden rounded-xl border border-primary/20 group-hover:border-primary/50 transition-all duration-300">
-                    <img src={member.img} alt={member.name} className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <img src={member.img} alt={member.name} className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300" />
                     <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.8)] to-transparent" />
                   </div>
                   <h3 className="text-lg font-serif text-white">{member.name}</h3>
