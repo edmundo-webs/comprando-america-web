@@ -461,6 +461,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ 5️⃣ RED DE EXPERTOS ALIADOS ═══ */}
+      <section className="section-dark py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Respaldo Profesional</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                Red de Expertos Aliados
+              </h2>
+              <p className="text-lg text-white/60 mt-4 max-w-2xl mx-auto">
+                CPA, abogados especializados en migración, propiedad intelectual, real estate y derecho comercial
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn>
+            <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-96 md:h-[500px]">
+              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/gnumaucdsTZCWXNK.jpg" alt="Expertos Aliados" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.7)] to-transparent" />
+              <div className="absolute inset-0 flex items-end justify-start p-8 md:p-12">
+                <div className="max-w-2xl">
+                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-3">Estructura Legal y Fiscal Completa</h3>
+                  <p className="text-lg text-white/90">Cada inversión cuenta con respaldo de expertos en más de 10 disciplinas para asegurar que tu estructura sea correcta desde el inicio.</p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+              {[
+                { title: "CPA", desc: "Estructura fiscal optimizada" },
+                { title: "Abogado Migración", desc: "Visa E-2 y opciones legales" },
+                { title: "Propiedad Intelectual", desc: "Protección de activos" },
+                { title: "Real Estate", desc: "Inversión inmobiliaria estratégica" }
+              ].map((expert, i) => (
+                <FadeIn key={i} delay={i * 0.1}>
+                  <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 text-center hover:border-primary/30 transition-all duration-500">
+                    <h3 className="text-lg font-serif text-primary mb-2">{expert.title}</h3>
+                    <p className="text-sm text-white/60">{expert.desc}</p>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ 5.5️⃣ PERFIL IDEAL DEL MIEMBRO ═══ */}
       <section className="section-darker py-20 md:py-24">
         <div className="container">
