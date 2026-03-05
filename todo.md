@@ -431,3 +431,13 @@
 - [x] Agregar sección "Nuestra Comunidad" en Home.tsx con grid de miembros
 - [x] Integrar imagen de evento de networking con overlay de texto
 - [x] Verificar visualización correcta en desktop y mobile
+
+
+## Slider de Testimonios de Miembros - Marzo 2026
+- [x] Crear componente TestimonialSlider.tsx con tarjetas de testimonios
+- [x] Diseñar avatares neutros/siluetas para semi-anonimato
+- [x] Implementar slider horizontal con navegación manual y automática
+- [x] Agregar 6+ testimonios con estructura: nombre, ciudad, resultado, testimonio
+- [x] Reemplazar sección "Nuestra comunidad inversionistas que ya están actuando" en Home.tsx
+- [x] Alinear visualmente con diseño "Executive Noir" del sitio
+- [x] Verificar diseño responsive y consistencia visual

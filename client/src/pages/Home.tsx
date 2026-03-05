@@ -7,6 +7,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProspectForm from "@/components/ProspectForm";
+import TestimonialSlider from "@/components/TestimonialSlider";
 
 import { useInView } from "@/hooks/useInView";
 import { useCountUp } from "@/hooks/useCountUp";
@@ -613,58 +614,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ 7️⃣ TESTIMONIOS ═══ */}
-      <section className="section-darker py-20 md:py-24">
-        <div className="container">
-          <FadeIn>
-            <div className="text-center mb-16">
-              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Comunidad</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
-                Historias reales de miembros
-              </h2>
-            </div>
-          </FadeIn>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {[
-              {
-                name: "Arturo Orozco",
-                videoId: "WYNwoTzG8Ss",
-                title: "Testimonial de Arturo Orozco"
-              },
-              {
-                name: "Gerardo Bejarano",
-                videoId: "6J6IIPFsTD0",
-                title: "Testimonial de Gerardo Bejarano"
-              }
-            ].map((testimonial, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <div className="relative group rounded-xl overflow-hidden bg-[oklch(0.15_0.03_250)] border border-white/5 hover:border-primary/30 transition-all duration-500">
-                  {/* Embedded YouTube Video */}
-                  <div className="relative w-full aspect-video overflow-hidden">
-                    <iframe
-                      width="100%"
-                      height="100%"
-                      src={`https://www.youtube.com/embed/${testimonial.videoId}?rel=0&modestbranding=1`}
-                      title={testimonial.title}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0"
-                    />
-                  </div>
-                  
-                  {/* Info Section */}
-                  <div className="p-6">
-                    <h3 className="text-lg font-serif text-white mb-2">{testimonial.name}</h3>
-                    <p className="text-sm text-white/70">{testimonial.title}</p>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ═══ 7️⃣ TESTIMONIOS DE MIEMBROS ═══ */}
+      <TestimonialSlider />
 
       {/* ═══ 8️⃣ PARA QUIÉN ES / NO ES ═══ */}
       <section className="section-dark py-20 md:py-24">
