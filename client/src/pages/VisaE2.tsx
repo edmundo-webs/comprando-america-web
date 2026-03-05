@@ -1,7 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SectionHeading from "@/components/SectionHeading";
-import ProspectForm from "@/components/ProspectForm";
+
 import { useInView } from "@/hooks/useInView";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -268,7 +268,13 @@ export default function VisaE2() {
                   Completa el formulario para que nuestro equipo revise tu perfil y te contacte con más detalles sobre cómo podemos acompañarte en tu proceso de visa E-2 e inversión en Estados Unidos.
                 </p>
               </div>
-              <ProspectForm title="" />
+              <div className="flex justify-center">
+                <a href="/#solicitar-evaluacion" className="inline-block">
+                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                    Ir al Formulario <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
             </FadeIn>
           </div>
         </div>

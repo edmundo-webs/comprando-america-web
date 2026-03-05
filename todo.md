@@ -342,3 +342,10 @@
 - [x] Reducir tamaño de fuentes en hero de página LLC (de text-5xl/6xl/7xl a text-3xl/4xl/5xl) para mejorar legibilidad y escaneo rápido
 
 - [x] Agregar enlace "Formación de LLC" al submenú desplegable de Asesorías en la navegación principal
+
+
+## Remover Formularios de Páginas - Marzo 2026
+
+- [x] Remover formulario de página Visa E-2 Inversionista USA y agregar botón que redirija al formulario de inicio
+- [x] Remover formulario de página Estructura de Inversión en USA y agregar botón que redirija al formulario de inicio
+- [x] Remover formulario de página Expansión Internacional para Empresas y agregar botón que redirija al formulario de inicio
