@@ -412,3 +412,10 @@
 - [x] Crear pantalla de microcommitment para no-operadores
 - [x] Mejorar pantalla de resultados con tarjeta de perfil y readiness level
 - [x] Agregar linea de autoridad de Edmundo Trevino
+
+
+## Agregar Portada a Video de Perfilamiento - Marzo 2026
+
+- [x] Generar portada profesional con diseño corporativo
+- [x] Integrar portada como poster del video en página Perfil.tsx
+- [x] Verificar visualización correcta en desktop y mobile
