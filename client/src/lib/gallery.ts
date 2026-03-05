@@ -135,13 +135,13 @@ export const GALLERY = {
       date: "2026-03",
       alt: "Miembros escuchando presentación en Comprando América"
     },
-    instructor_taxes: {
+    instructor_taxes_money: {
       url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/BtPzeOOWUIYnkqTh.JPG",
-      title: "Instructor - Presentación Impuestos",
+      title: "Instructor - Presentación Impuestos y Dinero",
       description: "Instructor presentando sobre estrategias de impuestos y dinero",
       category: "workshop",
       date: "2026-03",
-      alt: "Instructor presentando sobre impuestos"
+      alt: "Instructor presentando sobre impuestos y dinero"
     },
     tomas_presentation: {
       url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/mCyIzCtBZpmRUqWB.JPG",
@@ -198,6 +198,190 @@ export const GALLERY = {
       category: "panel",
       date: "2026-03",
       alt: "Panel de expertos en discusión"
+    },
+    instructor_immigration: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/nukLAeLahRwBdEpL.JPG",
+      title: "Instructor - Presentación Inmigración",
+      description: "Instructor presentando sobre temas de inmigración y visa E-2",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Instructor presentando sobre inmigración"
+    },
+    instructor_cashflow: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/htgNAsNCnOVTXGtc.JPG",
+      title: "Instructor - Flujo de Caja",
+      description: "Instructor presentando sobre flujo de caja y gestión financiera",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Instructor presentando sobre flujo de caja"
+    },
+    instructor_taxes: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/LLlggbVtwIpvyfbw.JPG",
+      title: "Instructor - Impuestos (ISR, Corporativos)",
+      description: "Instructor explicando estrategias de impuestos corporativos e ISR personal",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Instructor presentando sobre impuestos"
+    },
+    instructor_female: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/dbziprdjvYPQdYWD.jpg",
+      title: "Instructora - Presentación",
+      description: "Instructora profesional presentando contenido de capacitación",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Instructora presentando en evento de Comprando América"
+    },
+    member_asking_question: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/oAspEerYSznSCslu.JPG",
+      title: "Miembro - Haciendo Pregunta",
+      description: "Miembro participando activamente en evento de Comprando América",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembro haciendo pregunta en evento"
+    },
+    member_speaking: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/wFeekCNwGVKwmuYw.JPG",
+      title: "Miembro - Presentación",
+      description: "Miembro presentando experiencia de inversión a la comunidad",
+      category: "conference",
+      date: "2026-03",
+      alt: "Miembro presentando en evento"
+    },
+    panel_discussion_1: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/tkOZqfhCzCyHXwtq.jpg",
+      title: "Panel de Discusión - Expertos",
+      description: "Panel de expertos respondiendo preguntas de la comunidad",
+      category: "panel",
+      date: "2026-03",
+      alt: "Panel de expertos en discusión"
+    },
+    large_audience_auditorium: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zPgQZaoHcbkeHxHb.jpg",
+      title: "Evento - Auditorio Completo",
+      description: "Gran audiencia en auditorio de Comprando América",
+      category: "conference",
+      date: "2026-03",
+      alt: "Auditorio completo en evento de Comprando América"
+    },
+    audience_standing: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/HRhkowQXxDuIRnim.jpg",
+      title: "Audiencia - De Pie",
+      description: "Audiencia de pie en evento de Comprando América",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Audiencia de pie en evento"
+    },
+    networking_event: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/sLJrWgxTPspkjpOq.jpg",
+      title: "Networking - Evento Social",
+      description: "Miembros interactuando en evento de networking de Comprando América",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Evento de networking de Comprando América"
+    },
+    three_members_conversation: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SauydQmEHjPxJpSG.jpg",
+      title: "Tres Miembros - Conversación",
+      description: "Tres miembros de la comunidad conversando en evento",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembros conversando en evento"
+    },
+    instructor_presentation_audience: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/whzIHWVnTlLkmWlr.jpg",
+      title: "Instructor - Presentación ante Audiencia",
+      description: "Instructor presentando ante audiencia en evento de Comprando América",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Instructor presentando ante audiencia"
+    },
+    audience_attentive: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/IkaYkjfYoXIKLrAQ.jpg",
+      title: "Audiencia - Atenta",
+      description: "Audiencia atenta en evento de Comprando América",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Audiencia atenta en evento"
+    },
+    member_question_mic: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zebeyrlQkOBEpcVV.jpg",
+      title: "Miembro - Pregunta en Micrófono",
+      description: "Miembro haciendo pregunta en micrófono durante evento",
+      category: "conference",
+      date: "2026-03",
+      alt: "Miembro haciendo pregunta en micrófono"
+    },
+    panel_three_presenters: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/lYLHbUWVYDOjoDYE.jpg",
+      title: "Panel - Tres Presentadores",
+      description: "Panel de tres presentadores en evento de Comprando América",
+      category: "panel",
+      date: "2026-03",
+      alt: "Panel de tres presentadores"
+    },
+    large_audience_event_2: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/NkvtaZBOSEidGduw.jpg",
+      title: "Evento - Audiencia Grande 2",
+      description: "Gran audiencia en evento de Comprando América",
+      category: "conference",
+      date: "2026-03",
+      alt: "Gran audiencia en evento"
+    },
+    member_discussion: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/vfKNtMPqtjvXheMA.jpg",
+      title: "Miembro - Discusión",
+      description: "Miembro participando en discusión de grupo",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembro en discusión de grupo"
+    },
+    auditorium_full: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/lKxUdUkLsUuMLwdx.jpg",
+      title: "Auditorio - Lleno",
+      description: "Auditorio lleno en evento de Comprando América",
+      category: "conference",
+      date: "2026-03",
+      alt: "Auditorio lleno en evento"
+    },
+    audience_diverse: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/ZngWQwJIMcIMlkzV.jpg",
+      title: "Audiencia - Diversa",
+      description: "Audiencia diversa en evento de Comprando América",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Audiencia diversa en evento"
+    },
+    networking_standing: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/ASLrAfHtFDAlrhIi.jpg",
+      title: "Networking - De Pie",
+      description: "Miembros en networking de pie en evento",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Networking de miembros de pie"
+    },
+    member_speaking_mic: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/IwsExtlMkmXuvcPX.jpg",
+      title: "Miembro - Hablando en Micrófono",
+      description: "Miembro hablando en micrófono ante audiencia",
+      category: "conference",
+      date: "2026-03",
+      alt: "Miembro hablando en micrófono"
+    },
+    members_networking_photos: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/jAVgSvHifxmThGgy.jpg",
+      title: "Miembros - Networking y Fotos",
+      description: "Miembros sonriendo y tomándose fotos en evento de networking",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembros networking y tomándose fotos"
+    },
+    members_signing_documents: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/QhUGkmYregNkkrjy.jpg",
+      title: "Miembros - Firma de Documentos",
+      description: "Miembros en networking y firma de documentos",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembros en networking y firma de documentos"
     }
   }
 };
