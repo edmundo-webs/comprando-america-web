@@ -249,7 +249,7 @@ export default function Perfil() {
                         src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/YalfpoAHGGBHORwE.mp4"
                         controls
                         className="w-full h-auto aspect-video"
-                        poster="https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/video-poster-perfil-25gudXc7tckzR5DmPLvEtX.webp"
+                        poster="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zWDbUjtHksLQzyfk.jpg"
                       />
                     </div>
                   </div>

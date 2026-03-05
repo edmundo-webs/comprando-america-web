@@ -419,3 +419,6 @@
 - [x] Generar portada profesional con diseño corporativo
 - [x] Integrar portada como poster del video en página Perfil.tsx
 - [x] Verificar visualización correcta en desktop y mobile
+
+- [x] Extraer frame del video en segundo 3 como portada
+- [x] Subir frame a S3 y actualizar página Perfil.tsx
