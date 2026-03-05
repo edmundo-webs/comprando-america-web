@@ -52,7 +52,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <Mail className="w-4 h-4 text-primary shrink-0" />
-                <a href="mailto:ventas@comprandoamerica.com" className="hover:text-primary transition-colors">ventas@comprandoamerica.com</a>
+                <a href="mailto:contact@comprandoamerica.com" className="hover:text-primary transition-colors">contact@comprandoamerica.com</a>
               </li>
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <MapPin className="w-4 h-4 text-primary shrink-0" />

@@ -357,3 +357,9 @@
 - [x] Actualizar botones en Estructura de Inversión para redireccionar a sección "Validar tu encaje" (#membresia) en página de inicio
 - [x] Actualizar botones en Expansión Internacional para redireccionar a sección "Validar tu encaje" (#membresia) en página de inicio
 - [x] Verificar que los botones redireccionan correctamente al formulario de membresía
+
+
+## Cambiar Correo de Contacto - Marzo 2026
+
+- [x] Cambiar correo de ventas@comprandoamerica.com a contact@comprandoamerica.com en Footer.tsx
+- [x] Verificar que no haya más instancias del correo antiguo en el proyecto
