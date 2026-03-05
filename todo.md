@@ -453,3 +453,7 @@
 - [x] Mantener título "Comunidad" y "Historias reales de miembros"
 - [x] Agregar videos: WYNwoTzG8Ss y 6J6IIPFsTD0
 - [x] Crear sección "Eventos y Networking" debajo de "Aprendizaje Continuo"
+
+
+## Eliminar Sección - Marzo 2026
+- [x] Eliminar sección "Inversionistas que ya están actuando" con fotos de Edmundo, María, Carlos y Alejandra
