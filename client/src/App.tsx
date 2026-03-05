@@ -24,6 +24,7 @@ import News from "./pages/News";
 import NewsArticle from "./pages/NewsArticle";
 import RutaInmobiliaria from "./pages/RutaInmobiliaria";
 import LLC from "./pages/LLC";
+import Perfil from "./pages/Perfil";
 
 function Router() {
   return (
@@ -43,6 +44,7 @@ function Router() {
       <Route path="/news/:slug" component={NewsArticle} />
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
       <Route path="/llc" component={LLC} />
+      <Route path="/perfil" component={Perfil} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>

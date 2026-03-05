@@ -389,3 +389,13 @@
 - [x] Crear sección "Explora el Mercado Inmobiliario" con descripción estratégica
 - [x] Integrar reproductor de video con controles
 - [x] Verificar que el video se reproduce correctamente en desktop y mobile
+
+
+## Crear Página de Perfilamiento de Inversionistas - Marzo 2026
+
+- [x] Crear página Perfil.tsx con estructura base (hero con video, explicación de comunidad, filtro psicológico)
+- [x] Implementar formulario de evaluación con 7 preguntas
+- [x] Implementar sistema de scoring automático con ponderaciones
+- [x] Crear pantalla de resultados dinámicos según score
+- [x] Agregar ruta /perfil en App.tsx
+- [x] Verificar funcionamiento en desktop y mobile
