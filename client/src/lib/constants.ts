@@ -27,6 +27,7 @@ export const NAV_ITEMS = [
   { label: "Inicio", href: "/" },
   { label: "Membresía", href: EXTERNAL_LINKS.membresia },
   { label: "Asesorías", href: "#", children: [
+    { label: "Formación de LLC", href: "/llc" },
     { label: "Visa E-2", href: EXTERNAL_LINKS.visaE2 },
     { label: "Bienes Raíces", href: EXTERNAL_LINKS.bienesRaices },
     { label: "Inversiones", href: EXTERNAL_LINKS.estructura },

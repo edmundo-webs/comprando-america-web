@@ -340,3 +340,5 @@
 - [x] Agregar imagen de documentos de incorporación en el hero de página LLC (lado derecho, visible en desktop)
 
 - [x] Reducir tamaño de fuentes en hero de página LLC (de text-5xl/6xl/7xl a text-3xl/4xl/5xl) para mejorar legibilidad y escaneo rápido
+
+- [x] Agregar enlace "Formación de LLC" al submenú desplegable de Asesorías en la navegación principal
