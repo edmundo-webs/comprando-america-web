@@ -349,3 +349,11 @@
 - [x] Remover formulario de página Visa E-2 Inversionista USA y agregar botón que redirija al formulario de inicio
 - [x] Remover formulario de página Estructura de Inversión en USA y agregar botón que redirija al formulario de inicio
 - [x] Remover formulario de página Expansión Internacional para Empresas y agregar botón que redirija al formulario de inicio
+
+
+## Actualizar Botones para Redireccionar a Formulario - Marzo 2026
+
+- [x] Actualizar botones en Visa E-2 para redireccionar a sección "Validar tu encaje" (#membresia) en página de inicio
+- [x] Actualizar botones en Estructura de Inversión para redireccionar a sección "Validar tu encaje" (#membresia) en página de inicio
+- [x] Actualizar botones en Expansión Internacional para redireccionar a sección "Validar tu encaje" (#membresia) en página de inicio
+- [x] Verificar que los botones redireccionan correctamente al formulario de membresía

@@ -108,9 +108,9 @@ export default function VisaE2() {
               <p className="text-base text-white/60 leading-relaxed mb-8 max-w-2xl">
                 Esta asesoría está pensada para perfiles con capacidad de inversión <strong>desde $100,000 USD</strong>, y se brinda únicamente a miembros que cumplan con los criterios de selección.
               </p>
-              <a href="#formulario">
+              <a href="/#membresia">
                 <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                  Solicitar Acceso <ArrowRight className="w-4 h-4" />
+                  Validar tu encaje <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </motion.div>
@@ -245,9 +245,9 @@ export default function VisaE2() {
               <p className="text-white/60 text-base mb-8 max-w-2xl mx-auto">
                 Capacidad de inversión desde <strong>$100,000 USD</strong> requerida.
               </p>
-              <a href="#formulario">
+              <a href="/#membresia">
                 <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                  Solicitar Acceso <ArrowRight className="w-4 h-4" />
+                  Validar tu encaje <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
