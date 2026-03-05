@@ -119,8 +119,86 @@ export const GALLERY = {
   },
 
   community: {
-    // Espacio reservado para fotos de comunidad en acción
-    // Se agregarán conforme se reciban más fotos
+    members_meeting_1: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/IFYKbNDbnpOjWFuL.JPG",
+      title: "Reunión de Miembros - Mesa",
+      description: "Miembros de Comprando América reunidos en mesa de trabajo",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembros de Comprando América en reunión"
+    },
+    members_meeting_2: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/VprQdLJtEpGMDLqh.JPG",
+      title: "Miembros Escuchando Presentación",
+      description: "Comunidad atenta en presentación de capacitación",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembros escuchando presentación en Comprando América"
+    },
+    instructor_taxes: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/BtPzeOOWUIYnkqTh.JPG",
+      title: "Instructor - Presentación Impuestos",
+      description: "Instructor presentando sobre estrategias de impuestos y dinero",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Instructor presentando sobre impuestos"
+    },
+    tomas_presentation: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/mCyIzCtBZpmRUqWB.JPG",
+      title: "Tomás - Presentación en Evento",
+      description: "Tomás presentando en evento de Comprando América",
+      category: "conference",
+      date: "2026-03",
+      alt: "Tomás presentando en evento"
+    },
+    instructor_whiteboard: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/MGUglxFwnbtRRFJT.JPG",
+      title: "Instructor - Presentación en Pizarra",
+      description: "Instructor explicando conceptos en pizarra interactiva",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Instructor presentando en pizarra"
+    },
+    large_audience_event: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/mCyIzCtBZpmRUqWB.JPG",
+      title: "Evento Grande - Audiencia Completa",
+      description: "Evento presencial con gran audiencia de Comprando América",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Evento grande de Comprando América"
+    },
+    members_conversation_1: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SZEuEOQwJrPQiMSQ.JPG",
+      title: "Miembros en Conversación",
+      description: "Networking entre miembros de Comprando América",
+      category: "networking",
+      date: "2026-03",
+      alt: "Miembros conversando en evento"
+    },
+    members_networking: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/OJvnrWQsSgtxKAhS.JPG",
+      title: "Networking - Miembros Conectando",
+      description: "Miembros de Comprando América conectando y compartiendo experiencias",
+      category: "networking",
+      date: "2026-03",
+      alt: "Networking entre miembros"
+    },
+    members_with_logo: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/PabCVyGvPjSNihwQ.JPG",
+      title: "Miembros con Logo Comprando América",
+      description: "Dos miembros conversando frente al logo de Comprando América",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Miembros con logo de Comprando América"
+    },
+    panel_discussion: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/GVtCiSVhtQtXxwGQ.JPG",
+      title: "Panel de Discusión - Expertos",
+      description: "Panel de expertos en discusión sobre seguros y responsabilidad comercial",
+      category: "panel",
+      date: "2026-03",
+      alt: "Panel de expertos en discusión"
+    }
   }
 };
 
