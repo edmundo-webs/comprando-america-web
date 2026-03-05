@@ -202,9 +202,9 @@ export default function ExpansionInternacional() {
                 </div>
                 <div className="flex flex-col justify-center items-center">
                   <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 text-center">¿Quieres Explorar Oportunidades?</h3>
-                  <a href="/#solicitar-evaluacion" className="inline-block">
+                  <a href="/#membresia" className="inline-block">
                     <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                      Ir al Formulario <ArrowRight className="w-4 h-4" />
+                      Validar tu encaje <ArrowRight className="w-4 h-4" />
                     </Button>
                   </a>
                 </div>
