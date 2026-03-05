@@ -147,6 +147,36 @@ export default function BienesRaices() {
         </div>
       </section>
 
+      {/* ═══ VIDEO DE BIENES RAÍCES ═══ */}
+      <section className="section-dark py-24 md:py-32">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Oportunidades Reales</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+                Explora el Mercado Inmobiliario
+              </h2>
+              <p className="text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
+                Conoce las mejores oportunidades de inversión inmobiliaria en Estados Unidos y cómo nuestros miembros acceden a proyectos rentables.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <div className="max-w-4xl mx-auto">
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black">
+                <video
+                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/GmMnpoMeKYAWvyKd.mp4"
+                  controls
+                  className="w-full h-auto"
+                  poster="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/GmMnpoMeKYAWvyKd.mp4"
+                />
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ PILARES ═══ */}
       <section className="section-darker py-24 md:py-32">
         <div className="container">

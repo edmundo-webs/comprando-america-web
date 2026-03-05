@@ -380,3 +380,12 @@
 - [x] Remover video de página de inicio (Home.tsx)
 - [x] Agregar video a página de Membresía justo después del hero
 - [x] Verificar que el video se reproduce correctamente en ambas páginas
+
+
+## Integración de Video de Bienes Raíces - Marzo 2026
+
+- [x] Subir video 6reel-relastate.mp4 a S3 (CDN: https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/GmMnpoMeKYAWvyKd.mp4)
+- [x] Agregar video a página BienesRaices.tsx justo después del hero
+- [x] Crear sección "Explora el Mercado Inmobiliario" con descripción estratégica
+- [x] Integrar reproductor de video con controles
+- [x] Verificar que el video se reproduce correctamente en desktop y mobile
