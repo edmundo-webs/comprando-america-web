@@ -441,3 +441,8 @@
 - [x] Reemplazar sección "Nuestra comunidad inversionistas que ya están actuando" en Home.tsx
 - [x] Alinear visualmente con diseño "Executive Noir" del sitio
 - [x] Verificar diseño responsive y consistencia visual
+
+
+## Cambios en Sección "¿Estás listo?" - Marzo 2026
+- [x] Cambiar link del botón "Solicitar Evaluación" a https://www.comprandoamerica.com/perfil
+- [x] Eliminar formulario ProspectForm de la sección

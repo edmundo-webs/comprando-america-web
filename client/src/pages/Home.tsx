@@ -6,7 +6,7 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ProspectForm from "@/components/ProspectForm";
+
 import TestimonialSlider from "@/components/TestimonialSlider";
 
 import { useInView } from "@/hooks/useInView";
@@ -742,7 +742,7 @@ export default function Home() {
               <p className="text-lg text-white/60 mb-8">
                 <span className="font-semibold">No es pagar.</span> Es evaluar si perteneces al grupo.
               </p>
-              <a href={EXTERNAL_LINKS.membresia}>
+              <a href="https://www.comprandoamerica.com/perfil">
                 <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
                   Solicitar Evaluación <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -776,26 +776,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ 6️⃣ MEMBRESÍA ═══ */}
-      <section id="membresia" className="section-darker py-24 md:py-32">
-        <div className="container">
-          <FadeIn>
-            <div className="text-center mb-16">
-              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Siguiente Paso</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
-                Validar tu encaje
-              </h2>
-              <p className="text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
-                Completa el formulario y nos pondremos en contacto para evaluar si eres un buen fit para la membresía.
-              </p>
-            </div>
-          </FadeIn>
 
-          <div className="max-w-2xl mx-auto">
-            <ProspectForm title="Solicitud de Membresía" />
-          </div>
-        </div>
-      </section>
 
 
 
