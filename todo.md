@@ -373,3 +373,10 @@
 - [x] Integrar reproductor de video con controles
 - [x] Agregar CTA "Solicitar Información" debajo del video
 - [x] Verificar que el video se reproduce correctamente en desktop y mobile
+
+
+## Reubicación de Video de Membresía - Marzo 2026
+
+- [x] Remover video de página de inicio (Home.tsx)
+- [x] Agregar video a página de Membresía justo después del hero
+- [x] Verificar que el video se reproduce correctamente en ambas páginas
