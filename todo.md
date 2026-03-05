@@ -399,3 +399,16 @@
 - [x] Crear pantalla de resultados dinámicos según score
 - [x] Agregar ruta /perfil en App.tsx
 - [x] Verificar funcionamiento en desktop y mobile
+
+
+## Optimizacion Avanzada de Landing de Perfilamiento - Marzo 2026
+
+- [x] Redisenar hero con video prominente y visible
+- [x] Agregar indicador de progreso del formulario (paso 1 de 3)
+- [x] Dividir formulario en 3 pasos con barra de progreso
+- [x] Agregar bloque de exclusividad antes del formulario
+- [x] Agregar prueba social (sectores y ciudades)
+- [x] Implementar identificacion automatica de perfil (Operador, Patrimonial, Explorador)
+- [x] Crear pantalla de microcommitment para no-operadores
+- [x] Mejorar pantalla de resultados con tarjeta de perfil y readiness level
+- [x] Agregar linea de autoridad de Edmundo Trevino
