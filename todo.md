@@ -363,3 +363,13 @@
 
 - [x] Cambiar correo de ventas@comprandoamerica.com a contact@comprandoamerica.com en Footer.tsx
 - [x] Verificar que no haya más instancias del correo antiguo en el proyecto
+
+
+## Integración de Video de Membresía - Marzo 2026
+
+- [x] Subir video Membresía_Slow.mp4 a S3 (CDN: https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/YalfpoAHGGBHORwE.mp4)
+- [x] Crear nueva sección de video en página de inicio antes del formulario
+- [x] Agregar título "Descubre Cómo Funciona" con descripción estratégica
+- [x] Integrar reproductor de video con controles
+- [x] Agregar CTA "Solicitar Información" debajo del video
+- [x] Verificar que el video se reproduce correctamente en desktop y mobile
