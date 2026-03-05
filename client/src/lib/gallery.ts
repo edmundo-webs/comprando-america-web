@@ -382,6 +382,38 @@ export const GALLERY = {
       category: "community_event",
       date: "2026-03",
       alt: "Miembros en networking y firma de documentos"
+    },
+    event_large_audience: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SwmORSZRwbTKtbzt.webp",
+      title: "Evento - Audiencia Grande",
+      description: "Evento presencial con gran audiencia de Comprando America",
+      category: "conference",
+      date: "2026-03",
+      alt: "Gran evento de Comprando America con audiencia"
+    },
+    group_members_event: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/gAOgDUtsXsTeiXnI.webp",
+      title: "Grupo de Miembros en Evento",
+      description: "Grupo de miembros de Comprando America en evento profesional",
+      category: "community_event",
+      date: "2026-03",
+      alt: "Grupo de miembros en evento"
+    },
+    work_meeting_room: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/QYbMfTfExylcIovg.webp",
+      title: "Sala de Reunion - Sesion de Trabajo",
+      description: "Sesion de trabajo y diagnostico en sala de reunion",
+      category: "workshop",
+      date: "2026-03",
+      alt: "Sesion de trabajo en sala de reunion"
+    },
+    time_to_invest: {
+      url: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/wNNiskRdSQIIyDCI.jpg",
+      title: "Time to Invest - Llamada a la Accion",
+      description: "Imagen motivacional: Es hora de invertir en tu futuro",
+      category: "motivational",
+      date: "2026-03",
+      alt: "Time to Invest - Momento de actuar"
     }
   }
 };

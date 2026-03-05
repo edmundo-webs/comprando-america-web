@@ -277,10 +277,10 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Evento de comunidad */}
+          {/* Evento de comunidad - Foto Real */}
           <FadeIn>
             <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-96">
-              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/community-gathering-1-LdfkVTBt5Tv6mSE22UES4S.webp" alt="Comunidad" className="w-full h-full object-cover" />
+              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SwmORSZRwbTKtbzt.webp" alt="Evento Comprando América" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.9)] to-transparent" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="max-w-2xl text-center">
@@ -741,29 +741,39 @@ export default function Home() {
       {/* ═══ 9️⃣ PODCAST / EDUCACIÓN ═══ */}
       <section className="section-darker py-20 md:py-24">
         <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Aprendizaje</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
-                Aprendizaje continuo
-              </h2>
-              <p className="text-lg text-white/70 leading-relaxed mb-8">
-                Contenido educativo para empresarios que quieren entender el mercado estadounidense antes de actuar.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://comprandoamerica.com/podcast">
-                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                    Escuchar Podcast <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-                <a href="https://comprandoamerica.com/formacion/">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-6 text-base gap-2">
-                    Conoce nuestro programa educativo <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <FadeIn>
+              <div className="max-w-xl">
+                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Aprendizaje</p>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+                  Aprendizaje continuo
+                </h2>
+                <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  Contenido educativo para empresarios que quieren entender el mercado estadounidense antes de actuar.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="https://comprandoamerica.com/podcast">
+                    <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                      Escuchar Podcast <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </a>
+                  <a href="https://comprandoamerica.com/formacion/">
+                    <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-8 py-6 text-base gap-2">
+                      Conoce nuestro programa educativo <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </a>
+                </div>
               </div>
-            </div>
-          </FadeIn>
+            </FadeIn>
+            
+            {/* Foto de reunion de trabajo */}
+            <FadeIn delay={0.2}>
+              <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-96">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/QYbMfTfExylcIovg.webp" alt="Sesion de trabajo" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.7)] to-transparent" />
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
@@ -791,7 +801,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ MEMBRESÍA FORM ═══ */}
+       {/* ═══ 5.8️⃣ TIME TO INVEST ═══ */}
+      <section className="section-dark py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-80 md:h-96">
+              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/wNNiskRdSQIIyDCI.jpg" alt="Time to Invest" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.85)] via-[oklch(0.08_0.03_250/0.70)] to-transparent" />
+              <div className="absolute inset-0 flex items-center justify-start p-8 md:p-12">
+                <div className="max-w-xl">
+                  <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">El Momento es Ahora</p>
+                  <h3 className="text-3xl md:text-4xl font-serif text-white mb-4">Es hora de invertir</h3>
+                  <p className="text-lg text-white/90 mb-6">Cada día que esperas es una oportunidad que se va. Los inversionistas exitosos actúan cuando ven la estructura correcta.</p>
+                  <a href="#membresia">
+                    <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+                      Comenzar Ahora <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 6️⃣ MEMBRESÍA ═══ */}
       <section id="membresia" className="section-darker py-24 md:py-32">
         <div className="container">
           <FadeIn>
