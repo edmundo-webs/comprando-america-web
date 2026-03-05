@@ -7,7 +7,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-import TestimonialSlider from "@/components/TestimonialSlider";
+
 
 import { useInView } from "@/hooks/useInView";
 import { useCountUp } from "@/hooks/useCountUp";
@@ -615,7 +615,57 @@ export default function Home() {
       </section>
 
       {/* ═══ 7️⃣ TESTIMONIOS DE MIEMBROS ═══ */}
-      <TestimonialSlider />
+      <section className="section-darker py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Comunidad</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                Historias reales de miembros
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                name: "Arturo Orozco",
+                videoId: "WYNwoTzG8Ss",
+                title: "Testimonial de Arturo Orozco"
+              },
+              {
+                name: "Gerardo Bejarano",
+                videoId: "6J6IIPFsTD0",
+                title: "Testimonial de Gerardo Bejarano"
+              }
+            ].map((testimonial, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="relative group rounded-xl overflow-hidden bg-[oklch(0.15_0.03_250)] border border-white/5 hover:border-primary/30 transition-all duration-500">
+                  {/* Embedded YouTube Video */}
+                  <div className="relative w-full aspect-video overflow-hidden">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      src={`https://www.youtube.com/embed/${testimonial.videoId}?rel=0&modestbranding=1`}
+                      title={testimonial.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0"
+                    />
+                  </div>
+                  
+                  {/* Info Section */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-serif text-white mb-2">{testimonial.name}</h3>
+                    <p className="text-sm text-white/70">{testimonial.title}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ═══ 8️⃣ PARA QUIÉN ES / NO ES ═══ */}
       <section className="section-dark py-20 md:py-24">
@@ -724,6 +774,54 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.7)] to-transparent" />
               </div>
             </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ EVENTOS Y NETWORKING ═══ */}
+      <section className="section-darker py-24 md:py-32">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Conexiones Reales</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+                Eventos y Networking
+              </h2>
+              <p className="text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
+                Encuentros presenciales donde empresarios comparten experiencias, cierran negocios y construyen relaciones que duran.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                num: "01",
+                title: "Cumbres Presenciales",
+                desc: "Eventos anuales en diferentes ciudades donde miembros se reúnen para aprender, conectar y expandir su red de inversionistas."
+              },
+              {
+                num: "02",
+                title: "Viajes de Inspección",
+                desc: "Visitas guiadas a oportunidades de inversión en Estados Unidos. Conoce proyectos en vivo y evalúa directamente."
+              },
+              {
+                num: "03",
+                title: "Networking Exclusivo",
+                desc: "Acceso a una comunidad de empresarios, abogados, contadores y expertos en inversión internacional."
+              }
+            ].map((item, i) => (
+              <FadeIn key={item.num} delay={i * 0.1}>
+                <div className="relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
+                  <div className="relative">
+                    <span className="text-5xl text-white/5 group-hover:text-primary/10 transition-colors">{item.num}</span>
+                    <h3 className="text-xl font-serif text-white mb-3 mt-2">{item.title}</h3>
+                    <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>

@@ -446,3 +446,10 @@
 ## Cambios en Sección "¿Estás listo?" - Marzo 2026
 - [x] Cambiar link del botón "Solicitar Evaluación" a https://www.comprandoamerica.com/perfil
 - [x] Eliminar formulario ProspectForm de la sección
+
+
+## Cambios en Sección de Testimonios y Eventos - Marzo 2026
+- [x] Reemplazar TestimonialSlider con videos testimoniales de YouTube
+- [x] Mantener título "Comunidad" y "Historias reales de miembros"
+- [x] Agregar videos: WYNwoTzG8Ss y 6J6IIPFsTD0
+- [x] Crear sección "Eventos y Networking" debajo de "Aprendizaje Continuo"
