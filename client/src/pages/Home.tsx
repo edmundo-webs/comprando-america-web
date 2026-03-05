@@ -241,6 +241,58 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ 3.5️⃣ COMUNIDAD REAL ═══ */}
+      <section className="section-dark py-20 md:py-24">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Nuestra Comunidad</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+                Inversionistas que ya están actuando
+              </h2>
+              <p className="text-lg text-white/60 mt-4 max-w-2xl mx-auto">
+                Empresarios y profesionales que han tomado acción en Estados Unidos
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Miembros destacados */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+            {[
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-edmundo-1-ZBHsUeN5XWcFYnorWZhVBP.webp", name: "Edmundo", role: "Fundador, Cumbres" },
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-investor-1-XnkaAYzPskueaVkbiqdfDh.webp", name: "María", role: "Empresaria, Real Estate" },
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-investor-2-LktLD79F6FnYJsmMLUqfxN.webp", name: "Carlos", role: "Inversionista, Startups" },
+              { img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/member-investor-3-JBVXUB7CiWzYZTpBpJd6v6.webp", name: "Alejandra", role: "CEO, Tech Ventures" }
+            ].map((member, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="text-center group">
+                  <div className="relative mb-4 overflow-hidden rounded-xl border border-primary/20 group-hover:border-primary/50 transition-all duration-300">
+                    <img src={member.img} alt={member.name} className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.8)] to-transparent" />
+                  </div>
+                  <h3 className="text-lg font-serif text-white">{member.name}</h3>
+                  <p className="text-sm text-primary font-semibold">{member.role}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          {/* Evento de comunidad */}
+          <FadeIn>
+            <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-96">
+              <img src="https://d2xsxph8kpxj0f.cloudfront.net/310519663291837994/TXKhhi3qa3kqCbF2c9sawS/community-gathering-1-LdfkVTBt5Tv6mSE22UES4S.webp" alt="Comunidad" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.9)] to-transparent" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="max-w-2xl text-center">
+                  <h3 className="text-3xl md:text-4xl font-serif text-white mb-4">Eventos y Networking Exclusivos</h3>
+                  <p className="text-lg text-white/80 mb-6">Reuniones estratégicas, Deal Days y viajes de inspección con miembros de la comunidad</p>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ 4️⃣ VITRINA ESTRATÉGICA ═══ */}
       <section id="sistema" className="section-dark py-20 md:py-24">
         <div className="container">

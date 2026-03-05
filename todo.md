@@ -422,3 +422,12 @@
 
 - [x] Extraer frame del video en segundo 3 como portada
 - [x] Subir frame a S3 y actualizar página Perfil.tsx
+
+
+## Integración de Imágenes de Comunidad - Marzo 2026
+
+- [x] Generar imágenes profesionales de miembros (Edmundo, María, Carlos, Alejandra)
+- [x] Generar imagen de evento de comunidad/networking
+- [x] Agregar sección "Nuestra Comunidad" en Home.tsx con grid de miembros
+- [x] Integrar imagen de evento de networking con overlay de texto
+- [x] Verificar visualización correcta en desktop y mobile
