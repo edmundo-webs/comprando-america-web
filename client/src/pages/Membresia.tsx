@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SectionHeading from "@/components/SectionHeading";
+import AlliesSection from "@/components/AlliesSection";
 import { useInView } from "@/hooks/useInView";
 import { IMAGES, EXTERNAL_LINKS } from "@/lib/constants";
 import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
@@ -375,6 +376,9 @@ export default function Membresia() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ═══ ALIADOS EXPERTOS ═══ */}
+      <AlliesSection />
 
       <Footer />
     </div>

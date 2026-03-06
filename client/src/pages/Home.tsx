@@ -105,9 +105,9 @@ export default function Home() {
                     Solicitar Evaluación <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <a href="#sistema">
+                <a href="https://comprandoamerica.com/membresia/">
                   <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base w-full sm:w-auto">
-                    Ver cómo funciona
+                    Conocer el sistema
                   </Button>
                 </a>
               </div>
@@ -812,7 +812,7 @@ export default function Home() {
                   <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">El Momento es Ahora</p>
                   <h3 className="text-3xl md:text-4xl font-serif text-white mb-4">Es hora de invertir</h3>
                   <p className="text-lg text-white/90 mb-6">Cada día que esperas es una oportunidad que se va. Los inversionistas exitosos actúan cuando ven la estructura correcta.</p>
-                  <a href="#membresia">
+                  <a href="https://comprandoamerica.com/perfil">
                     <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
                       Comenzar Ahora <ArrowRight className="w-4 h-4" />
                     </Button>

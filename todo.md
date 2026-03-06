@@ -457,3 +457,17 @@
 
 ## Eliminar Sección - Marzo 2026
 - [x] Eliminar sección "Inversionistas que ya están actuando" con fotos de Edmundo, María, Carlos y Alejandra
+
+
+## Actualizar Links CTA - Marzo 2026
+- [x] Cambiar "Conocer el sistema" a https://comprandoamerica.com/membresia/
+- [x] Cambiar "Solicitar evaluación" / "Comenzar Ahora" a https://comprandoamerica.com/perfil
+
+
+## Sección de Aliados Expertos - Marzo 2026
+- [x] Subir 8 fotos de aliados a S3
+- [x] Crear componente AlliesSection.tsx con grid de aliados
+- [x] Agregar información: nombre, especialidad, descripción breve
+- [x] Integrar sección en página de membresía
+- [x] Diseñar con elegancia "Executive Noir"
+- [x] Verificar compilación y guardar checkpoint
