@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SectionHeading from "@/components/SectionHeading";
 import AlliesSection from "@/components/AlliesSection";
-import MemberTestimonialSlider from "@/components/MemberTestimonialSlider";
+
 import { useInView } from "@/hooks/useInView";
 import { IMAGES, EXTERNAL_LINKS } from "@/lib/constants";
 import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
@@ -74,20 +74,7 @@ export default function Membresia() {
     },
   ];
 
-  const investment_areas = [
-    {
-      title: "Negocios en Funcionamiento",
-      description: "Negocios operativos en sectores como servicios, distribución de autopartes y maquinaria, listos para adquirirse o escalarse con participación estratégica.",
-    },
-    {
-      title: "Franquicias Validadas",
-      description: "Con potencial de expansión, soporte de marca y procesos estandarizados, para inversionistas que buscan modelos probados.",
-    },
-    {
-      title: "Bienes Raíces",
-      description: "Oportunidades en mercados de nicho con alto potencial de crecimiento: single family homes, parques de casas móviles, mini storage y más.",
-    },
-  ];
+  const investment_areas: any[] = [];
 
   const plans = [
     {
@@ -255,27 +242,6 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ INVESTMENT AREAS ═══ */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Oportunidades"
-            title="Áreas de Inversión"
-            subtitle="Accede a oportunidades previamente filtradas y validadas desde $100,000 USD"
-          />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {investment_areas.map((area, i) => (
-              <FadeIn key={area.title} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 hover:border-primary/30 transition-all duration-500">
-                  <h3 className="text-2xl font-serif text-white mb-4">{area.title}</h3>
-                  <p className="text-white/60 leading-relaxed">{area.description}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ═══ MEMBERSHIP PLANS ═══ */}
       <section className="section-darker py-24 md:py-32">
         <div className="container">
@@ -380,9 +346,6 @@ export default function Membresia() {
 
       {/* ═══ ALIADOS EXPERTOS ═══ */}
       <AlliesSection />
-
-      {/* ═══ TESTIMONIOS DE MIEMBROS ═══ */}
-      <MemberTestimonialSlider />
 
       <Footer />
     </div>
