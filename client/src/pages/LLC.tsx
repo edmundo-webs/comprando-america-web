@@ -143,7 +143,7 @@ export default function LLC() {
               className="hidden lg:block"
             >
               <img
-                src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/LnzdkgpluenSsqmO.jpg"
+                src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439143/comprando-america/LnzdkgpluenSsqmO.jpg"
                 alt="Documentos de incorporación LLC"
                 className="w-full h-auto rounded-xl shadow-2xl"
               />

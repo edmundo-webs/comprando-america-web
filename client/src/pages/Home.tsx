@@ -429,7 +429,7 @@ export default function Home() {
 
           <FadeIn>
             <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-96 md:h-[500px]">
-              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/gnumaucdsTZCWXNK.jpg" alt="Expertos Aliados" className="w-full h-full object-cover" />
+              <img src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439259/comprando-america/gnumaucdsTZCWXNK.jpg" alt="Expertos Aliados" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.7)] to-transparent" />
               <div className="absolute inset-0 flex items-end justify-start p-8 md:p-12">
                 <div className="max-w-2xl">
@@ -720,7 +720,7 @@ export default function Home() {
             {/* Foto de reunion de trabajo */}
             <FadeIn delay={0.2}>
               <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-96">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/QYbMfTfExylcIovg.webp" alt="Sesion de trabajo" className="w-full h-full object-cover" />
+                <img src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439164/comprando-america/QYbMfTfExylcIovg.webp" alt="Sesion de trabajo" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.7)] to-transparent" />
               </div>
             </FadeIn>
@@ -805,7 +805,7 @@ export default function Home() {
         <div className="container">
           <FadeIn>
             <div className="relative rounded-2xl overflow-hidden border border-primary/20 h-80 md:h-96">
-              <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/wNNiskRdSQIIyDCI.jpg" alt="Time to Invest" className="w-full h-full object-cover" />
+              <img src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439337/comprando-america/wNNiskRdSQIIyDCI.jpg" alt="Time to Invest" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.85)] via-[oklch(0.08_0.03_250/0.70)] to-transparent" />
               <div className="absolute inset-0 flex items-center justify-start p-8 md:p-12">
                 <div className="max-w-xl">

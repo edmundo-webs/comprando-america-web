@@ -119,7 +119,7 @@ export default function RutaInmobiliaria() {
             preload="auto"
             className="h-full w-full object-cover"
           >
-            <source src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/gyTEyuXRYfIMlAUS.mp4" type="video/mp4" />
+            <source src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439272/comprando-america/gyTEyuXRYfIMlAUS.mov" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.95)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)] pointer-events-none" />
         </div>
@@ -371,7 +371,7 @@ export default function RutaInmobiliaria() {
                 <Card className="bg-[oklch(0.15_0.03_250)] border-white/5 hover:border-primary/30 transition-all overflow-hidden">
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/AJaAcwphYIqTLsYA.jpg"
+                      src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439022/comprando-america/AJaAcwphYIqTLsYA.jpg"
                       alt="Fondo de Tierra Estratégica"
                       className="w-full h-full object-cover"
                     />
@@ -398,7 +398,7 @@ export default function RutaInmobiliaria() {
                 <Card className="bg-[oklch(0.15_0.03_250)] border-primary/20 hover:border-primary/50 transition-all overflow-hidden">
                   <div className="relative h-48 overflow-hidden">
                     <img
-                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/VtIUGxjVltVLlaTv.jpg"
+                      src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439201/comprando-america/VtIUGxjVltVLlaTv.jpg"
                       alt="Single Family Homes"
                       className="w-full h-full object-cover"
                     />

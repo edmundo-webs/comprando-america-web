@@ -246,10 +246,10 @@ export default function Perfil() {
                   <div className="mb-12">
                     <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl">
                       <video
-                        src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/YalfpoAHGGBHORwE.mp4"
+                        src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439233/comprando-america/YalfpoAHGGBHORwE.mp4"
                         controls
                         className="w-full h-auto aspect-video"
-                        poster="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/zWDbUjtHksLQzyfk.jpg"
+                        poster="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439348/comprando-america/zWDbUjtHksLQzyfk.jpg"
                       />
                     </div>
                   </div>

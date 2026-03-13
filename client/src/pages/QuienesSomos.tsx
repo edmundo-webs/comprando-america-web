@@ -240,7 +240,7 @@ export default function QuienesSomos() {
 
           <motion.div {...fadeIn} className="relative rounded-2xl overflow-hidden shadow-2xl">
             <img
-              src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/ZCsPWjMTupqNFLuJ.avif"
+              src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439241/comprando-america/ZCsPWjMTupqNFLuJ.avif"
               alt="Equipo Comprando América"
               className="w-full h-auto object-cover"
             />
@@ -270,7 +270,7 @@ export default function QuienesSomos() {
                 <div className="flex justify-center md:justify-start">
                   <div className="relative rounded-xl overflow-hidden w-48 h-56">
                     <img
-                      src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/MICeBWqDcmqjFtjy.jpg"
+                      src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439150/comprando-america/MICeBWqDcmqjFtjy.jpg"
                       alt="Edmundo Treviño"
                       className="w-full h-full object-cover"
                     />
@@ -326,43 +326,43 @@ export default function QuienesSomos() {
                 name: "Tomás Resendez",
                 title: "Abogado inmigración",
                 description: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/ukgTQSSvdQDxOgaS.jpg",
+                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439328/comprando-america/ukgTQSSvdQDxOgaS.jpg",
               },
               {
                 name: "John Mckee",
                 title: "Consultor comercial",
                 description: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/UdHEXziYIgLrEDvo.avif",
+                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439193/comprando-america/UdHEXziYIgLrEDvo.avif",
               },
               {
                 name: "Destiny Bounds",
                 title: "Abogada corporativa y PI",
                 description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/pdCooMLqOfvqVFar.avif",
+                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439307/comprando-america/pdCooMLqOfvqVFar.avif",
               },
               {
                 name: "Aubrey Dwyer",
                 title: "Abogada corporativa",
                 description: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/TehgUNVHXbrssxsK.jpg",
+                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439190/comprando-america/TehgUNVHXbrssxsK.jpg",
               },
               {
                 name: "Daniel Palacios",
                 title: "Contador CPA y fiscalista",
                 description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/szrwwapkIJnWAmaW.png",
+                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png",
               },
               {
                 name: "Sebastián Jara",
                 title: "Consultor de marketing digital",
                 description: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/qrZqfOUTzqKwJcYP.avif",
+                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439309/comprando-america/qrZqfOUTzqKwJcYP.avif",
               },
               {
                 name: "Joe Faraci",
                 title: "Inversionista en bienes raíces",
                 description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
-                image: "https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/SLCApXDNVruIMYzi.jpg",
+                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439173/comprando-america/SLCApXDNVruIMYzi.jpg",
               },
             ].map((expert, i) => (
               <motion.div

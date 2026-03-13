@@ -153,7 +153,7 @@ export default function Membresia() {
       <Navbar />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative min-h-[60vh] flex items-center pt-32 pb-20" style={{backgroundImage: 'url(https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/TjZnphAlUUQxwTMg.webp)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <section className="relative min-h-[60vh] flex items-center pt-32 pb-20" style={{backgroundImage: 'url(https://res.cloudinary.com/dgruohz6f/image/upload/v1773439191/comprando-america/TjZnphAlUUQxwTMg.webp)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
         <div className="absolute inset-0 -z-10 bg-black/40" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
 
@@ -205,10 +205,10 @@ export default function Membresia() {
             <div className="max-w-4xl mx-auto">
               <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black">
                 <video
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/YalfpoAHGGBHORwE.mp4"
+                  src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439233/comprando-america/YalfpoAHGGBHORwE.mp4"
                   controls
                   className="w-full h-auto"
-                  poster="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/YalfpoAHGGBHORwE.mp4"
+                  poster="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439233/comprando-america/YalfpoAHGGBHORwE.mp4"
                 />
               </div>
             </div>

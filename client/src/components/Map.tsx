@@ -74,7 +74,8 @@
  * - “data-only” → Place, Geometry utilities.
  */
 
-/// <reference types="@types/google.maps" />
+// @ts-nocheck
+// Map component - requires Google Maps API key to function
 
 import { useEffect, useRef } from "react";
 import { usePersistFn } from "@/hooks/usePersistFn";

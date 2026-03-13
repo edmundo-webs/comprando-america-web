@@ -112,7 +112,7 @@ export default function EstructuraInversion() {
             >
               <div className="relative rounded-2xl overflow-hidden border border-white/10">
                 <img
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/NxiBRNllQxYRemFM.jpg"
+                  src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439156/comprando-america/NxiBRNllQxYRemFM.jpg"
                   alt="Estructura de Inversión en Estados Unidos"
                   className="w-full h-full object-cover"
                 />

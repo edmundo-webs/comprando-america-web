@@ -64,7 +64,7 @@ export default function ExpansionInternacional() {
             >
               <div className="relative rounded-2xl overflow-hidden border-4 border-primary/30">
                 <img
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/UuPRQKelKRuzBwXd.jpg"
+                  src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439196/comprando-america/UuPRQKelKRuzBwXd.jpg"
                   alt="Expansión Internacional de Empresas"
                   className="w-full h-full object-cover"
                 />

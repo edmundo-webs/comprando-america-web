@@ -1,15 +1,22 @@
 import { eq, desc, and, like, inArray, lt } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed, newsSubscribers, NewsSubscriber, InsertNewsSubscriber } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
-let _db: ReturnType<typeof drizzle> | null = null;
+let _db: any = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
+// TiDB requires SSL connections.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      const pool = mysql.createPool({
+        uri: process.env.DATABASE_URL,
+        ssl: { rejectUnauthorized: true },
+        connectionLimit: 5,
+      });
+      _db = drizzle(pool);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;

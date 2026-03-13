@@ -113,7 +113,7 @@ export default function BienesRaices() {
       <Navbar />
 
       {/* ═══ HERO ═══ */}
-      <section className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden" style={{backgroundImage: 'url(https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/fUiLqaRcYvhafLZf.webp)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
+      <section className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden" style={{backgroundImage: 'url(https://res.cloudinary.com/dgruohz6f/image/upload/v1773439251/comprando-america/fUiLqaRcYvhafLZf.webp)', backgroundSize: 'cover', backgroundPosition: 'center'}}>
         <div className="absolute inset-0 -z-10 bg-black/40" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
         <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[oklch(0.10_0.03_250)] via-transparent to-transparent" />
@@ -166,10 +166,10 @@ export default function BienesRaices() {
             <div className="max-w-4xl mx-auto">
               <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black">
                 <video
-                  src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/GmMnpoMeKYAWvyKd.mp4"
+                  src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
                   controls
                   className="w-full h-auto"
-                  poster="https://files.manuscdn.com/user_upload_by_module/session_file/310519663291837994/GmMnpoMeKYAWvyKd.mp4"
+                  poster="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
                 />
               </div>
             </div>
