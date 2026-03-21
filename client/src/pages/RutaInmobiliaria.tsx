@@ -154,7 +154,7 @@ export default function RutaInmobiliaria() {
                   <Calendar className="w-5 h-5 text-primary shrink-0 mt-1" />
                   <div>
                     <p className="text-white/50 text-sm">Fecha</p>
-                    <p className="text-white font-semibold">28 Mar 2026</p>
+                    <p className="text-white font-semibold">18 Abr 2026</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -295,7 +295,7 @@ export default function RutaInmobiliaria() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-white/50">✕</span>
-                    <span className="text-white/50">No tienes disponibilidad para el 28 de marzo</span>
+                    <span className="text-white/50">No tienes disponibilidad para el 18 de abril</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-white/50">✕</span>
@@ -448,8 +448,8 @@ export default function RutaInmobiliaria() {
                   </div>
                   <div className="bg-black/30 rounded-lg p-4 mb-6">
                     <p className="text-white/60 text-sm">
-                      <strong>Hasta 15 de marzo:</strong> $199 USD<br/>
-                      <strong>A partir del 16 de marzo:</strong> $299 USD
+                      <strong>Hasta 4 de abril:</strong> $199 USD<br/>
+                      <strong>A partir del 5 de abril:</strong> $299 USD
                     </p>
                   </div>
                   <p className="text-white/50 text-xs">
