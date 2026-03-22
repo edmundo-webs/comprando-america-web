@@ -51,7 +51,7 @@ export type InsertBlogPost = typeof blogPosts.$inferInsert;
  * News articles table
  * Stores editorial news articles written by the Comprando América team
  */
-export const newsArticles = mysqlTable("ca_news_articles", {
+export const newsArticles = mysqlTable("news_articles", {
   id: int("id").autoincrement().primaryKey(),
   title: varchar("title", { length: 500 }).notNull(),
   slug: varchar("slug", { length: 500 }).notNull().unique(),
@@ -62,12 +62,12 @@ export const newsArticles = mysqlTable("ca_news_articles", {
   source: varchar("source", { length: 255 }).notNull(),
   author: varchar("author", { length: 255 }).default("Equipo Comprando América").notNull(),
   category: mysqlEnum("category", ["visas-migracion", "economia-finanzas", "bienes-raices", "llc-negocios", "inversiones"]).notNull(),
-  imageUrl: varchar("imageUrl", { length: 1000 }),
-  ctaType: varchar("ctaType", { length: 100 }), // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
-  publishedAt: timestamp("publishedAt").notNull(),
-  fetchedAt: timestamp("fetchedAt").defaultNow().notNull(),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  imageUrl: varchar("image_url", { length: 1000 }),
+  ctaType: varchar("cta_type", { length: 100 }), // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
+  publishedAt: timestamp("published_at").notNull(),
+  fetchedAt: timestamp("fetched_at").defaultNow().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
 export type NewsArticle = typeof newsArticles.$inferSelect;
