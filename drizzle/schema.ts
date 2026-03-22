@@ -62,12 +62,12 @@ export const newsArticles = mysqlTable("ca_news_articles", {
   source: varchar("source", { length: 255 }).notNull(),
   author: varchar("author", { length: 255 }).default("Equipo Comprando América").notNull(),
   category: mysqlEnum("category", ["visas-migracion", "economia-finanzas", "bienes-raices", "llc-negocios", "inversiones"]).notNull(),
-  imageUrl: varchar("image_url", { length: 1000 }),
-  ctaType: varchar("cta_type", { length: 100 }), // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
-  publishedAt: timestamp("published_at").notNull(),
-  fetchedAt: timestamp("fetched_at").defaultNow().notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  ctaType: varchar("ctaType", { length: 100 }), // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
+  publishedAt: timestamp("publishedAt").notNull(),
+  fetchedAt: timestamp("fetchedAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type NewsArticle = typeof newsArticles.$inferSelect;
