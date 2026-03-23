@@ -71,8 +71,9 @@ export default function Footer() {
             © {new Date().getFullYear()} Comprando América. Todos los derechos reservados.
           </p>
           <div className="flex gap-6">
-            <a href="#" className="text-white/30 hover:text-white/60 text-sm transition-colors">Privacidad</a>
-            <a href="#" className="text-white/30 hover:text-white/60 text-sm transition-colors">Términos</a>
+            <a href="/privacidad" className="text-white/30 hover:text-white/60 text-sm transition-colors">Privacidad</a>
+            <a href="/terminos" className="text-white/30 hover:text-white/60 text-sm transition-colors">Términos</a>
+            <a href="/disclaimers" className="text-white/30 hover:text-white/60 text-sm transition-colors">Disclaimers</a>
           </div>
         </div>
       </div>

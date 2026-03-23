@@ -25,6 +25,9 @@ import NewsArticle from "./pages/NewsArticle";
 import RutaInmobiliaria from "./pages/RutaInmobiliaria";
 import LLC from "./pages/LLC";
 import Perfil from "./pages/Perfil";
+import TermsAndConditions from "./pages/TermsAndConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Disclaimers from "./pages/Disclaimers";
 
 function Router() {
   return (
@@ -45,6 +48,9 @@ function Router() {
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
       <Route path="/llc" component={LLC} />
       <Route path="/perfil" component={Perfil} />
+      <Route path="/terminos" component={TermsAndConditions} />
+      <Route path="/privacidad" component={PrivacyPolicy} />
+      <Route path="/disclaimers" component={Disclaimers} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
