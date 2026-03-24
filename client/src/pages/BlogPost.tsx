@@ -106,7 +106,7 @@ export default function BlogPost() {
               <img
                 src={post.featuredImage}
                 alt={post.title}
-                className="w-full h-[300px] md:h-[450px] object-cover"
+                className="w-full h-auto max-h-[500px] object-contain bg-[oklch(0.10_0.03_250)]"
               />
             </div>
           </div>
