@@ -51,8 +51,7 @@ function FadeIn({
 
 /* ── constants ── */
 const CLOVER_URL = "https://link.clover.com/urlshortener/Pk8sN9";
-const YOUTUBE_CHANNEL =
-  "https://www.youtube.com/@edmundotrevinousa1708/videos";
+const PODCAST_URL = "https://comprandoamerica.com/podcast";
 const VSL_VIDEO = "https://youtube.com/shorts/qTnLtfwUiOg?si=u1vlUb2PgDNSieF7";
 
 /* ── tracking helper (Meta Pixel / dataLayer) ── */
@@ -151,25 +150,42 @@ export default function RutaInmobiliaria() {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen flex items-center justify-center bg-background"
+      className="min-h-screen flex items-center justify-center bg-background px-6"
     >
-      <div className="max-w-xl mx-auto text-center px-6 py-20">
-        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-8">
-          <MessageCircle className="w-8 h-8 text-white/40" />
+      <div className="max-w-2xl mx-auto text-center py-20">
+        {/* warm illustration */}
+        <div className="relative w-24 h-24 mx-auto mb-10">
+          <div className="absolute inset-0 rounded-full bg-primary/10 animate-pulse" />
+          <div className="relative w-full h-full rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
+            <span className="text-4xl">🌱</span>
+          </div>
         </div>
-        <p className="text-white/80 text-lg leading-relaxed mb-8">
-          Este espacio está diseñado para inversionistas activos que buscan
-          claridad antes de tomar decisiones.
-          <br />
-          <br />
-          Si aún no estás en ese punto, te recomendamos comenzar con nuestro
-          contenido educativo.
+
+        <h2 className="text-2xl md:text-3xl font-serif text-white mb-4">
+          Todos empezamos en algún punto
+        </h2>
+
+        <p className="text-white/70 text-lg leading-relaxed mb-4 max-w-lg mx-auto">
+          Este evento está diseñado para quienes ya cuentan con capital
+          disponible para invertir. Pero eso no significa que no haya un
+          camino para ti.
         </p>
-        <a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
-          <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2">
-            Ver contenido educativo <ArrowRight className="w-4 h-4" />
+
+        <p className="text-white/60 leading-relaxed mb-10 max-w-lg mx-auto">
+          Hemos preparado contenido gratuito para que comiences a entender
+          cómo funciona la inversión inmobiliaria en Estados Unidos, a tu
+          ritmo y sin presión.
+        </p>
+
+        <a href={PODCAST_URL}>
+          <Button className="bg-primary hover:bg-primary/90 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-primary/20">
+            Escuchar el podcast <ArrowRight className="w-4 h-4" />
           </Button>
         </a>
+
+        <p className="text-white/40 text-sm mt-8">
+          Cuando estés listo, aquí estaremos.
+        </p>
       </div>
     </motion.div>
   );
