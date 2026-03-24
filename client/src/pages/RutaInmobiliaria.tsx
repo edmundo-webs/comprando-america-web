@@ -449,7 +449,7 @@ export default function RutaInmobiliaria() {
                   {/* Foto – placeholder hasta que suba imagen */}
                   <div className="relative rounded-2xl overflow-hidden bg-[oklch(0.15_0.03_250)] min-h-[400px]">
                     <img
-                      src="/edmundo-trevino.jpg"
+                      src="https://res.cloudinary.com/dofccqypz/image/upload/v1774380282/comprando-america/edmundo-trevino-professional.jpg"
                       alt="Edmundo Treviño"
                       className="w-full h-[400px] object-cover"
                     />
