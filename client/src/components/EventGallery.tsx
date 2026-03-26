@@ -3,7 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BASE = "https://res.cloudinary.com/dofccqypz/image/upload";
-const TRANSFORM = "c_fill,w_800,h_500,q_auto,f_auto";
+const TRANSFORM = "c_fill,w_1200,h_750,g_auto,q_auto,f_auto";
 
 const photos = [
   { src: `${BASE}/${TRANSFORM}/v1774537566/comprando-america/eventos/apk6qpfofrvwvwkovbdm.jpg`, alt: "Edmundo Treviño presentando '100 Socios Fundadores'" },
@@ -51,7 +51,7 @@ export default function EventGallery() {
   return (
     <div className="mt-10">
       {/* Main image */}
-      <div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-primary/20 shadow-lg shadow-primary/5 bg-black/20">
+      <div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-primary/20 shadow-lg shadow-primary/5 bg-black">
         <AnimatePresence mode="wait">
           <motion.img
             key={current}
@@ -109,7 +109,7 @@ export default function EventGallery() {
             }`}
           >
             <img
-              src={photo.src.replace("w_800,h_500", "w_100,h_70")}
+              src={photo.src.replace("w_1200,h_750", "w_120,h_75")}
               alt={photo.alt}
               className="w-full h-full object-cover"
               loading="lazy"
