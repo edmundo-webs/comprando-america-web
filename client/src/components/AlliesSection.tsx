@@ -15,12 +15,7 @@ const allies: Ally[] = [
     description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
     image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
   },
-  {
-    name: "Edmundo Treviño",
-    specialty: "Director General",
-    description: "Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.",
-    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png",
-  },
+
   {
     name: "Tomás Resendez",
     specialty: "Abogado de Inmigración",

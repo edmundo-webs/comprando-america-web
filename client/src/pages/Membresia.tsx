@@ -684,6 +684,80 @@ export default function Membresia() {
         </div>
       </section>
 
+      {/* ═══ EDMUNDO TREVIÑO – CEO ═══ */}
+      <section className="section-dark py-24 md:py-32">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+                Liderazgo
+              </p>
+              <h2 className="text-4xl md:text-5xl font-serif text-white">
+                Quién está al frente
+              </h2>
+            </div>
+          </FadeIn>
+
+          <FadeIn>
+            <div className="max-w-5xl mx-auto bg-gradient-to-br from-[oklch(0.15_0.03_250)] to-[oklch(0.12_0.03_250)] border border-primary/20 rounded-2xl p-8 md:p-12">
+              <div className="flex flex-col md:flex-row gap-10 items-start">
+                {/* Photo */}
+                <div className="flex-shrink-0 mx-auto md:mx-0">
+                  <img
+                    src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png"
+                    alt="Edmundo Treviño"
+                    className="w-48 h-56 md:w-56 md:h-64 rounded-xl object-cover border-2 border-primary/20 shadow-lg shadow-primary/10"
+                  />
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="text-3xl md:text-4xl font-serif text-white mb-2">
+                    Edmundo Treviño
+                  </h3>
+                  <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6">
+                    Director General
+                  </p>
+                  <p className="text-white/70 text-lg leading-relaxed mb-8">
+                    Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.
+                  </p>
+
+                  <ul className="space-y-3 mb-10">
+                    {[
+                      "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
+                      "Maestría en Sistema Fiscal en Estados Unidos",
+                      "10 años de experiencia en contabilidad y administración de empresas",
+                      "20 años de experiencia en comercio internacional",
+                      "Más de 8 empresas operando en Estados Unidos y México",
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full border border-primary/40 flex items-center justify-center mt-0.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        </span>
+                        <span className="text-white/70 text-sm leading-relaxed">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="flex flex-wrap gap-4">
+                    <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
+                      <Button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 text-sm gap-2">
+                        Conoce más <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </a>
+                    <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-6 py-3 text-sm gap-2">
+                        Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══ ALIADOS EXPERTOS ═══ */}
       <AlliesSection />
 
