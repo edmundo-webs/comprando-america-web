@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const BASE = "https://res.cloudinary.com/dofccqypz/image/upload";
 
 const photos = [
-  { id: "apk6qpfofrvwvwkovbdm", v: "1774537566", alt: "Presentación 'Los Socios Fundadores'" },
-  { id: "ddhzlxysdvxcfrwhhlhk", v: "1774537527", alt: "Taller sobre flujo de caja — evento binacional" },
+  { id: "apk6qpfofrvwvwkovbdm", v: "1774537566", alt: "Presentación de deals" },
+  { id: "ddhzlxysdvxcfrwhhlhk", v: "1774537527", alt: "Presentación de deals" },
   { id: "fou8skfadwce2lodr5yc", v: "1774537561", alt: "Panel de discusión en cumbre presencial" },
   { id: "bgprzji1dndpvyejpbbn", v: "1774537568", alt: "Foro empresarial con asistentes" },
   { id: "xvdkaaxpavgr9lrybk8g", v: "1774537558", alt: "Panel de expertos Comprando América" },
