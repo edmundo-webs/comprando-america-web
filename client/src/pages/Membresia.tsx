@@ -31,7 +31,7 @@ import {
   Globe,
   Lock,
   Play,
-  Mic,
+
   MapPin,
   Calendar,
   X,
@@ -613,34 +613,11 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ APRENDIZAJE + EVENTOS (combinadas, compactas) ═══ */}
+      {/* ═══ EVENTOS ═══ */}
       <section className="section-dark py-20 md:py-28">
         <div className="container">
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Aprendizaje */}
+          <div className="max-w-3xl mx-auto">
             <FadeIn>
-              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 h-full">
-                <Mic className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-2xl font-serif text-white mb-3">
-                  Aprendizaje continuo
-                </h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-6">
-                  Contenido educativo para empresarios que quieren entender el
-                  mercado estadounidense antes de actuar.
-                </p>
-                <a href="/podcast">
-                  <Button
-                    variant="outline"
-                    className="border-white/20 text-white hover:bg-white/5 gap-2"
-                  >
-                    Escuchar Podcast <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-
-            {/* Eventos */}
-            <FadeIn delay={0.1}>
               <div className="bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-xl p-8 h-full">
                 <Calendar className="w-8 h-8 text-primary mb-4" />
                 <h3 className="text-2xl font-serif text-white mb-3">
