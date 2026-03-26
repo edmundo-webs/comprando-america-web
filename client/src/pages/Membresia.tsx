@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AlliesSection from "@/components/AlliesSection";
 import MemberTestimonialSlider from "@/components/MemberTestimonialSlider";
+import EventGallery from "@/components/EventGallery";
 
 import { useInView } from "@/hooks/useInView";
 import { useCountUp } from "@/hooks/useCountUp";
@@ -613,49 +614,56 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ EVENTOS ═══ */}
+      {/* ═══ EVENTOS Y NETWORKING ═══ */}
       <section className="section-dark py-20 md:py-28">
         <div className="container">
-          <div className="max-w-3xl mx-auto">
-            <FadeIn>
-              <div className="bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-xl p-8 h-full">
-                <Calendar className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-2xl font-serif text-white mb-3">
-                  Eventos y Networking
-                </h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-6">
-                  Encuentros presenciales donde empresarios comparten
-                  experiencias, cierran negocios y construyen relaciones.
-                </p>
-                <div className="space-y-3">
-                  {[
-                    {
-                      title: "Cumbres Presenciales",
-                      desc: "Eventos anuales en diferentes ciudades.",
-                    },
-                    {
-                      title: "Viajes de Inspección",
-                      desc: "Visitas guiadas a oportunidades en EE.UU.",
-                    },
-                    {
-                      title: "Networking Exclusivo",
-                      desc: "Comunidad de empresarios y expertos.",
-                    },
-                  ].map((e, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="text-primary font-bold text-sm mt-0.5">
-                        0{i + 1}
-                      </span>
-                      <div>
-                        <p className="text-white text-sm font-semibold">
-                          {e.title}
-                        </p>
-                        <p className="text-white/50 text-xs">{e.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+          <FadeIn>
+            <div className="text-center mb-12">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Conexiones Reales
+              </p>
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+                Eventos y Networking
+              </h2>
+              <p className="text-white/60 text-lg max-w-2xl mx-auto">
+                Encuentros presenciales donde empresarios comparten experiencias,
+                cierran negocios y construyen relaciones que duran.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
+            {[
+              {
+                num: "01",
+                title: "Cumbres Presenciales",
+                desc: "Eventos anuales en diferentes ciudades donde miembros se reúnen para aprender, conectar y expandir su red.",
+              },
+              {
+                num: "02",
+                title: "Viajes de Inspección",
+                desc: "Visitas guiadas a oportunidades de inversión en Estados Unidos. Conoce proyectos en vivo.",
+              },
+              {
+                num: "03",
+                title: "Networking Exclusivo",
+                desc: "Acceso a una comunidad de empresarios, abogados, contadores y expertos en inversión internacional.",
+              },
+            ].map((e, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 h-full hover:border-primary/20 transition-all">
+                  <span className="text-primary font-bold text-2xl font-mono">{e.num}</span>
+                  <h3 className="text-lg font-serif text-white mt-3 mb-2">{e.title}</h3>
+                  <p className="text-white/50 text-sm leading-relaxed">{e.desc}</p>
                 </div>
-              </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          {/* Photo Gallery */}
+          <div className="max-w-4xl mx-auto">
+            <FadeIn>
+              <EventGallery />
             </FadeIn>
           </div>
         </div>
