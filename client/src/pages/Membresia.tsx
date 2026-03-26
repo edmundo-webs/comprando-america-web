@@ -661,7 +661,7 @@ export default function Membresia() {
           </div>
 
           {/* Photo Gallery */}
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <FadeIn>
               <EventGallery />
             </FadeIn>

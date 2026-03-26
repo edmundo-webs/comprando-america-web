@@ -3,26 +3,29 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BASE = "https://res.cloudinary.com/dofccqypz/image/upload";
-const TRANSFORM = "c_fill,w_1200,h_750,g_auto,q_auto,f_auto";
 
 const photos = [
-  { src: `${BASE}/${TRANSFORM}/v1774537566/comprando-america/eventos/apk6qpfofrvwvwkovbdm.jpg`, alt: "Edmundo Treviño presentando '100 Socios Fundadores'" },
-  { src: `${BASE}/${TRANSFORM}/v1774537527/comprando-america/eventos/ddhzlxysdvxcfrwhhlhk.jpg`, alt: "Cumbre presencial Comprando América" },
-  { src: `${BASE}/${TRANSFORM}/v1774537561/comprando-america/eventos/fou8skfadwce2lodr5yc.jpg`, alt: "Salón lleno en cumbre presencial" },
-  { src: `${BASE}/${TRANSFORM}/v1774537568/comprando-america/eventos/bgprzji1dndpvyejpbbn.jpg`, alt: "Conferencia con asistentes" },
-  { src: `${BASE}/${TRANSFORM}/v1774537558/comprando-america/eventos/xvdkaaxpavgr9lrybk8g.jpg`, alt: "Panel de expertos Comprando América" },
-  { src: `${BASE}/${TRANSFORM}/v1774537563/comprando-america/eventos/um9rxzrmrveuim0of1yf.jpg`, alt: "Panel de expertos — vista lateral" },
-  { src: `${BASE}/${TRANSFORM}/v1774537541/comprando-america/eventos/v7r3cxs7gg19ktnwniis.jpg`, alt: "Sesión de trabajo sobre inmigración" },
-  { src: `${BASE}/${TRANSFORM}/v1774537524/comprando-america/eventos/fn9xive0vzvew1n1xymt.jpg`, alt: "Mesa de trabajo entre miembros" },
-  { src: `${BASE}/${TRANSFORM}/v1774537526/comprando-america/eventos/n8lkmvpmlrnco9etkxfb.jpg`, alt: "Cena privada y networking exclusivo" },
-  { src: `${BASE}/${TRANSFORM}/v1774537537/comprando-america/eventos/fenfa1ovnmcwxfgttbkq.jpg`, alt: "Edmundo en conversación 1:1 con miembro" },
-  { src: `${BASE}/${TRANSFORM}/v1774537532/comprando-america/eventos/x9z2totnrqoowgdkjqui.jpg`, alt: "Networking entre asistentes" },
-  { src: `${BASE}/${TRANSFORM}/v1774537559/comprando-america/eventos/hpwrp8ofq5delfnpo9ro.jpg`, alt: "Networking en lobby del evento" },
-  { src: `${BASE}/${TRANSFORM}/v1774537565/comprando-america/eventos/jqyrqajkj4czyxgdnlni.jpg`, alt: "Salón preparado para evento" },
-  { src: `${BASE}/${TRANSFORM}/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg`, alt: "Comunidad residencial — viaje de inspección" },
-  { src: `${BASE}/${TRANSFORM}/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg`, alt: "Evento presencial Comprando América" },
-  { src: `${BASE}/${TRANSFORM}/v1774537571/comprando-america/eventos/d1ux821r9p9ndhymsiv1.jpg`, alt: "Cumbre Comprando América" },
+  { id: "apk6qpfofrvwvwkovbdm", v: "1774537566", alt: "Edmundo Treviño presentando '100 Socios Fundadores'" },
+  { id: "ddhzlxysdvxcfrwhhlhk", v: "1774537527", alt: "Cumbre presencial Comprando América" },
+  { id: "fou8skfadwce2lodr5yc", v: "1774537561", alt: "Salón lleno en cumbre presencial" },
+  { id: "bgprzji1dndpvyejpbbn", v: "1774537568", alt: "Conferencia con asistentes" },
+  { id: "xvdkaaxpavgr9lrybk8g", v: "1774537558", alt: "Panel de expertos Comprando América" },
+  { id: "um9rxzrmrveuim0of1yf", v: "1774537563", alt: "Panel de expertos — vista lateral" },
+  { id: "v7r3cxs7gg19ktnwniis", v: "1774537541", alt: "Sesión de trabajo sobre inmigración" },
+  { id: "fn9xive0vzvew1n1xymt", v: "1774537524", alt: "Mesa de trabajo entre miembros" },
+  { id: "n8lkmvpmlrnco9etkxfb", v: "1774537526", alt: "Cena privada y networking exclusivo" },
+  { id: "fenfa1ovnmcwxfgttbkq", v: "1774537537", alt: "Edmundo en conversación 1:1 con miembro" },
+  { id: "x9z2totnrqoowgdkjqui", v: "1774537532", alt: "Networking entre asistentes" },
+  { id: "hpwrp8ofq5delfnpo9ro", v: "1774537559", alt: "Networking en lobby del evento" },
+  { id: "jqyrqajkj4czyxgdnlni", v: "1774537565", alt: "Salón preparado para evento" },
+  { id: "uefjxoxi5trojtoeivha", v: "1774537564", alt: "Comunidad residencial — viaje de inspección" },
+  { id: "vjyyrtfskd3w7nmklbt3", v: "1774537570", alt: "Evento presencial Comprando América" },
+  { id: "d1ux821r9p9ndhymsiv1", v: "1774537571", alt: "Cumbre Comprando América" },
 ];
+
+function imgUrl(id: string, v: string, w: number, h: number) {
+  return `${BASE}/c_fill,w_${w},h_${h},g_auto,q_auto,f_auto/v${v}/comprando-america/eventos/${id}.jpg`;
+}
 
 export default function EventGallery() {
   const [current, setCurrent] = useState(0);
@@ -48,45 +51,46 @@ export default function EventGallery() {
     next();
   };
 
+  const photo = photos[current];
+
   return (
-    <div className="mt-10">
+    <div>
       {/* Main image */}
-      <div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-primary/20 shadow-lg shadow-primary/5 bg-black">
+      <div className="relative aspect-video rounded-2xl overflow-hidden border border-primary/20 shadow-2xl shadow-primary/10 bg-black">
         <AnimatePresence mode="wait">
           <motion.img
             key={current}
-            src={photos[current].src}
-            alt={photos[current].alt}
+            src={imgUrl(photo.id, photo.v, 1400, 788)}
+            alt={photo.alt}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
             className="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
           />
         </AnimatePresence>
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        {/* Gradient overlay for caption */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
 
         {/* Caption */}
-        <div className="absolute bottom-4 left-4 right-4">
-          <p className="text-white/80 text-sm font-medium drop-shadow-lg">
-            {photos[current].alt}
+        <div className="absolute bottom-4 left-5 right-5">
+          <p className="text-white text-sm font-medium drop-shadow-lg">
+            {photo.alt}
           </p>
         </div>
 
         {/* Nav buttons */}
         <button
           onClick={prev}
-          className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 backdrop-blur-md text-white hover:bg-black/70 transition-colors"
           aria-label="Anterior"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={handleNext}
-          className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-black/60 transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 backdrop-blur-md text-white hover:bg-black/70 transition-colors"
           aria-label="Siguiente"
         >
           <ChevronRight className="w-5 h-5" />
@@ -94,23 +98,23 @@ export default function EventGallery() {
       </div>
 
       {/* Thumbnail strip */}
-      <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide">
-        {photos.map((photo, i) => (
+      <div className="flex gap-2 mt-4 overflow-x-auto pb-2 scrollbar-hide justify-center">
+        {photos.map((p, i) => (
           <button
             key={i}
             onClick={() => {
               setAutoplay(false);
               setCurrent(i);
             }}
-            className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+            className={`flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
               i === current
-                ? "border-primary opacity-100 scale-105"
-                : "border-transparent opacity-50 hover:opacity-80"
+                ? "border-primary opacity-100 ring-2 ring-primary/30"
+                : "border-white/10 opacity-40 hover:opacity-75"
             }`}
           >
             <img
-              src={photo.src.replace("w_1200,h_750", "w_120,h_75")}
-              alt={photo.alt}
+              src={imgUrl(p.id, p.v, 160, 112)}
+              alt={p.alt}
               className="w-full h-full object-cover"
               loading="lazy"
             />
@@ -120,7 +124,7 @@ export default function EventGallery() {
 
       {/* Counter */}
       <p className="text-white/40 text-xs text-center mt-3">
-        {current + 1} de {photos.length}
+        {current + 1} / {photos.length}
       </p>
     </div>
   );
