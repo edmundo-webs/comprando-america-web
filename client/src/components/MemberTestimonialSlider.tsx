@@ -384,6 +384,28 @@ export default function MemberTestimonialSlider() {
           </p>
         </div>
 
+        {/* Video Testimonials */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-primary/20 shadow-lg shadow-primary/5">
+            <iframe
+              src="https://www.youtube.com/embed/WYNwoTzG8Ss"
+              title="Testimonial - Miembro Comprando América"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-primary/20 shadow-lg shadow-primary/5">
+            <iframe
+              src="https://www.youtube.com/embed/6J6IIPFsTD0"
+              title="Testimonial - Miembro Comprando América"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        </div>
+
         {/* Slider */}
         <div className="relative">
           <AnimatePresence mode="wait">
