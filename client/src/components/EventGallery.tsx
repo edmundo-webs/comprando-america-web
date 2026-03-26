@@ -5,22 +5,22 @@ import { motion, AnimatePresence } from "framer-motion";
 const BASE = "https://res.cloudinary.com/dofccqypz/image/upload";
 
 const photos = [
-  { id: "apk6qpfofrvwvwkovbdm", v: "1774537566", alt: "Edmundo Treviño presentando '100 Socios Fundadores'" },
-  { id: "ddhzlxysdvxcfrwhhlhk", v: "1774537527", alt: "Cumbre presencial Comprando América" },
-  { id: "fou8skfadwce2lodr5yc", v: "1774537561", alt: "Salón lleno en cumbre presencial" },
-  { id: "bgprzji1dndpvyejpbbn", v: "1774537568", alt: "Conferencia con asistentes" },
+  { id: "apk6qpfofrvwvwkovbdm", v: "1774537566", alt: "Presentación 'Los Socios Fundadores'" },
+  { id: "ddhzlxysdvxcfrwhhlhk", v: "1774537527", alt: "Taller sobre flujo de caja — evento binacional" },
+  { id: "fou8skfadwce2lodr5yc", v: "1774537561", alt: "Panel de discusión en cumbre presencial" },
+  { id: "bgprzji1dndpvyejpbbn", v: "1774537568", alt: "Foro empresarial con asistentes" },
   { id: "xvdkaaxpavgr9lrybk8g", v: "1774537558", alt: "Panel de expertos Comprando América" },
-  { id: "um9rxzrmrveuim0of1yf", v: "1774537563", alt: "Panel de expertos — vista lateral" },
-  { id: "v7r3cxs7gg19ktnwniis", v: "1774537541", alt: "Sesión de trabajo sobre inmigración" },
-  { id: "fn9xive0vzvew1n1xymt", v: "1774537524", alt: "Mesa de trabajo entre miembros" },
-  { id: "n8lkmvpmlrnco9etkxfb", v: "1774537526", alt: "Cena privada y networking exclusivo" },
-  { id: "fenfa1ovnmcwxfgttbkq", v: "1774537537", alt: "Edmundo en conversación 1:1 con miembro" },
-  { id: "x9z2totnrqoowgdkjqui", v: "1774537532", alt: "Networking entre asistentes" },
-  { id: "hpwrp8ofq5delfnpo9ro", v: "1774537559", alt: "Networking en lobby del evento" },
-  { id: "jqyrqajkj4czyxgdnlni", v: "1774537565", alt: "Salón preparado para evento" },
-  { id: "uefjxoxi5trojtoeivha", v: "1774537564", alt: "Comunidad residencial — viaje de inspección" },
-  { id: "vjyyrtfskd3w7nmklbt3", v: "1774537570", alt: "Evento presencial Comprando América" },
-  { id: "d1ux821r9p9ndhymsiv1", v: "1774537571", alt: "Cumbre Comprando América" },
+  { id: "um9rxzrmrveuim0of1yf", v: "1774537563", alt: "Panelistas en sesión de preguntas" },
+  { id: "v7r3cxs7gg19ktnwniis", v: "1774537541", alt: "Conversación sobre estrategia de inmigración" },
+  { id: "fn9xive0vzvew1n1xymt", v: "1774537524", alt: "Reunión de trabajo y capacitación" },
+  { id: "n8lkmvpmlrnco9etkxfb", v: "1774537526", alt: "Cena privada — networking exclusivo" },
+  { id: "fenfa1ovnmcwxfgttbkq", v: "1774537537", alt: "Conversación en sala de capacitación" },
+  { id: "x9z2totnrqoowgdkjqui", v: "1774537532", alt: "Networking durante pausa del evento" },
+  { id: "hpwrp8ofq5delfnpo9ro", v: "1774537559", alt: "Networking en vestíbulo del evento" },
+  { id: "jqyrqajkj4czyxgdnlni", v: "1774537565", alt: "Salón preparado para cumbre presencial" },
+  { id: "uefjxoxi5trojtoeivha", v: "1774537564", alt: "Vista aérea — viaje de inspección inmobiliaria" },
+  { id: "vjyyrtfskd3w7nmklbt3", v: "1774537570", alt: "Propiedad en viaje de inspección" },
+  { id: "d1ux821r9p9ndhymsiv1", v: "1774537571", alt: "Propiedad en comunidad residencial" },
 ];
 
 function imgUrl(id: string, v: string, w: number, h: number) {
