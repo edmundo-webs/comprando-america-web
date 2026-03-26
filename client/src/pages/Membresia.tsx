@@ -5,6 +5,7 @@ import AlliesSection from "@/components/AlliesSection";
 import MemberTestimonialSlider from "@/components/MemberTestimonialSlider";
 
 import { useInView } from "@/hooks/useInView";
+import { useCountUp } from "@/hooks/useCountUp";
 import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -136,13 +137,26 @@ const diferenciadores = [
 ];
 
 const stats = [
-  { value: "38+", label: "Miembros activos" },
-  { value: "50+", label: "LLCs estructuradas" },
-  { value: "6", label: "Viajes de inspección" },
-  { value: "7", label: "Eventos presenciales" },
-  { value: "11+", label: "Visas tramitadas" },
-  { value: "7", label: "Visas en proceso" },
+  { value: 38, suffix: "+", label: "Miembros activos" },
+  { value: 50, suffix: "+", label: "LLCs estructuradas" },
+  { value: 6, suffix: "", label: "Viajes de inspección" },
+  { value: 7, suffix: "", label: "Eventos presenciales" },
+  { value: 11, suffix: "+", label: "Visas tramitadas" },
+  { value: 7, suffix: "", label: "Visas en proceso" },
 ];
+
+function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const { ref, isInView } = useInView();
+  const count = useCountUp(value, 2000, isInView);
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-primary font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+        {count}{suffix}
+      </div>
+      <p className="text-white/50 text-xs mt-1">{label}</p>
+    </div>
+  );
+}
 
 const perfilSi = [
   "Puedes invertir $100,000 USD o más",
@@ -434,14 +448,11 @@ export default function Membresia() {
             <h2 className="text-3xl md:text-4xl font-serif text-white text-center mb-12">
               Ejecutamos. No solo analizamos.
             </h2>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-4 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-5xl mx-auto">
               {stats.map((s, i) => (
-                <div key={i} className="text-center">
-                  <p className="text-primary font-serif text-3xl md:text-4xl font-bold">
-                    {s.value}
-                  </p>
-                  <p className="text-white/50 text-xs mt-1">{s.label}</p>
-                </div>
+                <FadeIn key={i} delay={i * 0.05}>
+                  <StatCounter {...s} />
+                </FadeIn>
               ))}
             </div>
           </FadeIn>
