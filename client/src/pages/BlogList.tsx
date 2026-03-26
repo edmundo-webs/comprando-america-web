@@ -158,11 +158,11 @@ export default function BlogList() {
                           <div className="relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-500 h-full flex flex-col">
                             {/* Image */}
                             {blog.featuredImage && (
-                              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-primary/20 to-transparent">
+                              <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary/20 to-transparent">
                                 <img
                                   src={blog.featuredImage}
                                   alt={blog.title}
-                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                  className="w-full h-full object-contain bg-[oklch(0.08_0.02_250)] group-hover:scale-105 transition-transform duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] to-transparent" />
                               </div>
