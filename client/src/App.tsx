@@ -33,6 +33,7 @@ import Eventos from "./pages/Eventos";
 import InvestmentWeek from "./pages/InvestmentWeek";
 import Recursos from "./pages/Recursos";
 import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
+import VisaE2 from "./pages/VisaE2";
 
 function Router() {
   return (
@@ -56,6 +57,7 @@ function Router() {
       <Route path="/investment-week" component={InvestmentWeek} />
       <Route path="/recursos" component={Recursos} />
       <Route path="/estructura-empresarial-en-estados-unidos" component={EstructuraEmpresarial} />
+      <Route path="/visa-e2-inversion-en-estados-unidos" component={VisaE2} />
       <Route path="/llc" component={LLC} />
       <Route path="/perfil" component={Perfil} />
       <Route path="/terminos" component={TermsAndConditions} />

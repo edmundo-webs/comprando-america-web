@@ -1,15 +1,45 @@
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SectionHeading from "@/components/SectionHeading";
-
 import { useInView } from "@/hooks/useInView";
+import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AlertCircle, CheckCircle2, XCircle, ArrowRight } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  ArrowRight,
+  XCircle,
+  CheckCircle2,
+  Building2,
+  DollarSign,
+  Briefcase,
+  FileCheck,
+  Users,
+  MessageCircle,
+  Shield,
+  Target,
+  TrendingUp,
+  AlertTriangle,
+} from "lucide-react";
 
-// ─── Animated wrapper ───
-function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+const WA_MSG =
+  "Hola, me interesa saber más sobre el proceso de visa E-2 y estructura de inversión.";
+
+/* ─── FadeIn ─── */
+function FadeIn({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
   const { ref, isInView } = useInView();
   return (
     <motion.div
@@ -24,153 +54,248 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
   );
 }
 
+/* ─── SEO ─── */
+function SEOHead() {
+  useEffect(() => {
+    document.title =
+      "Visa E-2 Inversión en Estados Unidos | Guía Estratégica | Comprando América";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute(
+        "content",
+        "La visa E-2 no es un trámite. Es el resultado de una estructura de inversión bien diseñada. Entiende cómo funciona realmente y si aplica para tu perfil."
+      );
+    }
+  }, []);
+  return null;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+
 export default function VisaE2() {
-  const errors = [
-    "Presentar documentación débil o mal estructurada.",
-    "Elegir una visa que no aplica para tu perfil.",
-    "Inconsistencias en entrevista consular.",
-    "No sustentar fondos, actividad económica o propósito de inversión."
-  ];
-
-  const services = [
-    "Evaluación inicial del perfil migratorio y financiero.",
-    "Guía para estructurar una inversión desde $100,000 USD con viabilidad migratoria (según el caso).",
-    "Acompañamiento en documentación, estrategia y proceso.",
-    "Ruta clara por etapas: preparación, ejecución y seguimiento.",
-    "Red de aliados con experiencia real en inversión e inmigración.",
-    "Acceso a trato y precios preferenciales con los expertos."
-  ];
-
-  const whyChoose = [
-    {
-      title: "Oportunidades Verificadas",
-      description: "Acceso a oportunidades filtradas y analizadas en Estados Unidos."
-    },
-    {
-      title: "Red Multidisciplinaria",
-      description: "Inmigración, finanzas, derecho corporativo y operación en un solo lugar."
-    },
-    {
-      title: "Criterio y Estructura",
-      description: "Toma decisiones con respaldo profesional y análisis fundamentado."
-    },
-    {
-      title: "Ética y Transparencia",
-      description: "Información clara, sin esquemas dudosos ni falsas promesas."
-    }
-  ];
-
-  const faqs = [
-    {
-      question: "¿Qué evalúan al solicitar una visa americana?",
-      answer: "Las autoridades consulares evalúan historial migratorio, solvencia, vínculos con tu país, coherencia del propósito y veracidad documental. El objetivo es validar que tu solicitud es sólida y consistente."
-    },
-    {
-      question: "¿Qué hace un asesor de visas americanas?",
-      answer: "Un asesor te ayuda a definir la categoría correcta, estructurar documentación, preparar entrevista y evitar errores comunes que generan rechazos o inconsistencias. En Comprando América, este acompañamiento forma parte de la membresía."
-    },
-    {
-      question: "¿Cómo demuestro fondos suficientes para una visa en Estados Unidos?",
-      answer: "Con estados de cuenta, declaraciones fiscales, activos, ingresos comprobables y evidencia de estabilidad financiera. En procesos de inversión, lo más importante es que el origen de fondos sea legítimo, claro y defendible."
-    },
-    {
-      question: "¿Quieres solicitar acceso a esta comunidad privada?",
-      answer: "Esta membresía está diseñada para perfiles con capacidad de inversión desde $100,000 USD y un interés real en invertir en Estados Unidos con estructura y acompañamiento profesional. Completa el formulario para solicitar acceso y revisión de perfil."
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <SEOHead />
       <Navbar />
 
-      {/* ═══ HERO ═══ */}
-      <section className="relative min-h-screen flex items-center pt-28 pb-20">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] via-transparent to-transparent" />
-        </div>
+      {/* ═══ 1. HERO ═══ */}
+      <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-[oklch(0.13_0.04_250)]" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl" />
+
         <div className="container relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Asesoría Migratoria
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
-                Visa E-2 Inversionista: Accede a <span className="gradient-text-primary">Estados Unidos</span> con Estrategia
+          <FadeIn>
+            <div className="max-w-3xl">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+                Visa E-2 · Inversión
+              </p>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-6">
+                La visa E-2 no se obtiene aplicando…
+                <br />
+                <span className="text-primary">
+                  Se obtiene estructurando correctamente tu inversión en Estados
+                  Unidos
+                </span>
               </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-6 max-w-2xl">
-                Accede a una asesoría profesional para visa americana como parte de nuestra membresía anual: un servicio diseñado para inversionistas latinos que buscan <strong>estructurar su entrada a Estados Unidos</strong> con claridad legal, estrategia financiera y acompañamiento experto.
+              <p className="text-white/60 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
+                Entiende cómo funciona realmente la visa E-2 y cómo se conecta
+                con inversión, empresa y estrategia.
               </p>
-              <p className="text-base text-white/60 leading-relaxed mb-8 max-w-2xl">
-                Esta asesoría está pensada para perfiles con capacidad de inversión <strong>desde $100,000 USD</strong>, y se brinda únicamente a miembros que cumplan con los criterios de selección.
-              </p>
-              <a href="/#membresia">
-                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                  Validar tu encaje <ArrowRight className="w-4 h-4" />
+
+              <div className="flex flex-wrap gap-4 mb-10">
+                <a href="/perfil">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-primary/20">
+                    Evaluar mi perfil <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+                <Button
+                  variant="outline"
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
+                  className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base gap-2"
+                >
+                  Hablar con un asesor
                 </Button>
-              </a>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-              className="hidden lg:block"
-            >
-              <div className="relative rounded-2xl overflow-hidden border border-white/10">
-                <img
-                  src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439038/comprando-america/CfxPxjlhrDPuEwyR.webp"
-                  alt="Visa E-2 Inversionista"
-                  className="w-full h-full object-cover"
-                />
               </div>
-            </motion.div>
-          </div>
+
+              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-primary" /> Información
+                  clara
+                </span>
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-primary" /> Enfoque
+                  estratégico
+                </span>
+                <span className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-primary" /> Sin
+                  promesas irreales
+                </span>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* ═══ ERRORES QUE EVITAMOS ═══ */}
-      <section className="section-darker py-24 md:py-32">
+      {/* ═══ 2. EL ERROR COMÚN ═══ */}
+      <section className="section-darker py-20 md:py-28">
         <div className="container">
-          <SectionHeading
-            tag="Errores Comunes"
-            title="Con Nuestra Membresía, Obtienes Asesoría para Evitar Estos Errores"
-            subtitle="Una visa para Estados Unidos no se resuelve con un formulario. Se define con estrategia."
-          />
-          <p className="text-center text-white/70 mb-12 max-w-3xl mx-auto">
-            Seleccionar la categoría correcta, presentar documentación sólida, construir una narrativa coherente y preparar el proceso consular con precisión son elementos clave para el éxito.
-          </p>
-          <div className="max-w-3xl mx-auto space-y-4">
-            {errors.map((error, i) => (
-              <FadeIn key={error} delay={i * 0.05}>
-                <div className="flex items-start gap-4 bg-[oklch(0.15_0.03_250)] border border-red-500/20 rounded-xl p-6 hover:border-red-500/40 transition-all duration-500">
-                  <XCircle className="w-6 h-6 text-red-400 shrink-0 mt-0.5" />
-                  <p className="text-white/70 leading-relaxed">{error}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                Muchos creen que la visa E-2 es un trámite migratorio
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
+                Y ese es el primer error. La visa E-2 no se trata de llenar
+                formularios. Se trata de:
+              </p>
+              <div className="space-y-4 mb-10">
+                {[
+                  "Tener una inversión real y documentable",
+                  "Estructurar correctamente un negocio en EE.UU.",
+                  "Demostrar intención operativa clara",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-white/70 text-lg">{item}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="bg-[oklch(0.12_0.03_250)] border border-primary/20 rounded-xl p-8">
+                <p className="text-white/80 text-lg font-serif">
+                  La visa es{" "}
+                  <span className="text-primary font-semibold">
+                    consecuencia
+                  </span>
+                  , no punto de partida.
+                </p>
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
-      {/* ═══ QUÉ INCLUYE ═══ */}
-      <section className="section-dark py-24 md:py-32">
+      {/* ═══ 3. QUÉ ES REALMENTE ═══ */}
+      <section className="section-dark py-20 md:py-28">
         <div className="container">
-          <SectionHeading
-            tag="Nuestro Acompañamiento"
-            title="¿Qué Incluye la Asesoría para Miembros?"
-            subtitle="La mayoría de rechazos o retrasos ocurren por falta de criterio y estructura."
-          />
-          <div className="max-w-3xl mx-auto">
-            <div className="space-y-4">
-              {services.map((service, i) => (
-                <FadeIn key={service} delay={i * 0.05}>
-                  <div className="flex items-start gap-4 bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500">
-                    <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-                    <p className="text-white/70 leading-relaxed">{service}</p>
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                La visa E-2 es una visa basada en inversión
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
+                Permite a empresarios operar un negocio en Estados Unidos
+                siempre que exista:
+              </p>
+              <div className="grid sm:grid-cols-3 gap-6">
+                {[
+                  {
+                    icon: DollarSign,
+                    title: "Inversión real",
+                    desc: "Capital comprometido en un negocio activo en EE.UU.",
+                  },
+                  {
+                    icon: Building2,
+                    title: "Negocio activo",
+                    desc: "Empresa operando o lista para operar con plan claro.",
+                  },
+                  {
+                    icon: FileCheck,
+                    title: "Estructura clara",
+                    desc: "Documentación legal y fiscal organizada correctamente.",
+                  },
+                ].map((item, i) => (
+                  <FadeIn key={i} delay={i * 0.1}>
+                    <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 text-center h-full hover:border-primary/20 transition-all">
+                      <item.icon className="w-8 h-8 text-primary mx-auto mb-4" />
+                      <h3 className="text-white font-serif text-lg mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-white/50 text-sm">{item.desc}</p>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 4. QUÉ NO ES ═══ */}
+      <section className="section-darker py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">
+                Lo que la visa E-2{" "}
+                <span className="text-red-400">NO</span> es
+              </h2>
+              <div className="space-y-4">
+                {[
+                  "No es automática — requiere cumplir con criterios específicos",
+                  "No es comprar una visa — no existe esa opción",
+                  "No es solo abrir una LLC — la empresa es solo una parte",
+                  "No garantiza aprobación — cada caso es diferente",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-white/70 text-lg">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 5. CÓMO FUNCIONA ═══ */}
+      <section className="section-dark py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-serif text-white">
+                Cómo se construye una visa E-2
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  step: "1",
+                  icon: Building2,
+                  title: "Estructura empresarial",
+                  desc: "Crear la base legal correcta para operar.",
+                },
+                {
+                  step: "2",
+                  icon: DollarSign,
+                  title: "Inversión real",
+                  desc: "Capital comprometido y documentado.",
+                },
+                {
+                  step: "3",
+                  icon: Briefcase,
+                  title: "Operación del negocio",
+                  desc: "Demostrar actividad e intención operativa.",
+                },
+                {
+                  step: "4",
+                  icon: FileCheck,
+                  title: "Proceso migratorio",
+                  desc: "La visa como resultado natural del proceso.",
+                },
+              ].map((item, i) => (
+                <FadeIn key={i} delay={i * 0.1}>
+                  <div className="relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 text-center h-full hover:border-primary/20 transition-all">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">
+                      {item.step}
+                    </div>
+                    <item.icon className="w-8 h-8 text-primary mx-auto mb-3 mt-4" />
+                    <h3 className="text-white font-serif text-base mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/50 text-sm">{item.desc}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -179,20 +304,203 @@ export default function VisaE2() {
         </div>
       </section>
 
-      {/* ═══ POR QUÉ ELEGIR ═══ */}
-      <section className="section-darker py-24 md:py-32">
+      {/* ═══ 6. DÓNDE FALLA LA MAYORÍA ═══ */}
+      <section className="section-darker py-20 md:py-28">
         <div className="container">
-          <SectionHeading
-            tag="Diferenciación"
-            title="¿Por Qué Elegir Comprando América?"
-            subtitle="En un mercado saturado de promesas, ofrecemos profesionalismo y transparencia."
-          />
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <AlertTriangle className="w-10 h-10 text-amber-400 mb-4" />
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">
+                Por qué muchas personas fallan en el proceso
+              </h2>
+              <div className="space-y-4">
+                {[
+                  "Elegir mal el tipo de negocio o inversión",
+                  "Crear una estructura legal inadecuada",
+                  "No tener estrategia de operación clara",
+                  "Pensar solo en la visa, no en el negocio",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-white/70 text-lg">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 7. EL ENFOQUE CORRECTO ═══ */}
+      <section className="section-dark py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center">
+              <Target className="w-10 h-10 text-primary mx-auto mb-4" />
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                El enfoque no es la visa…{" "}
+                <span className="text-primary">es la estructura</span>
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed">
+                Cuando la inversión y la empresa están bien diseñadas, la visa
+                se vuelve una consecuencia natural. El objetivo es construir
+                algo sólido — no perseguir un documento.
+              </p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 8. COMPRANDO AMÉRICA ═══ */}
+      <section className="section-darker py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                Dónde entra Comprando América en este proceso
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
+                Comprando América no es una agencia migratoria. Es un ecosistema
+                donde empresarios pueden:
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {[
+                  "Acceder a oportunidades de inversión filtradas",
+                  "Estructurar su empresa correctamente",
+                  "Conectar con expertos y comunidad",
+                  "Tomar decisiones informadas",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-white/70">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 9-10. PARA QUIÉN ES / NO ES ═══ */}
+      <section className="section-dark py-20 md:py-28">
+        <div className="container">
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {whyChoose.map((item, i) => (
-              <FadeIn key={item.title} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 hover:border-primary/30 transition-all duration-500 h-full">
-                  <h3 className="text-lg font-serif text-white mb-4">{item.title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">{item.description}</p>
+            <FadeIn>
+              <div className="bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-2xl p-8 h-full">
+                <h2 className="text-2xl font-serif text-white mb-6">
+                  Este proceso es para personas que:
+                </h2>
+                <div className="space-y-4">
+                  {[
+                    "Tienen capital disponible para invertir",
+                    "Buscan operar o expandirse en EE.UU.",
+                    "Entienden que es un proceso estratégico",
+                    "Están dispuestas a construir algo real",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-white/60 text-sm">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <div className="bg-[oklch(0.15_0.03_250)] border border-red-500/20 rounded-2xl p-8 h-full">
+                <h2 className="text-2xl font-serif text-white mb-6">
+                  No es para quienes:
+                </h2>
+                <div className="space-y-4">
+                  {[
+                    "Buscan soluciones rápidas o atajos",
+                    "No tienen intención real de invertir",
+                    'Quieren "comprar una visa"',
+                    "No están dispuestos a seguir un proceso",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <XCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-white/60 text-sm">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 11. CTA INTERMEDIO ═══ */}
+      <section className="section-darker py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-2xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                ¿Tu perfil puede encajar en este tipo de estructura?
+              </h2>
+              <p className="text-white/60 text-lg mb-10">
+                Evalúa tu situación antes de tomar decisiones.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <a href="/perfil">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-primary/20">
+                    Evaluar mi perfil <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+                <Button
+                  variant="outline"
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
+                  className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base gap-2"
+                >
+                  Hablar por WhatsApp
+                </Button>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 12. CAMINOS POSIBLES ═══ */}
+      <section className="section-dark py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-serif text-white">
+                Dependiendo de tu perfil, existen diferentes caminos
+              </h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {[
+              {
+                icon: TrendingUp,
+                title: "Inversión en negocio",
+                desc: "Adquirir o crear un negocio operativo en EE.UU.",
+              },
+              {
+                icon: Building2,
+                title: "Adquisición",
+                desc: "Comprar un negocio existente con historial.",
+              },
+              {
+                icon: Shield,
+                title: "Estructura empresarial",
+                desc: "LLC + operación + base fiscal desde cero.",
+              },
+              {
+                icon: Users,
+                title: "Comunidad estratégica",
+                desc: "Oportunidades dentro de redes de inversionistas.",
+              },
+            ].map((item, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 text-center h-full hover:border-primary/20 transition-all">
+                  <item.icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <h3 className="text-white font-serif text-base mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/50 text-sm">{item.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -200,54 +508,23 @@ export default function VisaE2() {
         </div>
       </section>
 
-      {/* ═══ FAQ ═══ */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <SectionHeading
-            tag="Preguntas Frecuentes"
-            title="Dudas Comunes Sobre Visa E-2"
-            subtitle="Respuestas claras a las preguntas más frecuentes de inversionistas."
-          />
-          <div className="max-w-3xl mx-auto">
-            <FadeIn>
-              <Accordion type="single" collapsible className="space-y-4">
-                {faqs.map((faq, i) => (
-                  <AccordionItem
-                    key={i}
-                    value={`item-${i}`}
-                    className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl px-6 data-[state=open]:border-primary/30 transition-all duration-500"
-                  >
-                    <AccordionTrigger className="text-white hover:text-primary transition-colors py-4">
-                      {faq.question}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-white/70 pb-4">
-                      {faq.answer}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ CTA FINAL ═══ */}
-      <section className="section-darker py-24 md:py-32">
+      {/* ═══ 13. CONEXIÓN OPORTUNIDADES ═══ */}
+      <section className="section-darker py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-12 md:p-16 text-center">
+            <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
-                ¿Quieres Saber si Puedes Formar Parte de Esta Comunidad?
+                La inversión es la base del proceso
               </h2>
-              <p className="text-white/70 text-lg mb-4 max-w-2xl mx-auto">
-                Completa el formulario y déjanos acompañarte en tu ingreso al mercado estadounidense con estrategia, respaldo y visión a largo plazo.
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
+                Muchos empresarios acceden a oportunidades de inversión dentro
+                de redes estratégicas que les permiten tomar decisiones con
+                mayor criterio y respaldo.
               </p>
-              <p className="text-white/60 text-base mb-8 max-w-2xl mx-auto">
-                Capacidad de inversión desde <strong>$100,000 USD</strong> requerida.
-              </p>
-              <a href="/#membresia">
-                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                  Validar tu encaje <ArrowRight className="w-4 h-4" />
+              <a href="/oportunidades-de-inversion-en-estados-unidos">
+                <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
+                  Ver oportunidades disponibles{" "}
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
@@ -255,30 +532,119 @@ export default function VisaE2() {
         </div>
       </section>
 
-      {/* ═══ FORMULARIO ═══ */}
-      <section id="formulario" className="section-dark py-24 md:py-32">
+      {/* ═══ 14. CONEXIÓN LLC ═══ */}
+      <section className="section-dark py-20 md:py-28">
         <div className="container">
-          <div className="max-w-2xl mx-auto">
-            <FadeIn>
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-                  Solicita tu Acceso a la Membresía
-                </h2>
-                <p className="text-white/60">
-                  Completa el formulario para que nuestro equipo revise tu perfil y te contacte con más detalles sobre cómo podemos acompañarte en tu proceso de visa E-2 e inversión en Estados Unidos.
-                </p>
-              </div>
-              <div className="flex justify-center">
-                <a href="/#membresia" className="inline-block">
-                  <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                    Validar tu encaje <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-          </div>
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                La estructura empresarial es el punto de partida
+              </h2>
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
+                Antes de pensar en la visa, necesitas una empresa bien
+                estructurada. Ese es el primer paso concreto.
+              </p>
+              <a href="/estructura-empresarial-en-estados-unidos">
+                <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
+                  Crear mi empresa en Estados Unidos{" "}
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
+            </div>
+          </FadeIn>
         </div>
       </section>
+
+      {/* ═══ 15. FAQ ═══ */}
+      <section className="section-darker py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-serif text-white text-center mb-12">
+                Preguntas frecuentes
+              </h2>
+              <Accordion type="single" collapsible className="space-y-4">
+                {[
+                  {
+                    q: "¿Cuánto dinero se necesita para una visa E-2?",
+                    a: "No existe un monto mínimo oficial. Sin embargo, la inversión debe ser 'sustancial' en relación con el costo total del negocio. En la práctica, inversiones por debajo de $80,000–$100,000 USD suelen ser difíciles de sustentar. Lo importante no es solo el monto — es cómo se estructura y documenta la inversión.",
+                  },
+                  {
+                    q: "¿La visa E-2 está garantizada?",
+                    a: "No. Ninguna visa está garantizada. La visa E-2 depende de múltiples factores: el tipo de inversión, la estructura del negocio, la documentación presentada y la evaluación del oficial consular. Por eso es fundamental tener una estructura sólida antes de aplicar.",
+                  },
+                  {
+                    q: "¿Necesito vivir en Estados Unidos para aplicar?",
+                    a: "No necesitas vivir en EE.UU. para iniciar el proceso. Puedes estructurar la empresa y la inversión de forma remota. Sin embargo, la visa E-2 sí requiere que tengas intención de dirigir y desarrollar el negocio en territorio estadounidense.",
+                  },
+                  {
+                    q: "¿Qué tipo de negocio funciona para la visa E-2?",
+                    a: "La visa E-2 aplica para diversos tipos de negocios: restaurantes, franquicias, servicios profesionales, e-commerce, bienes raíces operativos, entre otros. Lo fundamental es que sea un negocio real, activo y con potencial de generar empleos e ingresos.",
+                  },
+                ].map((faq, i) => (
+                  <AccordionItem
+                    key={i}
+                    value={`faq-${i}`}
+                    className="bg-[oklch(0.15_0.03_250)] border border-white/10 rounded-xl px-6"
+                  >
+                    <AccordionTrigger className="text-white text-left hover:no-underline py-5">
+                      {faq.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-white/60 leading-relaxed pb-5">
+                      {faq.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 16. CTA FINAL ═══ */}
+      <section className="section-dark py-24 md:py-32">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-2xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                Entiende si este camino puede aplicar para ti
+              </h2>
+              <p className="text-white/60 text-lg mb-4">
+                La visa E-2 no es para todos.
+              </p>
+              <p className="text-white/40 mb-10">
+                Pero cuando existe la estructura correcta, puede ser una opción
+                viable.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <a href="/perfil">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-primary/20">
+                    Evaluar mi perfil <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+                <Button
+                  variant="outline"
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
+                  className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base gap-2"
+                >
+                  Hablar con un asesor
+                </Button>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ BOTÓN FLOTANTE WHATSAPP ═══ */}
+      <a
+        href={`https://wa.me/${WHATSAPP_PHONE}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-40 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-all"
+        title="Hablar con un asesor"
+      >
+        <MessageCircle className="w-6 h-6" />
+      </a>
 
       <Footer />
     </div>
