@@ -32,6 +32,7 @@ import Oportunidades from "./pages/Oportunidades";
 import Eventos from "./pages/Eventos";
 import InvestmentWeek from "./pages/InvestmentWeek";
 import Recursos from "./pages/Recursos";
+import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
 
 function Router() {
   return (
@@ -54,6 +55,7 @@ function Router() {
       <Route path="/eventos" component={Eventos} />
       <Route path="/investment-week" component={InvestmentWeek} />
       <Route path="/recursos" component={Recursos} />
+      <Route path="/estructura-empresarial-en-estados-unidos" component={EstructuraEmpresarial} />
       <Route path="/llc" component={LLC} />
       <Route path="/perfil" component={Perfil} />
       <Route path="/terminos" component={TermsAndConditions} />
