@@ -29,6 +29,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Disclaimers from "./pages/Disclaimers";
 import Oportunidades from "./pages/Oportunidades";
+import Eventos from "./pages/Eventos";
 
 function Router() {
   return (
@@ -48,6 +49,7 @@ function Router() {
       <Route path="/news/:slug" component={NewsArticle} />
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
       <Route path="/oportunidades-de-inversion-en-estados-unidos" component={Oportunidades} />
+      <Route path="/eventos" component={Eventos} />
       <Route path="/llc" component={LLC} />
       <Route path="/perfil" component={Perfil} />
       <Route path="/terminos" component={TermsAndConditions} />
