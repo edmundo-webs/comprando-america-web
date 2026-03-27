@@ -25,23 +25,19 @@ export const EXTERNAL_LINKS = {
 
 export const NAV_ITEMS = [
   { label: "Inicio", href: "/" },
-  { label: "Membresía", href: EXTERNAL_LINKS.membresia },
-  { label: "Asesorías", href: "#", children: [
-    { label: "Formación de LLC", href: "/llc" },
-    { label: "Visa E-2", href: EXTERNAL_LINKS.visaE2 },
-    { label: "Bienes Raíces", href: EXTERNAL_LINKS.bienesRaices },
-    { label: "Inversiones", href: EXTERNAL_LINKS.estructura },
-    { label: "Expansión Internacional", href: EXTERNAL_LINKS.expansion },
+  { label: "Membresía", href: "/membresia" },
+  { label: "Inversión", href: "#", children: [
+    { label: "Oportunidades", href: "/oportunidades-de-inversion-en-estados-unidos" },
+    { label: "Estructura Empresarial", href: "/estructura-empresarial-en-estados-unidos" },
+    { label: "Visa E-2", href: "/visa-e2-inversion-en-estados-unidos" },
+    { label: "Bienes Raíces", href: "/bienes-raices-en-usa" },
   ]},
-  { label: "Próximos Eventos", href: "#", children: [
-    { label: "Ruta Inmobiliaria", href: "/ruta-inmobiliaria-en-estados-unidos" },
-  ]},
-  { label: "Recursos", href: "#", children: [
-    { label: "Formación", href: EXTERNAL_LINKS.formacion },
-    { label: "Noticias", href: "/news" },
-    { label: "Blog", href: EXTERNAL_LINKS.blog },
+  { label: "Eventos", href: "/eventos" },
+  { label: "Recursos", href: "/recursos", children: [
     { label: "Podcast", href: "/podcast" },
-    { label: "Quiénes Somos", href: EXTERNAL_LINKS.quienesSomos },
+    { label: "Noticias", href: "/news" },
+    { label: "Blog", href: "/blog" },
+    { label: "Quiénes Somos", href: "/quienes-somos" },
   ]},
 ];
 

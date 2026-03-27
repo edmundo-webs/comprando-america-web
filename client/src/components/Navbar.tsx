@@ -65,12 +65,12 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <button
-            onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
-            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-primary-dark transition-colors cursor-pointer"
+          <a
+            href="/perfil"
+            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-primary-dark transition-colors inline-block"
           >
-            Solicitar Información
-          </button>
+            Evaluar Perfil
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -117,15 +117,13 @@ export default function Navbar() {
                   )}
                 </div>
               ))}
-              <button
-                onClick={() => {
-                  openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE);
-                  setIsOpen(false);
-                }}
-                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)] cursor-pointer"
+              <a
+                href="/perfil"
+                onClick={() => setIsOpen(false)}
+                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)]"
               >
-                Solicitar Información
-              </button>
+                Evaluar Perfil
+              </a>
             </div>
           </motion.div>
         )}
