@@ -30,6 +30,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Disclaimers from "./pages/Disclaimers";
 import Oportunidades from "./pages/Oportunidades";
 import Eventos from "./pages/Eventos";
+import InvestmentWeek from "./pages/InvestmentWeek";
 
 function Router() {
   return (
@@ -50,6 +51,7 @@ function Router() {
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
       <Route path="/oportunidades-de-inversion-en-estados-unidos" component={Oportunidades} />
       <Route path="/eventos" component={Eventos} />
+      <Route path="/investment-week" component={InvestmentWeek} />
       <Route path="/llc" component={LLC} />
       <Route path="/perfil" component={Perfil} />
       <Route path="/terminos" component={TermsAndConditions} />
