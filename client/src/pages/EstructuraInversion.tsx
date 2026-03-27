@@ -262,31 +262,27 @@ export default function EstructuraInversion() {
         </div>
       </section>
 
-      {/* ═══ ESTRUCTURA EMPRESARIAL ═══ */}
+      {/* ═══ ¿SOLO NECESITAS UNA LLC? ═══ */}
       <section className="section-dark py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-                Estructura Empresarial en Estados Unidos
+                ¿Solo necesitas abrir tu empresa en Estados Unidos?
               </h2>
-              <p className="text-primary text-sm font-semibold mb-6">
-                Abrir una empresa no es el objetivo. Es el primer paso para
-                operar o invertir con orden.
-              </p>
               <p className="text-white/60 text-lg leading-relaxed mb-8">
-                Te ayudamos a construir una base empresarial clara: desde abrir
-                tu entidad, hasta preparar lo necesario para operar o invertir
-                con estrategia.
+                Si tu objetivo por ahora es crear tu LLC para operar o facturar
+                en Estados Unidos, puedes hacerlo directamente. Te ayudamos a
+                estructurarla correctamente desde el inicio.
               </p>
 
               <div className="space-y-3 mb-10">
                 {[
-                  "Abrir tu entidad (LLC u otra estructura según el caso)",
-                  "Elegir Texas o Florida con criterio",
-                  "EIN y base operativa",
-                  "Preparación para operar o invertir",
-                  "Identificar cuándo necesitas estrategia más avanzada",
+                  "Registro de LLC en Texas o Florida",
+                  "EIN (número fiscal federal)",
+                  "Registered Agent incluido",
+                  "Introducción bancaria",
+                  "Acompañamiento en español durante todo el proceso",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -297,7 +293,7 @@ export default function EstructuraInversion() {
 
               <a href="/estructura-empresarial-en-estados-unidos">
                 <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
-                  Crear tu empresa <ArrowRight className="w-4 h-4" />
+                  Crear mi LLC <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
