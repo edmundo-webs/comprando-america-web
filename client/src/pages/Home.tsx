@@ -207,7 +207,7 @@ export default function Home() {
                 title: "Estructura Empresarial",
                 desc: "Abrir una empresa es el inicio. Estructurarla correctamente es la diferencia.",
                 cta: "Ver Estructura",
-                href: "/estructura-empresarial-en-estados-unidos",
+                href: "/estructura-de-inversion-en-usa",
               },
             ].map((card, i) => (
               <FadeIn key={i} delay={i * 0.08}>
@@ -471,7 +471,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <a href="/estructura-empresarial-en-estados-unidos">
+                <a href="/estructura-de-inversion-en-usa">
                   <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
                     Ver Estructura Empresarial{" "}
                     <ArrowRight className="w-4 h-4" />
