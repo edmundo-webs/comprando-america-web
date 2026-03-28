@@ -65,8 +65,8 @@ export default function InvestmentWeek() {
           <div className="flex items-center justify-center gap-3 text-center">
             <Lock className="w-4 h-4 text-primary flex-shrink-0" />
             <p className="text-slate-400 text-sm">
-              <span className="text-primary font-semibold">Acceso restringido.</span>{" "}
-              Esta experiencia es por invitación y perfil aprobado.
+              <span className="text-primary font-semibold">Exclusivo por invitación.</span>{" "}
+              Solo para inversionistas que ya tuvieron entrevista sobre el fondo y cumplen con el perfil.
             </p>
           </div>
         </div>
@@ -162,13 +162,14 @@ export default function InvestmentWeek() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl md:text-4xl text-white mb-8">
-                Esta experiencia es para perfiles específicos
+                ¿Quién puede asistir?
               </h2>
+              <p className="text-slate-400 text-lg mb-8">Este viaje no está abierto al público. Para participar necesitas cumplir tres condiciones:</p>
               <div className="space-y-4 mb-10">
                 {[
-                  "Inversionistas con capital disponible para actuar",
-                  "Empresarios en proceso de expansión hacia EE.UU.",
-                  "Personas que ya conocen el fondo o han interactuado con el equipo",
+                  "Haber completado una entrevista previa sobre el fondo de inversión",
+                  "Cumplir con el perfil de inversionista requerido",
+                  "Recibir invitación directa del equipo de Comprando América",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -178,7 +179,7 @@ export default function InvestmentWeek() {
               </div>
               <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-8">
                 <p className="text-white text-lg">
-                  No es un evento abierto. <span className="text-primary font-semibold">El acceso se valida previamente.</span>
+                  Si no has tenido entrevista con el equipo, <span className="text-primary font-semibold">el primer paso es agendar una.</span>
                 </p>
               </div>
             </div>
@@ -313,12 +314,12 @@ export default function InvestmentWeek() {
             <FadeIn>
               <div>
                 <Lock className="w-8 h-8 text-primary mb-4" />
-                <h2 className="text-3xl text-[#0B1F3A] mb-6">El acceso es limitado y filtrado</h2>
+                <h2 className="text-3xl text-[#0B1F3A] mb-6">Requisitos de acceso</h2>
                 <div className="space-y-4 mb-8">
                   {[
-                    "Haber interactuado previamente con el fondo o el equipo",
-                    "Cumplir con el perfil de inversión requerido",
-                    "Contar con intención real de participar",
+                    "Entrevista completada sobre el fondo de inversión",
+                    "Perfil de inversionista aprobado por el equipo",
+                    "Invitación directa de Comprando América",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -327,7 +328,7 @@ export default function InvestmentWeek() {
                   ))}
                 </div>
                 <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6">
-                  <p className="text-[#0B1F3A] font-semibold">No todas las personas que aplican son aceptadas.</p>
+                  <p className="text-[#0B1F3A] font-semibold">Sin entrevista previa no es posible participar.</p>
                 </div>
               </div>
             </FadeIn>
@@ -411,7 +412,7 @@ export default function InvestmentWeek() {
               <h2 className="text-3xl md:text-4xl text-white mb-4">
                 Si este tipo de experiencias hace sentido para ti
               </h2>
-              <p className="text-slate-500 text-sm mb-10">Cupo limitado. Selección por perfil. Acceso por invitación.</p>
+              <p className="text-slate-500 text-sm mb-10">Exclusivo por invitación. Requiere entrevista previa sobre el fondo y perfil aprobado.</p>
               <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)} className="bg-primary hover:bg-blue-600 text-white font-semibold px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25">
                 Aplicar <ArrowRight className="w-5 h-5" />
               </Button>
