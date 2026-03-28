@@ -61,9 +61,18 @@ const VIDEO_URL =
 const VIDEO_POSTER =
   "https://res.cloudinary.com/dgruohz6f/video/upload/so_2,w_960,c_fill,q_auto,f_jpg/v1773439233/comprando-america/YalfpoAHGGBHORwE.jpg";
 
-// Foto de evento real para hero — placeholder hasta tener Drive
+// Fotos reales desde Google Drive (Pagina web > Fotos CA)
 const HERO_IMAGE =
-  "https://res.cloudinary.com/dofccqypz/image/upload/v1774537561/comprando-america/eventos/hpwrp8ofq5delfnpo9ro.jpg";
+  "https://lh3.googleusercontent.com/d/1QndwkGRoUpPQHUOPUcMe9B1kC5TfowoV=w1920"; // audiencia completa en evento
+
+const EDMUNDO_PORTRAIT =
+  "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800"; // retrato rooftop profesional
+
+const WORKSHOP_IMAGE =
+  "https://lh3.googleusercontent.com/d/1mQWgGjGOCgTU8BsOl3Rgdh5mGR3eObRd=w1200"; // presentador con números reales
+
+const DINNER_IMAGE =
+  "https://lh3.googleusercontent.com/d/1VKFcr6XRJ81P6XX9JbQ_GQvTsQdcvsQC=w1200"; // cena privada
 
 const enfoque = [
   { icon: Home, title: "Bienes Raíces Estratégicos", desc: "Single family homes y tierra estratégica con análisis real de entrada." },
@@ -329,6 +338,9 @@ export default function Membresia() {
 
             <FadeIn delay={0.1}>
               <div>
+                <div className="rounded-xl overflow-hidden mb-6 border border-[#1E3A5F]">
+                  <img src={WORKSHOP_IMAGE} alt="Taller de inversión con números reales" className="w-full h-48 object-cover" />
+                </div>
                 <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">¿Por qué es diferente?</p>
                 <h2 className="text-3xl text-white mb-8">Somos sistema de inversión</h2>
 
@@ -505,13 +517,18 @@ export default function Membresia() {
             {[
               { num: "01", title: "Cumbres Presenciales", desc: "Eventos anuales donde miembros conectan y expanden su red." },
               { num: "02", title: "Viajes de Inspección", desc: "Visitas guiadas a oportunidades de inversión en vivo." },
-              { num: "03", title: "Networking Exclusivo", desc: "Comunidad de empresarios, abogados y expertos en inversión." },
+              { num: "03", title: "Cenas Privadas", desc: "Reuniones exclusivas donde se cierran negocios y se construyen relaciones.", image: DINNER_IMAGE },
             ].map((e, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
-                  <span className="text-blue-400 font-bold text-2xl font-mono">{e.num}</span>
-                  <h3 className="text-lg font-bold text-white mt-3 mb-2">{e.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{e.desc}</p>
+                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden h-full hover:border-blue-500/30 transition-all">
+                  {'image' in e && (e as any).image && (
+                    <img src={(e as any).image} alt={e.title} className="w-full h-32 object-cover" />
+                  )}
+                  <div className="p-6">
+                    <span className="text-blue-400 font-bold text-2xl font-mono">{e.num}</span>
+                    <h3 className="text-lg font-bold text-white mt-3 mb-2">{e.title}</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">{e.desc}</p>
+                  </div>
                 </div>
               </FadeIn>
             ))}
@@ -538,7 +555,7 @@ export default function Membresia() {
               <div className="flex flex-col md:flex-row gap-10 items-start">
                 <div className="flex-shrink-0 mx-auto md:mx-0">
                   <img
-                    src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png"
+                    src={EDMUNDO_PORTRAIT}
                     alt="Edmundo Treviño"
                     className="w-48 h-56 md:w-56 md:h-64 rounded-xl object-cover border-2 border-gray-200 shadow-lg"
                   />
