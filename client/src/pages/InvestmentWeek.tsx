@@ -365,15 +365,14 @@ export default function InvestmentWeek() {
                 <p className="text-[#6B7280] text-sm mb-4">Quédate en <strong className="text-[#0B1F3A]">St. Petersburg, Florida</strong> — ahí es todo el evento. 3 noches: viernes 1, sábado 2 y domingo 3 de mayo. Check-out el lunes 4.</p>
                 <div className="space-y-3 mb-8">
                   {[
-                    { name: "Hilton St. Pete Bayfront", url: "https://hotelsapp.onelink.me/fSyN/b2yl4bzy" },
-                    { name: "Hilton St. Pete Carillon Park", url: "https://hotelsapp.onelink.me/fSyN/lofc3uln" },
-                    { name: "Marriott Tampa Westshore", url: "https://hotelsapp.onelink.me/fSyN/m8rj2576" },
-                  ].map((h, i) => (
-                    <a key={i} href={h.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4 hover:border-primary/40 hover:shadow-sm transition-all group">
+                    "Hilton St. Pete Bayfront",
+                    "Hilton St. Pete Carillon Park",
+                    "Marriott Tampa Westshore",
+                  ].map((name, i) => (
+                    <div key={i} className="flex items-center gap-3 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4">
                       <Hotel className="w-5 h-5 text-primary flex-shrink-0" />
-                      <span className="text-[#0B1F3A] font-semibold text-sm group-hover:text-primary transition-colors">{h.name}</span>
-                      <ArrowRight className="w-4 h-4 text-[#6B7280] ml-auto group-hover:text-primary transition-colors" />
-                    </a>
+                      <span className="text-[#0B1F3A] font-semibold text-sm">{name}</span>
+                    </div>
                   ))}
                 </div>
 
