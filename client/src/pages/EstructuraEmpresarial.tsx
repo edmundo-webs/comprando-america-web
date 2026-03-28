@@ -681,8 +681,6 @@ export default function EstructuraEmpresarial() {
         </div>
       </section>
 
-      </a>
-
       {/* ═══ STICKY CTA MOBILE ═══ */}
       <div className="fixed bottom-0 left-0 right-0 md:hidden bg-background border-t border-[#1E3A5F] p-4 z-40">
         <button

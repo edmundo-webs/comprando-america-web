@@ -644,8 +644,6 @@ export default function VisaE2() {
         </div>
       </section>
 
-      </a>
-
       <Footer />
     </div>
   );
