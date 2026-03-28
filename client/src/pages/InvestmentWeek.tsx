@@ -6,6 +6,12 @@ import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   ArrowRight,
   MapPin,
   CalendarDays,
@@ -338,43 +344,51 @@ export default function InvestmentWeek() {
                 <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6 font-mono">Logística del Viaje</p>
                 <p className="text-[#6B7280] text-sm mb-6">Elige tu punto de llegada según precio y disponibilidad de vuelos desde tu ciudad:</p>
 
-                {/* Opción A — Tampa */}
-                <h3 className="text-lg text-[#0B1F3A] font-semibold mb-4">Opción A — Tampa (TPA)</h3>
-                <div className="space-y-3 mb-8">
-                  {[
-                    { icon: Plane, title: "Llegada", desc: "Tampa (TPA) — 20 min a St. Petersburg" },
-                    { icon: Hotel, title: "Hospedaje sugerido", desc: "St. Petersburg — opciones compartidas en privado" },
-                    { icon: Car, title: "Transporte", desc: "Independiente" },
-                    { icon: Clock, title: "Agenda", desc: "Intensiva — 3 días completos de actividades" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4">
-                      <item.icon className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h4 className="text-[#0B1F3A] font-semibold text-sm">{item.title}</h4>
-                        <p className="text-[#6B7280] text-sm">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <Accordion type="single" collapsible className="space-y-3">
+                  <AccordionItem value="tampa" className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-5">
+                    <AccordionTrigger className="text-[#0B1F3A] font-semibold text-sm hover:no-underline py-4 gap-3">
+                      <span className="flex items-center gap-3"><Plane className="w-5 h-5 text-primary" /> Llegada: Tampa (TPA)</span>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-4 space-y-3">
+                      {[
+                        { icon: Plane, label: "Vuelo", desc: "20 min a St. Petersburg. Vuelos directos desde CDMX." },
+                        { icon: Hotel, label: "Hospedaje sugerido", desc: "St. Petersburg — opciones compartidas en privado" },
+                        { icon: Car, label: "Transporte", desc: "Independiente" },
+                        { icon: Clock, label: "Agenda", desc: "Intensiva — 3 días completos" },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <item.icon className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                          <div>
+                            <span className="text-[#0B1F3A] font-semibold text-xs">{item.label}</span>
+                            <p className="text-[#6B7280] text-sm">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </AccordionContent>
+                  </AccordionItem>
 
-                {/* Opción B — Orlando */}
-                <h3 className="text-lg text-[#0B1F3A] font-semibold mb-4">Opción B — Orlando (MCO)</h3>
-                <div className="space-y-3">
-                  {[
-                    { icon: Plane, title: "Llegada", desc: "Orlando (MCO) — más frecuencias desde México, ~2 hrs en auto a St. Pete" },
-                    { icon: Hotel, title: "Hospedaje sugerido", desc: "St. Petersburg — opciones compartidas en privado" },
-                    { icon: Car, title: "Transporte", desc: "Independiente" },
-                    { icon: Clock, title: "Agenda", desc: "Intensiva — 3 días completos de actividades" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4">
-                      <item.icon className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h4 className="text-[#0B1F3A] font-semibold text-sm">{item.title}</h4>
-                        <p className="text-[#6B7280] text-sm">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                  <AccordionItem value="orlando" className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-5">
+                    <AccordionTrigger className="text-[#0B1F3A] font-semibold text-sm hover:no-underline py-4 gap-3">
+                      <span className="flex items-center gap-3"><Plane className="w-5 h-5 text-primary" /> Llegada: Orlando (MCO)</span>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-4 space-y-3">
+                      {[
+                        { icon: Plane, label: "Vuelo", desc: "Más frecuencias desde México. ~2 horas en auto a St. Pete." },
+                        { icon: Hotel, label: "Hospedaje sugerido", desc: "St. Petersburg — opciones compartidas en privado" },
+                        { icon: Car, label: "Transporte", desc: "Independiente" },
+                        { icon: Clock, label: "Agenda", desc: "Intensiva — 3 días completos" },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-3">
+                          <item.icon className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                          <div>
+                            <span className="text-[#0B1F3A] font-semibold text-xs">{item.label}</span>
+                            <p className="text-[#6B7280] text-sm">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               </div>
             </FadeIn>
           </div>
