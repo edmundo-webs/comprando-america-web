@@ -3,220 +3,78 @@ import { ArrowRight, Users, Briefcase, Globe, Shield, TrendingUp, CheckCircle2 }
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { IMAGES, EXTERNAL_LINKS } from "@/lib/constants";
+import AlliesSection from "@/components/AlliesSection";
+import { useInView } from "@/hooks/useInView";
+import { useCountUp } from "@/hooks/useCountUp";
+import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
+
+/* ── animation helper ── */
+function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const { ref, isInView } = useInView();
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: "easeOut" }} className={className}>
+      {children}
+    </motion.div>
+  );
+}
+
+/* ── photos from Drive ── */
+const HERO_IMAGE = "https://lh3.googleusercontent.com/d/12leYCR8tlXXxZ6jeBlgthhmUqcyEmtoz=w1920"; // panel de expertos
+const TEAM_IMAGE = "https://lh3.googleusercontent.com/d/1RK1ICQKrETpZBFYH_NoZmnYzMULHREYu=w1920"; // equipo rooftop
+const AUDIENCE_IMAGE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920"; // sala llena
+const EDMUNDO_PORTRAIT = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800";
+const WORKSHOP_IMAGE = "https://lh3.googleusercontent.com/d/1mQWgGjGOCgTU8BsOl3Rgdh5mGR3eObRd=w1200";
+
+const stats = [
+  { value: 38, suffix: "+", label: "Miembros activos" },
+  { value: 50, suffix: "+", label: "LLCs estructuradas" },
+  { value: 6, suffix: "", label: "Viajes de inspección" },
+  { value: 11, suffix: "+", label: "Visas tramitadas" },
+];
+
+function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const { ref, isInView } = useInView();
+  const count = useCountUp(value, 2000, isInView);
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-primary text-3xl md:text-4xl font-bold mb-1">{count}{suffix}</div>
+      <p className="text-[#6B7280] text-xs">{label}</p>
+    </div>
+  );
+}
 
 export default function QuienesSomos() {
-  const fadeIn = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
-  };
-
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative min-h-[60vh] flex items-center pt-32 pb-20">
+      {/* ═══ HERO — foto panel expertos ═══ */}
+      <section className="relative min-h-[70vh] flex items-center pt-32 pb-20">
         <div className="absolute inset-0">
-          <img src={IMAGES.hero} alt="Hero" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
+          <img src={HERO_IMAGE} alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/80 to-[#0B1F3A]/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/30" />
         </div>
+
         <div className="container relative z-10">
-          <motion.div {...fadeIn}>
-            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-              Sobre Nosotros
-            </span>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
-              Impulsamos a inversionistas latinos a conquistar el mercado{" "}
-              <span className="gradient-text-primary">estadounidense</span>
-            </h1>
-            <p className="text-lg md:text-xl text-white/60 leading-relaxed max-w-2xl mb-6">
-              Comprando América es una comunidad privada y exclusiva para empresarios e inversionistas latinos que buscan estructurar inversiones estratégicas en Estados Unidos como herramienta de expansión, migración patrimonial o diversificación de activos.
-            </p>
-            <p className="text-lg md:text-xl text-white/60 leading-relaxed max-w-2xl mb-6">
-              Actuamos como un puente estratégico entre el inversionista latino y oportunidades previamente filtradas y curadas en Estados Unidos.
-            </p>
-            <div className="space-y-3 max-w-2xl text-white/80 text-base">
-              <p className="font-semibold">No somos brokers.</p>
-              <p className="font-semibold">No vendemos negocios existentes.</p>
-              <p className="font-semibold">No promovemos proyectos improvisados.</p>
-              <p className="text-white/60">Diseñamos y presentamos oportunidades estructuradas con análisis previo, validación profesional y visión estratégica.</p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Misión Section */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <motion.div {...fadeIn}>
-              <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Nuestra Misión</h2>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">
-                Nuestro objetivo es democratizar el acceso a inversiones estratégicas en Estados Unidos, brindando a nuestros miembros las herramientas, el conocimiento y el acompañamiento necesarios para adquirir y operar negocios rentables en el mercado estadounidense.
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
+            <div className="max-w-3xl">
+              <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+                Sobre Nosotros
+              </span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
+                Club privado de inversionistas en{" "}
+                <span className="gradient-text-primary">Estados Unidos</span>
+              </h1>
+              <p className="text-lg md:text-xl text-slate-300 leading-relaxed max-w-2xl mb-8">
+                Comprando América es una comunidad exclusiva para empresarios e inversionistas latinos que buscan estructurar inversiones estratégicas en Estados Unidos.
               </p>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <span className="text-white/80">Acceso a oportunidades validadas y estructuradas</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <span className="text-white/80">Educación ejecutiva y formación estratégica</span>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <span className="text-white/80">Acompañamiento legal, fiscal y migratorio</span>
-                </div>
+              <div className="space-y-2 text-slate-400 text-sm mb-10">
+                <p className="font-semibold text-white">No somos brokers. No vendemos negocios. No improvisamos.</p>
+                <p>Diseñamos y presentamos oportunidades estructuradas con análisis previo y visión estratégica.</p>
               </div>
-            </motion.div>
-            <motion.div {...fadeIn} transition={{ delay: 0.2 }}>
-              <div className="relative rounded-2xl overflow-hidden">
-                <img src={IMAGES.investmentBusiness} alt="Misión" className="w-full h-[400px] object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250)] to-transparent" />
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Lo que hacemos Section */}
-      <section className="section-darker py-24 md:py-32">
-        <div className="container">
-          <motion.div {...fadeIn} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Lo que hacemos</h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
-              En Comprando América operamos como una solución integral para el proceso de inversión extranjera en Estados Unidos
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                icon: <Globe className="w-8 h-8" />,
-                title: "Acceso a oportunidades validadas",
-                description: "Selección rigurosa de negocios operativos con potencial de crecimiento, rentabilidad comprobada y estructura legal lista para transacción.",
-              },
-              {
-                icon: <Briefcase className="w-8 h-8" />,
-                title: "Educación ejecutiva y formación estratégica",
-                description: "Capacitación dirigida a inversionistas y equipos gerenciales para comprender la dinámica del mercado estadounidense y los requisitos de adquisición.",
-              },
-              {
-                icon: <Shield className="w-8 h-8" />,
-                title: "Acompañamiento legal, fiscal y migratorio",
-                description: "Alianzas con firmas especializadas que garantizan procesos alineados con la legislación estadounidense y los objetivos de residencia o expansión internacional.",
-              },
-              {
-                icon: <Users className="w-8 h-8" />,
-                title: "Red de contactos y co-inversión",
-                description: "Acceso a una comunidad activa de empresarios con los que es posible colaborar, coinvertir o compartir conocimiento estratégico.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                {...fadeIn}
-                transition={{ delay: i * 0.1 }}
-                className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8 hover:border-blue-500/30 transition-all duration-500 group"
-              >
-                <div className="w-12 h-12 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center mb-4 group-hover:bg-blue-500/15 transition-colors">
-                  {item.icon}
-                </div>
-                <h3 className="text-xl font-serif text-white mb-3">{item.title}</h3>
-                <p className="text-white/60 leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Diferencial Section */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <motion.div {...fadeIn} className="max-w-3xl">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-12">Nuestro Diferencial</h2>
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-blue-500/15 text-primary flex items-center justify-center shrink-0 mt-1">
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-serif text-white mb-2">Enfoque 100% en inversionistas latinoamericanos</h3>
-                  <p className="text-white/60">Entendemos las particularidades, desafíos y oportunidades únicas del empresario latino en Estados Unidos.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-blue-500/15 text-primary flex items-center justify-center shrink-0 mt-1">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-serif text-white mb-2">Metodología probada</h3>
-                  <p className="text-white/60">Identificamos oportunidades sólidas y sostenibles con un proceso estructurado y validado.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-blue-500/15 text-primary flex items-center justify-center shrink-0 mt-1">
-                  <Users className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-serif text-white mb-2">Equipo multidisciplinario</h3>
-                  <p className="text-white/60">Especialistas en adquisiciones, migración, operaciones y planificación patrimonial trabajan juntos por tu éxito.</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Liderazgo Section */}
-      <section className="section-darker py-24 md:py-32">
-        <div className="container">
-          <motion.div {...fadeIn} className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-12">Liderazgo</h2>
-            <div className="bg-[#132D50] border border-blue-500/20 rounded-2xl p-12">
-              <h3 className="text-2xl font-serif text-white mb-4">Edmundo Treviño</h3>
-              <p className="text-primary text-sm font-semibold tracking-widest uppercase mb-6">Fundador y Director General</p>
-              <p className="text-white/60 leading-relaxed mb-8">
-                Empresario con más de dos décadas de experiencia en comercio internacional, adquisiciones transfronterizas y desarrollo empresarial entre Estados Unidos y América Latina.
-              </p>
-              <p className="text-white/60 leading-relaxed mb-8">
-                Junto a un equipo de especialistas en legal, finanzas y operaciones, lidera Comprando América con un enfoque claro: <span className="text-white font-semibold">reducir la complejidad del mercado estadounidense para el empresario latino que busca crecimiento real.</span>
-              </p>
-              <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-3 gap-2">
-                  Agenda una mentoría <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Comunidad Section */}
-      <section className="section-dark py-24 md:py-32">
-        <div className="container">
-          <motion.div {...fadeIn} className="max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-8">Forma parte de una red que transforma inversión en acción</h2>
-            <div className="space-y-6 text-white/60 leading-relaxed">
-              <p>
-                Unirte a <span className="text-white font-semibold">Comprando América</span> no es solo acceder a oportunidades de negocio: es integrarte a una comunidad de empresarios que entienden el valor de invertir con visión, información y respaldo.
-              </p>
-              <p>
-                Nuestros miembros comparten un <span className="text-white font-semibold">mismo objetivo</span>: generar crecimiento sostenido a través de decisiones estratégicas en uno de los mercados más estables y rentables del mundo.
-              </p>
-              <p>
-                Lo hacen respaldados por un equipo multidisciplinario, una red activa de profesionales y una metodología comprobada.
-              </p>
-              <div className="pt-8 border-t border-[#1E3A5F]">
-                <p className="text-lg font-serif text-white">
-                  <span className="text-primary">Comprando América.</span> Inversión con dirección. Comunidad con propósito.
-                </p>
-              </div>
-            </div>
-            <div className="mt-12">
-              <a href={EXTERNAL_LINKS.membresia} target="_blank" rel="noopener noreferrer">
-                <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
+              <a href="/membresia">
+                <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                   Conoce la Membresía <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
@@ -225,91 +83,173 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* Team Photo Section */}
-      <section className="section-dark py-24 md:py-32">
+      {/* ═══ MISIÓN + VISIÓN — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
-          <motion.div {...fadeIn} className="text-center mb-12">
-            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-              El Equipo
-            </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Somos una comunidad de ejecución</h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
-              Profesionales especializados trabajando juntos para transformar tu visión en realidad.
-            </p>
-          </motion.div>
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <FadeIn>
+              <div>
+                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Nuestra Misión</p>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+                  Democratizar el acceso a inversiones estratégicas
+                </h2>
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
+                  Brindamos a nuestros miembros las herramientas, el conocimiento y el acompañamiento necesarios para invertir y operar en el mercado estadounidense con estructura y visión.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    "Acceso a oportunidades validadas y estructuradas",
+                    "Educación ejecutiva y formación estratégica",
+                    "Acompañamiento legal, fiscal y migratorio",
+                    "Red de contactos y co-inversión activa",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <span className="text-[#374151] text-sm">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
 
-          <motion.div {...fadeIn} className="relative rounded-2xl overflow-hidden shadow-2xl">
-            <img
-              src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439241/comprando-america/ZCsPWjMTupqNFLuJ.avif"
-              alt="Equipo Comprando América"
-              className="w-full h-auto object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250)] via-transparent to-transparent" />
-          </motion.div>
+            <FadeIn delay={0.1}>
+              <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+                <img src={WORKSHOP_IMAGE} alt="Taller de inversión" className="w-full h-80 object-cover" />
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
-      {/* Expertos Section */}
-      <section className="section-darker py-24 md:py-32">
+      {/* ═══ STATS — ☀️ BLANCO ═══ */}
+      <section className="bg-white py-16 md:py-20">
         <div className="container">
-          <motion.div {...fadeIn} className="text-center mb-16">
-            <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-              Dedicación. Experiencia. Pasión.
-            </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Nuestros Expertos</h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
-              Conoce al equipo que lidera Comprando América y acompaña a cada inversionista en su camino.
-            </p>
-          </motion.div>
+          <FadeIn>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+              {stats.map((s, i) => (
+                <StatCounter key={i} {...s} />
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
-          {/* Edmundo - Featured Expert */}
-          <motion.div {...fadeIn} className="mb-16">
-            <div className="bg-[#132D50] border border-[#1E3A5F] rounded-2xl p-8 md:p-12">
-              <div className="grid md:grid-cols-3 gap-8 items-start">
-                {/* Photo */}
-                <div className="flex justify-center md:justify-start">
-                  <div className="relative rounded-xl overflow-hidden w-48 h-56">
-                    <img
-                      src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439150/comprando-america/MICeBWqDcmqjFtjy.jpg"
-                      alt="Edmundo Treviño"
-                      className="w-full h-full object-cover"
-                    />
+      {/* ═══ LO QUE HACEMOS — navy ═══ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Lo Que Hacemos</p>
+              <h2 className="text-3xl md:text-4xl text-white">Solución integral para inversión en EE.UU.</h2>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              { icon: Globe, title: "Oportunidades validadas", desc: "Selección rigurosa de negocios con potencial, rentabilidad comprobada y estructura legal lista." },
+              { icon: Briefcase, title: "Educación ejecutiva", desc: "Capacitación dirigida para comprender la dinámica del mercado estadounidense." },
+              { icon: Shield, title: "Acompañamiento integral", desc: "Alianzas con firmas legales, fiscales y migratorias especializadas." },
+              { icon: Users, title: "Red de co-inversión", desc: "Comunidad activa de empresarios para colaborar y compartir conocimiento." },
+            ].map((item, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all h-full">
+                  <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center mb-4">
+                    <item.icon className="w-5 h-5" />
                   </div>
+                  <h3 className="text-white font-semibold mb-2">{item.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Photo break — equipo rooftop ── */}
+      <section className="relative h-64 md:h-96 overflow-hidden">
+        <img src={TEAM_IMAGE} alt="Equipo Comprando América" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0E2544]" />
+      </section>
+
+      {/* ═══ DIFERENCIAL — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <FadeIn>
+              <div className="text-center mb-12">
+                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">¿Por Qué Nosotros?</p>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">Nuestro Diferencial</h2>
+              </div>
+            </FadeIn>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              {[
+                { icon: TrendingUp, title: "100% enfocados en latinos", desc: "Entendemos los desafíos y oportunidades únicos del empresario latino en Estados Unidos." },
+                { icon: CheckCircle2, title: "Metodología probada", desc: "Proceso estructurado para identificar oportunidades sólidas y sostenibles." },
+                { icon: Users, title: "Equipo multidisciplinario", desc: "Especialistas en adquisiciones, migración, operaciones y patrimonio." },
+              ].map((d, i) => (
+                <FadeIn key={i} delay={i * 0.1}>
+                  <div className="bg-white border border-gray-200 rounded-xl p-6 text-center hover:shadow-lg transition-all h-full shadow-sm">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 text-primary flex items-center justify-center mx-auto mb-4">
+                      <d.icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-[#0B1F3A] font-semibold mb-2">{d.title}</h3>
+                    <p className="text-[#6B7280] text-sm leading-relaxed">{d.desc}</p>
+                  </div>
+                </FadeIn>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ EDMUNDO CEO — navy ═══ */}
+      <section className="bg-[#0B1F3A] py-24 md:py-32">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Liderazgo</p>
+              <h2 className="text-4xl md:text-5xl text-white">Quién está al frente</h2>
+            </div>
+          </FadeIn>
+
+          <FadeIn>
+            <div className="max-w-5xl mx-auto bg-[#0F2847] border border-[#1E3A5F] rounded-2xl p-8 md:p-12">
+              <div className="flex flex-col md:flex-row gap-10 items-start">
+                <div className="flex-shrink-0 mx-auto md:mx-0">
+                  <img src={EDMUNDO_PORTRAIT} alt="Edmundo Treviño" className="w-48 h-56 md:w-56 md:h-64 rounded-xl object-cover border-2 border-blue-500/20 shadow-lg" />
                 </div>
 
-                {/* Content */}
-                <div className="md:col-span-2">
-                  <h3 className="text-2xl font-serif text-white mb-2">Edmundo Treviño</h3>
-                  <p className="text-primary text-sm font-semibold tracking-widest uppercase mb-4">Director General</p>
-                  <p className="text-white/60 leading-relaxed mb-6">
-                    Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.
+                <div className="flex-1">
+                  <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">Edmundo Treviño</h3>
+                  <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-6">Fundador y Director General</p>
+                  <p className="text-slate-300 text-lg leading-relaxed mb-8">
+                    Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Más de dos décadas de experiencia en comercio internacional y adquisiciones transfronterizas.
                   </p>
 
-                  {/* Credentials */}
-                  <div className="space-y-3 mb-8 pb-8 border-b border-[#1E3A5F]">
+                  <ul className="space-y-3 mb-10">
                     {[
                       "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
                       "Maestría en Sistema Fiscal en Estados Unidos",
-                      "10 años de experiencia en contabilidad y administración de empresas",
+                      "10 años de experiencia en contabilidad y administración",
                       "20 años de experiencia en comercio internacional",
-                      "Más de 8 empresas operando en Estados Unidos y México",
-                    ].map((cred, idx) => (
-                      <div key={idx} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-white/60 text-sm leading-tight">{cred}</span>
-                      </div>
+                      "Más de 8 empresas operando en EE.UU. y México",
+                    ].map((item, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                        <span className="text-slate-400 text-sm">{item}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
 
-                  {/* Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                      <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-2 text-sm gap-2">
+                  <div className="flex flex-wrap gap-4">
+                    <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
+                      <Button className="bg-primary hover:bg-blue-600 text-white px-6 py-3 text-sm gap-2 shadow-lg shadow-blue-600/15">
                         Conoce más <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
-                    <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] font-semibold px-6 py-2 text-sm gap-2">
+                    <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-6 py-3 text-sm gap-2">
                         Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
@@ -317,91 +257,68 @@ export default function QuienesSomos() {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </FadeIn>
+        </div>
+      </section>
 
-          {/* Other Experts Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              {
-                name: "Tomás Resendez",
-                title: "Abogado inmigración",
-                description: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
-                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439328/comprando-america/ukgTQSSvdQDxOgaS.jpg",
-              },
-              {
-                name: "John Mckee",
-                title: "Consultor comercial",
-                description: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
-                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439193/comprando-america/UdHEXziYIgLrEDvo.avif",
-              },
-              {
-                name: "Destiny Bounds",
-                title: "Abogada corporativa y PI",
-                description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
-                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439307/comprando-america/pdCooMLqOfvqVFar.avif",
-              },
-              {
-                name: "Aubrey Dwyer",
-                title: "Abogada corporativa",
-                description: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
-                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439190/comprando-america/TehgUNVHXbrssxsK.jpg",
-              },
-              {
-                name: "Daniel Palacios",
-                title: "Contador CPA y fiscalista",
-                description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
-                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png",
-              },
-              {
-                name: "Sebastián Jara",
-                title: "Consultor de marketing digital",
-                description: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
-                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439309/comprando-america/qrZqfOUTzqKwJcYP.avif",
-              },
-              {
-                name: "Joe Faraci",
-                title: "Inversionista en bienes raíces",
-                description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
-                image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439173/comprando-america/SLCApXDNVruIMYzi.jpg",
-              },
-            ].map((expert, i) => (
-              <motion.div
-                key={expert.name}
-                {...fadeIn}
-                transition={{ delay: i * 0.1 }}
-                className="group relative"
+      {/* ═══ ALIADOS — component (navy) ═══ */}
+      <AlliesSection />
+
+      {/* ── Photo break — audiencia ── */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <img src={AUDIENCE_IMAGE} alt="Comunidad de inversionistas" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0B1F3A]/60" />
+      </section>
+
+      {/* ═══ COMUNIDAD — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Comunidad</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-8">
+                Inversión con dirección. Comunidad con propósito.
+              </h2>
+              <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
+                Unirte a Comprando América es integrarte a una comunidad de empresarios que entienden el valor de invertir con visión, información y respaldo.
+              </p>
+              <p className="text-[#4B5563] text-lg leading-relaxed mb-10">
+                Nuestros miembros comparten un mismo objetivo: generar crecimiento sostenido a través de decisiones estratégicas en uno de los mercados más estables del mundo.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <a href="/membresia">
+                  <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                    Conoce la Membresía <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+                <a href="/perfil">
+                  <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 px-8 py-6 text-base">
+                    Evaluar mi Perfil
+                  </Button>
+                </a>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ CTA FINAL — deep navy ═══ */}
+      <section className="bg-[#091A30] py-24 md:py-32">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-2xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl text-white mb-4">¿Listo para dar el siguiente paso?</h2>
+              <p className="text-slate-400 leading-relaxed mb-10">
+                Si entiendes que invertir en Estados Unidos requiere estructura, criterio y comunidad, el siguiente paso es conocernos.
+              </p>
+              <Button
+                onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+                className="bg-primary hover:bg-blue-600 text-white font-semibold px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25"
               >
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all duration-500 h-full flex flex-col">
-                  {/* Image */}
-                  <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-b from-primary/5 to-primary/10 flex items-center justify-center group">
-                    {/* Subtle border accent */}
-                    <div className="absolute inset-0 border border-[#1E3A5F] group-hover:border-blue-500/30 transition-colors duration-500 pointer-events-none" />
-                    
-                    {expert.image ? (
-                      <>
-                        <img
-                          src={expert.image}
-                          alt={expert.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                        />
-                        {/* Overlay gradient for sophistication */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.08_0.03_250/0.6)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                      </>
-                    ) : (
-                      <Users className="w-12 h-12 text-primary/30" />
-                    )}
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5 flex flex-col flex-1">
-                    <h3 className="text-base font-serif text-white mb-1">{expert.name}</h3>
-                    <p className="text-primary text-xs font-semibold mb-3">{expert.title}</p>
-                    <p className="text-white/60 text-xs leading-relaxed flex-1">{expert.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                Hablar con un asesor <ArrowRight className="w-5 h-5" />
+              </Button>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
