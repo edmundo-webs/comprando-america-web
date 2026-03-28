@@ -26,15 +26,8 @@ import {
   GraduationCap,
   Handshake,
   Shield,
-  Target,
-  Zap,
-  BarChart3,
   Globe,
-  Lock,
   Play,
-
-  MapPin,
-  Calendar,
   X,
 } from "lucide-react";
 
@@ -68,65 +61,25 @@ const VIDEO_URL =
 const VIDEO_POSTER =
   "https://res.cloudinary.com/dgruohz6f/video/upload/so_2,w_960,c_fill,q_auto,f_jpg/v1773439233/comprando-america/YalfpoAHGGBHORwE.jpg";
 
+// Foto de evento real para hero — placeholder hasta tener Drive
+const HERO_IMAGE =
+  "https://res.cloudinary.com/dofccqypz/image/upload/v1774537561/comprando-america/eventos/hpwrp8ofq5delfnpo9ro.jpg";
+
 const enfoque = [
-  {
-    icon: Home,
-    title: "Bienes Raíces Estratégicos",
-    desc: "Single family homes y tierra estratégica con análisis real de entrada.",
-  },
-  {
-    icon: Globe,
-    title: "Migración con estructura",
-    desc: "Visa E-1, E-2 o expansión empresarial alineada a inversión sostenible.",
-  },
-  {
-    icon: Scale,
-    title: "Estructuración LLC",
-    desc: "Diseño correcto desde el inicio para proteger patrimonio.",
-  },
-  {
-    icon: GraduationCap,
-    title: "Educación Ejecutiva",
-    desc: "Deal Days, mentorías y análisis práctico.",
-  },
-  {
-    icon: Handshake,
-    title: "Red de Expertos",
-    desc: "Abogados, contadores, brokers y consultores con experiencia real.",
-  },
+  { icon: Home, title: "Bienes Raíces Estratégicos", desc: "Single family homes y tierra estratégica con análisis real de entrada." },
+  { icon: Globe, title: "Migración con estructura", desc: "Visa E-1, E-2 o expansión empresarial alineada a inversión sostenible." },
+  { icon: Scale, title: "Estructuración LLC", desc: "Diseño correcto desde el inicio para proteger patrimonio." },
+  { icon: GraduationCap, title: "Educación Ejecutiva", desc: "Deal Days, mentorías y análisis práctico." },
+  { icon: Handshake, title: "Red de Expertos", desc: "Abogados, contadores, brokers y consultores con experiencia real." },
 ];
 
 const pilares = [
-  {
-    n: 1,
-    title: "Criterio de Inversión",
-    desc: "Decidimos con proceso, no con emoción. Analizamos tesis, números, riesgos y escenarios.",
-  },
-  {
-    n: 2,
-    title: "Curación Estratégica",
-    desc: "Descartamos la mayoría de oportunidades. Protegemos capital, no vendemos proyectos.",
-  },
-  {
-    n: 3,
-    title: "Acompañamiento Integral",
-    desc: "Estructura legal, fiscal, bancaria y migratoria alineada desde el inicio.",
-  },
-  {
-    n: 4,
-    title: "Comunidad Ejecutora",
-    desc: "Empresarios que ya están tomando acción comparten experiencia real.",
-  },
-  {
-    n: 5,
-    title: "Velocidad de Activación",
-    desc: "Diagnóstico claro y plan estructurado. Inversión en 60–90 días cuando hay encaje.",
-  },
-  {
-    n: 6,
-    title: "Transferencia Patrimonial",
-    desc: "Diversificación internacional con visión de largo plazo y protección estructurada.",
-  },
+  { n: 1, title: "Criterio de Inversión", desc: "Decidimos con proceso, no con emoción." },
+  { n: 2, title: "Curación Estratégica", desc: "Descartamos la mayoría. Protegemos capital." },
+  { n: 3, title: "Acompañamiento Integral", desc: "Legal, fiscal, bancaria y migratoria desde el inicio." },
+  { n: 4, title: "Comunidad Ejecutora", desc: "Empresarios tomando acción comparten experiencia." },
+  { n: 5, title: "Velocidad de Activación", desc: "Inversión en 60–90 días cuando hay encaje." },
+  { n: 6, title: "Transferencia Patrimonial", desc: "Diversificación con visión de largo plazo." },
 ];
 
 const diferenciadores = [
@@ -151,10 +104,10 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
   const count = useCountUp(value, 2000, isInView);
   return (
     <div ref={ref} className="text-center">
-      <div className="text-primary font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
+      <div className="text-primary stat-number text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
         {count}{suffix}
       </div>
-      <p className="text-white/50 text-xs mt-1">{label}</p>
+      <p className="text-[#6B7280] text-xs mt-1">{label}</p>
     </div>
   );
 }
@@ -235,21 +188,16 @@ export default function Membresia() {
   const [showVideo, setShowVideo] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <Navbar />
 
-      {/* ═══ HERO ═══ */}
-      <section
-        className="relative min-h-[60vh] flex items-center pt-32 pb-20"
-        style={{
-          backgroundImage:
-            "url(https://res.cloudinary.com/dgruohz6f/image/upload/v1773439191/comprando-america/TjZnphAlUUQxwTMg.webp)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 -z-10 bg-black/40" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
+      {/* ═══ HERO — foto real de evento ═══ */}
+      <section className="relative min-h-[70vh] flex items-center pt-32 pb-20">
+        <div className="absolute inset-0">
+          <img src={HERO_IMAGE} alt="Comunidad Comprando América" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/80 to-[#0B1F3A]/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/30" />
+        </div>
 
         <div className="container relative z-10">
           <div className="max-w-3xl">
@@ -258,41 +206,46 @@ export default function Membresia() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+              <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Membresía Vitalicia
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
                 Club Privado de Inversionistas en{" "}
                 <span className="gradient-text-primary">Estados Unidos</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-2xl">
+              <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-10 max-w-2xl">
                 Comunidad exclusiva para inversionistas con capacidad real que
                 buscan oportunidades filtradas con acompañamiento legal,
                 migratorio y estratégico.
               </p>
-              <Button
-                onClick={() =>
-                  openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)
-                }
-                className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-6 text-base gap-2"
-              >
-                Solicitar Acceso <ArrowRight className="w-4 h-4" />
-              </Button>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+                  className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25"
+                >
+                  Solicitar Acceso <ArrowRight className="w-4 h-4" />
+                </Button>
+                <a href="/perfil">
+                  <Button variant="outline" className="border-slate-500 text-white hover:bg-white/10 px-8 py-6 text-base">
+                    Evaluar mi Perfil
+                  </Button>
+                </a>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ═══ VIDEO (siempre visible con poster) ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      {/* ═══ VIDEO — navy ═══ */}
+      <section className="bg-[#091A30] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+                <h2 className="text-3xl md:text-4xl text-white mb-4">
                   Descubre Cómo Funciona
                 </h2>
-                <p className="text-white/60 text-lg max-w-2xl mx-auto">
+                <p className="text-slate-400 text-lg max-w-2xl mx-auto">
                   Mira cómo nuestros miembros acceden a oportunidades de
                   inversión exclusivas y reciben acompañamiento estratégico.
                 </p>
@@ -300,15 +253,8 @@ export default function Membresia() {
 
               <div className="relative rounded-2xl overflow-hidden border border-[#1E3A5F] bg-black aspect-video">
                 {!showVideo ? (
-                  <button
-                    onClick={() => setShowVideo(true)}
-                    className="group relative w-full h-full"
-                  >
-                    <img
-                      src={VIDEO_POSTER}
-                      alt="Conoce la membresía"
-                      className="w-full h-full object-cover"
-                    />
+                  <button onClick={() => setShowVideo(true)} className="group relative w-full h-full">
+                    <img src={VIDEO_POSTER} alt="Conoce la membresía" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-20 h-20 rounded-full bg-primary/90 group-hover:bg-primary group-hover:scale-110 transition-all flex items-center justify-center shadow-2xl">
@@ -317,13 +263,7 @@ export default function Membresia() {
                     </div>
                   </button>
                 ) : (
-                  <video
-                    src={VIDEO_URL}
-                    controls
-                    autoPlay
-                    className="w-full h-full"
-                    poster={VIDEO_POSTER}
-                  />
+                  <video src={VIDEO_URL} controls autoPlay className="w-full h-full" poster={VIDEO_POSTER} />
                 )}
               </div>
             </div>
@@ -331,15 +271,15 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ NUESTRO ENFOQUE ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      {/* ═══ ENFOQUE — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-12">
               <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
                 Nuestro Enfoque
               </p>
-              <h2 className="text-3xl md:text-4xl font-serif text-white">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">
                 Enfoque integral en Estados Unidos
               </h2>
             </div>
@@ -348,16 +288,12 @@ export default function Membresia() {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
             {enfoque.map((item, i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5 text-center hover:border-blue-500/30 transition-all h-full">
-                  <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center mx-auto mb-3">
+                <div className="bg-white border border-gray-200 rounded-xl p-5 text-center hover:shadow-lg hover:-translate-y-1 transition-all h-full shadow-sm">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-primary flex items-center justify-center mx-auto mb-3">
                     <item.icon className="w-5 h-5" />
                   </div>
-                  <h3 className="text-white font-semibold text-sm mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-white/50 text-xs leading-relaxed">
-                    {item.desc}
-                  </p>
+                  <h3 className="text-[#0B1F3A] font-semibold text-sm mb-2">{item.title}</h3>
+                  <p className="text-[#6B7280] text-xs leading-relaxed">{item.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -365,76 +301,49 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ METODOLOGÍA + POR QUÉ ES DIFERENTE (combinadas) ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      {/* ═══ METODOLOGÍA + DIFERENCIADORES — navy ═══ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* Metodología */}
             <FadeIn>
               <div>
-                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
-                  Metodología
-                </p>
-                <h2 className="text-3xl font-serif text-white mb-3">
-                  El sistema detrás de la membresía
-                </h2>
-                <p className="text-white/50 text-sm mb-8">
-                  6 pilares que transforman barreras en ventajas estratégicas
-                </p>
+                <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Metodología</p>
+                <h2 className="text-3xl text-white mb-3">El sistema detrás de la membresía</h2>
+                <p className="text-slate-500 text-sm mb-8">6 pilares que transforman barreras en ventajas estratégicas</p>
 
                 <div className="space-y-4">
                   {pilares.map((p) => (
-                    <div
-                      key={p.n}
-                      className="flex items-start gap-4 group"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-blue-500/10 text-primary flex items-center justify-center shrink-0 text-sm font-bold group-hover:bg-blue-500/15 transition-colors">
+                    <div key={p.n} className="flex items-start gap-4 group">
+                      <div className="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0 text-sm font-bold">
                         {p.n}
                       </div>
                       <div>
-                        <h4 className="text-white font-semibold text-sm">
-                          {p.title}
-                        </h4>
-                        <p className="text-white/50 text-xs leading-relaxed">
-                          {p.desc}
-                        </p>
+                        <h4 className="text-white font-semibold text-sm">{p.title}</h4>
+                        <p className="text-slate-400 text-xs leading-relaxed">{p.desc}</p>
                       </div>
                     </div>
                   ))}
                 </div>
-
-                <p className="text-white/50 text-sm mt-8 italic">
-                  No vendemos promesas. Construimos estructura.
-                </p>
               </div>
             </FadeIn>
 
-            {/* Por qué es diferente */}
             <FadeIn delay={0.1}>
               <div>
-                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
-                  ¿Por qué es diferente?
-                </p>
-                <h2 className="text-3xl font-serif text-white mb-8">
-                  Somos sistema de inversión
-                </h2>
+                <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">¿Por qué es diferente?</p>
+                <h2 className="text-3xl text-white mb-8">Somos sistema de inversión</h2>
 
                 <div className="space-y-4 mb-10">
                   {diferenciadores.map((d, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                      <p className="text-white/60 text-sm">{d}</p>
+                      <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                      <p className="text-slate-300 text-sm">{d}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-500/20 rounded-xl p-6">
-                  <p className="text-white font-semibold mb-1">
-                    Somos sistema de inversión.
-                  </p>
-                  <p className="text-white/60 text-sm">
-                    No marketing de proyectos.
-                  </p>
+                <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-6">
+                  <p className="text-white font-semibold mb-1">Somos sistema de inversión.</p>
+                  <p className="text-slate-400 text-sm">No marketing de proyectos.</p>
                 </div>
               </div>
             </FadeIn>
@@ -442,11 +351,11 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ AUTORIDAD (STATS) ═══ */}
-      <section className="section-darker py-16 md:py-20">
+      {/* ═══ STATS — ☀️ BLANCO ═══ */}
+      <section className="bg-white py-16 md:py-24">
         <div className="container">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-serif text-white text-center mb-12">
+            <h2 className="text-3xl md:text-4xl text-[#0B1F3A] text-center mb-12">
               Ejecutamos. No solo analizamos.
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-5xl mx-auto">
@@ -460,43 +369,35 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ PERFIL IDEAL ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      {/* ═══ PERFIL IDEAL — navy ═══ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-12 text-center">
-              ¿Es para ti?
-            </h2>
+            <h2 className="text-3xl md:text-4xl text-white mb-12 text-center">¿Es para ti?</h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {/* Sí */}
-              <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-8">
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-xl p-8">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-primary" />
-                  Es para ti si:
+                  <CheckCircle2 className="w-5 h-5 text-blue-400" /> Es para ti si:
                 </h3>
                 <ul className="space-y-3">
                   {perfilSi.map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="text-primary font-bold text-sm mt-0.5">
-                        ✓
-                      </span>
-                      <span className="text-white/60 text-sm">{item}</span>
+                      <span className="text-blue-400 font-bold text-sm mt-0.5">✓</span>
+                      <span className="text-slate-300 text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* No */}
-              <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8">
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
-                  <X className="w-5 h-5 text-white/50" />
-                  No es para ti si:
+                  <X className="w-5 h-5 text-slate-500" /> No es para ti si:
                 </h3>
                 <ul className="space-y-3">
                   {perfilNo.map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="text-white/50 text-sm mt-0.5">✕</span>
-                      <span className="text-white/50 text-sm">{item}</span>
+                      <span className="text-slate-500 text-sm mt-0.5">✕</span>
+                      <span className="text-slate-400 text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -504,89 +405,63 @@ export default function Membresia() {
             </div>
 
             <div className="max-w-2xl mx-auto text-center mt-10">
-              <p className="text-white/60 leading-relaxed">
+              <p className="text-slate-300 leading-relaxed">
                 Esto no es para todos.{" "}
-                <span className="text-white">
-                  Es para quien entiende que estructurar bien es más importante
-                  que entrar rápido.
+                <span className="text-white font-semibold">
+                  Es para quien entiende que estructurar bien es más importante que entrar rápido.
                 </span>
-              </p>
-              <p className="text-white/50 text-sm mt-4">
-                El siguiente paso no es pagar. Es validar si tu perfil encaja.
               </p>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ═══ PLANES ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      {/* ═══ PLANES — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-12">
-              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
-                Planes
-              </p>
-              <h2 className="text-3xl md:text-4xl font-serif text-white">
-                Elige tu Plan de Membresía
-              </h2>
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Planes</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">Elige tu Plan de Membresía</h2>
             </div>
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {plans.map((plan, i) => (
               <FadeIn key={plan.name} delay={i * 0.1}>
-                <div
-                  className={`relative rounded-2xl p-6 border transition-all duration-500 h-full flex flex-col ${
-                    plan.popular
-                      ? "bg-gradient-to-br from-primary/20 to-primary/5 border-primary/40 ring-2 ring-primary/30"
-                      : "bg-[#132D50] border-[#1E3A5F] hover:border-blue-500/30"
-                  }`}
-                >
+                <div className={`relative rounded-2xl p-6 border transition-all duration-300 h-full flex flex-col ${
+                  plan.popular
+                    ? "bg-white border-primary/40 ring-2 ring-primary/20 shadow-xl shadow-blue-600/10"
+                    : "bg-white border-gray-200 shadow-sm hover:shadow-lg"
+                }`}>
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white px-3 py-0.5 rounded-full text-xs font-semibold">
                       Más Popular
                     </div>
                   )}
-                  <h3 className="text-2xl font-serif text-white mb-1">
-                    Investor{" "}
-                    <span className="text-primary">{plan.name}</span>
+                  <h3 className="text-2xl font-bold text-[#0B1F3A] mb-1">
+                    Investor <span className="text-primary">{plan.name}</span>
                   </h3>
                   <div className="mb-4">
-                    <div className="text-3xl font-bold text-primary mb-1">
-                      {plan.price}
-                    </div>
-                    <p className="text-white/50 text-xs">{plan.ideal}</p>
+                    <div className="text-3xl font-bold text-primary mb-1">{plan.price}</div>
+                    <p className="text-[#6B7280] text-xs">{plan.ideal}</p>
                   </div>
-                  <div className="mb-4 pb-4 border-b border-[#1E3A5F] text-xs">
-                    <p className="text-white/60">
-                      <strong>Valor:</strong> {plan.value}
-                    </p>
-                    <p className="text-primary">
-                      <strong>Ahorro:</strong> {plan.savings}
-                    </p>
+                  <div className="mb-4 pb-4 border-b border-gray-200 text-xs">
+                    <p className="text-[#374151]"><strong>Valor:</strong> {plan.value}</p>
+                    <p className="text-primary"><strong>Ahorro:</strong> {plan.savings}</p>
                   </div>
 
-                  {/* Features in accordion for compactness */}
                   <Accordion type="single" collapsible className="mb-4 flex-grow">
-                    <AccordionItem
-                      value="features"
-                      className="border-0"
-                    >
-                      <AccordionTrigger className="text-white/60 text-sm py-2 hover:text-primary">
+                    <AccordionItem value="features" className="border-0">
+                      <AccordionTrigger className="text-[#6B7280] text-sm py-2 hover:text-primary">
                         Ver beneficios incluidos
                       </AccordionTrigger>
                       <AccordionContent>
                         <ul className="space-y-2">
                           {plan.features.map((f, fi) => (
-                            <li
-                              key={fi}
-                              className="flex items-start gap-2"
-                            >
+                            <li key={fi} className="flex items-start gap-2">
                               <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                              <span className="text-white/60 text-xs">
-                                {f}
-                              </span>
+                              <span className="text-[#4B5563] text-xs">{f}</span>
                             </li>
                           ))}
                         </ul>
@@ -595,17 +470,14 @@ export default function Membresia() {
                   </Accordion>
 
                   <Button
-                    onClick={() =>
-                      openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)
-                    }
+                    onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
                     className={`w-full py-3 font-semibold gap-2 text-sm ${
                       plan.popular
-                        ? "bg-primary hover:bg-primary/90 text-white"
-                        : "bg-[#0F2847]/10 hover:bg-[#0F2847]/20 text-white border border-[#2A4A6B]"
+                        ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-600/20"
+                        : "bg-[#0B1F3A] hover:bg-[#0E2544] text-white"
                     }`}
                   >
-                    Elegir {plan.name}{" "}
-                    <ArrowRight className="w-4 h-4" />
+                    Elegir {plan.name} <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
               </FadeIn>
@@ -614,96 +486,68 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ EVENTOS Y NETWORKING ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      {/* ═══ EVENTOS — navy ═══ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-12">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Conexiones Reales
               </p>
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-                Eventos y Networking
-              </h2>
-              <p className="text-white/60 text-lg max-w-2xl mx-auto">
-                Encuentros presenciales donde empresarios comparten experiencias,
-                cierran negocios y construyen relaciones que duran.
+              <h2 className="text-3xl md:text-4xl text-white mb-4">Eventos y Networking</h2>
+              <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+                Encuentros presenciales donde empresarios comparten experiencias, cierran negocios y construyen relaciones.
               </p>
             </div>
           </FadeIn>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
             {[
-              {
-                num: "01",
-                title: "Cumbres Presenciales",
-                desc: "Eventos anuales en diferentes ciudades donde miembros se reúnen para aprender, conectar y expandir su red.",
-              },
-              {
-                num: "02",
-                title: "Viajes de Inspección",
-                desc: "Visitas guiadas a oportunidades de inversión en Estados Unidos. Conoce proyectos en vivo.",
-              },
-              {
-                num: "03",
-                title: "Networking Exclusivo",
-                desc: "Acceso a una comunidad de empresarios, abogados, contadores y expertos en inversión internacional.",
-              },
+              { num: "01", title: "Cumbres Presenciales", desc: "Eventos anuales donde miembros conectan y expanden su red." },
+              { num: "02", title: "Viajes de Inspección", desc: "Visitas guiadas a oportunidades de inversión en vivo." },
+              { num: "03", title: "Networking Exclusivo", desc: "Comunidad de empresarios, abogados y expertos en inversión." },
             ].map((e, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/20 transition-all">
-                  <span className="text-primary font-bold text-2xl font-mono">{e.num}</span>
-                  <h3 className="text-lg font-serif text-white mt-3 mb-2">{e.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{e.desc}</p>
+                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
+                  <span className="text-blue-400 font-bold text-2xl font-mono">{e.num}</span>
+                  <h3 className="text-lg font-bold text-white mt-3 mb-2">{e.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{e.desc}</p>
                 </div>
               </FadeIn>
             ))}
           </div>
 
-          {/* Photo Gallery */}
           <div className="max-w-5xl mx-auto">
-            <FadeIn>
-              <EventGallery />
-            </FadeIn>
+            <FadeIn><EventGallery /></FadeIn>
           </div>
         </div>
       </section>
 
-      {/* ═══ EDMUNDO TREVIÑO – CEO ═══ */}
-      <section className="section-dark py-24 md:py-32">
+      {/* ═══ EDMUNDO CEO — ☀️ BLANCO ═══ */}
+      <section className="bg-white py-24 md:py-32">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-16">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Liderazgo
-              </p>
-              <h2 className="text-4xl md:text-5xl font-serif text-white">
-                Quién está al frente
-              </h2>
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">Liderazgo</p>
+              <h2 className="text-4xl md:text-5xl text-[#0B1F3A]">Quién está al frente</h2>
             </div>
           </FadeIn>
 
           <FadeIn>
-            <div className="max-w-5xl mx-auto bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 md:p-12">
+            <div className="max-w-5xl mx-auto bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 md:p-12 shadow-sm">
               <div className="flex flex-col md:flex-row gap-10 items-start">
-                {/* Photo */}
                 <div className="flex-shrink-0 mx-auto md:mx-0">
                   <img
                     src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png"
                     alt="Edmundo Treviño"
-                    className="w-48 h-56 md:w-56 md:h-64 rounded-xl object-cover border-2 border-blue-500/20 shadow-lg shadow-primary/10"
+                    className="w-48 h-56 md:w-56 md:h-64 rounded-xl object-cover border-2 border-gray-200 shadow-lg"
                   />
                 </div>
 
-                {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-3xl md:text-4xl font-serif text-white mb-2">
-                    Edmundo Treviño
-                  </h3>
-                  <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6">
-                    Director General
-                  </p>
-                  <p className="text-white/60 text-lg leading-relaxed mb-8">
+                  <h3 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-2">Edmundo Treviño</h3>
+                  <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6">Director General</p>
+                  <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
                     Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.
                   </p>
 
@@ -711,27 +555,27 @@ export default function Membresia() {
                     {[
                       "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
                       "Maestría en Sistema Fiscal en Estados Unidos",
-                      "10 años de experiencia en contabilidad y administración de empresas",
+                      "10 años de experiencia en contabilidad y administración",
                       "20 años de experiencia en comercio internacional",
-                      "Más de 8 empresas operando en Estados Unidos y México",
+                      "Más de 8 empresas operando en EE.UU. y México",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-5 h-5 rounded-full border border-primary/40 flex items-center justify-center mt-0.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                         </span>
-                        <span className="text-white/60 text-sm leading-relaxed">{item}</span>
+                        <span className="text-[#4B5563] text-sm leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>
 
                   <div className="flex flex-wrap gap-4">
                     <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
-                      <Button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 text-sm gap-2">
+                      <Button className="bg-primary hover:bg-blue-600 text-white px-6 py-3 text-sm gap-2 shadow-lg shadow-blue-600/15">
                         Conoce más <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
                     <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-6 py-3 text-sm gap-2">
+                      <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 px-6 py-3 text-sm gap-2">
                         Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
@@ -743,36 +587,71 @@ export default function Membresia() {
         </div>
       </section>
 
-      {/* ═══ ALIADOS EXPERTOS ═══ */}
+      {/* ═══ ALIADOS — navy ═══ */}
       <AlliesSection />
 
-      {/* ═══ TESTIMONIOS ═══ */}
-      <MemberTestimonialSlider />
+      {/* ═══ TESTIMONIOS — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Comunidad</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">Historias reales de miembros</h2>
+            </div>
+          </FadeIn>
 
-      {/* ═══ CTA FINAL ═══ */}
-      <section className="section-dark py-20 md:py-28">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              { name: "Arturo Orozco", videoId: "WYNwoTzG8Ss", title: "Testimonial de Arturo Orozco" },
+              { name: "Gerardo Bejarano", videoId: "6J6IIPFsTD0", title: "Testimonial de Gerardo Bejarano" },
+            ].map((t, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
+                  <div className="relative w-full aspect-video overflow-hidden">
+                    <iframe
+                      width="100%" height="100%"
+                      src={`https://www.youtube.com/embed/${t.videoId}?rel=0&modestbranding=1`}
+                      title={t.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold text-[#0B1F3A] mb-1">{t.name}</h3>
+                    <p className="text-sm text-[#6B7280]">{t.title}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ CTA FINAL — deep navy ═══ */}
+      <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
-                ¿Estás listo?
-              </h2>
-              <p className="text-white/60 leading-relaxed mb-4">
-                Si entiendes que invertir en Estados Unidos requiere estructura,
-                el siguiente paso es validar tu encaje.
+              <h2 className="text-3xl md:text-4xl text-white mb-4">¿Estás listo?</h2>
+              <p className="text-slate-400 leading-relaxed mb-4">
+                Si entiendes que invertir en Estados Unidos requiere estructura, el siguiente paso es validar tu encaje.
               </p>
-              <p className="text-white/50 text-sm mb-10">
-                No es pagar. Es evaluar si perteneces al grupo.
-              </p>
-              <Button
-                onClick={() =>
-                  openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)
-                }
-                className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-6 text-lg gap-2"
-              >
-                Solicitar Evaluación{" "}
-                <ArrowRight className="w-5 h-5" />
-              </Button>
+              <p className="text-slate-500 text-sm mb-10">No es pagar. Es evaluar si perteneces al grupo.</p>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+                  className="bg-primary hover:bg-blue-600 text-white font-semibold px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25"
+                >
+                  Solicitar Evaluación <ArrowRight className="w-5 h-5" />
+                </Button>
+                <a href="/perfil">
+                  <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
+                    Evaluar mi Perfil
+                  </Button>
+                </a>
+              </div>
             </div>
           </FadeIn>
         </div>
