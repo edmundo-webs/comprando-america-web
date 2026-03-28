@@ -335,24 +335,51 @@ export default function InvestmentWeek() {
 
             <FadeIn delay={0.1}>
               <div>
-                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Logística</p>
-                <h3 className="text-2xl text-[#0B1F3A] mb-6">Información general</h3>
-                <div className="space-y-4">
-                  {[
-                    { icon: Plane, title: "Llegada", desc: "Aeropuerto de Tampa (TPA)" },
-                    { icon: Hotel, title: "Hospedaje", desc: "St. Petersburg — opciones cercanas" },
-                    { icon: Car, title: "Transporte", desc: "Independiente — se recomienda renta de auto" },
-                    { icon: Clock, title: "Agenda", desc: "3 días completos de actividades intensivas" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-4 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4">
-                      <item.icon className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Logística del Viaje</p>
+
+                {/* Vuelos */}
+                <h3 className="text-xl text-[#0B1F3A] font-semibold mb-4">¿Por dónde llego?</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-4">
+                    <div className="flex items-start gap-3">
+                      <Plane className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                       <div>
-                        <h4 className="text-[#0B1F3A] font-semibold text-sm">{item.title}</h4>
-                        <p className="text-[#6B7280] text-sm">{item.desc}</p>
+                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Opción A — Tampa (TPA)</h4>
+                        <p className="text-[#6B7280] text-sm">20 min a St. Pete. Vuelos directos desde CDMX (no todos los días). Desde MTY y GDL normalmente con escala.</p>
                       </div>
                     </div>
+                  </div>
+                  <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-4">
+                    <div className="flex items-start gap-3">
+                      <Car className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Opción B — Orlando (MCO)</h4>
+                        <p className="text-[#6B7280] text-sm">Más frecuencias desde México. Rentas auto y manejas ~2 horas. Muchas veces más barato y más fácil.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Hospedaje */}
+                <h3 className="text-xl text-[#0B1F3A] font-semibold mb-2">¿Dónde me hospedo?</h3>
+                <p className="text-[#6B7280] text-sm mb-4">Quédate en <strong className="text-[#0B1F3A]">St. Petersburg, Florida</strong> — ahí es todo el evento. 3 noches: viernes 1, sábado 2 y domingo 3 de mayo. Check-out el lunes 4.</p>
+                <div className="space-y-3 mb-8">
+                  {[
+                    { name: "Hilton St. Pete Bayfront", url: "https://hotelsapp.onelink.me/fSyN/b2yl4bzy" },
+                    { name: "Hilton St. Pete Carillon Park", url: "https://hotelsapp.onelink.me/fSyN/lofc3uln" },
+                    { name: "Marriott Tampa Westshore", url: "https://hotelsapp.onelink.me/fSyN/m8rj2576" },
+                  ].map((h, i) => (
+                    <a key={i} href={h.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4 hover:border-primary/40 hover:shadow-sm transition-all group">
+                      <Hotel className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span className="text-[#0B1F3A] font-semibold text-sm group-hover:text-primary transition-colors">{h.name}</span>
+                      <ArrowRight className="w-4 h-4 text-[#6B7280] ml-auto group-hover:text-primary transition-colors" />
+                    </a>
                   ))}
                 </div>
+
+                {/* Regreso */}
+                <h3 className="text-xl text-[#0B1F3A] font-semibold mb-2">¿Cuándo me regreso?</h3>
+                <p className="text-[#6B7280] text-sm">El lunes 4 es día libre. Mismas opciones: salir por Tampa o manejar de regreso a Orlando.</p>
               </div>
             </FadeIn>
           </div>
