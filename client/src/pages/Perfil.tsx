@@ -246,11 +246,12 @@ export default function Perfil() {
                   {/* Video */}
                   <div className="mb-12">
                     <div className="relative rounded-2xl overflow-hidden border border-[#1E3A5F] bg-black shadow-2xl">
-                      <video
-                        src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439233/comprando-america/YalfpoAHGGBHORwE.mp4"
-                        controls
-                        className="w-full h-auto aspect-video"
-                        poster="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439348/comprando-america/zWDbUjtHksLQzyfk.jpg"
+                      <iframe
+                        src="https://drive.google.com/file/d/1czSYeZrUCIkDdWQy_jMxYqoK0k3AzSrc/preview"
+                        className="w-full aspect-video"
+                        allow="autoplay; encrypted-media"
+                        allowFullScreen
+                        title="Comprando América — Diagnóstico de Inversionista"
                       />
                     </div>
                   </div>
