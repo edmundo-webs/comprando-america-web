@@ -222,7 +222,7 @@ export default function Oportunidades() {
 
       {/* ── Photo break ── */}
       <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src="https://lh3.googleusercontent.com/d/1V6gOyC2icDLgQJ7oXlkRzM2rm3zK6E8g=w1920" alt="Sesión de análisis de inversiones" className="w-full h-full object-cover" />
+        <img src="https://lh3.googleusercontent.com/d/1WzKjPerMTX-RlLsJWxLegBkpn4_Ademp=w1920" alt="Miembros votando en sesión de análisis" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/30 to-[#0B1F3A]" />
       </section>
 
@@ -433,7 +433,7 @@ export default function Oportunidades() {
 
       {/* ── Photo break ── */}
       <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src="https://lh3.googleusercontent.com/d/1RK1ICQKrETpZBFYH_NoZmnYzMULHREYu=w1920" alt="Equipo empresarial Comprando América" className="w-full h-full object-cover" />
+        <img src="https://lh3.googleusercontent.com/d/12leYCR8tlXXxZ6jeBlgthhmUqcyEmtoz=w1920" alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/30 to-[#0B1F3A]" />
       </section>
 

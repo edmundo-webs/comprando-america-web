@@ -279,7 +279,7 @@ export default function EstructuraEmpresarial() {
 
       {/* ── Photo break ── */}
       <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src="https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1920" alt="Networking empresarial" className="w-full h-full object-cover" />
+        <img src="https://lh3.googleusercontent.com/d/1rvNkomqY_CrfxTge9dQJBT1RdPdw08hM=w1920" alt="Presentación sobre estructura fiscal en Estados Unidos" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/30 to-[#0B1F3A]" />
       </section>
 

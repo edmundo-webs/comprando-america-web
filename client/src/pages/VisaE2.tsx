@@ -252,7 +252,7 @@ export default function VisaE2() {
 
       {/* ── Photo break ── */}
       <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src="https://lh3.googleusercontent.com/d/1W18Hemz89zVF0btcfAbTiCgyZ3cymPj4=w1920" alt="Empresarios participando activamente" className="w-full h-full object-cover" />
+        <img src="https://lh3.googleusercontent.com/d/18YEBJnh06dYaZ8ZsvxqEpcuFtaikz5-x=w1920" alt="Presentación sobre requisitos de visa E-2 y exportación" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/30 to-[#0B1F3A]" />
       </section>
 
