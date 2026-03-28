@@ -38,7 +38,7 @@ function EpisodeCard({
 
   return (
     <a href={videoUrl} target="_blank" rel="noopener noreferrer">
-      <div className="group relative bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-primary/40 transition-all duration-500 cursor-pointer">
+      <div className="group relative bg-[#0F2847] border border-[#1E3A5F] rounded-lg overflow-hidden hover:border-primary/40 transition-all duration-500 cursor-pointer">
         {/* Thumbnail Container */}
         <div className="relative w-full aspect-video bg-black overflow-hidden">
           <img 
@@ -64,7 +64,7 @@ function EpisodeCard({
 
         {/* Title */}
         <div className="p-3">
-          <p className="text-gray-700 text-sm group-hover:text-white transition-colors line-clamp-2 font-medium">{title}</p>
+          <p className="text-white/80 text-sm group-hover:text-white transition-colors line-clamp-2 font-medium">{title}</p>
         </div>
       </div>
     </a>
@@ -152,26 +152,26 @@ export default function Podcast() {
                 </span>
 
                 {/* Title */}
-                <h1 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
+                <h1 className="text-4xl md:text-5xl font-serif text-white leading-[1.1] mb-6">
                   Comprando América<br />
-                  <span className="text-base md:text-lg font-sans font-normal text-gray-700">Podcast de Inversión en Estados Unidos</span>
+                  <span className="text-base md:text-lg font-sans font-normal text-white/80">Podcast de Inversión en Estados Unidos</span>
                 </h1>
 
                 {/* Underline */}
                 <div className="w-16 h-1 bg-primary mb-6" />
 
                 {/* Description */}
-                <p className="text-lg text-gray-500 leading-relaxed mb-4">
+                <p className="text-lg text-white/60 leading-relaxed mb-4">
                   El espacio donde los latinos aprenden a invertir estratégicamente en el mercado más competitivo del mundo.
                 </p>
-                <p className="text-lg text-gray-500 leading-relaxed mb-8">
+                <p className="text-lg text-white/60 leading-relaxed mb-8">
                   Comprando América presenta su podcast oficial: un espacio creado para empresarios e inversionistas latinoamericanos que quieren entender, planear y ejecutar inversiones sólidas en Estados Unidos.
                 </p>
 
                 {/* Categories */}
                 <div className="flex flex-wrap gap-2 mb-8">
                   {categories.map((cat) => (
-                    <span key={cat} className="px-3 py-1 bg-white/5 border border-gray-200 rounded-full text-gray-500 text-xs font-medium">
+                    <span key={cat} className="px-3 py-1 bg-[#0F2847]/5 border border-[#1E3A5F] rounded-full text-white/60 text-xs font-medium">
                       {cat}
                     </span>
                   ))}
@@ -201,25 +201,25 @@ export default function Podcast() {
                 {/* Platform Cards */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <a href="https://www.youtube.com/playlist?list=PLRSYRwqvqDN_T6CzDxD041FCUyyMmMyV9" target="_blank" rel="noopener noreferrer" className="group">
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-lg p-4 hover:border-red-600/50 transition-all">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-lg p-4 hover:border-red-600/50 transition-all">
                       <div className="flex items-center gap-3 mb-2">
                         <svg className="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                         </svg>
                         <span className="text-white font-semibold">YouTube</span>
                       </div>
-                      <p className="text-gray-400 text-xs">30+ episodios</p>
+                      <p className="text-white/50 text-xs">30+ episodios</p>
                     </div>
                   </a>
                   <a href="https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7" target="_blank" rel="noopener noreferrer" className="group">
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-lg p-4 hover:border-green-600/50 transition-all">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-lg p-4 hover:border-green-600/50 transition-all">
                       <div className="flex items-center gap-3 mb-2">
                         <svg className="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-12.061-1.573-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15.079 10.561 18.739 12.84c.361.21.599.659.301 1.1zm.179-3.362C13.134 11.249 7.994 11.209 5.794 12.212c-.624.229-1.289-.355-1.06-.979.228-.624.978-.289 1.602-.06 2.457-1.073 7.929-1.033 11.861 1.134.719.425 1.404-.557.692-1.039z"/>
                         </svg>
                         <span className="text-white font-semibold">Spotify</span>
                       </div>
-                      <p className="text-gray-400 text-xs">Podcast disponible</p>
+                      <p className="text-white/50 text-xs">Podcast disponible</p>
                     </div>
                   </a>
                 </div>
@@ -253,14 +253,14 @@ export default function Podcast() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">¿Por qué escuchar este podcast?</h2>
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">¿Por qué escuchar este podcast?</h2>
               <div className="w-16 h-1 bg-primary mb-8" />
               
-              <p className="text-lg text-gray-500 leading-relaxed mb-10">
+              <p className="text-lg text-white/60 leading-relaxed mb-10">
                 Cada episodio está diseñado para aportar valor real: entrevistas con expertos, casos de éxito, análisis de sectores y consejos prácticos para invertir, adquirir negocios o expandirse en el entorno empresarial estadounidense.
               </p>
 
-              <p className="text-lg text-gray-500 leading-relaxed mb-10">
+              <p className="text-lg text-white/60 leading-relaxed mb-10">
                 Invertir en Estados Unidos no se trata solo de capital: se trata de estrategia, contexto y conexiones. En este podcast te ayudamos a:
               </p>
 
@@ -268,7 +268,7 @@ export default function Podcast() {
                 {whyListen.map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -293,10 +293,10 @@ export default function Podcast() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">¿Para quién es este podcast?</h2>
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">¿Para quién es este podcast?</h2>
               <div className="w-16 h-1 bg-primary mb-8" />
               
-              <p className="text-lg text-gray-500 leading-relaxed mb-10">
+              <p className="text-lg text-white/60 leading-relaxed mb-10">
                 Este podcast es para ti si:
               </p>
 
@@ -304,7 +304,7 @@ export default function Podcast() {
                 {forWhom.map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <div className="text-primary font-bold text-lg mt-0.5">✅</div>
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -324,15 +324,15 @@ export default function Podcast() {
         <div className="container relative z-10">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#0B1F3A] mb-6 leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6 leading-tight">
                 Da el siguiente paso con información, estrategia y visión
               </h2>
 
-              <p className="text-lg text-gray-500 leading-relaxed mb-10">
+              <p className="text-lg text-white/60 leading-relaxed mb-10">
                 Invertir en Estados Unidos no es solo una meta, es una decisión que transforma tu futuro personal y empresarial. A través de nuestro podcast, te damos acceso directo al conocimiento que antes solo estaba reservado para expertos: experiencias reales, análisis sin filtros y herramientas prácticas para avanzar con seguridad.
               </p>
 
-              <p className="text-lg text-gray-500 leading-relaxed mb-12">
+              <p className="text-lg text-white/60 leading-relaxed mb-12">
                 🎙️ Suscríbete al Podcast de Comprando América y acompáñanos en cada episodio a descubrir cómo empresarios latinos están conquistando el mercado estadounidense — uno negocio a la vez.
               </p>
 

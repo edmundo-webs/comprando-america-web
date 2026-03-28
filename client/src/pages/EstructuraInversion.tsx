@@ -83,17 +83,17 @@ export default function EstructuraInversion() {
               <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Asesoría Legal & Fiscal
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
                 Estructura tu Vehículo de{" "}
                 <span className="gradient-text-primary">Inversión en Estados Unidos</span> con Claridad y Estrategia
               </h1>
-              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-6 max-w-2xl">
+              <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-6 max-w-2xl">
                 Para invertir en Estados Unidos con seriedad, el primer paso no es "abrir una empresa": es <strong>estructurar correctamente tu vehículo legal y fiscal</strong> para ejecutar inversiones con control de riesgo, cumplimiento y claridad.
               </p>
-              <p className="text-base text-gray-500 leading-relaxed mb-8 max-w-2xl">
+              <p className="text-base text-white/60 leading-relaxed mb-8 max-w-2xl">
                 En Comprando América ayudamos a inversionistas latinos a definir la estructura adecuada (LLC / C-Corp / S-Corp según el caso), el estado correcto y la documentación necesaria para operar con orden.
               </p>
-              <div className="bg-blue-50 border border-blue-300 rounded-lg p-4 mb-8">
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mb-8">
                 <p className="text-white font-semibold">
                   Este acompañamiento está disponible únicamente para miembros con capacidad de inversión desde <span className="text-primary">$100,000 USD</span>.
                 </p>
@@ -110,7 +110,7 @@ export default function EstructuraInversion() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               className="hidden lg:block"
             >
-              <div className="relative rounded-2xl overflow-hidden border border-gray-200">
+              <div className="relative rounded-2xl overflow-hidden border border-[#1E3A5F]">
                 <img
                   src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439156/comprando-america/NxiBRNllQxYRemFM.jpg"
                   alt="Estructura de Inversión en Estados Unidos"
@@ -133,19 +133,19 @@ export default function EstructuraInversion() {
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {failureReasons.map((reason, i) => (
               <FadeIn key={reason.title} delay={i * 0.1}>
-                <div className="bg-[#F5F7FA] border border-red-500/20 rounded-xl p-8 hover:border-red-500/40 transition-all duration-500 h-full">
+                <div className="bg-[#132D50] border border-red-500/20 rounded-xl p-8 hover:border-red-500/40 transition-all duration-500 h-full">
                   <div className="w-12 h-12 rounded-lg bg-red-500/10 text-red-400 flex items-center justify-center mb-6">
                     <AlertCircle className="w-6 h-6" />
                   </div>
-                  <h3 className="text-lg font-serif text-[#0B1F3A] mb-4">{reason.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{reason.description}</p>
+                  <h3 className="text-lg font-serif text-white mb-4">{reason.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed">{reason.description}</p>
                 </div>
               </FadeIn>
             ))}
           </div>
           <FadeIn className="mt-12">
             <div className="bg-red-500/5 border border-red-500/20 rounded-xl p-6 text-center max-w-3xl mx-auto">
-              <p className="text-gray-500">
+              <p className="text-white/60">
                 <strong className="text-white">Resultado:</strong> costos innecesarios, fricción bancaria, problemas fiscales y decisiones mal estructuradas.
               </p>
             </div>
@@ -165,9 +165,9 @@ export default function EstructuraInversion() {
             <div className="space-y-4">
               {services.map((service, i) => (
                 <FadeIn key={service} delay={i * 0.05}>
-                  <div className="flex items-start gap-4 bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 hover:border-blue-300 transition-all duration-500">
+                  <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all duration-500">
                     <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5" />
-                    <p className="text-gray-500 leading-relaxed">{service}</p>
+                    <p className="text-white/60 leading-relaxed">{service}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -187,7 +187,7 @@ export default function EstructuraInversion() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
               <div className="bg-emerald-500/5 border border-emerald-500/30 rounded-xl p-8">
-                <h3 className="text-lg font-serif text-[#0B1F3A] mb-6 flex items-center gap-3">
+                <h3 className="text-lg font-serif text-white mb-6 flex items-center gap-3">
                   <CheckCircle2 className="w-6 h-6 text-emerald-400" />
                   Para Ti Si:
                 </h3>
@@ -198,7 +198,7 @@ export default function EstructuraInversion() {
                     "Deseas operar inversiones con entidad formal y cumplimiento",
                     "Quieres claridad legal, fiscal y operativa"
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-gray-500">
+                    <li key={item} className="flex items-start gap-3 text-white/60">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-1" />
                       <span className="text-sm">{item}</span>
                     </li>
@@ -208,7 +208,7 @@ export default function EstructuraInversion() {
             </FadeIn>
             <FadeIn delay={0.1}>
               <div className="bg-red-500/5 border border-red-500/30 rounded-xl p-8">
-                <h3 className="text-lg font-serif text-[#0B1F3A] mb-6 flex items-center gap-3">
+                <h3 className="text-lg font-serif text-white mb-6 flex items-center gap-3">
                   <XCircle className="w-6 h-6 text-red-400" />
                   No Es Para Ti Si:
                 </h3>
@@ -219,7 +219,7 @@ export default function EstructuraInversion() {
                     "Necesitas soluciones rápidas sin estrategia",
                     "No tienes compromiso con estructura formal"
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-gray-500">
+                    <li key={item} className="flex items-start gap-3 text-white/60">
                       <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-1" />
                       <span className="text-sm">{item}</span>
                     </li>
@@ -246,12 +246,12 @@ export default function EstructuraInversion() {
                   <AccordionItem
                     key={i}
                     value={`item-${i}`}
-                    className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-6 data-[state=open]:border-blue-300 transition-all duration-500"
+                    className="bg-[#132D50] border border-[#1E3A5F] rounded-xl px-6 data-[state=open]:border-blue-500/30 transition-all duration-500"
                   >
                     <AccordionTrigger className="text-white hover:text-primary transition-colors py-4">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-500 pb-4">
+                    <AccordionContent className="text-white/60 pb-4">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>
@@ -267,10 +267,10 @@ export default function EstructuraInversion() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
                 ¿Solo necesitas abrir tu empresa en Estados Unidos?
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Si tu objetivo por ahora es crear tu LLC para operar o facturar
                 en Estados Unidos, puedes hacerlo directamente. Te ayudamos a
                 estructurarla correctamente desde el inicio.
@@ -286,7 +286,7 @@ export default function EstructuraInversion() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -305,14 +305,14 @@ export default function EstructuraInversion() {
       <section className="section-darker py-24 md:py-32">
         <div className="container">
           <FadeIn>
-            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-blue-200 rounded-2xl p-12 md:p-16 text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-blue-500/20 rounded-2xl p-12 md:p-16 text-center">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                 No es solo crear una empresa en Estados Unidos
               </h2>
-              <p className="text-gray-500 text-lg mb-4 max-w-2xl mx-auto">
+              <p className="text-white/60 text-lg mb-4 max-w-2xl mx-auto">
                 Es estructurar una plataforma de inversión.
               </p>
-              <p className="text-gray-500 text-base mb-8 max-w-2xl mx-auto">
+              <p className="text-white/60 text-base mb-8 max-w-2xl mx-auto">
                 Si cuentas con capacidad de inversión desde <strong>$100,000 USD</strong> y quieres invertir en <strong>Estados Unidos</strong> con claridad legal, fiscal y operativa, solicita acceso a la membresía para revisión de perfil.
               </p>
               <a href="#formulario">
@@ -331,10 +331,10 @@ export default function EstructuraInversion() {
           <div className="max-w-2xl mx-auto">
             <FadeIn>
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
+                <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
                   ¿Quieres Saber si Puedes Formar Parte?
                 </h2>
-                <p className="text-gray-500">
+                <p className="text-white/60">
                   Completa el formulario y déjanos acompañarte en tu ingreso al mercado estadounidense con estrategia, respaldo y visión a largo plazo.
                 </p>
               </div>

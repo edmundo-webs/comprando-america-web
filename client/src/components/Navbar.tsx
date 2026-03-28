@@ -18,18 +18,14 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-white/95 backdrop-blur-xl shadow-md border-b border-gray-100"
+          ? "bg-[#0B1F3A]/98 backdrop-blur-xl shadow-2xl shadow-black/20 border-b border-[#1E3A5F]/50"
           : "bg-transparent"
       }`}
     >
       <div className="container flex items-center justify-between h-20">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2 group">
-          <img
-            src={IMAGES.logo}
-            alt="Comprando América"
-            className="h-12 w-12 transition-transform group-hover:scale-105"
-          />
+          <img src={IMAGES.logo} alt="Comprando América" className="h-12 w-12 transition-transform group-hover:scale-105" />
         </a>
 
         {/* Desktop Nav */}
@@ -43,11 +39,7 @@ export default function Navbar() {
             >
               <a
                 href={item.href}
-                className={`px-4 py-2 text-sm font-medium transition-colors flex items-center gap-1 ${
-                  scrolled
-                    ? "text-gray-600 hover:text-primary"
-                    : "text-white/90 hover:text-white"
-                }`}
+                className="px-4 py-2 text-sm font-medium text-white/80 hover:text-blue-400 transition-colors flex items-center gap-1"
               >
                 {item.label}
                 {item.children && <ChevronDown className="w-3 h-3" />}
@@ -57,13 +49,13 @@ export default function Navbar() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
-                  className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl py-2 min-w-[220px]"
+                  className="absolute top-full left-0 mt-1 bg-[#0F2847] border border-[#1E3A5F] rounded-xl shadow-2xl shadow-black/40 py-2 min-w-[220px]"
                 >
                   {item.children.map((child) => (
                     <a
                       key={child.label}
                       href={child.href}
-                      className="block px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-blue-50 transition-colors"
+                      className="block px-4 py-2.5 text-sm text-slate-300 hover:text-blue-400 hover:bg-[#1E3A5F] transition-colors"
                     >
                       {child.label}
                     </a>
@@ -74,17 +66,14 @@ export default function Navbar() {
           ))}
           <a
             href="/perfil"
-            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-blue-700 transition-colors inline-block shadow-sm"
+            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-blue-600 transition-colors inline-block shadow-sm shadow-blue-600/20"
           >
             Evaluar Perfil
           </a>
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`lg:hidden p-2 ${scrolled ? "text-gray-700" : "text-white"}`}
-        >
+        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white p-2">
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
@@ -96,7 +85,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-gray-100 shadow-lg overflow-hidden"
+            className="lg:hidden bg-[#0B1F3A]/98 backdrop-blur-xl border-t border-[#1E3A5F]/50 overflow-hidden"
           >
             <div className="container py-6 space-y-1">
               {NAV_ITEMS.map((item) => (
@@ -104,7 +93,7 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={() => !item.children && setIsOpen(false)}
-                    className="block px-4 py-3 text-gray-700 hover:text-primary transition-colors font-medium"
+                    className="block px-4 py-3 text-white/80 hover:text-blue-400 transition-colors font-medium"
                   >
                     {item.label}
                   </a>
@@ -115,7 +104,7 @@ export default function Navbar() {
                           key={child.label}
                           href={child.href}
                           onClick={() => setIsOpen(false)}
-                          className="block px-4 py-2 text-sm text-gray-500 hover:text-primary transition-colors"
+                          className="block px-4 py-2 text-sm text-slate-400 hover:text-blue-400 transition-colors"
                         >
                           {child.label}
                         </a>
@@ -127,7 +116,7 @@ export default function Navbar() {
               <a
                 href="/perfil"
                 onClick={() => setIsOpen(false)}
-                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)] hover:bg-blue-700 transition-colors"
+                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)] hover:bg-blue-600 transition-colors"
               >
                 Evaluar Perfil
               </a>

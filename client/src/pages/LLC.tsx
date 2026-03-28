@@ -76,30 +76,30 @@ export default function LLC() {
                 Solución Empresarial
               </span>
               
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#0B1F3A] leading-[1.2] mb-6">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white leading-[1.2] mb-6">
                 Abre tu empresa en Estados Unidos de forma <span className="gradient-text-primary">correcta</span> desde el inicio
               </h1>
               
-              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-8 max-w-2xl">
+              <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-8 max-w-2xl">
                 Constituimos tu LLC en Texas o Florida, con EIN federal y acompañamiento estratégico.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 max-w-2xl">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
-                  <span className="text-gray-700">Registro de LLC</span>
+                  <span className="text-white/80">Registro de LLC</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
-                  <span className="text-gray-700">EIN (número fiscal federal)</span>
+                  <span className="text-white/80">EIN (número fiscal federal)</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
-                  <span className="text-gray-700">Introducción bancaria</span>
+                  <span className="text-white/80">Introducción bancaria</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
-                  <span className="text-gray-700">Acompañamiento paso a paso</span>
+                  <span className="text-white/80">Acompañamiento paso a paso</span>
                 </div>
               </div>
 
@@ -118,7 +118,7 @@ export default function LLC() {
                 </Button>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-6 text-sm text-gray-500">
+              <div className="flex flex-col sm:flex-row gap-6 text-sm text-white/60">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
                   <span>Proceso guiado</span>
@@ -153,14 +153,14 @@ export default function LLC() {
       </section>
 
       {/* ═══ COMPARADOR INTERACTIVO ═══ */}
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-[#0F2847]">
         <div className="container">
           <motion.div {...fadeInUp} className="max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-4 text-center">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 text-center">
               ¿Qué estado es mejor para tu LLC?
             </h2>
             
-            <p className="text-lg text-gray-500 mb-12 text-center">
+            <p className="text-lg text-white/60 mb-12 text-center">
               Selecciona tu objetivo y te mostramos la mejor opción.
             </p>
 
@@ -175,8 +175,8 @@ export default function LLC() {
                   onClick={() => setSelectedObjective(option.id)}
                   className={`p-6 rounded-xl border-2 transition-all ${
                     selectedObjective === option.id
-                      ? "border-primary bg-blue-50"
-                      : "border-gray-200 bg-[#F5F7FA] hover:border-primary/50"
+                      ? "border-primary bg-blue-500/10"
+                      : "border-[#1E3A5F] bg-[#132D50] hover:border-primary/50"
                   }`}
                 >
                   <div className="text-3xl mb-3">{option.icon}</div>
@@ -186,9 +186,9 @@ export default function LLC() {
             </div>
 
             {selectedObjective === "physical" && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-200 rounded-xl p-8 mb-8">
-                <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">Texas</h3>
-                <p className="text-gray-700 mb-6">Texas es uno de los ecosistemas empresariales más fuertes de Estados Unidos, ideal para operaciones comerciales.</p>
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-500/20 rounded-xl p-8 mb-8">
+                <h3 className="text-2xl font-serif text-white mb-4">Texas</h3>
+                <p className="text-white/80 mb-6">Texas es uno de los ecosistemas empresariales más fuertes de Estados Unidos, ideal para operaciones comerciales.</p>
                 <Button onClick={() => handleCheckout("texas")} className="bg-primary hover:bg-primary-dark text-white">
                   Crear mi LLC en Texas
                 </Button>
@@ -196,9 +196,9 @@ export default function LLC() {
             )}
 
             {selectedObjective === "digital" && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-200 rounded-xl p-8 mb-8">
-                <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">Florida</h3>
-                <p className="text-gray-700 mb-6">Florida es ampliamente utilizado para negocios digitales y comercio internacional.</p>
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-500/20 rounded-xl p-8 mb-8">
+                <h3 className="text-2xl font-serif text-white mb-4">Florida</h3>
+                <p className="text-white/80 mb-6">Florida es ampliamente utilizado para negocios digitales y comercio internacional.</p>
                 <Button onClick={() => handleCheckout("florida")} className="bg-primary hover:bg-primary-dark text-white">
                   Crear mi LLC en Florida
                 </Button>
@@ -207,16 +207,16 @@ export default function LLC() {
 
             {selectedObjective === "investment" && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-                <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-200 rounded-xl p-8">
-                  <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">Texas</h3>
-                  <p className="text-gray-700 mb-6">Gran ecosistema empresarial, comunidad latina fuerte, excelente para operación comercial.</p>
+                <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-500/20 rounded-xl p-8">
+                  <h3 className="text-2xl font-serif text-white mb-4">Texas</h3>
+                  <p className="text-white/80 mb-6">Gran ecosistema empresarial, comunidad latina fuerte, excelente para operación comercial.</p>
                   <Button onClick={() => handleCheckout("texas")} className="bg-primary hover:bg-primary-dark text-white">
                     Crear mi LLC en Texas
                   </Button>
                 </div>
-                <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-200 rounded-xl p-8">
-                  <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">Florida</h3>
-                  <p className="text-gray-700 mb-6">Ambiente fiscal competitivo, ideal para negocios digitales, excelente conexión internacional.</p>
+                <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-500/20 rounded-xl p-8">
+                  <h3 className="text-2xl font-serif text-white mb-4">Florida</h3>
+                  <p className="text-white/80 mb-6">Ambiente fiscal competitivo, ideal para negocios digitales, excelente conexión internacional.</p>
                   <Button onClick={() => handleCheckout("florida")} className="bg-primary hover:bg-primary-dark text-white">
                     Crear mi LLC en Florida
                   </Button>
@@ -228,7 +228,7 @@ export default function LLC() {
       </section>
 
       {/* ═══ PRUEBA SOCIAL DINÁMICA ═══ */}
-      <section className="py-16 bg-[#F5F7FA]">
+      <section className="py-16 bg-[#132D50]">
         <div className="container">
           <motion.div
             initial={{ opacity: 0 }}
@@ -236,18 +236,18 @@ export default function LLC() {
             transition={{ duration: 0.5 }}
             className="max-w-2xl mx-auto text-center"
           >
-            <p className="text-gray-500 text-sm mb-4">Empresarios están creando empresas en Estados Unidos</p>
+            <p className="text-white/60 text-sm mb-4">Empresarios están creando empresas en Estados Unidos</p>
             <motion.div
               key={currentNotification}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="bg-blue-50 border border-blue-200 rounded-lg p-4 inline-block"
+              className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 inline-block"
             >
               <p className="text-white font-semibold">
                 {SOCIAL_PROOF_NOTIFICATIONS[currentNotification].name} — {SOCIAL_PROOF_NOTIFICATIONS[currentNotification].city}
               </p>
-              <p className="text-gray-500 text-sm">
+              <p className="text-white/60 text-sm">
                 {SOCIAL_PROOF_NOTIFICATIONS[currentNotification].action}
               </p>
             </motion.div>
@@ -259,11 +259,11 @@ export default function LLC() {
       <section className="py-24 md:py-32">
         <div className="container">
           <motion.div {...fadeInUp}>
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-6 max-w-2xl">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6 max-w-2xl">
               Abrir una LLC no es solo llenar un formulario
             </h2>
             
-            <p className="text-lg text-gray-500 leading-relaxed mb-12 max-w-2xl">
+            <p className="text-lg text-white/60 leading-relaxed mb-12 max-w-2xl">
               Muchos empresarios abren una empresa pensando que es solo un trámite. Pero una mala estructura puede generar:
             </p>
 
@@ -276,7 +276,7 @@ export default function LLC() {
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <item.icon className="w-6 h-6 text-red-500 shrink-0 mt-1" />
-                  <span className="text-gray-700">{item.text}</span>
+                  <span className="text-white/80">{item.text}</span>
                 </div>
               ))}
             </div>
@@ -285,14 +285,14 @@ export default function LLC() {
       </section>
 
       {/* ═══ CALCULADORA SIMPLE ═══ */}
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-[#0F2847]">
         <div className="container">
           <motion.div {...fadeInUp} className="max-w-2xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-4 text-center">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-4 text-center">
               ¿Qué estructura necesitas para operar en Estados Unidos?
             </h2>
             
-            <p className="text-lg text-gray-500 mb-12 text-center">
+            <p className="text-lg text-white/60 mb-12 text-center">
               Responde estas preguntas rápidas.
             </p>
 
@@ -306,7 +306,7 @@ export default function LLC() {
                       setCalculatorLocation(option);
                       setCalculatorStep(2);
                     }}
-                    className="w-full p-4 bg-[#F5F7FA] border border-gray-200 rounded-lg text-white hover:border-primary/50 transition-all text-left"
+                    className="w-full p-4 bg-[#132D50] border border-[#1E3A5F] rounded-lg text-white hover:border-primary/50 transition-all text-left"
                   >
                     {option}
                   </button>
@@ -324,7 +324,7 @@ export default function LLC() {
                       setCalculatorActivity(option);
                       setCalculatorStep(3);
                     }}
-                    className="w-full p-4 bg-[#F5F7FA] border border-gray-200 rounded-lg text-white hover:border-primary/50 transition-all text-left"
+                    className="w-full p-4 bg-[#132D50] border border-[#1E3A5F] rounded-lg text-white hover:border-primary/50 transition-all text-left"
                   >
                     {option}
                   </button>
@@ -333,9 +333,9 @@ export default function LLC() {
             )}
 
             {calculatorStep === 3 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-200 rounded-xl p-8">
-                <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">Tu resultado</h3>
-                <p className="text-gray-700 mb-6">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-500/20 rounded-xl p-8">
+                <h3 className="text-2xl font-serif text-white mb-4">Tu resultado</h3>
+                <p className="text-white/80 mb-6">
                   LLC en Texas o Florida puede ser una estructura adecuada para tu caso. Nuestro equipo puede ayudarte a estructurarla correctamente.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -366,7 +366,7 @@ export default function LLC() {
       <section className="py-24 md:py-32">
         <div className="container">
           <motion.div {...fadeInUp} className="max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-16 text-center">
               Tu LLC incluye
             </h2>
 
@@ -386,10 +386,10 @@ export default function LLC() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   viewport={{ once: true }}
-                  className="flex items-start gap-4 bg-[#F5F7FA] border border-gray-200 rounded-xl p-6"
+                  className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6"
                 >
                   <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <span className="text-gray-700">{item}</span>
+                  <span className="text-white/80">{item}</span>
                 </motion.div>
               ))}
             </div>
@@ -398,16 +398,16 @@ export default function LLC() {
       </section>
 
       {/* ═══ PRECIO ═══ */}
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-[#0F2847]">
         <div className="container">
           <motion.div {...fadeInUp} className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-8">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-8">
               Costo del servicio
             </h2>
             
             <div className="mb-12">
               <div className="text-6xl font-serif text-primary mb-4">$1,499 USD</div>
-              <p className="text-gray-500">Servicio completo de formación de LLC en Texas o Florida.</p>
+              <p className="text-white/60">Servicio completo de formación de LLC en Texas o Florida.</p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -432,7 +432,7 @@ export default function LLC() {
       <section className="py-24 md:py-32">
         <div className="container">
           <motion.div {...fadeInUp}>
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-16 text-center">
               Tu empresa lista en pocos pasos
             </h2>
 
@@ -458,7 +458,7 @@ export default function LLC() {
                     {i < 3 && <div className="w-1 h-12 bg-primary/30" />}
                   </div>
                   <div className="pt-2">
-                    <h3 className="text-xl font-serif text-[#0B1F3A] mb-1">{step.title}</h3>
+                    <h3 className="text-xl font-serif text-white mb-1">{step.title}</h3>
                   </div>
                 </motion.div>
               ))}
@@ -468,10 +468,10 @@ export default function LLC() {
       </section>
 
       {/* ═══ FAQ ═══ */}
-      <section className="py-24 md:py-32 bg-white">
+      <section className="py-24 md:py-32 bg-[#0F2847]">
         <div className="container">
           <motion.div {...fadeInUp} className="max-w-2xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-serif text-white mb-16 text-center">
               Preguntas frecuentes
             </h2>
 
@@ -498,11 +498,11 @@ export default function LLC() {
                   a: "Sí. Te preparamos toda la documentación necesaria y te conectamos con bancos que trabajan con extranjeros."
                 }
               ].map((item, i) => (
-                <AccordionItem key={i} value={`item-${i}`} className="border border-gray-200 rounded-lg px-6">
+                <AccordionItem key={i} value={`item-${i}`} className="border border-[#1E3A5F] rounded-lg px-6">
                   <AccordionTrigger className="text-white hover:text-primary transition-colors">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-gray-500">
+                  <AccordionContent className="text-white/60">
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -520,11 +520,11 @@ export default function LLC() {
 
         <div className="container">
           <motion.div {...fadeInUp} className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] mb-8 leading-[1.1]">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white mb-8 leading-[1.1]">
               Empieza tu empresa en Estados Unidos hoy
             </h2>
 
-            <p className="text-lg text-gray-500 mb-12 leading-relaxed">
+            <p className="text-lg text-white/60 mb-12 leading-relaxed">
               Estructura tu empresa correctamente desde el inicio.
             </p>
 
@@ -543,8 +543,8 @@ export default function LLC() {
               </Button>
             </div>
 
-            <div className="mt-12 pt-12 border-t border-gray-200">
-              <p className="text-gray-500 text-sm">
+            <div className="mt-12 pt-12 border-t border-[#1E3A5F]">
+              <p className="text-white/60 text-sm">
                 Una LLC no es una visa. No sustituye asesoría legal o fiscal. Sí es el primer paso serio para operar en Estados Unidos.
               </p>
             </div>
@@ -564,7 +564,7 @@ export default function LLC() {
       </a>
 
       {/* ═══ BOTÓN STICKY MOBILE ═══ */}
-      <div className="fixed bottom-0 left-0 right-0 md:hidden bg-background border-t border-gray-200 p-4 z-40">
+      <div className="fixed bottom-0 left-0 right-0 md:hidden bg-background border-t border-[#1E3A5F] p-4 z-40">
         <button
           onClick={() => handleCheckout("texas")}
           className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-all"

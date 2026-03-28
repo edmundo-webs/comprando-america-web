@@ -120,11 +120,11 @@ export default function News() {
           <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
             Portal de Noticias
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-tight mb-4">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-4">
             Noticias para{" "}
             <span className="gradient-text-primary">Inversionistas</span>
           </h1>
-          <p className="text-lg text-gray-500 max-w-2xl leading-relaxed">
+          <p className="text-lg text-white/60 max-w-2xl leading-relaxed">
             Análisis editorial sobre visas, economía, bienes raíces, negocios e inversiones en Estados Unidos.
             Cada noticia explicada desde la perspectiva del inversionista latinoamericano.
           </p>
@@ -132,21 +132,21 @@ export default function News() {
       </section>
 
       {/* Search & Filter Bar */}
-      <section className="sticky top-20 z-40 bg-[oklch(0.12_0.03_250/0.95)] backdrop-blur-xl border-b border-gray-200">
+      <section className="sticky top-20 z-40 bg-[oklch(0.12_0.03_250/0.95)] backdrop-blur-xl border-b border-[#1E3A5F]">
         <div className="container py-4">
           {/* Search */}
           <div className="relative mb-4">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-300" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
             <Input
               placeholder="Buscar noticias..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-white/5 border-gray-200 text-white placeholder:text-gray-300 focus:border-primary/50"
+              className="pl-10 bg-[#0F2847]/5 border-[#1E3A5F] text-white placeholder:text-white/40 focus:border-primary/50"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-white transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -165,7 +165,7 @@ export default function News() {
                   className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                     isActive
                       ? "bg-primary text-white shadow-lg shadow-blue-600/20"
-                      : "bg-white/5 text-gray-500 hover:bg-gray-100 hover:text-white"
+                      : "bg-[#0F2847]/5 text-white/60 hover:bg-[#1E3A5F] hover:text-white"
                   }`}
                 >
                   <IconComponent className="w-4 h-4" />
@@ -187,7 +187,7 @@ export default function News() {
           ) : displayNews.length > 0 ? (
             <>
               <div className="mb-6">
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-white/50">
                   {searchQuery.length > 2
                     ? `${displayNews.length} resultados para "${searchQuery}"`
                     : `Mostrando ${displayNews.length} artículos`}
@@ -197,12 +197,12 @@ export default function News() {
             </>
           ) : (
             <div className="text-center py-20">
-              <p className="text-xl text-gray-400 font-serif mb-2">
+              <p className="text-xl text-white/50 font-serif mb-2">
                 {searchQuery.length > 2
                   ? "No se encontraron resultados"
                   : "No hay noticias en esta categoría"}
               </p>
-              <p className="text-sm text-gray-300">
+              <p className="text-sm text-white/40">
                 Pronto publicaremos contenido nuevo. ¡Suscríbete para no perdértelo!
               </p>
             </div>
@@ -213,7 +213,7 @@ export default function News() {
       {/* Newsletter Signup */}
       <section className="py-16 section-dark">
         <div className="container max-w-2xl">
-          <div className="bg-gradient-to-r from-primary/10 to-gold/10 border border-blue-200 rounded-2xl p-8 md:p-10">
+          <div className="bg-gradient-to-r from-primary/10 to-gold/10 border border-blue-500/20 rounded-2xl p-8 md:p-10">
             <NewsletterSignup />
           </div>
         </div>

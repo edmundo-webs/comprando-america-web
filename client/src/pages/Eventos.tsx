@@ -96,7 +96,7 @@ export default function Eventos() {
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F5F7FA] via-white to-[#EFF6FF]" />
-        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl" />
+        <div className="absolute top-1/3 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="container relative z-10">
           <FadeIn>
@@ -104,11 +104,11 @@ export default function Eventos() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Experiencias & Eventos
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#0B1F3A] leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                 Experiencias diseñadas para empresarios que quieren invertir y
                 expandirse hacia Estados Unidos
               </h1>
-              <p className="text-gray-500 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
+              <p className="text-white/60 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
                 Participa en eventos, viajes de inspección y encuentros privados
                 donde se analizan oportunidades reales y se construyen
                 relaciones estratégicas.
@@ -117,20 +117,20 @@ export default function Eventos() {
               <div className="flex flex-wrap gap-4 mb-10">
                 <Button
                   onClick={scrollToEventos}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Ver próximos eventos <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Unirme a lista prioritaria
                 </Button>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-gray-400 text-sm">
+              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
                 <span className="flex items-center gap-2">
                   <CalendarDays className="w-4 h-4 text-primary" /> Eventos
                   presenciales
@@ -153,12 +153,12 @@ export default function Eventos() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Las oportunidades no se entienden desde una pantalla…
                 <br />
                 <span className="text-primary">se viven en el terreno</span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Comprando América organiza experiencias donde empresarios
                 pueden:
               </p>
@@ -171,7 +171,7 @@ export default function Eventos() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -187,7 +187,7 @@ export default function Eventos() {
           <div className="container">
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
               <FadeIn>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-blue-200 shadow-2xl shadow-primary/10">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-blue-500/20 shadow-2xl shadow-primary/10">
                   <img
                     src={PHOTOS.ruta}
                     alt="Ruta Inmobiliaria en Estados Unidos"
@@ -196,7 +196,7 @@ export default function Eventos() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute bottom-4 left-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/90 text-white text-xs font-semibold uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-[#0F2847] animate-pulse" />
                       Próximo evento
                     </div>
                   </div>
@@ -206,10 +206,10 @@ export default function Eventos() {
               <FadeIn delay={0.1}>
                 <div>
                   <Compass className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">
+                  <h3 className="text-3xl md:text-4xl text-white mb-3">
                     Ruta Inmobiliaria en Estados Unidos
                   </h3>
-                  <p className="text-gray-500 text-lg leading-relaxed mb-6">
+                  <p className="text-white/60 text-lg leading-relaxed mb-6">
                     Un evento presencial donde analizamos oportunidades reales en
                     bienes raíces.
                   </p>
@@ -223,12 +223,12 @@ export default function Eventos() {
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-500 text-sm">{item}</p>
+                        <p className="text-white/60 text-sm">{item}</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap gap-4 text-gray-500 text-sm mb-8">
+                  <div className="flex flex-wrap gap-4 text-white/60 text-sm mb-8">
                     <span className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-primary" /> Monterrey
                     </span>
@@ -240,14 +240,14 @@ export default function Eventos() {
 
                   <div className="flex flex-wrap gap-4">
                     <a href="/ruta-inmobiliaria-en-estados-unidos">
-                      <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+                      <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
                         Reservar mi lugar <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
                     <a href="/ruta-inmobiliaria-en-estados-unidos">
                       <Button
                         variant="outline"
-                        className="border-gray-300 text-white hover:bg-gray-50 gap-2"
+                        className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] gap-2"
                       >
                         Ver detalles
                       </Button>
@@ -266,10 +266,10 @@ export default function Eventos() {
               <FadeIn delay={0.1} className="order-2 lg:order-1">
                 <div>
                   <MapPin className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">
+                  <h3 className="text-3xl md:text-4xl text-white mb-3">
                     Florida Investment Week
                   </h3>
-                  <p className="text-gray-500 text-lg leading-relaxed mb-6">
+                  <p className="text-white/60 text-lg leading-relaxed mb-6">
                     Viaje de inspección donde visitamos oportunidades y
                     analizamos proyectos directamente en Estados Unidos.
                   </p>
@@ -283,12 +283,12 @@ export default function Eventos() {
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-500 text-sm">{item}</p>
+                        <p className="text-white/60 text-sm">{item}</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap gap-4 text-gray-500 text-sm mb-8">
+                  <div className="flex flex-wrap gap-4 text-white/60 text-sm mb-8">
                     <span className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-primary" /> Florida, EE.UU.
                     </span>
@@ -300,14 +300,14 @@ export default function Eventos() {
 
                   <div className="flex flex-wrap gap-4">
                     <a href="/investment-week">
-                      <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+                      <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
                         Aplicar al viaje <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
                     <a href="/investment-week">
                       <Button
                         variant="outline"
-                        className="border-gray-300 text-white hover:bg-gray-50 gap-2"
+                        className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] gap-2"
                       >
                         Ver detalles
                       </Button>
@@ -317,7 +317,7 @@ export default function Eventos() {
               </FadeIn>
 
               <FadeIn className="order-1 lg:order-2">
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-blue-200 shadow-2xl shadow-primary/10">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-blue-500/20 shadow-2xl shadow-primary/10">
                   <img
                     src={PHOTOS.inspeccion}
                     alt="Florida Investment Week — Viaje de inspección"
@@ -326,7 +326,7 @@ export default function Eventos() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute bottom-4 left-4">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/90 text-white text-xs font-semibold uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-[#0F2847] animate-pulse" />
                       Mayo 2026
                     </div>
                   </div>
@@ -341,7 +341,7 @@ export default function Eventos() {
           <div className="container">
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
               <FadeIn>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 shadow-2xl">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#1E3A5F] shadow-2xl">
                   <img
                     src={PHOTOS.cumbre}
                     alt="Cumbre de Emprendimiento e Inversiones Estratégicas"
@@ -349,7 +349,7 @@ export default function Eventos() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute bottom-4 left-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-gray-700 text-xs font-semibold uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0F2847]/10 backdrop-blur-sm text-white/80 text-xs font-semibold uppercase tracking-wider">
                       En planeación
                     </div>
                   </div>
@@ -359,10 +359,10 @@ export default function Eventos() {
               <FadeIn delay={0.1}>
                 <div>
                   <Trophy className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">
+                  <h3 className="text-3xl md:text-4xl text-white mb-3">
                     Cumbre de Emprendimiento e Inversiones Estratégicas
                   </h3>
-                  <p className="text-gray-500 text-lg leading-relaxed mb-6">
+                  <p className="text-white/60 text-lg leading-relaxed mb-6">
                     Evento diseñado para empresarios que buscan entender cómo
                     expandirse hacia Estados Unidos con estructura y estrategia.
                   </p>
@@ -376,18 +376,18 @@ export default function Eventos() {
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-500 text-sm">{item}</p>
+                        <p className="text-white/60 text-sm">{item}</p>
                       </div>
                     ))}
                   </div>
 
-                  <p className="text-gray-400 text-sm mb-6 italic">
+                  <p className="text-white/50 text-sm mb-6 italic">
                     Próxima edición en planeación
                   </p>
 
                   <Button
                     onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)}
-                    className="bg-primary hover:bg-blue-700 text-white gap-2"
+                    className="bg-primary hover:bg-primary/90 text-white gap-2"
                   >
                     Unirme a lista de espera <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -404,10 +404,10 @@ export default function Eventos() {
               <FadeIn delay={0.1} className="order-2 lg:order-1">
                 <div>
                   <Utensils className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">
+                  <h3 className="text-3xl md:text-4xl text-white mb-3">
                     Cena privada de inversión
                   </h3>
-                  <p className="text-gray-500 text-lg leading-relaxed mb-6">
+                  <p className="text-white/60 text-lg leading-relaxed mb-6">
                     Encuentros exclusivos donde se analizan oportunidades en un
                     ambiente más cercano e íntimo.
                   </p>
@@ -420,18 +420,18 @@ export default function Eventos() {
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-500 text-sm">{item}</p>
+                        <p className="text-white/60 text-sm">{item}</p>
                       </div>
                     ))}
                   </div>
 
-                  <p className="text-gray-400 text-sm mb-6 italic">
+                  <p className="text-white/50 text-sm mb-6 italic">
                     Próximas fechas por anunciar
                   </p>
 
                   <Button
                     onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)}
-                    className="bg-primary hover:bg-blue-700 text-white gap-2"
+                    className="bg-primary hover:bg-primary/90 text-white gap-2"
                   >
                     Unirme a lista prioritaria{" "}
                     <ArrowRight className="w-4 h-4" />
@@ -440,7 +440,7 @@ export default function Eventos() {
               </FadeIn>
 
               <FadeIn className="order-1 lg:order-2">
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 shadow-2xl">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#1E3A5F] shadow-2xl">
                   <img
                     src={PHOTOS.cena}
                     alt="Cena privada de inversión"
@@ -448,7 +448,7 @@ export default function Eventos() {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                   <div className="absolute bottom-4 left-4">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-gray-700 text-xs font-semibold uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0F2847]/10 backdrop-blur-sm text-white/80 text-xs font-semibold uppercase tracking-wider">
                       Por anunciar
                     </div>
                   </div>
@@ -465,10 +465,10 @@ export default function Eventos() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <ShieldCheck className="w-10 h-10 text-primary mb-4" />
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Estos espacios no son para todos
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Los eventos están dirigidos a empresarios e inversionistas que:
               </p>
               <div className="space-y-4">
@@ -479,7 +479,7 @@ export default function Eventos() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
@@ -493,20 +493,20 @@ export default function Eventos() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-8">
+              <h2 className="text-3xl md:text-4xl text-white mb-8">
                 ¿Te interesa participar en estas experiencias?
               </h2>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_GENERAL)}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   WhatsApp <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Lista de espera
                 </Button>
@@ -524,24 +524,24 @@ export default function Eventos() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Ecosistema
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Los eventos son solo una parte del ecosistema
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 Muchos de los participantes continúan su proceso a través de la
                 membresía, accediendo a oportunidades y estructurando su empresa
                 en Estados Unidos.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/membresia">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Conocer membresía <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/oportunidades-de-inversion-en-estados-unidos">
                   <Button
                     variant="outline"
-                    className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                    className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                   >
                     Ver oportunidades
                   </Button>
@@ -557,30 +557,30 @@ export default function Eventos() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Accede a experiencias donde se toman decisiones reales
               </h2>
-              <p className="text-gray-400 text-sm mb-10">
+              <p className="text-white/50 text-sm mb-10">
                 Los mejores espacios no se publican. Se comparten.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
                   onClick={scrollToEventos}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Ver eventos <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Lista prioritaria
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_GENERAL)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   WhatsApp
                 </Button>

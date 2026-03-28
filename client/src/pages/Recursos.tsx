@@ -134,7 +134,7 @@ export default function Recursos() {
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate pt-28 pb-16 md:pt-36 md:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F5F7FA] via-white to-[#EFF6FF]" />
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="container relative z-10">
           <FadeIn>
@@ -142,17 +142,17 @@ export default function Recursos() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Centro de Recursos
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#0B1F3A] leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                 Información estratégica para empresarios que quieren expandirse
                 hacia Estados Unidos
               </h1>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8 max-w-2xl">
+              <p className="text-white/60 text-lg leading-relaxed mb-8 max-w-2xl">
                 Accede a contenido diseñado para ayudarte a entender cómo
                 estructurar, invertir y tomar decisiones empresariales en
                 Estados Unidos.
               </p>
 
-              <div className="flex flex-wrap gap-6 text-gray-400 text-sm">
+              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" /> Contenido
                   educativo
@@ -172,7 +172,7 @@ export default function Recursos() {
       </section>
 
       {/* ═══ 2. TABS SELECTOR ═══ */}
-      <section className="section-darker py-12 md:py-16 sticky top-0 z-30 backdrop-blur-lg bg-[#F5F7FA]/90 border-b border-gray-200">
+      <section className="section-darker py-12 md:py-16 sticky top-0 z-30 backdrop-blur-lg bg-[#132D50]/90 border-b border-[#1E3A5F]">
         <div className="container">
           <div className="flex justify-center gap-2 md:gap-4">
             {tabs.map((tab) => (
@@ -182,7 +182,7 @@ export default function Recursos() {
                 className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all ${
                   activeTab === tab.id
                     ? "bg-primary text-white shadow-lg shadow-blue-600/20"
-                    : "bg-white/5 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+                    : "bg-[#0F2847]/5 text-white/50 hover:bg-[#1E3A5F] hover:text-white/60"
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -208,11 +208,11 @@ export default function Recursos() {
               >
                 <div className="max-w-5xl mx-auto">
                   <div className="mb-10">
-                    <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                    <h2 className="text-3xl md:text-4xl text-white mb-4">
                       Conversaciones estratégicas para empresarios e
                       inversionistas
                     </h2>
-                    <p className="text-gray-500 text-lg leading-relaxed max-w-2xl">
+                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
                       En el podcast de Comprando América exploramos temas
                       relacionados con inversión, estructura empresarial y
                       expansión hacia Estados Unidos.
@@ -227,7 +227,7 @@ export default function Recursos() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <div className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all">
+                        <div className="group bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all">
                           <div className="relative aspect-video bg-black overflow-hidden">
                             <img
                               src={`https://img.youtube.com/vi/${ep.videoId}/mqdefault.jpg`}
@@ -246,7 +246,7 @@ export default function Recursos() {
                             )}
                           </div>
                           <div className="p-4">
-                            <p className="text-gray-700 text-sm font-medium line-clamp-2 group-hover:text-white transition-colors">
+                            <p className="text-white/80 text-sm font-medium line-clamp-2 group-hover:text-white transition-colors">
                               {ep.title}
                             </p>
                           </div>
@@ -259,7 +259,7 @@ export default function Recursos() {
                     <a href="/podcast">
                       <Button
                         variant="outline"
-                        className="border-gray-300 text-white hover:bg-gray-50 gap-2"
+                        className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] gap-2"
                       >
                         Ver todos los episodios{" "}
                         <ArrowRight className="w-4 h-4" />
@@ -281,11 +281,11 @@ export default function Recursos() {
               >
                 <div className="max-w-5xl mx-auto">
                   <div className="mb-10">
-                    <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                    <h2 className="text-3xl md:text-4xl text-white mb-4">
                       Lo que está pasando en Estados Unidos y cómo puede
                       impactarte
                     </h2>
-                    <p className="text-gray-500 text-lg leading-relaxed max-w-2xl">
+                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
                       Análisis de tendencias, cambios y noticias relevantes que
                       pueden influir en decisiones de inversión y expansión
                       empresarial.
@@ -297,7 +297,7 @@ export default function Recursos() {
                       {[1, 2, 3, 4, 5, 6].map((i) => (
                         <div
                           key={i}
-                          className="bg-white border border-gray-200 rounded-xl h-64 animate-pulse"
+                          className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl h-64 animate-pulse"
                         />
                       ))}
                     </div>
@@ -305,7 +305,7 @@ export default function Recursos() {
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                       {news.map((article: any) => (
                         <Link key={article.id} href={`/news/${article.slug}`}>
-                          <div className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all h-full cursor-pointer">
+                          <div className="group bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all h-full cursor-pointer">
                             {article.imageUrl && (
                               <div className="aspect-video overflow-hidden bg-black">
                                 <img
@@ -325,11 +325,11 @@ export default function Recursos() {
                                 {article.title}
                               </h3>
                               {article.summary && (
-                                <p className="text-gray-400 text-sm line-clamp-2 mb-3">
+                                <p className="text-white/50 text-sm line-clamp-2 mb-3">
                                   {article.summary}
                                 </p>
                               )}
-                              <div className="flex items-center gap-2 text-gray-300 text-xs">
+                              <div className="flex items-center gap-2 text-white/40 text-xs">
                                 <Calendar className="w-3 h-3" />
                                 {formatDate(article.publishedAt || article.createdAt)}
                               </div>
@@ -340,8 +340,8 @@ export default function Recursos() {
                     </div>
                   ) : (
                     <div className="text-center py-16">
-                      <Newspaper className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-                      <p className="text-gray-400">
+                      <Newspaper className="w-12 h-12 text-white/30 mx-auto mb-4" />
+                      <p className="text-white/50">
                         Próximamente publicaremos noticias y análisis.
                       </p>
                     </div>
@@ -352,7 +352,7 @@ export default function Recursos() {
                       <a href="/news">
                         <Button
                           variant="outline"
-                          className="border-gray-300 text-white hover:bg-gray-50 gap-2"
+                          className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] gap-2"
                         >
                           Ver todas las noticias{" "}
                           <ArrowRight className="w-4 h-4" />
@@ -375,10 +375,10 @@ export default function Recursos() {
               >
                 <div className="max-w-5xl mx-auto">
                   <div className="mb-10">
-                    <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                    <h2 className="text-3xl md:text-4xl text-white mb-4">
                       Contenido escrito para entender mejor el proceso
                     </h2>
-                    <p className="text-gray-500 text-lg leading-relaxed max-w-2xl">
+                    <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
                       Artículos desarrollados por el equipo de Comprando América
                       para ayudarte a comprender aspectos clave de inversión,
                       estructura empresarial y estrategia.
@@ -390,7 +390,7 @@ export default function Recursos() {
                       {[1, 2, 3, 4, 5, 6].map((i) => (
                         <div
                           key={i}
-                          className="bg-white border border-gray-200 rounded-xl h-64 animate-pulse"
+                          className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl h-64 animate-pulse"
                         />
                       ))}
                     </div>
@@ -398,7 +398,7 @@ export default function Recursos() {
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                       {blogs.map((post: any) => (
                         <Link key={post.id} href={`/blog/${post.slug}`}>
-                          <div className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all h-full cursor-pointer">
+                          <div className="group bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all h-full cursor-pointer">
                             {post.featuredImage && (
                               <div className="aspect-video overflow-hidden bg-black">
                                 <img
@@ -418,11 +418,11 @@ export default function Recursos() {
                                 {post.title}
                               </h3>
                               {post.excerpt && (
-                                <p className="text-gray-400 text-sm line-clamp-2 mb-3">
+                                <p className="text-white/50 text-sm line-clamp-2 mb-3">
                                   {post.excerpt}
                                 </p>
                               )}
-                              <div className="flex items-center gap-2 text-gray-300 text-xs">
+                              <div className="flex items-center gap-2 text-white/40 text-xs">
                                 <Calendar className="w-3 h-3" />
                                 {formatDate(post.publishedAt || post.createdAt)}
                               </div>
@@ -433,8 +433,8 @@ export default function Recursos() {
                     </div>
                   ) : (
                     <div className="text-center py-16">
-                      <BookOpen className="w-12 h-12 text-gray-200 mx-auto mb-4" />
-                      <p className="text-gray-400">
+                      <BookOpen className="w-12 h-12 text-white/30 mx-auto mb-4" />
+                      <p className="text-white/50">
                         Próximamente publicaremos artículos.
                       </p>
                     </div>
@@ -445,7 +445,7 @@ export default function Recursos() {
                       <a href="/blog">
                         <Button
                           variant="outline"
-                          className="border-gray-300 text-white hover:bg-gray-50 gap-2"
+                          className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] gap-2"
                         >
                           Ver todos los artículos{" "}
                           <ArrowRight className="w-4 h-4" />
@@ -465,23 +465,23 @@ export default function Recursos() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 ¿Estás listo para llevar esto a acción?
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 El contenido es solo el primer paso. La verdadera diferencia
                 está en cómo aplicas esta información.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Hablar con un asesor
                 </Button>
@@ -499,36 +499,36 @@ export default function Recursos() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Ecosistema
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Este contenido es parte de un sistema más grande
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 Comprando América no solo comparte información. Conecta
                 empresarios con oportunidades, comunidad y estructura.
               </p>
               <div className="grid sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
                 <a href="/membresia">
-                  <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-5 hover:border-blue-200 transition-all text-center">
+                  <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5 hover:border-blue-500/20 transition-all text-center">
                     <p className="text-primary text-sm font-semibold mb-1">
                       Membresía
                     </p>
-                    <p className="text-gray-400 text-xs">Comunidad privada</p>
+                    <p className="text-white/50 text-xs">Comunidad privada</p>
                   </div>
                 </a>
                 <a href="/oportunidades-de-inversion-en-estados-unidos">
-                  <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-5 hover:border-blue-200 transition-all text-center">
+                  <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5 hover:border-blue-500/20 transition-all text-center">
                     <p className="text-primary text-sm font-semibold mb-1">
                       Oportunidades
                     </p>
-                    <p className="text-gray-400 text-xs">Acceso filtrado</p>
+                    <p className="text-white/50 text-xs">Acceso filtrado</p>
                   </div>
                 </a>
                 <a href="/llc">
-                  <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-5 hover:border-blue-200 transition-all text-center">
+                  <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5 hover:border-blue-500/20 transition-all text-center">
                     <p className="text-primary text-sm font-semibold mb-1">
                       Estructura
                     </p>
-                    <p className="text-gray-400 text-xs">LLC en EE.UU.</p>
+                    <p className="text-white/50 text-xs">LLC en EE.UU.</p>
                   </div>
                 </a>
               </div>
@@ -542,22 +542,22 @@ export default function Recursos() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Empieza a tomar decisiones con más claridad
               </h2>
-              <p className="text-gray-400 text-sm mb-10">
+              <p className="text-white/50 text-sm mb-10">
                 Antes de invertir o expandirte… necesitas criterio.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   WhatsApp
                 </Button>

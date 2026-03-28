@@ -30,7 +30,7 @@ export default function BlogPost() {
           <a href="/#blog">
             <Button
               variant="ghost"
-              className="text-gray-500 hover:text-white hover:bg-gray-50 mb-8 gap-2 -ml-2"
+              className="text-white/60 hover:text-white hover:bg-[#1E3A5F] mb-8 gap-2 -ml-2"
             >
               <ArrowLeft className="w-4 h-4" /> Volver al Blog
             </Button>
@@ -38,16 +38,16 @@ export default function BlogPost() {
 
           {isLoading && (
             <div className="max-w-3xl">
-              <div className="h-8 w-3/4 bg-white/5 rounded animate-pulse mb-4" />
-              <div className="h-4 w-1/2 bg-white/5 rounded animate-pulse mb-6" />
-              <div className="h-4 w-1/3 bg-white/5 rounded animate-pulse" />
+              <div className="h-8 w-3/4 bg-[#0F2847]/5 rounded animate-pulse mb-4" />
+              <div className="h-4 w-1/2 bg-[#0F2847]/5 rounded animate-pulse mb-6" />
+              <div className="h-4 w-1/3 bg-[#0F2847]/5 rounded animate-pulse" />
             </div>
           )}
 
           {error && (
             <div className="max-w-3xl text-center py-20">
-              <h1 className="text-3xl font-serif text-[#0B1F3A] mb-4">Artículo no encontrado</h1>
-              <p className="text-gray-400 mb-8">
+              <h1 className="text-3xl font-serif text-white mb-4">Artículo no encontrado</h1>
+              <p className="text-white/50 mb-8">
                 El artículo que buscas no existe o ha sido removido.
               </p>
               <a href="/#blog">
@@ -65,15 +65,15 @@ export default function BlogPost() {
                   BORRADOR
                 </span>
               )}
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#0B1F3A] leading-tight mb-6">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white leading-tight mb-6">
                 {post.title}
               </h1>
               {post.excerpt && (
-                <p className="text-lg text-gray-500 leading-relaxed mb-8 max-w-2xl">
+                <p className="text-lg text-white/60 leading-relaxed mb-8 max-w-2xl">
                   {post.excerpt}
                 </p>
               )}
-              <div className="flex flex-wrap items-center gap-6 text-sm text-gray-400">
+              <div className="flex flex-wrap items-center gap-6 text-sm text-white/50">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
                   <span>
@@ -102,11 +102,11 @@ export default function BlogPost() {
       {post?.featuredImage && (
         <section className="container relative z-10 -mt-4 mb-12">
           <div className="max-w-4xl mx-auto">
-            <div className="rounded-2xl overflow-hidden border border-gray-200">
+            <div className="rounded-2xl overflow-hidden border border-[#1E3A5F]">
               <img
                 src={post.featuredImage}
                 alt={post.title}
-                className="w-full h-auto max-h-[500px] object-contain bg-[#F5F7FA]"
+                className="w-full h-auto max-h-[500px] object-contain bg-[#132D50]"
               />
             </div>
           </div>
@@ -123,12 +123,12 @@ export default function BlogPost() {
             />
 
             {/* Divider */}
-            <div className="border-t border-gray-200 mt-16 pt-12">
-              <div className="bg-[oklch(0.14_0.02_264)] border border-gray-200 rounded-2xl p-8 md:p-10 text-center">
-                <h3 className="text-2xl font-serif text-[#0B1F3A] mb-3">
+            <div className="border-t border-[#1E3A5F] mt-16 pt-12">
+              <div className="bg-[oklch(0.14_0.02_264)] border border-[#1E3A5F] rounded-2xl p-8 md:p-10 text-center">
+                <h3 className="text-2xl font-serif text-white mb-3">
                   ¿Te interesa invertir en Estados Unidos?
                 </h3>
-                <p className="text-gray-400 mb-6 max-w-lg mx-auto">
+                <p className="text-white/50 mb-6 max-w-lg mx-auto">
                   Únete a nuestra comunidad exclusiva de inversionistas latinos y accede a oportunidades filtradas por expertos.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -138,7 +138,7 @@ export default function BlogPost() {
                     </Button>
                   </a>
                   <a href="/#blog">
-                    <Button variant="outline" className="border-gray-300 text-white hover:bg-gray-50 px-8 py-5">
+                    <Button variant="outline" className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-5">
                       Ver más artículos
                     </Button>
                   </a>

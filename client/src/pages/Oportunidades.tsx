@@ -83,7 +83,7 @@ export default function Oportunidades() {
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#F5F7FA] via-white to-[#EFF6FF]" />
-        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full bg-blue-50 blur-3xl" />
+        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="container relative z-10">
           <FadeIn>
@@ -91,11 +91,11 @@ export default function Oportunidades() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Acceso Privado
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#0B1F3A] leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                 Accede a oportunidades de inversión en Estados Unidos que no
                 están en el mercado abierto
               </h1>
-              <p className="text-gray-500 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
+              <p className="text-white/60 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
                 Comprando América conecta empresarios e inversionistas con
                 oportunidades previamente evaluadas, presentadas en espacios
                 privados.
@@ -104,14 +104,14 @@ export default function Oportunidades() {
               <div className="flex flex-wrap gap-4 mb-10">
                 <Button
                   onClick={scrollToFilter}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Ver oportunidades disponibles{" "}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-gray-400 text-sm">
+              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
                 <span className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-primary" /> Oportunidades
                   filtradas
@@ -137,14 +137,14 @@ export default function Oportunidades() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 El Problema
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 El problema no es invertir en Estados Unidos…
                 <br />
                 <span className="text-primary">
                   Es no saber en qué invertir
                 </span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Hoy existe demasiada información y demasiadas opciones. Pero
                 pocas están realmente estructuradas para inversionistas. Muchos
                 terminan:
@@ -157,7 +157,7 @@ export default function Oportunidades() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -171,14 +171,14 @@ export default function Oportunidades() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Las mejores oportunidades no se publican…
                 <br />
                 <span className="text-primary">
                   se comparten dentro de redes
                 </span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 Las oportunidades más interesantes rara vez están abiertas al
                 público. Se encuentran dentro de:
               </p>
@@ -201,12 +201,12 @@ export default function Oportunidades() {
                   },
                 ].map((item, i) => (
                   <FadeIn key={i} delay={i * 0.1}>
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full hover:border-blue-200 transition-all">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/20 transition-all">
                       <item.icon className="w-8 h-8 text-primary mb-4" />
-                      <h3 className="text-lg text-[#0B1F3A] mb-2">
+                      <h3 className="text-lg text-white mb-2">
                         {item.title}
                       </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                      <p className="text-white/50 text-sm leading-relaxed">
                         {item.desc}
                       </p>
                     </div>
@@ -239,17 +239,17 @@ export default function Oportunidades() {
                 {/* Glow effect */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-amber-500/20 to-primary/20 rounded-2xl blur-lg opacity-60 group-hover:opacity-100 transition-opacity" />
 
-                <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-300 rounded-2xl p-10 md:p-14">
+                <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-500/30 rounded-2xl p-10 md:p-14">
                   {/* Badge */}
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-300 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
                     <Calendar className="w-3.5 h-3.5" />
                     Sesión mensual exclusiva
                   </div>
 
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                  <h3 className="text-3xl md:text-4xl text-white mb-4">
                     Deal Day
                   </h3>
-                  <p className="text-gray-500 text-lg leading-relaxed mb-8 max-w-xl">
+                  <p className="text-white/60 text-lg leading-relaxed mb-8 max-w-xl">
                     Cada mes presentamos oportunidades de inversión en sesiones
                     privadas exclusivas para miembros de Comprando América.
                   </p>
@@ -262,13 +262,13 @@ export default function Oportunidades() {
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-gray-500">{item}</p>
+                        <p className="text-white/60">{item}</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="mt-10 pt-8 border-t border-gray-200">
-                    <p className="text-gray-400 text-sm italic">
+                  <div className="mt-10 pt-8 border-t border-[#1E3A5F]">
+                    <p className="text-white/50 text-sm italic">
                       El acceso a Deal Day es exclusivo para miembros activos de
                       la comunidad.
                     </p>
@@ -288,10 +288,10 @@ export default function Oportunidades() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Criterio de Acceso
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 No todas las personas pueden participar
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 El acceso a oportunidades no depende solo del capital. Depende
                 del perfil.
               </p>
@@ -304,13 +304,13 @@ export default function Oportunidades() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
 
-              <div className="bg-white border border-gray-200 rounded-xl p-8">
-                <p className="text-gray-700 text-lg font-serif leading-relaxed">
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8">
+                <p className="text-white/80 text-lg font-serif leading-relaxed">
                   Incluso si alguien tiene el capital,{" "}
                   <span className="text-primary font-semibold">
                     si no cumple el perfil, no participa.
@@ -339,14 +339,14 @@ export default function Oportunidades() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Card 1 — Active */}
             <FadeIn>
-              <div className="relative bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-200 rounded-2xl p-8 h-full group hover:border-primary/40 transition-all">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
+              <div className="relative bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/20 rounded-2xl p-8 h-full group hover:border-primary/40 transition-all">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                   Activa
                 </div>
 
                 <Building2 className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-2xl text-[#0B1F3A] mb-4">
+                <h3 className="text-2xl text-white mb-4">
                   Fondo de bienes raíces en Estados Unidos
                 </h3>
 
@@ -358,13 +358,13 @@ export default function Oportunidades() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-500 text-sm">{item}</p>
+                      <p className="text-white/60 text-sm">{item}</p>
                     </div>
                   ))}
                 </div>
 
                 <a href="/bienes-raices-en-usa">
-                  <Button className="bg-primary hover:bg-blue-700 text-white gap-2 w-full">
+                  <Button className="bg-primary hover:bg-primary/90 text-white gap-2 w-full">
                     Ver detalles <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
@@ -373,18 +373,18 @@ export default function Oportunidades() {
 
             {/* Card 2 — Coming Soon */}
             <FadeIn delay={0.1}>
-              <div className="relative bg-[oklch(0.13_0.02_250)] border border-gray-200 rounded-2xl p-8 h-full opacity-80">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 text-gray-400 text-xs font-semibold uppercase tracking-wider mb-6">
-                  <span className="w-2 h-2 rounded-full bg-white/30" />
+              <div className="relative bg-[oklch(0.13_0.02_250)] border border-[#1E3A5F] rounded-2xl p-8 h-full opacity-80">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0F2847]/5 text-white/50 text-xs font-semibold uppercase tracking-wider mb-6">
+                  <span className="w-2 h-2 rounded-full bg-[#0F2847]/30" />
                   Próximamente
                 </div>
 
-                <TrendingUp className="w-10 h-10 text-gray-300 mb-4" />
-                <h3 className="text-2xl font-serif text-gray-400 mb-4">
+                <TrendingUp className="w-10 h-10 text-white/40 mb-4" />
+                <h3 className="text-2xl font-serif text-white/50 mb-4">
                   Growth Partner
                 </h3>
 
-                <p className="text-gray-400 text-sm leading-relaxed mb-8">
+                <p className="text-white/50 text-sm leading-relaxed mb-8">
                   Oportunidad en preparación. Acceso exclusivo para miembros
                   activos de la comunidad.
                 </p>
@@ -406,14 +406,14 @@ export default function Oportunidades() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 No se trata de cantidad de oportunidades…
                 <br />
                 <span className="text-primary">
                   Se trata de calidad y criterio
                 </span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed">
+              <p className="text-white/60 text-lg leading-relaxed">
                 En Comprando América no presentamos todo lo que vemos. Filtramos
                 oportunidades y priorizamos estructura. Solo lo que cumple con
                 nuestros estándares llega a la comunidad.
@@ -431,17 +431,17 @@ export default function Oportunidades() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Membresía
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 La mayoría de las oportunidades se presentan dentro de la
                 membresía
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 La comunidad es el espacio donde se presentan oportunidades, se
                 discuten con expertos y se toman decisiones con respaldo
                 profesional.
               </p>
               <a href="/membresia">
-                <Button className="bg-primary hover:bg-blue-700 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                <Button className="bg-primary hover:bg-primary/90 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                   Conocer la membresía <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
@@ -456,9 +456,9 @@ export default function Oportunidades() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Para quién es */}
             <FadeIn>
-              <div className="bg-[#F5F7FA] border border-blue-200 rounded-xl p-8 h-full">
+              <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-8 h-full">
                 <Eye className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-2xl text-[#0B1F3A] mb-6">
+                <h3 className="text-2xl text-white mb-6">
                   Estas oportunidades están diseñadas para:
                 </h3>
                 <div className="space-y-3">
@@ -470,7 +470,7 @@ export default function Oportunidades() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-500 text-sm">{item}</p>
+                      <p className="text-white/60 text-sm">{item}</p>
                     </div>
                   ))}
                 </div>
@@ -479,9 +479,9 @@ export default function Oportunidades() {
 
             {/* Para quién NO es */}
             <FadeIn delay={0.1}>
-              <div className="bg-[oklch(0.12_0.02_250)] border border-gray-200 rounded-xl p-8 h-full">
-                <XCircle className="w-8 h-8 text-gray-300 mb-4" />
-                <h3 className="text-2xl font-serif text-gray-500 mb-6">
+              <div className="bg-[oklch(0.12_0.02_250)] border border-[#1E3A5F] rounded-xl p-8 h-full">
+                <XCircle className="w-8 h-8 text-white/40 mb-4" />
+                <h3 className="text-2xl font-serif text-white/60 mb-6">
                   No es para quienes:
                 </h3>
                 <div className="space-y-3">
@@ -492,7 +492,7 @@ export default function Oportunidades() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <XCircle className="w-4 h-4 text-red-400/60 flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-400 text-sm">{item}</p>
+                      <p className="text-white/50 text-sm">{item}</p>
                     </div>
                   ))}
                 </div>
@@ -507,12 +507,12 @@ export default function Oportunidades() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-8">
+              <h2 className="text-3xl md:text-4xl text-white mb-8">
                 ¿Tu perfil puede encajar en este tipo de oportunidades?
               </h2>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
@@ -524,7 +524,7 @@ export default function Oportunidades() {
                       "Hola, me interesa conocer las oportunidades de inversión en Estados Unidos."
                     )
                   }
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   <MessageSquare className="w-4 h-4" /> Hablar con un asesor
                 </Button>
@@ -542,16 +542,16 @@ export default function Oportunidades() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Estructura
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Antes de invertir, necesitas una estructura correcta
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 Una LLC bien estructurada protege tu capital, optimiza tu carga
                 fiscal y te posiciona correctamente ante el mercado
                 estadounidense.
               </p>
               <a href="/llc">
-                <Button className="bg-primary hover:bg-blue-700 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                <Button className="bg-primary hover:bg-primary/90 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                   Estructurar mi empresa <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
@@ -590,12 +590,12 @@ export default function Oportunidades() {
                   <AccordionItem
                     key={i}
                     value={`faq-${i}`}
-                    className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-6"
+                    className="bg-[#132D50] border border-[#1E3A5F] rounded-xl px-6"
                   >
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5">
                       {faq.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-500 leading-relaxed pb-5">
+                    <AccordionContent className="text-white/60 leading-relaxed pb-5">
                       {faq.a}
                     </AccordionContent>
                   </AccordionItem>
@@ -611,25 +611,25 @@ export default function Oportunidades() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Accede a oportunidades con criterio y estructura
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-4">
+              <p className="text-white/60 text-lg leading-relaxed mb-4">
                 Las oportunidades no están abiertas a todos.
               </p>
-              <p className="text-gray-400 text-sm mb-10">
+              <p className="text-white/50 text-sm mb-10">
                 Pero pueden estar disponibles para el perfil correcto.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/membresia">
                   <Button
                     variant="outline"
-                    className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                    className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                   >
                     Conocer membresía
                   </Button>
@@ -642,7 +642,7 @@ export default function Oportunidades() {
                       "Hola, me interesa conocer las oportunidades de inversión en Estados Unidos."
                     )
                   }
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   <MessageSquare className="w-4 h-4" /> WhatsApp
                 </Button>

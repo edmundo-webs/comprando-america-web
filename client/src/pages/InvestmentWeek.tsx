@@ -98,11 +98,11 @@ export default function InvestmentWeek() {
       <Navbar />
 
       {/* ═══ BANNER ACCESO RESTRINGIDO ═══ */}
-      <div className="bg-[#F5F7FA] border-b border-blue-200 pt-20">
+      <div className="bg-[#132D50] border-b border-blue-500/20 pt-20">
         <div className="container py-4">
           <div className="flex items-center justify-center gap-3 text-center">
             <Lock className="w-4 h-4 text-primary flex-shrink-0" />
-            <p className="text-gray-500 text-sm">
+            <p className="text-white/60 text-sm">
               <span className="text-primary font-semibold">
                 Acceso restringido.
               </span>{" "}
@@ -122,34 +122,34 @@ export default function InvestmentWeek() {
         <div className="container relative z-10">
           <FadeIn>
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
                 <Shield className="w-3.5 h-3.5" />
                 Experiencia por invitación
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-tight mb-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-4">
                 Florida Investment Week
               </h1>
-              <p className="text-xl md:text-2xl font-serif text-gray-500 mb-6">
+              <p className="text-xl md:text-2xl font-serif text-white/60 mb-6">
                 Acceso directo a activos, estructura y decisiones reales en
                 Estados Unidos
               </p>
-              <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-2xl">
+              <p className="text-white/50 text-lg leading-relaxed mb-8 max-w-2xl">
                 Un viaje de inspección diseñado para inversionistas que buscan
                 entender, analizar y ejecutar oportunidades directamente en
                 terreno.
               </p>
 
-              <div className="flex flex-wrap gap-4 text-gray-500 text-sm mb-8">
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full">
+              <div className="flex flex-wrap gap-4 text-white/60 text-sm mb-8">
+                <span className="flex items-center gap-2 bg-[#0F2847]/5 px-4 py-2 rounded-full">
                   <MapPin className="w-4 h-4 text-primary" /> Tampa · St.
                   Petersburg · Clearwater
                 </span>
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full">
+                <span className="flex items-center gap-2 bg-[#0F2847]/5 px-4 py-2 rounded-full">
                   <CalendarDays className="w-4 h-4 text-primary" /> 1–4 mayo
                   2026
                 </span>
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full">
+                <span className="flex items-center gap-2 bg-[#0F2847]/5 px-4 py-2 rounded-full">
                   <Users className="w-4 h-4 text-primary" /> Cupo limitado
                 </span>
               </div>
@@ -157,20 +157,20 @@ export default function InvestmentWeek() {
               <div className="flex flex-wrap gap-4 mb-10">
                 <Button
                   onClick={scrollToApply}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Aplicar al viaje <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Confirmar interés
                 </Button>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-gray-400 text-sm">
+              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" /> Terreno
                   real
@@ -194,13 +194,13 @@ export default function InvestmentWeek() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                 No es un seminario.{" "}
                 <span className="text-primary">
                   Es una experiencia en terreno
                 </span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Durante 4 días:
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -212,7 +212,7 @@ export default function InvestmentWeek() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -226,7 +226,7 @@ export default function InvestmentWeek() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                 Esta experiencia es para perfiles específicos
               </h2>
               <div className="space-y-4 mb-10">
@@ -237,12 +237,12 @@ export default function InvestmentWeek() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
-              <div className="bg-white border border-gray-200 rounded-xl p-8">
-                <p className="text-gray-700 text-lg font-serif">
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8">
+                <p className="text-white/80 text-lg font-serif">
                   No es un evento abierto.{" "}
                   <span className="text-primary font-semibold">
                     El acceso se valida previamente.
@@ -271,16 +271,16 @@ export default function InvestmentWeek() {
           <div className="max-w-5xl mx-auto space-y-8">
             {/* DÍA 1 */}
             <FadeIn>
-              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-200 rounded-2xl overflow-hidden">
+              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-500/20 rounded-2xl overflow-hidden">
                 <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-blue-50 p-8 flex flex-col justify-center border-r border-primary/10">
+                  <div className="bg-blue-500/10 p-8 flex flex-col justify-center border-r border-primary/10">
                     <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
                       Día 1
                     </p>
                     <h3 className="text-2xl font-serif text-white">
                       Bienvenida
                     </h3>
-                    <p className="text-gray-400 text-sm mt-2">
+                    <p className="text-white/50 text-sm mt-2">
                       1 de mayo, 2026
                     </p>
                   </div>
@@ -296,7 +296,7 @@ export default function InvestmentWeek() {
                       ].map((item, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-gray-500 text-sm">{item}</p>
+                          <p className="text-white/60 text-sm">{item}</p>
                         </div>
                       ))}
                     </div>
@@ -307,16 +307,16 @@ export default function InvestmentWeek() {
 
             {/* DÍA 2 */}
             <FadeIn>
-              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-200 rounded-2xl overflow-hidden">
+              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-500/20 rounded-2xl overflow-hidden">
                 <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-blue-50 p-8 flex flex-col justify-center border-r border-primary/10">
+                  <div className="bg-blue-500/10 p-8 flex flex-col justify-center border-r border-primary/10">
                     <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
                       Día 2
                     </p>
                     <h3 className="text-2xl font-serif text-white">
                       Residencial
                     </h3>
-                    <p className="text-gray-400 text-sm mt-2">
+                    <p className="text-white/50 text-sm mt-2">
                       2 de mayo, 2026
                     </p>
                   </div>
@@ -333,7 +333,7 @@ export default function InvestmentWeek() {
                       ].map((item, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-gray-500 text-sm">{item}</p>
+                          <p className="text-white/60 text-sm">{item}</p>
                         </div>
                       ))}
                     </div>
@@ -347,7 +347,7 @@ export default function InvestmentWeek() {
                       ].map((item, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <Eye className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-gray-500 text-sm">{item}</p>
+                          <p className="text-white/60 text-sm">{item}</p>
                         </div>
                       ))}
                     </div>
@@ -358,16 +358,16 @@ export default function InvestmentWeek() {
 
             {/* DÍA 3 */}
             <FadeIn>
-              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-200 rounded-2xl overflow-hidden">
+              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-500/20 rounded-2xl overflow-hidden">
                 <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-blue-50 p-8 flex flex-col justify-center border-r border-primary/10">
+                  <div className="bg-blue-500/10 p-8 flex flex-col justify-center border-r border-primary/10">
                     <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
                       Día 3
                     </p>
                     <h3 className="text-2xl font-serif text-white">
                       Mobile Home Parks
                     </h3>
-                    <p className="text-gray-400 text-sm mt-2">
+                    <p className="text-white/50 text-sm mt-2">
                       3 de mayo, 2026
                     </p>
                   </div>
@@ -384,7 +384,7 @@ export default function InvestmentWeek() {
                       ].map((item, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-gray-500 text-sm">{item}</p>
+                          <p className="text-white/60 text-sm">{item}</p>
                         </div>
                       ))}
                     </div>
@@ -399,7 +399,7 @@ export default function InvestmentWeek() {
                       ].map((item, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <Eye className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-gray-500 text-sm">{item}</p>
+                          <p className="text-white/60 text-sm">{item}</p>
                         </div>
                       ))}
                     </div>
@@ -410,19 +410,19 @@ export default function InvestmentWeek() {
 
             {/* DÍA 4 */}
             <FadeIn>
-              <div className="relative bg-[oklch(0.13_0.02_250)] border border-gray-200 rounded-2xl overflow-hidden">
+              <div className="relative bg-[oklch(0.13_0.02_250)] border border-[#1E3A5F] rounded-2xl overflow-hidden">
                 <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-white/5 p-8 flex flex-col justify-center border-r border-gray-200">
+                  <div className="bg-[#0F2847]/5 p-8 flex flex-col justify-center border-r border-[#1E3A5F]">
                     <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
                       Día 4
                     </p>
                     <h3 className="text-2xl font-serif text-white">Regreso</h3>
-                    <p className="text-gray-400 text-sm mt-2">
+                    <p className="text-white/50 text-sm mt-2">
                       4 de mayo, 2026
                     </p>
                   </div>
                   <div className="p-8 flex items-center">
-                    <p className="text-gray-500">
+                    <p className="text-white/60">
                       Salida libre desde Tampa u Orlando. Cierre de conclusiones
                       y próximos pasos individuales.
                     </p>
@@ -439,7 +439,7 @@ export default function InvestmentWeek() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                 Aquí no vienes a escuchar…
                 <br />
                 <span className="text-primary">
@@ -466,12 +466,12 @@ export default function InvestmentWeek() {
                   },
                 ].map((item, i) => (
                   <FadeIn key={i} delay={i * 0.1}>
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full hover:border-blue-200 transition-all">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/20 transition-all">
                       <CheckCircle2 className="w-6 h-6 text-primary mb-3" />
-                      <h3 className="text-lg font-serif text-[#0B1F3A] mb-2">
+                      <h3 className="text-lg font-serif text-white mb-2">
                         {item.title}
                       </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                      <p className="text-white/50 text-sm leading-relaxed">
                         {item.desc}
                       </p>
                     </div>
@@ -489,10 +489,10 @@ export default function InvestmentWeek() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <Lock className="w-10 h-10 text-primary mb-4" />
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                 El acceso es limitado y filtrado
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Para participar en esta experiencia:
               </p>
               <div className="space-y-4 mb-10">
@@ -503,12 +503,12 @@ export default function InvestmentWeek() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
-              <div className="bg-[#F5F7FA] border border-blue-200 rounded-xl p-8">
-                <p className="text-gray-700 text-lg font-serif">
+              <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-8">
+                <p className="text-white/80 text-lg font-serif">
                   No todas las personas que aplican son aceptadas.
                 </p>
               </div>
@@ -522,20 +522,20 @@ export default function InvestmentWeek() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-8">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">
                 ¿Quieres aplicar a esta experiencia?
               </h2>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Aplicar al viaje <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Hablar por WhatsApp
                 </Button>
@@ -553,7 +553,7 @@ export default function InvestmentWeek() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Logística
               </p>
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-10">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-10">
                 Información general
               </h2>
               <div className="grid sm:grid-cols-2 gap-6">
@@ -580,13 +580,13 @@ export default function InvestmentWeek() {
                   },
                 ].map((item, i) => (
                   <FadeIn key={i} delay={i * 0.05}>
-                    <div className="flex items-start gap-4 bg-[#F5F7FA] border border-gray-200 rounded-xl p-5">
+                    <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5">
                       <item.icon className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                       <div>
                         <h3 className="text-white font-semibold text-sm mb-1">
                           {item.title}
                         </h3>
-                        <p className="text-gray-400 text-sm">{item.desc}</p>
+                        <p className="text-white/50 text-sm">{item.desc}</p>
                       </div>
                     </div>
                   </FadeIn>
@@ -602,10 +602,10 @@ export default function InvestmentWeek() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                 Esta experiencia conecta directamente con oportunidades reales
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Durante el viaje analizas activos en operación, entiendes la
                 estructura del fondo y evalúas tu participación con información
                 directa y completa.
@@ -613,7 +613,7 @@ export default function InvestmentWeek() {
               <a href="/oportunidades-de-inversion-en-estados-unidos">
                 <Button
                   variant="outline"
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Ver oportunidades <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -628,24 +628,24 @@ export default function InvestmentWeek() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                 Si este tipo de experiencias hace sentido para ti, puedes
                 aplicar
               </h2>
-              <p className="text-gray-400 text-sm mb-10">
+              <p className="text-white/50 text-sm mb-10">
                 El cupo es limitado. La selección es por perfil.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Aplicar <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   WhatsApp
                 </Button>

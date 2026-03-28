@@ -76,13 +76,13 @@ export default function NewsArticle() {
         <div className="container pt-28 pb-20">
           <div className="max-w-3xl mx-auto">
             <div className="animate-pulse space-y-6">
-              <div className="h-4 bg-white/10 rounded w-32" />
-              <div className="h-10 bg-white/10 rounded w-3/4" />
-              <div className="h-64 bg-white/10 rounded" />
+              <div className="h-4 bg-[#0F2847]/10 rounded w-32" />
+              <div className="h-10 bg-[#0F2847]/10 rounded w-3/4" />
+              <div className="h-64 bg-[#0F2847]/10 rounded" />
               <div className="space-y-3">
-                <div className="h-4 bg-white/10 rounded" />
-                <div className="h-4 bg-white/10 rounded w-5/6" />
-                <div className="h-4 bg-white/10 rounded w-4/6" />
+                <div className="h-4 bg-[#0F2847]/10 rounded" />
+                <div className="h-4 bg-[#0F2847]/10 rounded w-5/6" />
+                <div className="h-4 bg-[#0F2847]/10 rounded w-4/6" />
               </div>
             </div>
           </div>
@@ -96,10 +96,10 @@ export default function NewsArticle() {
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
         <div className="container pt-28 pb-20 text-center">
-          <h1 className="text-3xl font-serif text-[#0B1F3A] mb-4">Artículo no encontrado</h1>
-          <p className="text-gray-500 mb-8">Lo sentimos, este artículo no existe o ha sido eliminado.</p>
+          <h1 className="text-3xl font-serif text-white mb-4">Artículo no encontrado</h1>
+          <p className="text-white/60 mb-8">Lo sentimos, este artículo no existe o ha sido eliminado.</p>
           <Link href="/news">
-            <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+            <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
               <ArrowLeft className="w-4 h-4" /> Volver a Noticias
             </Button>
           </Link>
@@ -120,24 +120,24 @@ export default function NewsArticle() {
         <div className="container">
           <div className="max-w-3xl mx-auto">
             {/* Back link */}
-            <Link href="/news" className="inline-flex items-center gap-2 text-gray-400 hover:text-primary transition-colors mb-6 text-sm">
+            <Link href="/news" className="inline-flex items-center gap-2 text-white/50 hover:text-primary transition-colors mb-6 text-sm">
               <ArrowLeft className="w-4 h-4" /> Volver a Noticias
             </Link>
 
             {/* Category badge */}
             <Link href={`/news?category=${article.category}`}>
-              <span className="inline-block bg-blue-100 text-primary text-xs font-semibold tracking-wider uppercase px-3 py-1 rounded-full mb-4 hover:bg-primary/30 transition-colors cursor-pointer">
+              <span className="inline-block bg-blue-500/15 text-primary text-xs font-semibold tracking-wider uppercase px-3 py-1 rounded-full mb-4 hover:bg-primary/30 transition-colors cursor-pointer">
                 {CATEGORY_LABELS[article.category] || article.category}
               </span>
             </Link>
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#0B1F3A] leading-tight mb-6">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white leading-tight mb-6">
               {article.title}
             </h1>
 
             {/* Meta info */}
-            <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm mb-8">
+            <div className="flex flex-wrap items-center gap-4 text-white/50 text-sm mb-8">
               <div className="flex items-center gap-2">
                 <User className="w-4 h-4" />
                 <span>{article.author || "Equipo Comprando América"}</span>
@@ -154,7 +154,7 @@ export default function NewsArticle() {
 
             {/* Description */}
             {article.description && (
-              <p className="text-lg text-gray-500 leading-relaxed border-l-4 border-primary pl-4 mb-8">
+              <p className="text-lg text-white/60 leading-relaxed border-l-4 border-primary pl-4 mb-8">
                 {article.description}
               </p>
             )}
@@ -181,25 +181,25 @@ export default function NewsArticle() {
           <div className="max-w-3xl mx-auto">
             <article className="prose prose-invert prose-lg max-w-none
               prose-headings:font-serif prose-headings:text-white
-              prose-p:text-gray-700 prose-p:leading-relaxed
+              prose-p:text-white/80 prose-p:leading-relaxed
               prose-a:text-primary prose-a:no-underline hover:prose-a:underline
               prose-strong:text-white
-              prose-blockquote:border-primary prose-blockquote:text-gray-500
-              prose-li:text-gray-700
+              prose-blockquote:border-primary prose-blockquote:text-white/60
+              prose-li:text-white/80
             ">
               {article.body ? (
                 <Streamdown>{article.body}</Streamdown>
               ) : article.content ? (
                 <Streamdown>{article.content}</Streamdown>
               ) : (
-                <p className="text-gray-500">Contenido no disponible.</p>
+                <p className="text-white/60">Contenido no disponible.</p>
               )}
             </article>
 
             {/* Source reference */}
             {article.source && article.url && (
-              <div className="mt-10 pt-6 border-t border-gray-200">
-                <p className="text-gray-400 text-sm">
+              <div className="mt-10 pt-6 border-t border-[#1E3A5F]">
+                <p className="text-white/50 text-sm">
                   Fuente original:{" "}
                   <a
                     href={article.url}
@@ -214,22 +214,22 @@ export default function NewsArticle() {
             )}
 
             {/* CTA Section */}
-            <div className="mt-12 bg-gradient-to-r from-primary/10 to-gold/10 border border-blue-200 rounded-2xl p-8 md:p-10">
+            <div className="mt-12 bg-gradient-to-r from-primary/10 to-gold/10 border border-blue-500/20 rounded-2xl p-8 md:p-10">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-blue-100 text-primary flex items-center justify-center shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-blue-500/15 text-primary flex items-center justify-center shrink-0">
                   {cta.icon}
                 </div>
                 <div>
-                  <h3 className="text-xl md:text-2xl font-serif text-[#0B1F3A] mb-3">{cta.title}</h3>
-                  <p className="text-gray-500 leading-relaxed mb-6">{cta.description}</p>
+                  <h3 className="text-xl md:text-2xl font-serif text-white mb-3">{cta.title}</h3>
+                  <p className="text-white/60 leading-relaxed mb-6">{cta.description}</p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Link href={cta.link}>
-                      <Button className="bg-primary hover:bg-blue-700 text-white font-semibold px-6 py-5 text-base gap-2">
+                      <Button className="bg-primary hover:bg-primary/90 text-white font-semibold px-6 py-5 text-base gap-2">
                         {cta.buttonText} <ArrowRight className="w-4 h-4" />
                       </Button>
                     </Link>
                     <a href="https://wa.me/14696134741?text=Hola%2C%20me%20interesa%20obtener%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className="border-gray-300 text-white hover:bg-gray-50 px-6 py-5 text-base">
+                      <Button variant="outline" className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-6 py-5 text-base">
                         Solicitar Información
                       </Button>
                     </a>
@@ -246,11 +246,11 @@ export default function NewsArticle() {
         <section className="py-16 section-darker">
           <div className="container">
             <div className="max-w-5xl mx-auto">
-              <h2 className="text-2xl font-serif text-[#0B1F3A] mb-8">Artículos Relacionados</h2>
+              <h2 className="text-2xl font-serif text-white mb-8">Artículos Relacionados</h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {filteredRelated.map((related) => (
                   <Link key={related.id} href={`/news/${related.slug}`}>
-                    <div className="group bg-[#F5F7FA] border border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all duration-300 cursor-pointer h-full">
+                    <div className="group bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all duration-300 cursor-pointer h-full">
                       {related.imageUrl && (
                         <img
                           src={related.imageUrl}
@@ -262,10 +262,10 @@ export default function NewsArticle() {
                         <span className="text-primary text-xs font-semibold tracking-wider uppercase">
                           {CATEGORY_LABELS[related.category] || related.category}
                         </span>
-                        <h3 className="text-[#0B1F3A] text-lg mt-2 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                        <h3 className="text-white text-lg mt-2 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                           {related.title}
                         </h3>
-                        <p className="text-gray-400 text-sm line-clamp-2">{related.description}</p>
+                        <p className="text-white/50 text-sm line-clamp-2">{related.description}</p>
                       </div>
                     </div>
                   </Link>

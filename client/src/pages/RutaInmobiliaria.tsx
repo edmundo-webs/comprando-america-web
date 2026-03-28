@@ -155,35 +155,35 @@ export default function RutaInmobiliaria() {
       <div className="max-w-2xl mx-auto text-center py-20">
         {/* warm illustration */}
         <div className="relative w-24 h-24 mx-auto mb-10">
-          <div className="absolute inset-0 rounded-full bg-blue-50 animate-pulse" />
+          <div className="absolute inset-0 rounded-full bg-blue-500/10 animate-pulse" />
           <div className="relative w-full h-full rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
             <span className="text-4xl">🌱</span>
           </div>
         </div>
 
-        <h2 className="text-2xl md:text-3xl font-serif text-[#0B1F3A] mb-4">
+        <h2 className="text-2xl md:text-3xl font-serif text-white mb-4">
           Todos empezamos en algún punto
         </h2>
 
-        <p className="text-gray-500 text-lg leading-relaxed mb-4 max-w-lg mx-auto">
+        <p className="text-white/60 text-lg leading-relaxed mb-4 max-w-lg mx-auto">
           Este evento está diseñado para quienes ya cuentan con capital
           disponible para invertir. Pero eso no significa que no haya un
           camino para ti.
         </p>
 
-        <p className="text-gray-500 leading-relaxed mb-10 max-w-lg mx-auto">
+        <p className="text-white/60 leading-relaxed mb-10 max-w-lg mx-auto">
           Hemos preparado contenido gratuito para que comiences a entender
           cómo funciona la inversión inmobiliaria en Estados Unidos, a tu
           ritmo y sin presión.
         </p>
 
         <a href={PODCAST_URL}>
-          <Button className="bg-primary hover:bg-blue-700 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+          <Button className="bg-primary hover:bg-primary/90 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
             Escuchar el podcast <ArrowRight className="w-4 h-4" />
           </Button>
         </a>
 
-        <p className="text-gray-400 text-sm mt-8">
+        <p className="text-white/50 text-sm mt-8">
           Cuando estés listo, aquí estaremos.
         </p>
       </div>
@@ -235,13 +235,13 @@ export default function RutaInmobiliaria() {
                 Sala Privada · Presencial · Cupo Limitado
               </span>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
                 Accede a oportunidades reales de inversión en{" "}
                 <span className="gradient-text-primary">Estados Unidos</span>{" "}
                 en una sala privada de empresarios
               </h1>
 
-              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-10 max-w-2xl">
+              <p className="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-2xl">
                 Participa en la Ruta Inmobiliaria y conoce cómo empresarios
                 están invirtiendo con estructura, estrategia y acompañamiento.
               </p>
@@ -255,7 +255,7 @@ export default function RutaInmobiliaria() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.4 }}
-                    className="bg-white/5 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 max-w-xl"
+                    className="bg-[#0F2847]/5 backdrop-blur-sm border border-[#1E3A5F] rounded-2xl p-8 max-w-xl"
                   >
                     <p className="text-white font-semibold text-lg mb-6">
                       ¿Tienes $100,000 USD o más disponibles para invertir en
@@ -264,14 +264,14 @@ export default function RutaInmobiliaria() {
                     <div className="flex flex-col sm:flex-row gap-4">
                       <Button
                         onClick={() => setQualified(true)}
-                        className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-5 text-base flex-1"
+                        className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-5 text-base flex-1"
                       >
                         Sí, estoy listo
                       </Button>
                       <Button
                         onClick={() => setQualified(false)}
                         variant="outline"
-                        className="border-gray-300 text-white hover:bg-gray-50 px-8 py-5 text-base flex-1"
+                        className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-5 text-base flex-1"
                       >
                         Aún no
                       </Button>
@@ -293,7 +293,7 @@ export default function RutaInmobiliaria() {
                       rel="noopener noreferrer"
                       onClick={() => trackEvent("InitiateCheckout")}
                     >
-                      <Button className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
+                      <Button className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto">
                         Acceder a la sala privada{" "}
                         <ArrowRight className="w-4 h-4" />
                       </Button>
@@ -313,7 +313,7 @@ export default function RutaInmobiliaria() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-3xl mx-auto text-center">
-                  <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-10">
+                  <h2 className="text-3xl md:text-4xl font-serif text-white mb-10">
                     Antes de invertir en Estados Unidos, necesitas ver esto
                   </h2>
 
@@ -330,19 +330,19 @@ export default function RutaInmobiliaria() {
                   <div className="grid sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
                     <div className="flex items-center gap-3 justify-center">
                       <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                      <span className="text-gray-500 text-sm">
+                      <span className="text-white/60 text-sm">
                         No estás obligado a invertir
                       </span>
                     </div>
                     <div className="flex items-center gap-3 justify-center">
                       <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                      <span className="text-gray-500 text-sm">
+                      <span className="text-white/60 text-sm">
                         Acceso a oportunidades reales
                       </span>
                     </div>
                     <div className="flex items-center gap-3 justify-center">
                       <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                      <span className="text-gray-500 text-sm">
+                      <span className="text-white/60 text-sm">
                         Evento presencial con empresarios
                       </span>
                     </div>
@@ -357,16 +357,16 @@ export default function RutaInmobiliaria() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-3xl mx-auto">
-                  <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-8">
+                  <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">
                     No es un evento.{" "}
                     <span className="gradient-text-primary">
                       Es una sala privada de decisiones.
                     </span>
                   </h2>
-                  <p className="text-gray-500 text-lg leading-relaxed mb-8">
+                  <p className="text-white/60 text-lg leading-relaxed mb-8">
                     Aquí no vienes a escuchar teoría.
                   </p>
-                  <p className="text-gray-700 text-lg leading-relaxed">
+                  <p className="text-white/80 text-lg leading-relaxed">
                     Vienes a:
                   </p>
                   <ul className="mt-6 space-y-4">
@@ -377,7 +377,7 @@ export default function RutaInmobiliaria() {
                     ].map((item, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-4 text-gray-500 text-lg"
+                        className="flex items-start gap-4 text-white/60 text-lg"
                       >
                         <span className="text-primary mt-1">
                           <CheckCircle2 className="w-5 h-5" />
@@ -395,7 +395,7 @@ export default function RutaInmobiliaria() {
           <section className="section-darker py-24 md:py-32">
             <div className="container">
               <FadeIn>
-                <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-12 text-center">
+                <h2 className="text-3xl md:text-4xl font-serif text-white mb-12 text-center">
                   Lo que sucede dentro de la sala
                 </h2>
                 <div className="grid sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -418,11 +418,11 @@ export default function RutaInmobiliaria() {
                     },
                   ].map((item, i) => (
                     <FadeIn key={i} delay={i * 0.1}>
-                      <div className="flex items-start gap-4 bg-[#F5F7FA] border border-gray-200 rounded-xl p-6">
-                        <div className="w-10 h-10 rounded-lg bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                      <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6">
+                        <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center shrink-0">
                           <item.icon className="w-5 h-5" />
                         </div>
-                        <p className="text-gray-700 text-lg">{item.text}</p>
+                        <p className="text-white/80 text-lg">{item.text}</p>
                       </div>
                     </FadeIn>
                   ))}
@@ -435,20 +435,20 @@ export default function RutaInmobiliaria() {
           <section className="section-dark py-24 md:py-32">
             <div className="container">
               <FadeIn>
-                <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4 text-center">
+                <h2 className="text-3xl md:text-4xl font-serif text-white mb-4 text-center">
                   Si tienes dudas, es completamente normal
                 </h2>
                 <div className="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto mt-12">
                   {objections.map((obj, i) => (
                     <FadeIn key={i} delay={i * 0.1}>
-                      <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-8 text-center">
-                        <div className="w-12 h-12 rounded-full bg-blue-50 text-primary flex items-center justify-center mx-auto mb-5">
+                      <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8 text-center">
+                        <div className="w-12 h-12 rounded-full bg-blue-500/10 text-primary flex items-center justify-center mx-auto mb-5">
                           <obj.icon className="w-6 h-6" />
                         </div>
                         <h3 className="text-white font-semibold mb-3">
                           {obj.q}
                         </h3>
-                        <p className="text-gray-500">{obj.a}</p>
+                        <p className="text-white/60">{obj.a}</p>
                       </div>
                     </FadeIn>
                   ))}
@@ -463,7 +463,7 @@ export default function RutaInmobiliaria() {
               <FadeIn>
                 <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
                   {/* Foto – placeholder hasta que suba imagen */}
-                  <div className="relative rounded-2xl overflow-hidden bg-[#F5F7FA] min-h-[400px]">
+                  <div className="relative rounded-2xl overflow-hidden bg-[#132D50] min-h-[400px]">
                     <img
                       src="https://res.cloudinary.com/dofccqypz/image/upload/v1774380282/comprando-america/edmundo-trevino-professional.jpg"
                       alt="Edmundo Treviño"
@@ -473,7 +473,7 @@ export default function RutaInmobiliaria() {
                   </div>
 
                   <div>
-                    <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
+                    <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
                       Aprende de quien ya se equivocó para que tú no tengas que
                       hacerlo
                     </h2>
@@ -486,7 +486,7 @@ export default function RutaInmobiliaria() {
                       ].map((item, i) => (
                         <div key={i} className="flex items-start gap-4">
                           <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                          <p className="text-gray-500 text-lg">{item}</p>
+                          <p className="text-white/60 text-lg">{item}</p>
                         </div>
                       ))}
                     </div>
@@ -501,11 +501,11 @@ export default function RutaInmobiliaria() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-3xl mx-auto text-center">
-                  <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-8">
+                  <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">
                     Un espacio pensado para quienes ya están en etapa de
                     decisión
                   </h2>
-                  <p className="text-gray-500 text-lg leading-relaxed mb-10">
+                  <p className="text-white/60 text-lg leading-relaxed mb-10">
                     La Ruta Inmobiliaria está diseñada para un grupo reducido de
                     personas que buscan claridad, contexto y acceso a
                     oportunidades reales.
@@ -519,20 +519,20 @@ export default function RutaInmobiliaria() {
                     ].map((item, i) => (
                       <div
                         key={i}
-                        className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6"
+                        className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6"
                       >
                         <CheckCircle2 className="w-6 h-6 text-primary mx-auto mb-3" />
-                        <p className="text-gray-700">{item}</p>
+                        <p className="text-white/80">{item}</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-200 rounded-2xl p-8 inline-block">
+                  <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-500/20 rounded-2xl p-8 inline-block">
                     <Users className="w-8 h-8 text-primary mx-auto mb-4" />
                     <p className="text-white text-lg font-semibold">
                       La sala está limitada a 25 asistentes
                     </p>
-                    <p className="text-gray-500 text-sm mt-2">
+                    <p className="text-white/60 text-sm mt-2">
                       Para cuidar la calidad de la experiencia y el nivel de
                       conversación.
                     </p>
@@ -549,24 +549,24 @@ export default function RutaInmobiliaria() {
                 <div className="max-w-4xl mx-auto">
                   {/* datos principales */}
                   <div className="grid sm:grid-cols-3 gap-8 mb-12 text-center">
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-8">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8">
                       <Calendar className="w-8 h-8 text-primary mx-auto mb-4" />
-                      <p className="text-gray-400 text-sm mb-1">Fecha</p>
-                      <p className="text-[#0B1F3A] text-2xl">
+                      <p className="text-white/50 text-sm mb-1">Fecha</p>
+                      <p className="text-white text-2xl">
                         18 de abril
                       </p>
                     </div>
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-8">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8">
                       <MapPin className="w-8 h-8 text-primary mx-auto mb-4" />
-                      <p className="text-gray-400 text-sm mb-1">Ciudad</p>
-                      <p className="text-[#0B1F3A] text-2xl">
+                      <p className="text-white/50 text-sm mb-1">Ciudad</p>
+                      <p className="text-white text-2xl">
                         San Pedro, Nuevo León
                       </p>
                     </div>
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-8">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8">
                       <Clock className="w-8 h-8 text-primary mx-auto mb-4" />
-                      <p className="text-gray-400 text-sm mb-1">Horario</p>
-                      <p className="text-[#0B1F3A] text-2xl">
+                      <p className="text-white/50 text-sm mb-1">Horario</p>
+                      <p className="text-white text-2xl">
                         9:00 am – 6:00 pm
                       </p>
                     </div>
@@ -576,13 +576,13 @@ export default function RutaInmobiliaria() {
                   <Accordion type="single" collapsible>
                     <AccordionItem
                       value="programa"
-                      className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-6 data-[state=open]:border-blue-300"
+                      className="bg-[#132D50] border border-[#1E3A5F] rounded-xl px-6 data-[state=open]:border-blue-500/30"
                     >
                       <AccordionTrigger className="text-white hover:text-primary transition-colors py-6 text-lg font-semibold">
                         Ver programa
                       </AccordionTrigger>
                       <AccordionContent className="pb-8">
-                        <p className="text-gray-500 mb-8">
+                        <p className="text-white/60 mb-8">
                           <strong className="text-white">
                             Agenda Orientada a Decisiones
                           </strong>{" "}
@@ -593,22 +593,22 @@ export default function RutaInmobiliaria() {
                         <div className="grid md:grid-cols-2 gap-8">
                           {/* Mañana */}
                           <div>
-                            <h4 className="text-[#0B1F3A] text-xl mb-2 flex items-center gap-2">
+                            <h4 className="text-white text-xl mb-2 flex items-center gap-2">
                               <span className="text-2xl">🕘</span> Mañana
                             </h4>
-                            <p className="text-gray-400 text-sm mb-6 font-semibold">
+                            <p className="text-white/50 text-sm mb-6 font-semibold">
                               Claridad y Estructura (Educación Estratégica)
                             </p>
                             <ul className="space-y-5">
                               {agendaMorning.map((item, i) => (
                                 <li
                                   key={i}
-                                  className="border-l-2 border-blue-300 pl-4"
+                                  className="border-l-2 border-blue-500/30 pl-4"
                                 >
                                   <p className="text-white font-semibold mb-1">
                                     {item.title}
                                   </p>
-                                  <p className="text-gray-500 text-sm">
+                                  <p className="text-white/60 text-sm">
                                     {item.desc}
                                   </p>
                                 </li>
@@ -618,22 +618,22 @@ export default function RutaInmobiliaria() {
 
                           {/* Tarde */}
                           <div>
-                            <h4 className="text-[#0B1F3A] text-xl mb-2 flex items-center gap-2">
+                            <h4 className="text-white text-xl mb-2 flex items-center gap-2">
                               <span className="text-2xl">🕓</span> Tarde
                             </h4>
-                            <p className="text-gray-400 text-sm mb-6 font-semibold">
+                            <p className="text-white/50 text-sm mb-6 font-semibold">
                               Oportunidades y Decisiones (Presentación Real)
                             </p>
                             <ul className="space-y-5">
                               {agendaAfternoon.map((item, i) => (
                                 <li
                                   key={i}
-                                  className="border-l-2 border-blue-300 pl-4"
+                                  className="border-l-2 border-blue-500/30 pl-4"
                                 >
                                   <p className="text-white font-semibold mb-1">
                                     {item.title}
                                   </p>
-                                  <p className="text-gray-500 text-sm">
+                                  <p className="text-white/60 text-sm">
                                     {item.desc}
                                   </p>
                                 </li>
@@ -654,7 +654,7 @@ export default function RutaInmobiliaria() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-2xl mx-auto text-center">
-                  <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-8">
+                  <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">
                     Accede a la sala privada
                   </h2>
 
@@ -664,13 +664,13 @@ export default function RutaInmobiliaria() {
                     rel="noopener noreferrer"
                     onClick={() => trackEvent("InitiateCheckout")}
                   >
-                    <Button className="bg-primary hover:bg-blue-700 text-white font-semibold px-10 py-6 text-lg gap-2">
+                    <Button className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-6 text-lg gap-2">
                       Confirmar asistencia{" "}
                       <ArrowRight className="w-5 h-5" />
                     </Button>
                   </a>
 
-                  <div className="flex flex-wrap justify-center gap-6 mt-8 text-gray-400 text-sm">
+                  <div className="flex flex-wrap justify-center gap-6 mt-8 text-white/50 text-sm">
                     <span className="flex items-center gap-2">
                       <Users className="w-4 h-4" /> Cupo limitado
                     </span>
@@ -692,7 +692,7 @@ export default function RutaInmobiliaria() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-3xl mx-auto text-center">
-                  <p className="text-gray-500 text-lg leading-relaxed">
+                  <p className="text-white/60 text-lg leading-relaxed">
                     Los espacios son limitados y se asignan a perfiles que
                     cumplen con el criterio de inversión.
                   </p>
@@ -706,7 +706,7 @@ export default function RutaInmobiliaria() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-2xl mx-auto text-center">
-                  <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-10">
+                  <h2 className="text-3xl md:text-4xl font-serif text-white mb-10">
                     Nos vemos dentro de la sala
                   </h2>
                   <a
@@ -715,7 +715,7 @@ export default function RutaInmobiliaria() {
                     rel="noopener noreferrer"
                     onClick={() => trackEvent("InitiateCheckout")}
                   >
-                    <Button className="bg-primary hover:bg-blue-700 text-white font-semibold px-10 py-6 text-lg gap-2">
+                    <Button className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-6 text-lg gap-2">
                       Confirmar asistencia{" "}
                       <ArrowRight className="w-5 h-5" />
                     </Button>

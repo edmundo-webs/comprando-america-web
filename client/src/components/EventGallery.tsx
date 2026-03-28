@@ -56,7 +56,7 @@ export default function EventGallery() {
   return (
     <div>
       {/* Main image */}
-      <div className="relative aspect-video rounded-2xl overflow-hidden border border-blue-200 shadow-2xl shadow-primary/10 bg-black">
+      <div className="relative aspect-video rounded-2xl overflow-hidden border border-blue-500/20 shadow-2xl shadow-primary/10 bg-black">
         <AnimatePresence mode="wait">
           <motion.img
             key={current}
@@ -109,7 +109,7 @@ export default function EventGallery() {
             className={`flex-shrink-0 w-20 h-14 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
               i === current
                 ? "border-primary opacity-100 ring-2 ring-primary/30"
-                : "border-gray-200 opacity-40 hover:opacity-75"
+                : "border-[#1E3A5F] opacity-40 hover:opacity-75"
             }`}
           >
             <img
@@ -123,7 +123,7 @@ export default function EventGallery() {
       </div>
 
       {/* Counter */}
-      <p className="text-gray-400 text-xs text-center mt-3">
+      <p className="text-white/50 text-xs text-center mt-3">
         {current + 1} / {photos.length}
       </p>
     </div>

@@ -98,7 +98,7 @@ export default function EstructuraEmpresarial() {
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F5F7FA] via-white to-[#EFF6FF]" />
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="container relative z-10">
           <FadeIn>
@@ -106,14 +106,14 @@ export default function EstructuraEmpresarial() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Estructura Empresarial
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#0B1F3A] leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                 No se trata solo de abrir una empresa en Estados Unidos.
                 <br />
                 <span className="text-primary">
                   Se trata de estructurarla correctamente desde el inicio.
                 </span>
               </h1>
-              <p className="text-gray-500 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
+              <p className="text-white/60 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
                 Te ayudamos a construir la base legal y estratégica para operar
                 o invertir en Estados Unidos, comenzando con la estructura
                 adecuada.
@@ -122,20 +122,20 @@ export default function EstructuraEmpresarial() {
               <div className="flex flex-wrap gap-4 mb-10">
                 <Button
                   onClick={() => handleCheckout("texas")}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Crear mi LLC <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Hablar con un asesor
                 </Button>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-gray-400 text-sm">
+              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" /> Estructura
                   correcta desde el inicio
@@ -159,13 +159,13 @@ export default function EstructuraEmpresarial() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Muchos empresarios abren una LLC…{" "}
                 <span className="text-primary">
                   sin entender realmente cómo deben estructurarse
                 </span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Abrir una empresa en Estados Unidos puede parecer sencillo. Pero
                 hacerlo sin estrategia puede generar:
               </p>
@@ -178,12 +178,12 @@ export default function EstructuraEmpresarial() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
-              <div className="bg-white border border-gray-200 rounded-xl p-8">
-                <p className="text-gray-700 text-lg font-serif">
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8">
+                <p className="text-white/80 text-lg font-serif">
                   Por eso, antes de abrir una LLC, es importante{" "}
                   <span className="text-primary font-semibold">
                     entender la estructura completa.
@@ -200,10 +200,10 @@ export default function EstructuraEmpresarial() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 La LLC es solo una parte de la estructura
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-10">
+              <p className="text-white/60 text-lg leading-relaxed mb-10">
                 Una empresa en Estados Unidos no se trata solo de un registro
                 legal. Implica:
               </p>
@@ -231,12 +231,12 @@ export default function EstructuraEmpresarial() {
                   },
                 ].map((item, i) => (
                   <FadeIn key={i} delay={i * 0.1}>
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full hover:border-blue-200 transition-all">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/20 transition-all">
                       <item.icon className="w-8 h-8 text-primary mb-4" />
-                      <h3 className="text-lg text-[#0B1F3A] mb-2">
+                      <h3 className="text-lg text-white mb-2">
                         {item.title}
                       </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                      <p className="text-white/50 text-sm leading-relaxed">
                         {item.desc}
                       </p>
                     </div>
@@ -254,10 +254,10 @@ export default function EstructuraEmpresarial() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <Building2 className="w-10 h-10 text-primary mb-4" />
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 El primer paso: crear tu empresa en Estados Unidos
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 La LLC (Limited Liability Company) es una de las estructuras más
                 utilizadas por empresarios internacionales. Permite operar,
                 facturar y estructurar actividades en Estados Unidos con
@@ -265,7 +265,7 @@ export default function EstructuraEmpresarial() {
               </p>
               <Button
                 onClick={() => handleCheckout("texas")}
-                className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
               >
                 Crear mi LLC <ArrowRight className="w-4 h-4" />
               </Button>
@@ -279,7 +279,7 @@ export default function EstructuraEmpresarial() {
         <div className="container">
           <FadeIn>
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
                 Elegir el estado correcto cambia completamente la estructura
               </h2>
             </div>
@@ -287,7 +287,7 @@ export default function EstructuraEmpresarial() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
-              <div className="bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-200 rounded-2xl p-8 h-full">
+              <div className="bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/20 rounded-2xl p-8 h-full">
                 <div className="flex items-center gap-3 mb-6">
                   <span className="text-3xl">🤠</span>
                   <h3 className="text-2xl font-serif text-white">Texas</h3>
@@ -301,13 +301,13 @@ export default function EstructuraEmpresarial() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-500 text-sm">{item}</p>
+                      <p className="text-white/60 text-sm">{item}</p>
                     </div>
                   ))}
                 </div>
                 <Button
                   onClick={() => handleCheckout("texas")}
-                  className="bg-primary hover:bg-blue-700 text-white gap-2 w-full"
+                  className="bg-primary hover:bg-primary/90 text-white gap-2 w-full"
                 >
                   Crear mi LLC en Texas <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -315,7 +315,7 @@ export default function EstructuraEmpresarial() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-200 rounded-2xl p-8 h-full">
+              <div className="bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/20 rounded-2xl p-8 h-full">
                 <div className="flex items-center gap-3 mb-6">
                   <span className="text-3xl">🌴</span>
                   <h3 className="text-2xl font-serif text-white">Florida</h3>
@@ -329,13 +329,13 @@ export default function EstructuraEmpresarial() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-500 text-sm">{item}</p>
+                      <p className="text-white/60 text-sm">{item}</p>
                     </div>
                   ))}
                 </div>
                 <Button
                   onClick={() => handleCheckout("florida")}
-                  className="bg-primary hover:bg-blue-700 text-white gap-2 w-full"
+                  className="bg-primary hover:bg-primary/90 text-white gap-2 w-full"
                 >
                   Crear mi LLC en Florida <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -350,14 +350,14 @@ export default function EstructuraEmpresarial() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Abrir la empresa es solo el inicio.
                 <br />
                 <span className="text-primary">
                   Lo importante es cómo la usas.
                 </span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Dependiendo de tu objetivo, la estructura cambia:
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -384,13 +384,13 @@ export default function EstructuraEmpresarial() {
                   },
                 ].map((item, i) => (
                   <FadeIn key={i} delay={i * 0.05}>
-                    <div className="flex items-start gap-4 bg-[#F5F7FA] border border-gray-200 rounded-xl p-5 hover:border-blue-200 transition-all">
+                    <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5 hover:border-blue-500/20 transition-all">
                       <item.icon className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
                       <div>
                         <h3 className="text-white font-semibold text-sm mb-1">
                           {item.title}
                         </h3>
-                        <p className="text-gray-400 text-sm">{item.desc}</p>
+                        <p className="text-white/50 text-sm">{item.desc}</p>
                       </div>
                     </div>
                   </FadeIn>
@@ -407,7 +407,7 @@ export default function EstructuraEmpresarial() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <FileCheck className="w-10 h-10 text-primary mb-4" />
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-8">
+              <h2 className="text-3xl md:text-4xl text-white mb-8">
                 La base para que tu empresa funcione correctamente
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -419,7 +419,7 @@ export default function EstructuraEmpresarial() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
@@ -434,10 +434,10 @@ export default function EstructuraEmpresarial() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <Scale className="w-10 h-10 text-primary mb-4" />
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 En algunos casos, una LLC no es suficiente
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Dependiendo de tu situación, puede ser necesario:
               </p>
               <div className="space-y-3 mb-8">
@@ -448,23 +448,23 @@ export default function EstructuraEmpresarial() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
-              <p className="text-gray-400 italic mb-8">
+              <p className="text-white/50 italic mb-8">
                 Aquí es donde muchos empresarios cometen errores.
               </p>
               <div className="flex flex-wrap gap-4">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+                  <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] gap-2"
                 >
                   Hablar con un asesor
                 </Button>
@@ -482,7 +482,7 @@ export default function EstructuraEmpresarial() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Servicio
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-10">
+              <h2 className="text-3xl md:text-4xl text-white mb-10">
                 Nuestro servicio de estructura empresarial incluye
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -497,7 +497,7 @@ export default function EstructuraEmpresarial() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -514,30 +514,30 @@ export default function EstructuraEmpresarial() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Inversión
               </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
                 Costo del servicio
               </h2>
-              <div className="inline-block bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-300 rounded-2xl p-10 mb-10">
+              <div className="inline-block bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/30 rounded-2xl p-10 mb-10">
                 <p className="text-5xl md:text-6xl font-serif text-white font-bold mb-2">
                   $1,499{" "}
-                  <span className="text-gray-400 text-2xl font-normal">
+                  <span className="text-white/50 text-2xl font-normal">
                     USD
                   </span>
                 </p>
-                <p className="text-gray-400 text-sm">
+                <p className="text-white/50 text-sm">
                   Pago único · Estructura completa
                 </p>
               </div>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
                   onClick={() => handleCheckout("texas")}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Crear mi LLC en Texas <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   onClick={() => handleCheckout("florida")}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Crear mi LLC en Florida <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -576,15 +576,15 @@ export default function EstructuraEmpresarial() {
               },
             ].map((t, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full">
-                  <p className="text-gray-500 text-sm leading-relaxed mb-6 italic">
+                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full">
+                  <p className="text-white/60 text-sm leading-relaxed mb-6 italic">
                     "{t.text}"
                   </p>
                   <div>
                     <p className="text-white font-semibold text-sm">
                       {t.name}
                     </p>
-                    <p className="text-gray-400 text-xs">{t.from}</p>
+                    <p className="text-white/50 text-xs">{t.from}</p>
                   </div>
                 </div>
               </FadeIn>
@@ -627,12 +627,12 @@ export default function EstructuraEmpresarial() {
                   <AccordionItem
                     key={i}
                     value={`faq-${i}`}
-                    className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-6"
+                    className="bg-[#132D50] border border-[#1E3A5F] rounded-xl px-6"
                   >
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5">
                       {faq.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-500 leading-relaxed pb-5">
+                    <AccordionContent className="text-white/60 leading-relaxed pb-5">
                       {faq.a}
                     </AccordionContent>
                   </AccordionItem>
@@ -648,23 +648,23 @@ export default function EstructuraEmpresarial() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Empieza a estructurar tu empresa correctamente
               </h2>
-              <p className="text-gray-500 text-lg mb-10">
+              <p className="text-white/60 text-lg mb-10">
                 Evita errores y construye una base sólida desde el inicio.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
                   onClick={() => handleCheckout("texas")}
-                  className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
+                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
                 >
                   Crear mi LLC <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Hablar con un asesor
                 </Button>
@@ -686,10 +686,10 @@ export default function EstructuraEmpresarial() {
       </a>
 
       {/* ═══ STICKY CTA MOBILE ═══ */}
-      <div className="fixed bottom-0 left-0 right-0 md:hidden bg-background border-t border-gray-200 p-4 z-40">
+      <div className="fixed bottom-0 left-0 right-0 md:hidden bg-background border-t border-[#1E3A5F] p-4 z-40">
         <button
           onClick={() => handleCheckout("texas")}
-          className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-all"
+          className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-lg transition-all"
         >
           Crear mi LLC — $1,499 USD
         </button>

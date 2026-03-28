@@ -81,7 +81,7 @@ export default function VisaE2() {
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#F5F7FA] via-white to-[#EFF6FF]" />
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-50 blur-3xl" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="container relative z-10">
           <FadeIn>
@@ -89,7 +89,7 @@ export default function VisaE2() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Visa E-2 · Inversión
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-[#0B1F3A] leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                 La visa E-2 no se obtiene aplicando…
                 <br />
                 <span className="text-primary">
@@ -97,27 +97,27 @@ export default function VisaE2() {
                   Unidos
                 </span>
               </h1>
-              <p className="text-gray-500 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
+              <p className="text-white/60 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
                 Entiende cómo funciona realmente la visa E-2 y cómo se conecta
                 con inversión, empresa y estrategia.
               </p>
 
               <div className="flex flex-wrap gap-4 mb-10">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Hablar con un asesor
                 </Button>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-gray-400 text-sm">
+              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
                 <span className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-primary" /> Información
                   clara
@@ -141,10 +141,10 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Muchos creen que la visa E-2 es un trámite migratorio
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Y ese es el primer error. La visa E-2 no se trata de llenar
                 formularios. Se trata de:
               </p>
@@ -156,12 +156,12 @@ export default function VisaE2() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
-              <div className="bg-white border border-blue-200 rounded-xl p-8">
-                <p className="text-gray-700 text-lg font-serif">
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-xl p-8">
+                <p className="text-white/80 text-lg font-serif">
                   La visa es{" "}
                   <span className="text-primary font-semibold">
                     consecuencia
@@ -179,10 +179,10 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 La visa E-2 es una visa basada en inversión
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Permite a empresarios operar un negocio en Estados Unidos
                 siempre que exista:
               </p>
@@ -205,12 +205,12 @@ export default function VisaE2() {
                   },
                 ].map((item, i) => (
                   <FadeIn key={i} delay={i * 0.1}>
-                    <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 text-center h-full hover:border-blue-200 transition-all">
+                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/20 transition-all">
                       <item.icon className="w-8 h-8 text-primary mx-auto mb-4" />
-                      <h3 className="text-[#0B1F3A] text-lg mb-2">
+                      <h3 className="text-white text-lg mb-2">
                         {item.title}
                       </h3>
-                      <p className="text-gray-400 text-sm">{item.desc}</p>
+                      <p className="text-white/50 text-sm">{item.desc}</p>
                     </div>
                   </FadeIn>
                 ))}
@@ -225,7 +225,7 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-8">
+              <h2 className="text-3xl md:text-4xl text-white mb-8">
                 Lo que la visa E-2{" "}
                 <span className="text-red-400">NO</span> es
               </h2>
@@ -238,7 +238,7 @@ export default function VisaE2() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
@@ -287,15 +287,15 @@ export default function VisaE2() {
                 },
               ].map((item, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
-                  <div className="relative bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 text-center h-full hover:border-blue-200 transition-all">
+                  <div className="relative bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/20 transition-all">
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">
                       {item.step}
                     </div>
                     <item.icon className="w-8 h-8 text-primary mx-auto mb-3 mt-4" />
-                    <h3 className="text-[#0B1F3A] text-base mb-2">
+                    <h3 className="text-white text-base mb-2">
                       {item.title}
                     </h3>
-                    <p className="text-gray-400 text-sm">{item.desc}</p>
+                    <p className="text-white/50 text-sm">{item.desc}</p>
                   </div>
                 </FadeIn>
               ))}
@@ -310,7 +310,7 @@ export default function VisaE2() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <AlertTriangle className="w-10 h-10 text-amber-400 mb-4" />
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-8">
+              <h2 className="text-3xl md:text-4xl text-white mb-8">
                 Por qué muchas personas fallan en el proceso
               </h2>
               <div className="space-y-4">
@@ -322,7 +322,7 @@ export default function VisaE2() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <XCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500 text-lg">{item}</p>
+                    <p className="text-white/60 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
@@ -337,11 +337,11 @@ export default function VisaE2() {
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
               <Target className="w-10 h-10 text-primary mx-auto mb-4" />
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 El enfoque no es la visa…{" "}
                 <span className="text-primary">es la estructura</span>
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed">
+              <p className="text-white/60 text-lg leading-relaxed">
                 Cuando la inversión y la empresa están bien diseñadas, la visa
                 se vuelve una consecuencia natural. El objetivo es construir
                 algo sólido — no perseguir un documento.
@@ -356,10 +356,10 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Dónde entra Comprando América en este proceso
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Comprando América no es una agencia migratoria. Es un ecosistema
                 donde empresarios pueden:
               </p>
@@ -372,7 +372,7 @@ export default function VisaE2() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-gray-500">{item}</p>
+                    <p className="text-white/60">{item}</p>
                   </div>
                 ))}
               </div>
@@ -386,8 +386,8 @@ export default function VisaE2() {
         <div className="container">
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
-              <div className="bg-[#F5F7FA] border border-blue-200 rounded-2xl p-8 h-full">
-                <h2 className="text-2xl text-[#0B1F3A] mb-6">
+              <div className="bg-[#132D50] border border-blue-500/20 rounded-2xl p-8 h-full">
+                <h2 className="text-2xl text-white mb-6">
                   Este proceso es para personas que:
                 </h2>
                 <div className="space-y-4">
@@ -399,7 +399,7 @@ export default function VisaE2() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-500 text-sm">{item}</p>
+                      <p className="text-white/60 text-sm">{item}</p>
                     </div>
                   ))}
                 </div>
@@ -407,8 +407,8 @@ export default function VisaE2() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="bg-[#F5F7FA] border border-red-500/20 rounded-2xl p-8 h-full">
-                <h2 className="text-2xl text-[#0B1F3A] mb-6">
+              <div className="bg-[#132D50] border border-red-500/20 rounded-2xl p-8 h-full">
+                <h2 className="text-2xl text-white mb-6">
                   No es para quienes:
                 </h2>
                 <div className="space-y-4">
@@ -420,7 +420,7 @@ export default function VisaE2() {
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <XCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-gray-500 text-sm">{item}</p>
+                      <p className="text-white/60 text-sm">{item}</p>
                     </div>
                   ))}
                 </div>
@@ -435,22 +435,22 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 ¿Tu perfil puede encajar en este tipo de estructura?
               </h2>
-              <p className="text-gray-500 text-lg mb-10">
+              <p className="text-white/60 text-lg mb-10">
                 Evalúa tu situación antes de tomar decisiones.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Hablar por WhatsApp
                 </Button>
@@ -495,12 +495,12 @@ export default function VisaE2() {
               },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 text-center h-full hover:border-blue-200 transition-all">
+                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/20 transition-all">
                   <item.icon className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h3 className="text-[#0B1F3A] text-base mb-2">
+                  <h3 className="text-white text-base mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-gray-400 text-sm">{item.desc}</p>
+                  <p className="text-white/50 text-sm">{item.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -513,16 +513,16 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 La inversión es la base del proceso
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Muchos empresarios acceden a oportunidades de inversión dentro
                 de redes estratégicas que les permiten tomar decisiones con
                 mayor criterio y respaldo.
               </p>
               <a href="/oportunidades-de-inversion-en-estados-unidos">
-                <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+                <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
                   Ver oportunidades disponibles{" "}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -537,15 +537,15 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 La estructura empresarial es el punto de partida
               </h2>
-              <p className="text-gray-500 text-lg leading-relaxed mb-8">
+              <p className="text-white/60 text-lg leading-relaxed mb-8">
                 Antes de pensar en la visa, necesitas una empresa bien
                 estructurada. Ese es el primer paso concreto.
               </p>
               <a href="/estructura-empresarial-en-estados-unidos">
-                <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+                <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
                   Crear mi empresa en Estados Unidos{" "}
                   <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -585,12 +585,12 @@ export default function VisaE2() {
                   <AccordionItem
                     key={i}
                     value={`faq-${i}`}
-                    className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-6"
+                    className="bg-[#132D50] border border-[#1E3A5F] rounded-xl px-6"
                   >
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5">
                       {faq.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-500 leading-relaxed pb-5">
+                    <AccordionContent className="text-white/60 leading-relaxed pb-5">
                       {faq.a}
                     </AccordionContent>
                   </AccordionItem>
@@ -606,26 +606,26 @@ export default function VisaE2() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-6">
                 Entiende si este camino puede aplicar para ti
               </h2>
-              <p className="text-gray-500 text-lg mb-4">
+              <p className="text-white/60 text-lg mb-4">
                 La visa E-2 no es para todos.
               </p>
-              <p className="text-gray-400 mb-10">
+              <p className="text-white/50 mb-10">
                 Pero cuando existe la estructura correcta, puede ser una opción
                 viable.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-gray-300 text-white hover:bg-gray-50 px-8 py-6 text-base gap-2"
+                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
                 >
                   Hablar con un asesor
                 </Button>
