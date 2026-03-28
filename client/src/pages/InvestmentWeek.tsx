@@ -48,10 +48,15 @@ function SEOHead() {
 }
 
 /* ─── Photos ─── */
-const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1VKFcr6XRJ81P6XX9JbQ_GQvTsQdcvsQC=w1920"; // cena privada
-const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg"; // aerial
-const AUDIENCE_IMAGE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920"; // packed room
-const WORKSHOP_IMAGE = "https://lh3.googleusercontent.com/d/1mQWgGjGOCgTU8BsOl3Rgdh5mGR3eObRd=w1200"; // numbers on board
+const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
+const AUDIENCE_IMAGE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
+const PROPERTY_BG = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
+
+const TEAM = [
+  { name: "Diego", role: "Operaciones", photo: "/team/diego.jpg" },
+  { name: "Edmundo Treviño", role: "CEO & Fundador", photo: "/team/edmundo.jpg" },
+  { name: "Joe", role: "Inversiones", photo: "/team/joe.jpg" },
+];
 
 const WA_APPLY = "Hola, me interesa aplicar a la Florida Investment Week (1-4 mayo 2026).";
 
@@ -78,17 +83,17 @@ export default function InvestmentWeek() {
         </div>
       </div>
 
-      {/* ═══ 1. HERO — cena privada ═══ */}
-      <section className="relative min-h-[80vh] flex items-center py-20 overflow-hidden">
+      {/* ═══ 1. HERO — team + property bg ═══ */}
+      <section className="relative min-h-[90vh] flex items-center py-20 overflow-hidden">
+        {/* Background: property photo with heavy overlay */}
         <div className="absolute inset-0">
-          <img src={HERO_IMAGE} alt="Cena privada de inversionistas" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/60" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/40" />
+          <img src={PROPERTY_BG} alt="" className="w-full h-full object-cover scale-110 blur-sm" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1F3A]/95 via-[#0B1F3A]/90 to-[#0B1F3A]" />
         </div>
 
         <div className="container relative z-10">
           <FadeIn>
-            <div className="max-w-3xl">
+            <div className="text-center max-w-4xl mx-auto">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
                 <Shield className="w-3.5 h-3.5" /> Experiencia por invitación
               </div>
@@ -96,14 +101,39 @@ export default function InvestmentWeek() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
                 Florida Investment Week
               </h1>
-              <p className="text-xl md:text-2xl text-slate-400 mb-6">
+              <p className="text-xl md:text-2xl text-slate-400 mb-12">
                 Acceso directo a activos, estructura y decisiones reales en Estados Unidos
               </p>
-              <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-2xl">
-                Un viaje de inspección diseñado para inversionistas que buscan entender, analizar y ejecutar oportunidades directamente en terreno.
-              </p>
 
-              <div className="flex flex-wrap gap-3 text-slate-400 text-sm mb-8">
+              {/* Team portraits */}
+              <div className="flex justify-center items-end gap-6 md:gap-10 mb-12">
+                {TEAM.map((member, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 + i * 0.15, ease: "easeOut" }}
+                    className="text-center"
+                  >
+                    <div className={`relative mx-auto mb-3 ${i === 1 ? "w-28 h-28 md:w-36 md:h-36" : "w-22 h-22 md:w-28 md:h-28"}`}>
+                      <img
+                        src={member.photo}
+                        alt={member.name}
+                        className="w-full h-full rounded-full object-cover border-2 border-blue-500/30 shadow-lg shadow-blue-900/40"
+                      />
+                      {i === 1 && (
+                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                          <CheckCircle2 className="w-4 h-4 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-white font-semibold text-sm md:text-base">{member.name}</p>
+                    <p className="text-blue-400 text-xs">{member.role}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-3 text-slate-400 text-sm mb-8">
                 <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
                   <MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater
                 </span>
@@ -115,7 +145,7 @@ export default function InvestmentWeek() {
                 </span>
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap justify-center gap-4">
                 <Button onClick={scrollToApply} className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                   Aplicar al viaje <ArrowRight className="w-4 h-4" />
                 </Button>
