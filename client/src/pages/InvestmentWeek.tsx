@@ -21,24 +21,10 @@ import {
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
-function FadeIn({
-  children,
-  className = "",
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
+function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const { ref, isInView } = useInView();
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
-      className={className}
-    >
+    <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: "easeOut" }} className={className}>
       {children}
     </motion.div>
   );
@@ -48,52 +34,28 @@ function FadeIn({
 function SEOHead() {
   useEffect(() => {
     document.title = "Florida Investment Week | Comprando América";
-    // noindex
     let meta = document.querySelector('meta[name="robots"]');
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.setAttribute("name", "robots");
-      document.head.appendChild(meta);
-    }
+    if (!meta) { meta = document.createElement("meta"); meta.setAttribute("name", "robots"); document.head.appendChild(meta); }
     meta.setAttribute("content", "noindex, nofollow");
-
-    const desc = document.querySelector('meta[name="description"]');
-    if (desc) {
-      desc.setAttribute(
-        "content",
-        "Viaje de inspección privado para inversionistas. Tampa, Florida. Acceso por invitación."
-      );
-    }
   }, []);
   return null;
 }
 
 /* ─── Photos ─── */
-const CLOUD = "https://res.cloudinary.com/dofccqypz/image/upload";
-function cImg(id: string, v: string, w = 1200, h = 600) {
-  return `${CLOUD}/c_fill,w_${w},h_${h},g_auto,q_auto,f_auto/v${v}/comprando-america/eventos/${id}.jpg`;
-}
-
-const PHOTOS = {
-  inspeccion: cImg("uefjxoxi5trojtoeivha", "1774537564"),
-  propiedad: cImg("vjyyrtfskd3w7nmklbt3", "1774537570"),
-  cena: cImg("n8lkmvpmlrnco9etkxfb", "1774537526"),
-  trabajo: cImg("v7r3cxs7gg19ktnwniis", "1774537541"),
-};
+const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1VKFcr6XRJ81P6XX9JbQ_GQvTsQdcvsQC=w1920"; // cena privada
+const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg"; // aerial
+const AUDIENCE_IMAGE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920"; // packed room
+const WORKSHOP_IMAGE = "https://lh3.googleusercontent.com/d/1mQWgGjGOCgTU8BsOl3Rgdh5mGR3eObRd=w1200"; // numbers on board
 
 const WA_APPLY = "Hola, me interesa aplicar a la Florida Investment Week (1-4 mayo 2026).";
 
-/* ═══════════════════════════════════════════════════════ */
-
 export default function InvestmentWeek() {
   const scrollToApply = () => {
-    document
-      .getElementById("aplicar")
-      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("aplicar")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <SEOHead />
       <Navbar />
 
@@ -102,21 +64,18 @@ export default function InvestmentWeek() {
         <div className="container py-4">
           <div className="flex items-center justify-center gap-3 text-center">
             <Lock className="w-4 h-4 text-primary flex-shrink-0" />
-            <p className="text-white/60 text-sm">
-              <span className="text-primary font-semibold">
-                Acceso restringido.
-              </span>{" "}
-              Esta experiencia es por invitación y perfil aprobado. La
-              información no es pública.
+            <p className="text-slate-400 text-sm">
+              <span className="text-primary font-semibold">Acceso restringido.</span>{" "}
+              Esta experiencia es por invitación y perfil aprobado.
             </p>
           </div>
         </div>
       </div>
 
-      {/* ═══ 1. HERO ═══ */}
-      <section className="relative isolate min-h-[80vh] flex items-center py-20 overflow-hidden">
+      {/* ═══ 1. HERO — cena privada ═══ */}
+      <section className="relative min-h-[80vh] flex items-center py-20 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://lh3.googleusercontent.com/d/1VKFcr6XRJ81P6XX9JbQ_GQvTsQdcvsQC=w1920" alt="Cena privada de inversionistas" className="w-full h-full object-cover" />
+          <img src={HERO_IMAGE} alt="Cena privada de inversionistas" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/40" />
         </div>
@@ -125,110 +84,84 @@ export default function InvestmentWeek() {
           <FadeIn>
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
-                <Shield className="w-3.5 h-3.5" />
-                Experiencia por invitación
+                <Shield className="w-3.5 h-3.5" /> Experiencia por invitación
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
                 Florida Investment Week
               </h1>
-              <p className="text-xl md:text-2xl font-serif text-white/60 mb-6">
-                Acceso directo a activos, estructura y decisiones reales en
-                Estados Unidos
+              <p className="text-xl md:text-2xl text-slate-400 mb-6">
+                Acceso directo a activos, estructura y decisiones reales en Estados Unidos
               </p>
-              <p className="text-white/50 text-lg leading-relaxed mb-8 max-w-2xl">
-                Un viaje de inspección diseñado para inversionistas que buscan
-                entender, analizar y ejecutar oportunidades directamente en
-                terreno.
+              <p className="text-slate-500 text-lg leading-relaxed mb-8 max-w-2xl">
+                Un viaje de inspección diseñado para inversionistas que buscan entender, analizar y ejecutar oportunidades directamente en terreno.
               </p>
 
-              <div className="flex flex-wrap gap-4 text-white/60 text-sm mb-8">
-                <span className="flex items-center gap-2 bg-[#0F2847]/5 px-4 py-2 rounded-full">
-                  <MapPin className="w-4 h-4 text-primary" /> Tampa · St.
-                  Petersburg · Clearwater
+              <div className="flex flex-wrap gap-3 text-slate-400 text-sm mb-8">
+                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+                  <MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater
                 </span>
-                <span className="flex items-center gap-2 bg-[#0F2847]/5 px-4 py-2 rounded-full">
-                  <CalendarDays className="w-4 h-4 text-primary" /> 1–4 mayo
-                  2026
+                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+                  <CalendarDays className="w-4 h-4 text-primary" /> 1–4 mayo 2026
                 </span>
-                <span className="flex items-center gap-2 bg-[#0F2847]/5 px-4 py-2 rounded-full">
+                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
                   <Users className="w-4 h-4 text-primary" /> Cupo limitado
                 </span>
               </div>
 
-              <div className="flex flex-wrap gap-4 mb-10">
-                <Button
-                  onClick={scrollToApply}
-                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
-                >
+              <div className="flex flex-wrap gap-4">
+                <Button onClick={scrollToApply} className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                   Aplicar al viaje <ArrowRight className="w-4 h-4" />
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
-                >
+                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
                   Confirmar interés
                 </Button>
               </div>
-
-              <div className="flex flex-wrap gap-6 text-white/50 text-sm">
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary" /> Terreno
-                  real
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary" /> Propiedades
-                  reales
-                </span>
-                <span className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-primary" /> Números
-                  reales
-                </span>
-              </div>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ═══ 2. QUÉ ES ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      {/* ═══ 2. QUÉ ES — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
-                No es un seminario.{" "}
-                <span className="text-primary">
-                  Es una experiencia en terreno
-                </span>
-              </h2>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">
-                Durante 4 días:
-              </p>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  "Visitas activos reales en operación",
-                  "Analizas oportunidades directamente en sitio",
-                  "Entiendes estructuras con contexto completo",
-                  "Conectas con inversionistas que ya están ejecutando",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-white/60">{item}</p>
-                  </div>
-                ))}
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+            <FadeIn>
+              <div>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+                  No es un seminario. <span className="text-primary">Es una experiencia en terreno</span>
+                </h2>
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-8">Durante 4 días:</p>
+                <div className="space-y-4">
+                  {[
+                    "Visitas activos reales en operación",
+                    "Analizas oportunidades directamente en sitio",
+                    "Entiendes estructuras con contexto completo",
+                    "Conectas con inversionistas que ya están ejecutando",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-[#374151]">{item}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </FadeIn>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+                <img src={INSPECTION_IMAGE} alt="Vista aérea viaje de inspección" className="w-full h-72 object-cover" />
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
-      {/* ═══ 3. A QUIÉN ESTÁ DIRIGIDO ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      {/* ═══ 3. A QUIÉN — navy ═══ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-8">
                 Esta experiencia es para perfiles específicos
               </h2>
               <div className="space-y-4 mb-10">
@@ -238,17 +171,14 @@ export default function InvestmentWeek() {
                   "Personas que ya conocen el fondo o han interactuado con el equipo",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-white/60 text-lg">{item}</p>
+                    <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-slate-300 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
-              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8">
-                <p className="text-white/80 text-lg font-serif">
-                  No es un evento abierto.{" "}
-                  <span className="text-primary font-semibold">
-                    El acceso se valida previamente.
-                  </span>
+              <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-8">
+                <p className="text-white text-lg">
+                  No es un evento abierto. <span className="text-primary font-semibold">El acceso se valida previamente.</span>
                 </p>
               </div>
             </div>
@@ -256,179 +186,171 @@ export default function InvestmentWeek() {
         </div>
       </section>
 
-      {/* ═══ 4. AGENDA ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      {/* ═══ 4. AGENDA — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="text-center mb-16">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Agenda
-              </p>
-              <h2 className="text-3xl md:text-4xl font-serif text-white">
-                4 días de experiencia intensiva
+            <div className="text-center mb-12">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Agenda</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">4 días de experiencia intensiva</h2>
+            </div>
+          </FadeIn>
+
+          <div className="max-w-4xl mx-auto space-y-6">
+            {[
+              {
+                day: "Día 1", title: "Bienvenida", date: "1 de mayo, 2026",
+                items: ["Llegada a Tampa", "Sesión estratégica de apertura", "Tendencias del mercado inmobiliario", "Presentación del equipo y aliados", "Análisis preliminar de activos", "Cena privada de networking"],
+              },
+              {
+                day: "Día 2", title: "Residencial", date: "2 de mayo, 2026",
+                morning: "Sesión teórica",
+                morningItems: ["Cómo funciona el mercado residencial", "Cómo leer un deal (NOI, Cap Rate, Cash-on-Cash)", "Financiamiento y estructura", "Estrategia fiscal para inversionistas"],
+                afternoon: "Recorrido en campo",
+                afternoonItems: ["Visitas a propiedades residenciales", "Análisis en vivo de oportunidades"],
+              },
+              {
+                day: "Día 3", title: "Mobile Home Parks", date: "3 de mayo, 2026",
+                morning: "Análisis estratégico",
+                morningItems: ["Por qué este activo es resiliente", "Cómo se valúa un mobile home park", "Palancas de valor y optimización", "Estructura del fondo de inversión"],
+                afternoon: "Inspección en campo",
+                afternoonItems: ["Visita a parques activos en operación", "Análisis real de métricas y condiciones", "Comparativa de activos en terreno"],
+              },
+              {
+                day: "Día 4", title: "Regreso", date: "4 de mayo, 2026",
+                items: ["Salida libre desde Tampa u Orlando", "Cierre de conclusiones y próximos pasos individuales"],
+              },
+            ].map((d, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
+                  <div className="grid lg:grid-cols-[220px_1fr]">
+                    <div className="bg-[#0B1F3A] p-6 lg:p-8 flex flex-col justify-center">
+                      <p className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">{d.day}</p>
+                      <h3 className="text-xl font-bold text-white">{d.title}</h3>
+                      <p className="text-slate-500 text-sm mt-1">{d.date}</p>
+                    </div>
+                    <div className="p-6 lg:p-8">
+                      {d.morning ? (
+                        <>
+                          <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">Mañana — {d.morning}</p>
+                          <div className="grid sm:grid-cols-2 gap-2 mb-5">
+                            {d.morningItems?.map((item, j) => (
+                              <div key={j} className="flex items-start gap-2">
+                                <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                                <p className="text-[#4B5563] text-sm">{item}</p>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">Tarde — {d.afternoon}</p>
+                          <div className="grid sm:grid-cols-2 gap-2">
+                            {d.afternoonItems?.map((item, j) => (
+                              <div key={j} className="flex items-start gap-2">
+                                <Eye className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                                <p className="text-[#4B5563] text-sm">{item}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="grid sm:grid-cols-2 gap-2">
+                          {d.items?.map((item, j) => (
+                            <div key={j} className="flex items-start gap-2">
+                              <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                              <p className="text-[#4B5563] text-sm">{item}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Photo break ── */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <img src={AUDIENCE_IMAGE} alt="Comunidad de inversionistas" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0E2544] via-transparent to-[#F5F7FA]" />
+      </section>
+
+      {/* ═══ 5. QUÉ HACE DIFERENTE — navy ═══ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl text-white">
+                Aquí no vienes a escuchar… <span className="text-primary">vienes a ver, analizar y decidir</span>
               </h2>
             </div>
           </FadeIn>
 
-          <div className="max-w-5xl mx-auto space-y-8">
-            {/* DÍA 1 */}
+          <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              { title: "Activos reales", desc: "Visitas propiedades y parques en operación, no presentaciones teóricas." },
+              { title: "Contexto completo", desc: "Entiendes la estructura legal, fiscal y operativa de cada oportunidad." },
+              { title: "Acceso directo", desc: "Conectas con el equipo, los aliados y los activos sin intermediarios." },
+              { title: "Sesiones 1 a 1", desc: "Espacio para analizar tu caso particular con los expertos." },
+            ].map((item, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
+                  <CheckCircle2 className="w-6 h-6 text-blue-400 mb-3" />
+                  <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 6. FILTRO + LOGÍSTICA — ☀️ BLANCO ═══ */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
             <FadeIn>
-              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-500/20 rounded-2xl overflow-hidden">
-                <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-blue-500/10 p-8 flex flex-col justify-center border-r border-primary/10">
-                    <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
-                      Día 1
-                    </p>
-                    <h3 className="text-2xl font-serif text-white">
-                      Bienvenida
-                    </h3>
-                    <p className="text-white/50 text-sm mt-2">
-                      1 de mayo, 2026
-                    </p>
-                  </div>
-                  <div className="p-8">
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      {[
-                        "Llegada a Tampa",
-                        "Sesión estratégica de apertura",
-                        "Tendencias del mercado inmobiliario",
-                        "Presentación del equipo y aliados",
-                        "Análisis preliminar de activos",
-                        "Cena privada de networking",
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-white/60 text-sm">{item}</p>
-                        </div>
-                      ))}
+              <div>
+                <Lock className="w-8 h-8 text-primary mb-4" />
+                <h2 className="text-3xl text-[#0B1F3A] mb-6">El acceso es limitado y filtrado</h2>
+                <div className="space-y-4 mb-8">
+                  {[
+                    "Haber interactuado previamente con el fondo o el equipo",
+                    "Cumplir con el perfil de inversión requerido",
+                    "Contar con intención real de participar",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-[#4B5563]">{item}</p>
                     </div>
-                  </div>
+                  ))}
+                </div>
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6">
+                  <p className="text-[#0B1F3A] font-semibold">No todas las personas que aplican son aceptadas.</p>
                 </div>
               </div>
             </FadeIn>
 
-            {/* DÍA 2 */}
-            <FadeIn>
-              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-500/20 rounded-2xl overflow-hidden">
-                <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-blue-500/10 p-8 flex flex-col justify-center border-r border-primary/10">
-                    <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
-                      Día 2
-                    </p>
-                    <h3 className="text-2xl font-serif text-white">
-                      Residencial
-                    </h3>
-                    <p className="text-white/50 text-sm mt-2">
-                      2 de mayo, 2026
-                    </p>
-                  </div>
-                  <div className="p-8">
-                    <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">
-                      Mañana — Sesión teórica
-                    </p>
-                    <div className="grid sm:grid-cols-2 gap-3 mb-6">
-                      {[
-                        "Cómo funciona el mercado residencial",
-                        "Cómo leer un deal (NOI, Cap Rate, Cash-on-Cash)",
-                        "Financiamiento y estructura",
-                        "Estrategia fiscal para inversionistas",
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-white/60 text-sm">{item}</p>
-                        </div>
-                      ))}
+            <FadeIn delay={0.1}>
+              <div>
+                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Logística</p>
+                <h3 className="text-2xl text-[#0B1F3A] mb-6">Información general</h3>
+                <div className="space-y-4">
+                  {[
+                    { icon: Plane, title: "Llegada", desc: "Aeropuerto de Tampa (TPA)" },
+                    { icon: Hotel, title: "Hospedaje", desc: "St. Petersburg — opciones cercanas" },
+                    { icon: Car, title: "Transporte", desc: "Independiente — se recomienda renta de auto" },
+                    { icon: Clock, title: "Agenda", desc: "3 días completos de actividades intensivas" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-4 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4">
+                      <item.icon className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h4 className="text-[#0B1F3A] font-semibold text-sm">{item.title}</h4>
+                        <p className="text-[#6B7280] text-sm">{item.desc}</p>
+                      </div>
                     </div>
-                    <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">
-                      Tarde — Recorrido en campo
-                    </p>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {[
-                        "Visitas a propiedades residenciales",
-                        "Análisis en vivo de oportunidades",
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <Eye className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-white/60 text-sm">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* DÍA 3 */}
-            <FadeIn>
-              <div className="relative bg-gradient-to-br from-[oklch(0.14_0.03_250)] to-[oklch(0.11_0.02_260)] border border-blue-500/20 rounded-2xl overflow-hidden">
-                <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-blue-500/10 p-8 flex flex-col justify-center border-r border-primary/10">
-                    <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
-                      Día 3
-                    </p>
-                    <h3 className="text-2xl font-serif text-white">
-                      Mobile Home Parks
-                    </h3>
-                    <p className="text-white/50 text-sm mt-2">
-                      3 de mayo, 2026
-                    </p>
-                  </div>
-                  <div className="p-8">
-                    <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">
-                      Mañana — Análisis estratégico
-                    </p>
-                    <div className="grid sm:grid-cols-2 gap-3 mb-6">
-                      {[
-                        "Por qué este activo es resiliente",
-                        "Cómo se valúa un mobile home park",
-                        "Palancas de valor y optimización",
-                        "Estructura del fondo de inversión",
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-white/60 text-sm">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">
-                      Tarde — Inspección en campo
-                    </p>
-                    <div className="grid sm:grid-cols-2 gap-3">
-                      {[
-                        "Visita a parques activos en operación",
-                        "Análisis real de métricas y condiciones",
-                        "Comparativa de activos en terreno",
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-2">
-                          <Eye className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <p className="text-white/60 text-sm">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </FadeIn>
-
-            {/* DÍA 4 */}
-            <FadeIn>
-              <div className="relative bg-[oklch(0.13_0.02_250)] border border-[#1E3A5F] rounded-2xl overflow-hidden">
-                <div className="grid lg:grid-cols-[280px_1fr]">
-                  <div className="bg-[#0F2847]/5 p-8 flex flex-col justify-center border-r border-[#1E3A5F]">
-                    <p className="text-primary text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">
-                      Día 4
-                    </p>
-                    <h3 className="text-2xl font-serif text-white">Regreso</h3>
-                    <p className="text-white/50 text-sm mt-2">
-                      4 de mayo, 2026
-                    </p>
-                  </div>
-                  <div className="p-8 flex items-center">
-                    <p className="text-white/60">
-                      Salida libre desde Tampa u Orlando. Cierre de conclusiones
-                      y próximos pasos individuales.
-                    </p>
-                  </div>
+                  ))}
                 </div>
               </div>
             </FadeIn>
@@ -436,110 +358,16 @@ export default function InvestmentWeek() {
         </div>
       </section>
 
-      {/* ═══ 5. QUÉ HACE DIFERENTE ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      {/* ═══ 7. CTA INTERMEDIO — navy ═══ */}
+      <section id="aplicar" className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
-                Aquí no vienes a escuchar…
-                <br />
-                <span className="text-primary">
-                  vienes a ver, analizar y decidir
-                </span>
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-6 mt-10 text-left">
-                {[
-                  {
-                    title: "Activos reales",
-                    desc: "Visitas propiedades y parques en operación, no presentaciones teóricas.",
-                  },
-                  {
-                    title: "Contexto completo",
-                    desc: "Entiendes la estructura legal, fiscal y operativa de cada oportunidad.",
-                  },
-                  {
-                    title: "Acceso directo",
-                    desc: "Conectas con el equipo, los aliados y los activos sin intermediarios.",
-                  },
-                  {
-                    title: "Sesiones 1 a 1",
-                    desc: "Espacio para analizar tu caso particular con los expertos.",
-                  },
-                ].map((item, i) => (
-                  <FadeIn key={i} delay={i * 0.1}>
-                    <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/20 transition-all">
-                      <CheckCircle2 className="w-6 h-6 text-primary mb-3" />
-                      <h3 className="text-lg font-serif text-white mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-white/50 text-sm leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ 6. FILTRO ═══ */}
-      <section className="section-darker py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto">
-              <Lock className="w-10 h-10 text-primary mb-4" />
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
-                El acceso es limitado y filtrado
-              </h2>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">
-                Para participar en esta experiencia:
-              </p>
-              <div className="space-y-4 mb-10">
-                {[
-                  "Haber interactuado previamente con el fondo o el equipo",
-                  "Cumplir con el perfil de inversión requerido",
-                  "Contar con intención real de participar",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-white/60 text-lg">{item}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-8">
-                <p className="text-white/80 text-lg font-serif">
-                  No todas las personas que aplican son aceptadas.
-                </p>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ 7. CTA INTERMEDIO ═══ */}
-      <section id="aplicar" className="section-dark py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-8">
-                ¿Quieres aplicar a esta experiencia?
-              </h2>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">¿Quieres aplicar a esta experiencia?</h2>
+              <p className="text-slate-400 mb-8">El cupo es limitado. La selección es por perfil.</p>
               <div className="flex flex-wrap justify-center gap-4">
-                <Button
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
-                >
-                  Aplicar al viaje <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
-                >
-                  Hablar por WhatsApp
+                <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)} className="bg-primary hover:bg-blue-600 text-white px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25">
+                  Aplicar al viaje <ArrowRight className="w-5 h-5" />
                 </Button>
               </div>
             </div>
@@ -547,111 +375,46 @@ export default function InvestmentWeek() {
         </div>
       </section>
 
-      {/* ═══ 8. LOGÍSTICA ═══ */}
-      <section className="section-darker py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Logística
-              </p>
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-10">
-                Información general
-              </h2>
-              <div className="grid sm:grid-cols-2 gap-6">
-                {[
-                  {
-                    icon: Plane,
-                    title: "Llegada",
-                    desc: "Aeropuerto de Tampa (TPA)",
-                  },
-                  {
-                    icon: Hotel,
-                    title: "Hospedaje sugerido",
-                    desc: "St. Petersburg — opciones cercanas a las visitas",
-                  },
-                  {
-                    icon: Car,
-                    title: "Transporte",
-                    desc: "Independiente — se recomienda renta de auto",
-                  },
-                  {
-                    icon: Clock,
-                    title: "Agenda",
-                    desc: "Intensiva — 3 días completos de actividades",
-                  },
-                ].map((item, i) => (
-                  <FadeIn key={i} delay={i * 0.05}>
-                    <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5">
-                      <item.icon className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" />
-                      <div>
-                        <h3 className="text-white font-semibold text-sm mb-1">
-                          {item.title}
-                        </h3>
-                        <p className="text-white/50 text-sm">{item.desc}</p>
-                      </div>
-                    </div>
-                  </FadeIn>
-                ))}
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══ 9. CONEXIÓN CON EL FONDO ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      {/* ═══ 8. CONEXIÓN FONDO — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
                 Esta experiencia conecta directamente con oportunidades reales
               </h2>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">
-                Durante el viaje analizas activos en operación, entiendes la
-                estructura del fondo y evalúas tu participación con información
-                directa y completa.
+              <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
+                Durante el viaje analizas activos en operación, entiendes la estructura del fondo y evalúas tu participación con información directa y completa.
               </p>
-              <a href="/oportunidades-de-inversion-en-estados-unidos">
-                <Button
-                  variant="outline"
-                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
-                >
-                  Ver oportunidades <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
+              <div className="flex flex-wrap justify-center gap-4">
+                <a href="/oportunidades-de-inversion-en-estados-unidos">
+                  <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white px-8 py-6 text-base gap-2">
+                    Ver oportunidades <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+                <a href="/membresia">
+                  <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 px-8 py-6 text-base">
+                    Conoce la Membresía
+                  </Button>
+                </a>
+              </div>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ═══ 10. CTA FINAL ═══ */}
-      <section className="section-darker py-24 md:py-32">
+      {/* ═══ 9. CTA FINAL — deep navy ═══ */}
+      <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
-                Si este tipo de experiencias hace sentido para ti, puedes
-                aplicar
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
+                Si este tipo de experiencias hace sentido para ti
               </h2>
-              <p className="text-white/50 text-sm mb-10">
-                El cupo es limitado. La selección es por perfil.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20"
-                >
-                  Aplicar <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-8 py-6 text-base gap-2"
-                >
-                  WhatsApp
-                </Button>
-              </div>
+              <p className="text-slate-500 text-sm mb-10">Cupo limitado. Selección por perfil. Acceso por invitación.</p>
+              <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)} className="bg-primary hover:bg-blue-600 text-white font-semibold px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25">
+                Aplicar <ArrowRight className="w-5 h-5" />
+              </Button>
             </div>
           </FadeIn>
         </div>
