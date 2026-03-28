@@ -159,7 +159,7 @@ export default function Home() {
           <FadeIn>
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#0B1F3A]">
-                Elige tu ruta en 30 segundos
+                ¿Por dónde empezar?
               </h2>
             </div>
           </FadeIn>
