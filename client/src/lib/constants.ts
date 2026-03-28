@@ -28,7 +28,7 @@ export const NAV_ITEMS = [
   { label: "Membresía", href: "/membresia" },
   { label: "Inversión", href: "#", children: [
     { label: "Oportunidades", href: "/oportunidades-de-inversion-en-estados-unidos" },
-    { label: "Estructura Empresarial", href: "/estructura-empresarial-en-estados-unidos" },
+    { label: "Estructura Empresarial", href: "/estructura-de-inversion-en-usa" },
     { label: "Visa E-2", href: "/visa-e2-inversion-en-estados-unidos" },
     { label: "Bienes Raíces", href: "/bienes-raices-en-usa" },
   ]},
