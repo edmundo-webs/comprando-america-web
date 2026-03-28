@@ -27,21 +27,21 @@ export default function QuienesSomos() {
             <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
               Sobre Nosotros
             </span>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
               Impulsamos a inversionistas latinos a conquistar el mercado{" "}
               <span className="gradient-text-primary">estadounidense</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl mb-6">
+            <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl mb-6">
               Comprando América es una comunidad privada y exclusiva para empresarios e inversionistas latinos que buscan estructurar inversiones estratégicas en Estados Unidos como herramienta de expansión, migración patrimonial o diversificación de activos.
             </p>
-            <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-2xl mb-6">
+            <p className="text-lg md:text-xl text-gray-500 leading-relaxed max-w-2xl mb-6">
               Actuamos como un puente estratégico entre el inversionista latino y oportunidades previamente filtradas y curadas en Estados Unidos.
             </p>
-            <div className="space-y-3 max-w-2xl text-white/80 text-base">
+            <div className="space-y-3 max-w-2xl text-gray-700 text-base">
               <p className="font-semibold">No somos brokers.</p>
               <p className="font-semibold">No vendemos negocios existentes.</p>
               <p className="font-semibold">No promovemos proyectos improvisados.</p>
-              <p className="text-white/70">Diseñamos y presentamos oportunidades estructuradas con análisis previo, validación profesional y visión estratégica.</p>
+              <p className="text-gray-500">Diseñamos y presentamos oportunidades estructuradas con análisis previo, validación profesional y visión estratégica.</p>
             </div>
           </motion.div>
         </div>
@@ -52,22 +52,22 @@ export default function QuienesSomos() {
         <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div {...fadeIn}>
-              <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Nuestra Misión</h2>
-              <p className="text-white/70 text-lg leading-relaxed mb-8">
+              <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-6">Nuestra Misión</h2>
+              <p className="text-gray-500 text-lg leading-relaxed mb-8">
                 Nuestro objetivo es democratizar el acceso a inversiones estratégicas en Estados Unidos, brindando a nuestros miembros las herramientas, el conocimiento y el acompañamiento necesarios para adquirir y operar negocios rentables en el mercado estadounidense.
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <span className="text-white/80">Acceso a oportunidades validadas y estructuradas</span>
+                  <span className="text-gray-700">Acceso a oportunidades validadas y estructuradas</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <span className="text-white/80">Educación ejecutiva y formación estratégica</span>
+                  <span className="text-gray-700">Educación ejecutiva y formación estratégica</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                  <span className="text-white/80">Acompañamiento legal, fiscal y migratorio</span>
+                  <span className="text-gray-700">Acompañamiento legal, fiscal y migratorio</span>
                 </div>
               </div>
             </motion.div>
@@ -85,8 +85,8 @@ export default function QuienesSomos() {
       <section className="section-darker py-24 md:py-32">
         <div className="container">
           <motion.div {...fadeIn} className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Lo que hacemos</h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-6">Lo que hacemos</h2>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
               En Comprando América operamos como una solución integral para el proceso de inversión extranjera en Estados Unidos
             </p>
           </motion.div>
@@ -118,13 +118,13 @@ export default function QuienesSomos() {
                 key={item.title}
                 {...fadeIn}
                 transition={{ delay: i * 0.1 }}
-                className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 hover:border-primary/30 transition-all duration-500 group"
+                className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-8 hover:border-blue-300 transition-all duration-500 group"
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <div className="w-12 h-12 rounded-lg bg-blue-50 text-primary flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
                   {item.icon}
                 </div>
-                <h3 className="text-xl font-serif text-white mb-3">{item.title}</h3>
-                <p className="text-white/60 leading-relaxed">{item.description}</p>
+                <h3 className="text-xl font-serif text-[#0B1F3A] mb-3">{item.title}</h3>
+                <p className="text-gray-500 leading-relaxed">{item.description}</p>
               </motion.div>
             ))}
           </div>
@@ -135,33 +135,33 @@ export default function QuienesSomos() {
       <section className="section-dark py-24 md:py-32">
         <div className="container">
           <motion.div {...fadeIn} className="max-w-3xl">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-12">Nuestro Diferencial</h2>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-12">Nuestro Diferencial</h2>
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-primary flex items-center justify-center shrink-0 mt-1">
                   <TrendingUp className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif text-white mb-2">Enfoque 100% en inversionistas latinoamericanos</h3>
-                  <p className="text-white/60">Entendemos las particularidades, desafíos y oportunidades únicas del empresario latino en Estados Unidos.</p>
+                  <h3 className="text-xl font-serif text-[#0B1F3A] mb-2">Enfoque 100% en inversionistas latinoamericanos</h3>
+                  <p className="text-gray-500">Entendemos las particularidades, desafíos y oportunidades únicas del empresario latino en Estados Unidos.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-primary flex items-center justify-center shrink-0 mt-1">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif text-white mb-2">Metodología probada</h3>
-                  <p className="text-white/60">Identificamos oportunidades sólidas y sostenibles con un proceso estructurado y validado.</p>
+                  <h3 className="text-xl font-serif text-[#0B1F3A] mb-2">Metodología probada</h3>
+                  <p className="text-gray-500">Identificamos oportunidades sólidas y sostenibles con un proceso estructurado y validado.</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-primary flex items-center justify-center shrink-0 mt-1">
                   <Users className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif text-white mb-2">Equipo multidisciplinario</h3>
-                  <p className="text-white/60">Especialistas en adquisiciones, migración, operaciones y planificación patrimonial trabajan juntos por tu éxito.</p>
+                  <h3 className="text-xl font-serif text-[#0B1F3A] mb-2">Equipo multidisciplinario</h3>
+                  <p className="text-gray-500">Especialistas en adquisiciones, migración, operaciones y planificación patrimonial trabajan juntos por tu éxito.</p>
                 </div>
               </div>
             </div>
@@ -173,14 +173,14 @@ export default function QuienesSomos() {
       <section className="section-darker py-24 md:py-32">
         <div className="container">
           <motion.div {...fadeIn} className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-12">Liderazgo</h2>
-            <div className="bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-2xl p-12">
-              <h3 className="text-2xl font-serif text-white mb-4">Edmundo Treviño</h3>
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-12">Liderazgo</h2>
+            <div className="bg-[#F5F7FA] border border-blue-200 rounded-2xl p-12">
+              <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">Edmundo Treviño</h3>
               <p className="text-primary text-sm font-semibold tracking-widest uppercase mb-6">Fundador y Director General</p>
-              <p className="text-white/70 leading-relaxed mb-8">
+              <p className="text-gray-500 leading-relaxed mb-8">
                 Empresario con más de dos décadas de experiencia en comercio internacional, adquisiciones transfronterizas y desarrollo empresarial entre Estados Unidos y América Latina.
               </p>
-              <p className="text-white/60 leading-relaxed mb-8">
+              <p className="text-gray-500 leading-relaxed mb-8">
                 Junto a un equipo de especialistas en legal, finanzas y operaciones, lidera Comprando América con un enfoque claro: <span className="text-white font-semibold">reducir la complejidad del mercado estadounidense para el empresario latino que busca crecimiento real.</span>
               </p>
               <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
@@ -197,8 +197,8 @@ export default function QuienesSomos() {
       <section className="section-dark py-24 md:py-32">
         <div className="container">
           <motion.div {...fadeIn} className="max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-8">Forma parte de una red que transforma inversión en acción</h2>
-            <div className="space-y-6 text-white/70 leading-relaxed">
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-8">Forma parte de una red que transforma inversión en acción</h2>
+            <div className="space-y-6 text-gray-500 leading-relaxed">
               <p>
                 Unirte a <span className="text-white font-semibold">Comprando América</span> no es solo acceder a oportunidades de negocio: es integrarte a una comunidad de empresarios que entienden el valor de invertir con visión, información y respaldo.
               </p>
@@ -208,7 +208,7 @@ export default function QuienesSomos() {
               <p>
                 Lo hacen respaldados por un equipo multidisciplinario, una red activa de profesionales y una metodología comprobada.
               </p>
-              <div className="pt-8 border-t border-white/10">
+              <div className="pt-8 border-t border-gray-200">
                 <p className="text-lg font-serif text-white">
                   <span className="text-primary">Comprando América.</span> Inversión con dirección. Comunidad con propósito.
                 </p>
@@ -232,8 +232,8 @@ export default function QuienesSomos() {
             <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
               El Equipo
             </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Somos una comunidad de ejecución</h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-6">Somos una comunidad de ejecución</h2>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
               Profesionales especializados trabajando juntos para transformar tu visión en realidad.
             </p>
           </motion.div>
@@ -256,15 +256,15 @@ export default function QuienesSomos() {
             <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
               Dedicación. Experiencia. Pasión.
             </span>
-            <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">Nuestros Expertos</h2>
-            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-6">Nuestros Expertos</h2>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
               Conoce al equipo que lidera Comprando América y acompaña a cada inversionista en su camino.
             </p>
           </motion.div>
 
           {/* Edmundo - Featured Expert */}
           <motion.div {...fadeIn} className="mb-16">
-            <div className="bg-[oklch(0.15_0.03_250)] border border-white/10 rounded-2xl p-8 md:p-12">
+            <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 md:p-12">
               <div className="grid md:grid-cols-3 gap-8 items-start">
                 {/* Photo */}
                 <div className="flex justify-center md:justify-start">
@@ -279,14 +279,14 @@ export default function QuienesSomos() {
 
                 {/* Content */}
                 <div className="md:col-span-2">
-                  <h3 className="text-2xl font-serif text-white mb-2">Edmundo Treviño</h3>
+                  <h3 className="text-2xl font-serif text-[#0B1F3A] mb-2">Edmundo Treviño</h3>
                   <p className="text-primary text-sm font-semibold tracking-widest uppercase mb-4">Director General</p>
-                  <p className="text-white/70 leading-relaxed mb-6">
+                  <p className="text-gray-500 leading-relaxed mb-6">
                     Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.
                   </p>
 
                   {/* Credentials */}
-                  <div className="space-y-3 mb-8 pb-8 border-b border-white/10">
+                  <div className="space-y-3 mb-8 pb-8 border-b border-gray-200">
                     {[
                       "Ingeniero Mecánico Administrador con MBA en Economía Industrial",
                       "Maestría en Sistema Fiscal en Estados Unidos",
@@ -296,7 +296,7 @@ export default function QuienesSomos() {
                     ].map((cred, idx) => (
                       <div key={idx} className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-white/70 text-sm leading-tight">{cred}</span>
+                        <span className="text-gray-500 text-sm leading-tight">{cred}</span>
                       </div>
                     ))}
                   </div>
@@ -309,7 +309,7 @@ export default function QuienesSomos() {
                       </Button>
                     </a>
                     <a href={EXTERNAL_LINKS.mentoria} target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 font-semibold px-6 py-2 text-sm gap-2">
+                      <Button variant="outline" className="border-gray-300 text-white hover:bg-gray-50 font-semibold px-6 py-2 text-sm gap-2">
                         Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
@@ -371,11 +371,11 @@ export default function QuienesSomos() {
                 transition={{ delay: i * 0.1 }}
                 className="group relative"
               >
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl overflow-hidden hover:border-primary/30 transition-all duration-500 h-full flex flex-col">
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl overflow-hidden hover:border-blue-300 transition-all duration-500 h-full flex flex-col">
                   {/* Image */}
                   <div className="relative w-full aspect-[3/4] overflow-hidden bg-gradient-to-b from-primary/5 to-primary/10 flex items-center justify-center group">
                     {/* Subtle border accent */}
-                    <div className="absolute inset-0 border border-white/10 group-hover:border-primary/30 transition-colors duration-500 pointer-events-none" />
+                    <div className="absolute inset-0 border border-gray-200 group-hover:border-blue-300 transition-colors duration-500 pointer-events-none" />
                     
                     {expert.image ? (
                       <>
@@ -394,9 +394,9 @@ export default function QuienesSomos() {
 
                   {/* Content */}
                   <div className="p-5 flex flex-col flex-1">
-                    <h3 className="text-base font-serif text-white mb-1">{expert.name}</h3>
+                    <h3 className="text-base font-serif text-[#0B1F3A] mb-1">{expert.name}</h3>
                     <p className="text-primary text-xs font-semibold mb-3">{expert.title}</p>
-                    <p className="text-white/60 text-xs leading-relaxed flex-1">{expert.description}</p>
+                    <p className="text-gray-500 text-xs leading-relaxed flex-1">{expert.description}</p>
                   </div>
                 </div>
               </motion.div>

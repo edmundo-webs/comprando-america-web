@@ -154,7 +154,7 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
       <div className="text-primary font-serif text-3xl md:text-4xl lg:text-5xl font-bold mb-2">
         {count}{suffix}
       </div>
-      <p className="text-white/50 text-xs mt-1">{label}</p>
+      <p className="text-gray-400 text-xs mt-1">{label}</p>
     </div>
   );
 }
@@ -261,11 +261,11 @@ export default function Membresia() {
               <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Membresía Vitalicia
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
                 Club Privado de Inversionistas en{" "}
                 <span className="gradient-text-primary">Estados Unidos</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
+              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-10 max-w-2xl">
                 Comunidad exclusiva para inversionistas con capacidad real que
                 buscan oportunidades filtradas con acompañamiento legal,
                 migratorio y estratégico.
@@ -274,7 +274,7 @@ export default function Membresia() {
                 onClick={() =>
                   openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)
                 }
-                className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-6 text-base gap-2"
+                className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-6 text-base gap-2"
               >
                 Solicitar Acceso <ArrowRight className="w-4 h-4" />
               </Button>
@@ -289,16 +289,16 @@ export default function Membresia() {
           <FadeIn>
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+                <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
                   Descubre Cómo Funciona
                 </h2>
-                <p className="text-white/60 text-lg max-w-2xl mx-auto">
+                <p className="text-gray-500 text-lg max-w-2xl mx-auto">
                   Mira cómo nuestros miembros acceden a oportunidades de
                   inversión exclusivas y reciben acompañamiento estratégico.
                 </p>
               </div>
 
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black aspect-video">
+              <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-black aspect-video">
                 {!showVideo ? (
                   <button
                     onClick={() => setShowVideo(true)}
@@ -348,14 +348,14 @@ export default function Membresia() {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 max-w-5xl mx-auto">
             {enfoque.map((item, i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-5 text-center hover:border-primary/30 transition-all h-full">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-5 text-center hover:border-blue-300 transition-all h-full">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-primary flex items-center justify-center mx-auto mb-3">
                     <item.icon className="w-5 h-5" />
                   </div>
                   <h3 className="text-white font-semibold text-sm mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-white/50 text-xs leading-relaxed">
+                  <p className="text-gray-400 text-xs leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -375,10 +375,10 @@ export default function Membresia() {
                 <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
                   Metodología
                 </p>
-                <h2 className="text-3xl font-serif text-white mb-3">
+                <h2 className="text-3xl font-serif text-[#0B1F3A] mb-3">
                   El sistema detrás de la membresía
                 </h2>
-                <p className="text-white/50 text-sm mb-8">
+                <p className="text-gray-400 text-sm mb-8">
                   6 pilares que transforman barreras en ventajas estratégicas
                 </p>
 
@@ -388,14 +388,14 @@ export default function Membresia() {
                       key={p.n}
                       className="flex items-start gap-4 group"
                     >
-                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 text-sm font-bold group-hover:bg-primary/20 transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-blue-50 text-primary flex items-center justify-center shrink-0 text-sm font-bold group-hover:bg-blue-100 transition-colors">
                         {p.n}
                       </div>
                       <div>
                         <h4 className="text-white font-semibold text-sm">
                           {p.title}
                         </h4>
-                        <p className="text-white/50 text-xs leading-relaxed">
+                        <p className="text-gray-400 text-xs leading-relaxed">
                           {p.desc}
                         </p>
                       </div>
@@ -403,7 +403,7 @@ export default function Membresia() {
                   ))}
                 </div>
 
-                <p className="text-white/40 text-sm mt-8 italic">
+                <p className="text-gray-400 text-sm mt-8 italic">
                   No vendemos promesas. Construimos estructura.
                 </p>
               </div>
@@ -415,7 +415,7 @@ export default function Membresia() {
                 <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
                   ¿Por qué es diferente?
                 </p>
-                <h2 className="text-3xl font-serif text-white mb-8">
+                <h2 className="text-3xl font-serif text-[#0B1F3A] mb-8">
                   Somos sistema de inversión
                 </h2>
 
@@ -423,16 +423,16 @@ export default function Membresia() {
                   {diferenciadores.map((d, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                      <p className="text-white/70 text-sm">{d}</p>
+                      <p className="text-gray-500 text-sm">{d}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="bg-gradient-to-r from-primary/10 to-transparent border border-primary/20 rounded-xl p-6">
+                <div className="bg-gradient-to-r from-primary/10 to-transparent border border-blue-200 rounded-xl p-6">
                   <p className="text-white font-semibold mb-1">
                     Somos sistema de inversión.
                   </p>
-                  <p className="text-white/60 text-sm">
+                  <p className="text-gray-500 text-sm">
                     No marketing de proyectos.
                   </p>
                 </div>
@@ -464,12 +464,12 @@ export default function Membresia() {
       <section className="section-dark py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl font-serif text-white mb-12 text-center">
+            <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-12 text-center">
               ¿Es para ti?
             </h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               {/* Sí */}
-              <div className="bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-xl p-8">
+              <div className="bg-[#F5F7FA] border border-blue-200 rounded-xl p-8">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-primary" />
                   Es para ti si:
@@ -480,23 +480,23 @@ export default function Membresia() {
                       <span className="text-primary font-bold text-sm mt-0.5">
                         ✓
                       </span>
-                      <span className="text-white/70 text-sm">{item}</span>
+                      <span className="text-gray-500 text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
               {/* No */}
-              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8">
+              <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-8">
                 <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
-                  <X className="w-5 h-5 text-white/50" />
+                  <X className="w-5 h-5 text-gray-400" />
                   No es para ti si:
                 </h3>
                 <ul className="space-y-3">
                   {perfilNo.map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="text-white/40 text-sm mt-0.5">✕</span>
-                      <span className="text-white/50 text-sm">{item}</span>
+                      <span className="text-gray-400 text-sm mt-0.5">✕</span>
+                      <span className="text-gray-400 text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -504,14 +504,14 @@ export default function Membresia() {
             </div>
 
             <div className="max-w-2xl mx-auto text-center mt-10">
-              <p className="text-white/60 leading-relaxed">
+              <p className="text-gray-500 leading-relaxed">
                 Esto no es para todos.{" "}
                 <span className="text-white">
                   Es para quien entiende que estructurar bien es más importante
                   que entrar rápido.
                 </span>
               </p>
-              <p className="text-white/40 text-sm mt-4">
+              <p className="text-gray-400 text-sm mt-4">
                 El siguiente paso no es pagar. Es validar si tu perfil encaja.
               </p>
             </div>
@@ -540,7 +540,7 @@ export default function Membresia() {
                   className={`relative rounded-2xl p-6 border transition-all duration-500 h-full flex flex-col ${
                     plan.popular
                       ? "bg-gradient-to-br from-primary/20 to-primary/5 border-primary/40 ring-2 ring-primary/30"
-                      : "bg-[oklch(0.15_0.03_250)] border-white/5 hover:border-primary/30"
+                      : "bg-[#F5F7FA] border-gray-200 hover:border-blue-300"
                   }`}
                 >
                   {plan.popular && (
@@ -548,7 +548,7 @@ export default function Membresia() {
                       Más Popular
                     </div>
                   )}
-                  <h3 className="text-2xl font-serif text-white mb-1">
+                  <h3 className="text-2xl font-serif text-[#0B1F3A] mb-1">
                     Investor{" "}
                     <span className="text-primary">{plan.name}</span>
                   </h3>
@@ -556,10 +556,10 @@ export default function Membresia() {
                     <div className="text-3xl font-bold text-primary mb-1">
                       {plan.price}
                     </div>
-                    <p className="text-white/50 text-xs">{plan.ideal}</p>
+                    <p className="text-gray-400 text-xs">{plan.ideal}</p>
                   </div>
-                  <div className="mb-4 pb-4 border-b border-white/10 text-xs">
-                    <p className="text-white/60">
+                  <div className="mb-4 pb-4 border-b border-gray-200 text-xs">
+                    <p className="text-gray-500">
                       <strong>Valor:</strong> {plan.value}
                     </p>
                     <p className="text-primary">
@@ -573,7 +573,7 @@ export default function Membresia() {
                       value="features"
                       className="border-0"
                     >
-                      <AccordionTrigger className="text-white/60 text-sm py-2 hover:text-primary">
+                      <AccordionTrigger className="text-gray-500 text-sm py-2 hover:text-primary">
                         Ver beneficios incluidos
                       </AccordionTrigger>
                       <AccordionContent>
@@ -584,7 +584,7 @@ export default function Membresia() {
                               className="flex items-start gap-2"
                             >
                               <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                              <span className="text-white/60 text-xs">
+                              <span className="text-gray-500 text-xs">
                                 {f}
                               </span>
                             </li>
@@ -600,8 +600,8 @@ export default function Membresia() {
                     }
                     className={`w-full py-3 font-semibold gap-2 text-sm ${
                       plan.popular
-                        ? "bg-primary hover:bg-primary/90 text-white"
-                        : "bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                        ? "bg-primary hover:bg-blue-700 text-white"
+                        : "bg-white/10 hover:bg-white/20 text-white border border-gray-300"
                     }`}
                   >
                     Elegir {plan.name}{" "}
@@ -622,10 +622,10 @@ export default function Membresia() {
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Conexiones Reales
               </p>
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
                 Eventos y Networking
               </h2>
-              <p className="text-white/60 text-lg max-w-2xl mx-auto">
+              <p className="text-gray-500 text-lg max-w-2xl mx-auto">
                 Encuentros presenciales donde empresarios comparten experiencias,
                 cierran negocios y construyen relaciones que duran.
               </p>
@@ -651,10 +651,10 @@ export default function Membresia() {
               },
             ].map((e, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 h-full hover:border-primary/20 transition-all">
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full hover:border-blue-200 transition-all">
                   <span className="text-primary font-bold text-2xl font-mono">{e.num}</span>
                   <h3 className="text-lg font-serif text-white mt-3 mb-2">{e.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{e.desc}</p>
+                  <p className="text-gray-400 text-sm leading-relaxed">{e.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -684,26 +684,26 @@ export default function Membresia() {
           </FadeIn>
 
           <FadeIn>
-            <div className="max-w-5xl mx-auto bg-gradient-to-br from-[oklch(0.15_0.03_250)] to-[oklch(0.12_0.03_250)] border border-primary/20 rounded-2xl p-8 md:p-12">
+            <div className="max-w-5xl mx-auto bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-200 rounded-2xl p-8 md:p-12">
               <div className="flex flex-col md:flex-row gap-10 items-start">
                 {/* Photo */}
                 <div className="flex-shrink-0 mx-auto md:mx-0">
                   <img
                     src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png"
                     alt="Edmundo Treviño"
-                    className="w-48 h-56 md:w-56 md:h-64 rounded-xl object-cover border-2 border-primary/20 shadow-lg shadow-primary/10"
+                    className="w-48 h-56 md:w-56 md:h-64 rounded-xl object-cover border-2 border-blue-200 shadow-lg shadow-primary/10"
                   />
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-3xl md:text-4xl font-serif text-white mb-2">
+                  <h3 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-2">
                     Edmundo Treviño
                   </h3>
                   <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6">
                     Director General
                   </p>
-                  <p className="text-white/70 text-lg leading-relaxed mb-8">
+                  <p className="text-gray-500 text-lg leading-relaxed mb-8">
                     Empresario serial, fundador y CEO de 9 empresas operando en Estados Unidos. Apasionado por trascender conquistando el mercado americano.
                   </p>
 
@@ -719,19 +719,19 @@ export default function Membresia() {
                         <span className="flex-shrink-0 w-5 h-5 rounded-full border border-primary/40 flex items-center justify-center mt-0.5">
                           <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                         </span>
-                        <span className="text-white/70 text-sm leading-relaxed">{item}</span>
+                        <span className="text-gray-500 text-sm leading-relaxed">{item}</span>
                       </li>
                     ))}
                   </ul>
 
                   <div className="flex flex-wrap gap-4">
                     <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
-                      <Button className="bg-primary hover:bg-primary/90 text-white px-6 py-3 text-sm gap-2">
+                      <Button className="bg-primary hover:bg-blue-700 text-white px-6 py-3 text-sm gap-2">
                         Conoce más <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
                     <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
-                      <Button variant="outline" className="border-white/20 text-white hover:bg-white/5 px-6 py-3 text-sm gap-2">
+                      <Button variant="outline" className="border-gray-300 text-white hover:bg-gray-50 px-6 py-3 text-sm gap-2">
                         Agendar Asesoría 1:1 <ArrowRight className="w-4 h-4" />
                       </Button>
                     </a>
@@ -754,21 +754,21 @@ export default function Membresia() {
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
                 ¿Estás listo?
               </h2>
-              <p className="text-white/60 leading-relaxed mb-4">
+              <p className="text-gray-500 leading-relaxed mb-4">
                 Si entiendes que invertir en Estados Unidos requiere estructura,
                 el siguiente paso es validar tu encaje.
               </p>
-              <p className="text-white/40 text-sm mb-10">
+              <p className="text-gray-400 text-sm mb-10">
                 No es pagar. Es evaluar si perteneces al grupo.
               </p>
               <Button
                 onClick={() =>
                   openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)
                 }
-                className="bg-primary hover:bg-primary/90 text-white font-semibold px-10 py-6 text-lg gap-2"
+                className="bg-primary hover:bg-blue-700 text-white font-semibold px-10 py-6 text-lg gap-2"
               >
                 Solicitar Evaluación{" "}
                 <ArrowRight className="w-5 h-5" />

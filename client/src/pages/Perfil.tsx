@@ -244,7 +244,7 @@ export default function Perfil() {
                 <div className="max-w-5xl mx-auto">
                   {/* Video */}
                   <div className="mb-12">
-                    <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl">
+                    <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-black shadow-2xl">
                       <video
                         src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439233/comprando-america/YalfpoAHGGBHORwE.mp4"
                         controls
@@ -256,7 +256,7 @@ export default function Perfil() {
 
                   {/* Autoridad */}
                   <div className="text-center mb-12">
-                    <p className="text-white/60 text-sm mb-6">
+                    <p className="text-gray-500 text-sm mb-6">
                       <span className="font-semibold text-white">Edmundo Treviño</span><br />
                       Empresario con operaciones activas en Estados Unidos y fundador de Comprando América.
                     </p>
@@ -264,11 +264,11 @@ export default function Perfil() {
 
                   {/* Título y CTA */}
                   <div className="text-center">
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
                       Diagnóstico de{" "}
                       <span className="gradient-text-primary">Inversionista</span>
                     </h1>
-                    <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl mx-auto">
+                    <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-10 max-w-2xl mx-auto">
                       Descubre tu perfil de inversión y accede a oportunidades diseñadas específicamente para ti.
                     </p>
                     <a href="#formulario">
@@ -287,13 +287,13 @@ export default function Perfil() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-3xl mx-auto">
-                  <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+                  <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
                     ¿Qué es Comprando América?
                   </h2>
-                  <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8">
                     Comprando América es una comunidad privada de empresarios e inversionistas que buscan expandir su patrimonio y adquirir oportunidades de negocio en Estados Unidos.
                   </p>
-                  <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8">
                     Dentro de la comunidad tendrás acceso a:
                   </p>
                   <ul className="space-y-4">
@@ -305,7 +305,7 @@ export default function Perfil() {
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-white/70">{item}</span>
+                        <span className="text-gray-500">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -319,13 +319,13 @@ export default function Perfil() {
             <div className="container">
               <FadeIn>
                 <div className="max-w-3xl mx-auto">
-                  <h2 className="text-3xl md:text-4xl font-serif text-white mb-12">
+                  <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-12">
                     Empresarios que ya forman parte de la comunidad
                   </h2>
                   
                   <div className="grid md:grid-cols-2 gap-12 mb-12">
                     <div>
-                      <h3 className="text-lg font-semibold text-white mb-6">Sectores de inversión</h3>
+                      <h3 className="text-lg font-semibold text-[#0B1F3A] mb-6">Sectores de inversión</h3>
                       <ul className="space-y-3">
                         {[
                           "Servicios industriales",
@@ -336,14 +336,14 @@ export default function Perfil() {
                         ].map((sector, i) => (
                           <li key={i} className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-primary" />
-                            <span className="text-white/70">{sector}</span>
+                            <span className="text-gray-500">{sector}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
                     <div>
-                      <h3 className="text-lg font-semibold text-white mb-6">Ciudades principales</h3>
+                      <h3 className="text-lg font-semibold text-[#0B1F3A] mb-6">Ciudades principales</h3>
                       <ul className="space-y-3">
                         {[
                           "Ciudad de México",
@@ -353,7 +353,7 @@ export default function Perfil() {
                         ].map((city, i) => (
                           <li key={i} className="flex items-center gap-3">
                             <div className="w-2 h-2 rounded-full bg-primary" />
-                            <span className="text-white/70">{city}</span>
+                            <span className="text-gray-500">{city}</span>
                           </li>
                         ))}
                       </ul>
@@ -368,17 +368,17 @@ export default function Perfil() {
           <section className="section-darker py-24 md:py-32">
             <div className="container">
               <FadeIn>
-                <div className="max-w-3xl mx-auto bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-2xl p-8 md:p-12">
-                  <h2 className="text-2xl md:text-3xl font-serif text-white mb-6">
+                <div className="max-w-3xl mx-auto bg-[#F5F7FA] border border-blue-200 rounded-2xl p-8 md:p-12">
+                  <h2 className="text-2xl md:text-3xl font-serif text-[#0B1F3A] mb-6">
                     Acceso limitado a inversionistas calificados
                   </h2>
-                  <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8">
                     La comunidad Comprando América mantiene un proceso de admisión para asegurar que todos los miembros compartan un perfil empresarial y objetivos alineados.
                   </p>
-                  <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8">
                     Por esta razón realizamos una breve evaluación antes de compartir las oportunidades que trabajamos dentro de la comunidad.
                   </p>
-                  <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8">
                     Solo los perfiles compatibles reciben acceso a:
                   </p>
                   <ul className="space-y-4">
@@ -389,7 +389,7 @@ export default function Perfil() {
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-white/70">{item}</span>
+                        <span className="text-gray-500">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -409,11 +409,11 @@ export default function Perfil() {
                       <span className="text-white font-semibold">
                         Paso {currentStep} de 3
                       </span>
-                      <span className="text-white/60 text-sm">
+                      <span className="text-gray-500 text-sm">
                         {Math.round(progressPercentage)}% completado
                       </span>
                     </div>
-                    <div className="w-full bg-[oklch(0.15_0.03_250)] rounded-full h-2 overflow-hidden">
+                    <div className="w-full bg-[#F5F7FA] rounded-full h-2 overflow-hidden">
                       <div
                         className="bg-primary h-full transition-all duration-300"
                         style={{ width: `${progressPercentage}%` }}
@@ -422,21 +422,21 @@ export default function Perfil() {
                   </div>
 
                   <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+                    <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
                       Evaluación de Perfil de Inversionista
                     </h2>
-                    <p className="text-lg text-white/70 leading-relaxed mb-2">
+                    <p className="text-lg text-gray-500 leading-relaxed mb-2">
                       Este proceso toma menos de 60 segundos.
                     </p>
                   </div>
 
-                  <form onSubmit={handleSubmit} className="space-y-8 bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-2xl p-8">
+                  <form onSubmit={handleSubmit} className="space-y-8 bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8">
                     {/* PASO 1 - OBJETIVOS */}
                     {currentStep === 1 && (
                       <>
                         {/* Pregunta 1 */}
                         <div>
-                          <label className="block text-lg font-semibold text-white mb-4">
+                          <label className="block text-lg font-semibold text-[#0B1F3A] mb-4">
                             ¿Cuál es tu principal objetivo al invertir en Estados Unidos?
                           </label>
                           <div className="space-y-3">
@@ -447,7 +447,7 @@ export default function Perfil() {
                               { value: "migracion", label: "Evaluar opciones migratorias mediante inversión" },
                               { value: "conocer", label: "Conocer oportunidades de compra de negocios" },
                             ].map((option) => (
-                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[oklch(0.10_0.03_250)] transition">
+                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F5F7FA] transition">
                                 <input
                                   type="radio"
                                   name="objetivo"
@@ -456,7 +456,7 @@ export default function Perfil() {
                                   onChange={(e) => handleAnswerChange("objetivo", e.target.value)}
                                   className="w-4 h-4"
                                 />
-                                <span className="text-white/70">{option.label}</span>
+                                <span className="text-gray-500">{option.label}</span>
                               </label>
                             ))}
                           </div>
@@ -464,7 +464,7 @@ export default function Perfil() {
 
                         {/* Pregunta 2 */}
                         <div>
-                          <label className="block text-lg font-semibold text-white mb-4">
+                          <label className="block text-lg font-semibold text-[#0B1F3A] mb-4">
                             ¿En qué etapa te encuentras actualmente?
                           </label>
                           <div className="space-y-3">
@@ -475,7 +475,7 @@ export default function Perfil() {
                               { value: "analizando", label: "Analizando oportunidades activamente" },
                               { value: "yainvirtio", label: "Ya he realizado inversiones en Estados Unidos" },
                             ].map((option) => (
-                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[oklch(0.10_0.03_250)] transition">
+                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F5F7FA] transition">
                                 <input
                                   type="radio"
                                   name="etapa"
@@ -484,13 +484,13 @@ export default function Perfil() {
                                   onChange={(e) => handleAnswerChange("etapa", e.target.value)}
                                   className="w-4 h-4"
                                 />
-                                <span className="text-white/70">{option.label}</span>
+                                <span className="text-gray-500">{option.label}</span>
                               </label>
                             ))}
                           </div>
                         </div>
 
-                        <div className="pt-6 border-t border-white/10 flex gap-4">
+                        <div className="pt-6 border-t border-gray-200 flex gap-4">
                           <Button
                             type="button"
                             onClick={() => {
@@ -513,7 +513,7 @@ export default function Perfil() {
                       <>
                         {/* Pregunta 3 */}
                         <div>
-                          <label className="block text-lg font-semibold text-white mb-4">
+                          <label className="block text-lg font-semibold text-[#0B1F3A] mb-4">
                             ¿Qué tipo de inversionista eres?
                           </label>
                           <div className="space-y-3">
@@ -523,7 +523,7 @@ export default function Perfil() {
                               { value: "operador", label: "Inversionista operador" },
                               { value: "explorando", label: "Aún estoy explorando" },
                             ].map((option) => (
-                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[oklch(0.10_0.03_250)] transition">
+                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F5F7FA] transition">
                                 <input
                                   type="radio"
                                   name="tipoInversionista"
@@ -532,7 +532,7 @@ export default function Perfil() {
                                   onChange={(e) => handleAnswerChange("tipoInversionista", e.target.value)}
                                   className="w-4 h-4"
                                 />
-                                <span className="text-white/70">{option.label}</span>
+                                <span className="text-gray-500">{option.label}</span>
                               </label>
                             ))}
                           </div>
@@ -540,7 +540,7 @@ export default function Perfil() {
 
                         {/* Pregunta 4 */}
                         <div>
-                          <label className="block text-lg font-semibold text-white mb-4">
+                          <label className="block text-lg font-semibold text-[#0B1F3A] mb-4">
                             ¿Qué capacidad de inversión podrías destinar?
                           </label>
                           <div className="space-y-3">
@@ -550,7 +550,7 @@ export default function Perfil() {
                               { value: "500k-1m", label: "$500,000 – $1,000,000 dólares" },
                               { value: "1m", label: "Más de $1,000,000 dólares" },
                             ].map((option) => (
-                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[oklch(0.10_0.03_250)] transition">
+                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F5F7FA] transition">
                                 <input
                                   type="radio"
                                   name="capacidad"
@@ -559,18 +559,18 @@ export default function Perfil() {
                                   onChange={(e) => handleAnswerChange("capacidad", e.target.value)}
                                   className="w-4 h-4"
                                 />
-                                <span className="text-white/70">{option.label}</span>
+                                <span className="text-gray-500">{option.label}</span>
                               </label>
                             ))}
                           </div>
                         </div>
 
-                        <div className="pt-6 border-t border-white/10 flex gap-4">
+                        <div className="pt-6 border-t border-gray-200 flex gap-4">
                           <Button
                             type="button"
                             onClick={() => setCurrentStep(1)}
                             variant="outline"
-                            className="flex-1 border-white/20 text-white hover:bg-white/5 py-6 text-base"
+                            className="flex-1 border-gray-300 text-white hover:bg-gray-50 py-6 text-base"
                           >
                             Anterior
                           </Button>
@@ -596,13 +596,13 @@ export default function Perfil() {
                       <>
                         {/* Pregunta 5 */}
                         <div>
-                          <label className="block text-lg font-semibold text-white mb-4">
+                          <label className="block text-lg font-semibold text-[#0B1F3A] mb-4">
                             ¿Dónde resides actualmente?
                           </label>
                           <select
                             value={answers.residencia}
                             onChange={(e) => handleAnswerChange("residencia", e.target.value)}
-                            className="w-full bg-[oklch(0.10_0.03_250)] border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
+                            className="w-full bg-[#F5F7FA] border border-gray-200 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary"
                           >
                             <option value="">Selecciona tu ciudad</option>
                             {[
@@ -624,7 +624,7 @@ export default function Perfil() {
 
                         {/* Pregunta 6 */}
                         <div>
-                          <label className="block text-lg font-semibold text-white mb-4">
+                          <label className="block text-lg font-semibold text-[#0B1F3A] mb-4">
                             ¿Qué tan importante es para ti tener acceso a oportunidades filtradas y una red de empresarios en Estados Unidos?
                           </label>
                           <div className="space-y-3">
@@ -634,7 +634,7 @@ export default function Perfil() {
                               { value: "interesante", label: "Interesante pero no urgente" },
                               { value: "explorando", label: "Solo estoy explorando" },
                             ].map((option) => (
-                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[oklch(0.10_0.03_250)] transition">
+                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F5F7FA] transition">
                                 <input
                                   type="radio"
                                   name="importanciaRed"
@@ -643,7 +643,7 @@ export default function Perfil() {
                                   onChange={(e) => handleAnswerChange("importanciaRed", e.target.value)}
                                   className="w-4 h-4"
                                 />
-                                <span className="text-white/70">{option.label}</span>
+                                <span className="text-gray-500">{option.label}</span>
                               </label>
                             ))}
                           </div>
@@ -651,7 +651,7 @@ export default function Perfil() {
 
                         {/* Pregunta 7 */}
                         <div>
-                          <label className="block text-lg font-semibold text-white mb-4">
+                          <label className="block text-lg font-semibold text-[#0B1F3A] mb-4">
                             ¿Cuál es tu ingreso anual aproximado?
                           </label>
                           <div className="space-y-3">
@@ -661,7 +661,7 @@ export default function Perfil() {
                               { value: "500k-1m", label: "$500k – $1M" },
                               { value: "1m", label: "Más de $1M" },
                             ].map((option) => (
-                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[oklch(0.10_0.03_250)] transition">
+                              <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#F5F7FA] transition">
                                 <input
                                   type="radio"
                                   name="ingresoAnual"
@@ -670,18 +670,18 @@ export default function Perfil() {
                                   onChange={(e) => handleAnswerChange("ingresoAnual", e.target.value)}
                                   className="w-4 h-4"
                                 />
-                                <span className="text-white/70">{option.label}</span>
+                                <span className="text-gray-500">{option.label}</span>
                               </label>
                             ))}
                           </div>
                         </div>
 
-                        <div className="pt-6 border-t border-white/10 flex gap-4">
+                        <div className="pt-6 border-t border-gray-200 flex gap-4">
                           <Button
                             type="button"
                             onClick={() => setCurrentStep(2)}
                             variant="outline"
-                            className="flex-1 border-white/20 text-white hover:bg-white/5 py-6 text-base"
+                            className="flex-1 border-gray-300 text-white hover:bg-gray-50 py-6 text-base"
                           >
                             Anterior
                           </Button>
@@ -710,10 +710,10 @@ export default function Perfil() {
                 <div className="mb-8">
                   <Loader2 className="w-16 h-16 text-primary animate-spin mx-auto" />
                 </div>
-                <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">
+                <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-6">
                   Analizando tu perfil de inversionista…
                 </h2>
-                <p className="text-lg text-white/70 leading-relaxed mb-8">
+                <p className="text-lg text-gray-500 leading-relaxed mb-8">
                   Estamos evaluando si tu perfil es compatible con las oportunidades que trabajamos dentro de Comprando América.
                 </p>
               </div>
@@ -727,10 +727,10 @@ export default function Perfil() {
           <div className="container">
             <FadeIn>
               <div className="max-w-2xl mx-auto text-center">
-                <h2 className="text-4xl md:text-5xl font-serif text-white mb-6">
+                <h2 className="text-4xl md:text-5xl font-serif text-[#0B1F3A] mb-6">
                   Una pregunta más
                 </h2>
-                <p className="text-lg text-white/70 leading-relaxed mb-12">
+                <p className="text-lg text-gray-500 leading-relaxed mb-12">
                   ¿Estás listo para analizar oportunidades de inversión en los próximos 12 meses?
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -743,7 +743,7 @@ export default function Perfil() {
                   <Button
                     onClick={() => handleMicrocommitment(false)}
                     variant="outline"
-                    className="border-white/20 text-white hover:bg-white/5 font-semibold px-8 py-6 text-base"
+                    className="border-gray-300 text-white hover:bg-gray-50 font-semibold px-8 py-6 text-base"
                   >
                     Estoy explorando
                   </Button>
@@ -760,12 +760,12 @@ export default function Perfil() {
             <FadeIn>
               <div className="max-w-3xl mx-auto">
                 {/* Tarjeta de Resultado */}
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/10 rounded-2xl p-8 md:p-12 mb-12">
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 md:p-12 mb-12">
                   <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+                    <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
                       Tu Perfil de Inversión
                     </h2>
-                    <div className="inline-block bg-primary/20 rounded-full px-6 py-3 mb-8">
+                    <div className="inline-block bg-blue-100 rounded-full px-6 py-3 mb-8">
                       <p className="text-2xl font-semibold text-primary">
                         {scoringResult.profileType === "operador"
                           ? "Empresario Operador"
@@ -778,22 +778,22 @@ export default function Perfil() {
 
                   {/* Readiness Level */}
                   <div className="mb-12">
-                    <p className="text-white/70 text-sm mb-3">
+                    <p className="text-gray-500 text-sm mb-3">
                       Nivel de preparación para invertir
                     </p>
-                    <div className="w-full bg-[oklch(0.10_0.03_250)] rounded-full h-3 overflow-hidden mb-3">
+                    <div className="w-full bg-[#F5F7FA] rounded-full h-3 overflow-hidden mb-3">
                       <div
                         className="bg-gradient-to-r from-primary to-emerald-400 h-full transition-all duration-500"
                         style={{ width: `${scoringResult.readinessPercentage}%` }}
                       />
                     </div>
-                    <p className="text-white/60 text-sm">
+                    <p className="text-gray-500 text-sm">
                       {scoringResult.readinessLevel}
                     </p>
                   </div>
 
                   {/* Mensaje */}
-                  <p className="text-lg text-white/70 leading-relaxed mb-8 text-center">
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8 text-center">
                     {scoringResult.message}
                   </p>
 
@@ -804,7 +804,7 @@ export default function Perfil() {
                       {scoringResult.benefits.map((benefit, i) => (
                         <li key={i} className="flex items-start gap-3">
                           <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                          <span className="text-white/70">{benefit}</span>
+                          <span className="text-gray-500">{benefit}</span>
                         </li>
                       ))}
                     </ul>
@@ -813,13 +813,13 @@ export default function Perfil() {
 
                 {/* Siguiente Paso */}
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-serif text-white mb-4">
+                  <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">
                     Siguiente paso
                   </h3>
-                  <p className="text-lg text-white/70 leading-relaxed mb-8">
+                  <p className="text-lg text-gray-500 leading-relaxed mb-8">
                     Si deseas conocer las oportunidades que actualmente se están analizando dentro de la comunidad Comprando América, puedes agendar una conversación estratégica con nuestro equipo.
                   </p>
-                  <p className="text-white/60 text-sm mb-8">
+                  <p className="text-gray-500 text-sm mb-8">
                     Duración: 30 minutos
                   </p>
                 </div>
@@ -835,7 +835,7 @@ export default function Perfil() {
                   </div>
                 )}
 
-                <p className="text-white/50 text-sm mt-12 text-center">
+                <p className="text-gray-400 text-sm mt-12 text-center">
                   ¿Preguntas? Contáctanos en contact@comprandoamerica.com
                 </p>
               </div>

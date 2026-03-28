@@ -378,7 +378,7 @@ export default function MemberTestimonialSlider() {
           <h2 className="text-4xl md:text-5xl font-serif text-white mb-4">
             Lo que dicen los miembros de la comunidad
           </h2>
-          <p className="text-white/60 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto">
             Experiencias reales de empresarios que ya están ejecutando dentro de
             Comprando América
           </p>
@@ -386,7 +386,7 @@ export default function MemberTestimonialSlider() {
 
         {/* Video Testimonials */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-primary/20 shadow-lg shadow-primary/5">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-blue-200 shadow-lg shadow-primary/5">
             <iframe
               src="https://www.youtube.com/embed/WYNwoTzG8Ss"
               title="Testimonial - Miembro Comprando América"
@@ -395,7 +395,7 @@ export default function MemberTestimonialSlider() {
               className="absolute inset-0 w-full h-full"
             />
           </div>
-          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-primary/20 shadow-lg shadow-primary/5">
+          <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-blue-200 shadow-lg shadow-primary/5">
             <iframe
               src="https://www.youtube.com/embed/6J6IIPFsTD0"
               title="Testimonial - Miembro Comprando América"
@@ -415,7 +415,7 @@ export default function MemberTestimonialSlider() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.5 }}
-              className="bg-gradient-to-br from-[oklch(0.15_0.03_250)] to-[oklch(0.12_0.03_250)] border border-primary/20 rounded-2xl p-8 md:p-12"
+              className="bg-gradient-to-br from-[oklch(0.15_0.03_250)] to-[oklch(0.12_0.03_250)] border border-blue-200 rounded-2xl p-8 md:p-12"
             >
               <div className="flex flex-col md:flex-row gap-8 items-center">
                 {/* Avatar */}
@@ -440,7 +440,7 @@ export default function MemberTestimonialSlider() {
                     </p>
                   </div>
 
-                  <blockquote className="text-white/80 text-lg leading-relaxed italic">
+                  <blockquote className="text-gray-700 text-lg leading-relaxed italic">
                     "{currentTestimonial.quote}"
                   </blockquote>
                 </div>
@@ -494,7 +494,7 @@ export default function MemberTestimonialSlider() {
 
           {/* Counter */}
           <div className="text-center mt-6">
-            <p className="text-white/40 text-sm">
+            <p className="text-gray-400 text-sm">
               {currentIndex + 1} de {testimonials.length} miembros • Autoplay activado
             </p>
           </div>

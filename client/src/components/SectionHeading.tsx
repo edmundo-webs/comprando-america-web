@@ -29,7 +29,7 @@ export default function SectionHeading({ tag, title, subtitle, align = "center",
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-4 text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
           {subtitle}
         </p>
       )}

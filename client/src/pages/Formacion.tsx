@@ -26,18 +26,18 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 // ─── Module Card ───
 function ModuleCard({ number, title, topics }: { number: string; title: string; topics: string[] }) {
   return (
-    <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 hover:border-primary/30 transition-all duration-500 h-full">
+    <div className="group relative bg-[#F5F7FA] border border-gray-200 rounded-xl p-8 hover:border-blue-300 transition-all duration-500 h-full">
       <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
       <div className="relative">
-        <div className="w-14 h-14 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+        <div className="w-14 h-14 rounded-lg bg-blue-50 text-primary flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
           <span className="text-xl font-bold">{number}</span>
         </div>
-        <h3 className="text-xl font-serif text-white mb-6">{title}</h3>
+        <h3 className="text-xl font-serif text-[#0B1F3A] mb-6">{title}</h3>
         <ul className="space-y-3">
           {topics.map((topic, i) => (
             <li key={i} className="flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-1" />
-              <span className="text-white/70 text-sm">{topic}</span>
+              <span className="text-gray-500 text-sm">{topic}</span>
             </li>
           ))}
         </ul>
@@ -122,14 +122,14 @@ export default function Formacion() {
               <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Educación Estratégica
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
                 Aprende Cómo Invertir en{" "}
                 <span className="gradient-text-primary">Estados Unidos</span> con Expertos
               </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8 max-w-2xl">
+              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-8 max-w-2xl">
                 Como miembro de Comprando América, accedes a una formación estratégica diseñada exclusivamente para latinos que quieren invertir, expandirse o establecerse en Estados Unidos con respaldo y visión empresarial.
               </p>
-              <p className="text-base text-white/60 leading-relaxed mb-10 max-w-2xl">
+              <p className="text-base text-gray-500 leading-relaxed mb-10 max-w-2xl">
                 Este contenido grabado forma parte de tu membresía anual y te entrega las bases que necesitas para tomar decisiones informadas, entender las estructuras legales y financieras del mercado, y avanzar con acompañamiento real.
               </p>
               <a href="#formulario">
@@ -144,7 +144,7 @@ export default function Formacion() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               className="hidden lg:block"
             >
-              <div className="relative rounded-2xl overflow-hidden border border-white/10">
+              <div className="relative rounded-2xl overflow-hidden border border-gray-200">
                 <img
                   src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439256/comprando-america/gIkDHHfSsRMuETsG.png"
                   alt="Educación Estratégica"
@@ -214,9 +214,9 @@ export default function Formacion() {
               }
             ].map((benefit, i) => (
               <FadeIn key={benefit.title} delay={i * 0.05}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500">
-                  <h3 className="text-lg font-serif text-white mb-3">{benefit.title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">{benefit.description}</p>
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 hover:border-blue-300 transition-all duration-500">
+                  <h3 className="text-lg font-serif text-[#0B1F3A] mb-3">{benefit.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">{benefit.description}</p>
                 </div>
               </FadeIn>
             ))}
@@ -228,11 +228,11 @@ export default function Formacion() {
       <section className="section-darker py-24 md:py-32">
         <div className="container">
           <FadeIn>
-            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-12 md:p-16 text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+            <div className="bg-gradient-to-r from-primary/10 to-emerald/10 border border-blue-200 rounded-2xl p-12 md:p-16 text-center">
+              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
                 ¿Listo para Comenzar tu Formación?
               </h2>
-              <p className="text-white/70 text-lg mb-8 max-w-2xl mx-auto">
+              <p className="text-gray-500 text-lg mb-8 max-w-2xl mx-auto">
                 Completa el formulario y accede a toda la información sobre nuestro programa educativo. Nuestro equipo se pondrá en contacto contigo para guiarte en el siguiente paso.
               </p>
               <a href="https://comprandoamerica.com/formacion/" target="_blank" rel="noopener noreferrer">
@@ -251,10 +251,10 @@ export default function Formacion() {
           <div className="max-w-2xl mx-auto">
             <FadeIn>
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+                <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
                   ¿Quieres Saber si Puedes Formar Parte?
                 </h2>
-                <p className="text-white/60">
+                <p className="text-gray-500">
                   Completa el formulario y déjanos acompañarte en tu ingreso al mercado estadounidense con estrategia, respaldo y visión a largo plazo.
                 </p>
               </div>

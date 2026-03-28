@@ -44,10 +44,10 @@ export default function ExpansionInternacional() {
               <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Internacionalización
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
                 Expansión Internacional: Lleva tu Negocio más Allá de las Fronteras
               </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
+              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-10 max-w-2xl">
                 El crecimiento local tiene límites. Si ya consolidaste tu modelo y estás buscando nuevas oportunidades, la expansión internacional es el siguiente paso lógico y estratégico.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -62,7 +62,7 @@ export default function ExpansionInternacional() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               className="hidden lg:block"
             >
-              <div className="relative rounded-2xl overflow-hidden border-4 border-primary/30">
+              <div className="relative rounded-2xl overflow-hidden border-4 border-blue-300">
                 <img
                   src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439196/comprando-america/UuPRQKelKRuzBwXd.jpg"
                   alt="Expansión Internacional de Empresas"
@@ -95,14 +95,14 @@ export default function ExpansionInternacional() {
               { icon: <Shield className="w-6 h-6" />, title: "Acceso a Recursos", desc: "Talento, tecnología y condiciones fiscales favorables" },
             ].map((item, i) => (
               <FadeIn key={item.title} delay={i * 0.1}>
-                <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
+                <div className="group relative bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 hover:border-blue-300 transition-all duration-500 h-full">
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
                   <div className="relative">
-                    <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <div className="w-12 h-12 rounded-lg bg-blue-50 text-primary flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
                       {item.icon}
                     </div>
-                    <h3 className="text-lg font-serif text-white mb-3">{item.title}</h3>
-                    <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                    <h3 className="text-lg font-serif text-[#0B1F3A] mb-3">{item.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               </FadeIn>
@@ -127,13 +127,13 @@ export default function ExpansionInternacional() {
               { num: "04", title: "Estructura Legal", desc: "Alianzas y estructuras legales en el nuevo país" },
             ].map((item, i) => (
               <FadeIn key={item.num} delay={i * 0.1}>
-                <div className="relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 hover:border-primary/30 transition-all duration-500 group">
+                <div className="relative bg-[#F5F7FA] border border-gray-200 rounded-xl p-8 hover:border-blue-300 transition-all duration-500 group">
                   <span className="stat-number text-5xl text-white/5 absolute top-4 right-4 group-hover:text-primary/10 transition-colors">{item.num}</span>
-                  <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-blue-50 text-primary flex items-center justify-center mb-4">
                     <Briefcase className="w-6 h-6" />
                   </div>
-                  <h3 className="text-xl font-serif text-white mb-3">{item.title}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="text-xl font-serif text-[#0B1F3A] mb-3">{item.title}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -160,13 +160,13 @@ export default function ExpansionInternacional() {
               <FadeIn key={item.step} delay={i * 0.1}>
                 <div className="flex gap-6 items-start">
                   <div className="flex-shrink-0">
-                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-primary/20 text-primary font-serif font-bold text-lg">
+                    <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100 text-primary font-serif font-bold text-lg">
                       {item.step}
                     </div>
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-serif text-white mb-2">{item.title}</h3>
-                    <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+                    <h3 className="text-lg font-serif text-[#0B1F3A] mb-2">{item.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               </FadeIn>
@@ -179,11 +179,11 @@ export default function ExpansionInternacional() {
       <section className="section-darker py-24 md:py-32">
         <div className="container">
           <FadeIn>
-            <div className="bg-gradient-to-r from-emerald/10 to-gold/10 border border-primary/20 rounded-2xl p-8 md:p-12">
+            <div className="bg-gradient-to-r from-emerald/10 to-gold/10 border border-blue-200 rounded-2xl p-8 md:p-12">
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-6">Inversionistas: Conviertan la Expansión en su Ventaja</h3>
-                  <p className="text-white/70 mb-6 leading-relaxed">
+                  <h3 className="text-2xl md:text-3xl font-serif text-[#0B1F3A] mb-6">Inversionistas: Conviertan la Expansión en su Ventaja</h3>
+                  <p className="text-gray-500 mb-6 leading-relaxed">
                     Invertir en empresas en fase de crecimiento empresarial global permite entrar en etapas estratégicas con gran potencial de retorno.
                   </p>
                   <ul className="space-y-4">
@@ -195,13 +195,13 @@ export default function ExpansionInternacional() {
                     ].map((benefit) => (
                       <li key={benefit} className="flex items-start gap-3">
                         <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                        <span className="text-white/70">{benefit}</span>
+                        <span className="text-gray-500">{benefit}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div className="flex flex-col justify-center items-center">
-                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-6 text-center">¿Quieres Explorar Oportunidades?</h3>
+                  <h3 className="text-2xl md:text-3xl font-serif text-[#0B1F3A] mb-6 text-center">¿Quieres Explorar Oportunidades?</h3>
                   <a href="/#membresia" className="inline-block">
                     <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">
                       Validar tu encaje <ArrowRight className="w-4 h-4" />
@@ -242,7 +242,7 @@ export default function ExpansionInternacional() {
                   <AccordionTrigger className="text-white hover:text-primary transition-colors">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-white/70">
+                  <AccordionContent className="text-gray-500">
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -257,10 +257,10 @@ export default function ExpansionInternacional() {
         <div className="container">
           <FadeIn>
             <div className="text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-6">
                 No Esperes a que el Mercado Cambie: Anticípate con Expansión Internacional
               </h2>
-              <p className="text-white/70 text-lg leading-relaxed mb-10">
+              <p className="text-gray-500 text-lg leading-relaxed mb-10">
                 Si estás pensando en llevar tu empresa a otro nivel o buscas en qué invertir con proyección real, la expansión internacional puede ser tu mayor acierto. En Comprando América, ayudamos a inversores y empresarios latinoamericanos a preparar, estructurar y ejecutar su salto al mercado global.
               </p>
               <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">

@@ -1,5 +1,5 @@
 /*
- * Home 2026 — Rediseño completo
+ * Home 2026 — Reskin: Light theme, Inter + Manrope, Blue #2563EB
  * 10 bloques: Hero → Vitrina → Membresía → Visa E-2 → Oportunidades →
  * Estructura → Eventos → Recursos → Autoridad → CTA Final
  */
@@ -80,7 +80,7 @@ export default function Home() {
       <SEOHead />
       <Navbar />
 
-      {/* ═══ 1. HERO ═══ */}
+      {/* ═══ 1. HERO (dark — keeps impact) ═══ */}
       <section className="relative min-h-screen flex items-center">
         <div className="absolute inset-0">
           <img
@@ -88,8 +88,8 @@ export default function Home() {
             alt="Skyline"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.03_250/0.92)] via-[oklch(0.10_0.03_250/0.85)] to-[oklch(0.08_0.03_250/0.70)]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-transparent" />
         </div>
 
         <div className="container relative z-10 pt-28 pb-20">
@@ -99,10 +99,10 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+              <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Membresía Privada para Inversionistas
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl text-white leading-[1.1] mb-6">
                 Invierte en Estados Unidos con{" "}
                 <span className="gradient-text-primary">
                   criterio, estructura
@@ -122,7 +122,7 @@ export default function Home() {
                   "Acceso por perfil (no por curiosidad)",
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-2 text-white/80">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                    <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
                     <span className="text-sm">{item}</span>
                   </div>
                 ))}
@@ -130,14 +130,14 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
                 <a href="/membresia">
-                  <Button className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto shadow-lg shadow-primary/20">
+                  <Button className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto shadow-lg shadow-blue-600/20">
                     Conocer la Membresía <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/perfil">
                   <Button
                     variant="outline"
-                    className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base w-full sm:w-auto"
+                    className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-base w-full sm:w-auto"
                   >
                     Evaluar mi Perfil
                   </Button>
@@ -146,10 +146,9 @@ export default function Home() {
 
               <a
                 href="/bienes-raices-en-usa"
-                className="inline-flex items-center gap-1 text-primary text-sm hover:text-primary/80 transition-colors"
+                className="inline-flex items-center gap-1 text-blue-400 text-sm hover:text-blue-300 transition-colors"
               >
-                Ver oportunidades abiertas{" "}
-                <ArrowRight className="w-3 h-3" />
+                Ver oportunidades abiertas <ArrowRight className="w-3 h-3" />
               </a>
 
               <p className="text-white/40 text-xs mt-6 max-w-lg">
@@ -162,17 +161,17 @@ export default function Home() {
 
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 80" fill="none" className="w-full">
-            <path d="M0 80L1440 20V80H0Z" fill="oklch(0.12 0.03 250)" />
+            <path d="M0 80L1440 20V80H0Z" fill="#F5F7FA" />
           </svg>
         </div>
       </section>
 
       {/* ═══ 2. VITRINA DE DECISIÓN ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#0B1F3A]">
                 Elige tu ruta en 30 segundos
               </h2>
             </div>
@@ -213,17 +212,17 @@ export default function Home() {
               <FadeIn key={i} delay={i * 0.08}>
                 <a href={card.href} className="block h-full">
                   <div
-                    className={`bg-[oklch(0.15_0.03_250)] border rounded-xl p-6 h-full hover:border-primary/40 transition-all duration-300 group ${
+                    className={`bg-white border rounded-xl p-6 h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group ${
                       card.highlight
-                        ? "border-primary/30 ring-1 ring-primary/10"
-                        : "border-white/5"
+                        ? "border-primary/30 ring-1 ring-primary/10 shadow-md"
+                        : "border-gray-200 shadow-sm"
                     }`}
                   >
                     <card.icon className="w-8 h-8 text-primary mb-4" />
-                    <h3 className="text-lg font-serif text-white mb-2">
+                    <h3 className="text-lg font-bold text-[#0B1F3A] mb-2">
                       {card.title}
                     </h3>
-                    <p className="text-white/50 text-sm leading-relaxed mb-4">
+                    <p className="text-gray-500 text-sm leading-relaxed mb-4">
                       {card.desc}
                     </p>
                     <span className="text-primary text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
@@ -238,14 +237,14 @@ export default function Home() {
       </section>
 
       {/* ═══ 3. MEMBRESÍA ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Producto estrella
               </p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-6">
                 La Membresía es el núcleo del ecosistema
               </h2>
               <p className="text-white/60 text-lg leading-relaxed mb-8">
@@ -262,7 +261,7 @@ export default function Home() {
                   "Acompañamiento estratégico para estructurar y avanzar",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                     <p className="text-white/70">{item}</p>
                   </div>
                 ))}
@@ -270,15 +269,14 @@ export default function Home() {
 
               <div className="flex flex-wrap gap-4 mb-6">
                 <a href="/membresia">
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-primary/20">
-                    Quiero conocer la Membresía{" "}
-                    <ArrowRight className="w-4 h-4" />
+                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                    Quiero conocer la Membresía <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/perfil">
                   <Button
                     variant="outline"
-                    className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base"
+                    className="border-white/20 text-white hover:bg-white/10 px-8 py-6 text-base"
                   >
                     Evaluar mi Perfil
                   </Button>
@@ -294,14 +292,14 @@ export default function Home() {
       </section>
 
       {/* ═══ 4. VISA E-2 FAQ ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
                 Visa E-2: las 3 preguntas que más nos hacen
               </h2>
-              <p className="text-white/60 text-lg leading-relaxed mb-10">
+              <p className="text-gray-500 text-lg leading-relaxed mb-10">
                 La visa E-2 no se "tramita" como un formulario. Se construye a
                 partir de una estructura de inversión y negocio bien diseñada.
               </p>
@@ -324,12 +322,12 @@ export default function Home() {
                   <AccordionItem
                     key={i}
                     value={`visa-faq-${i}`}
-                    className="bg-[oklch(0.15_0.03_250)] border border-white/10 rounded-xl px-6"
+                    className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-6"
                   >
-                    <AccordionTrigger className="text-white text-left hover:no-underline py-5">
+                    <AccordionTrigger className="text-[#0B1F3A] text-left hover:no-underline py-5">
                       {faq.q}
                     </AccordionTrigger>
-                    <AccordionContent className="text-white/60 leading-relaxed pb-5">
+                    <AccordionContent className="text-gray-500 leading-relaxed pb-5">
                       {faq.a}
                     </AccordionContent>
                   </AccordionItem>
@@ -338,17 +336,15 @@ export default function Home() {
 
               <div className="flex flex-wrap gap-4">
                 <a href="/visa-e2-inversion-en-estados-unidos">
-                  <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
-                    Ver guía completa de Visa E-2{" "}
-                    <ArrowRight className="w-4 h-4" />
+                  <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+                    Ver guía completa de Visa E-2 <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a
                   href="/perfil"
-                  className="inline-flex items-center gap-1 text-primary text-sm hover:text-primary/80 transition-colors self-center"
+                  className="inline-flex items-center gap-1 text-primary text-sm hover:text-blue-700 transition-colors self-center"
                 >
-                  Evaluar mi Perfil para este camino{" "}
-                  <ArrowRight className="w-3 h-3" />
+                  Evaluar mi Perfil para este camino <ArrowRight className="w-3 h-3" />
                 </a>
               </div>
             </div>
@@ -357,14 +353,14 @@ export default function Home() {
       </section>
 
       {/* ═══ 5. OPORTUNIDADES ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
                 Oportunidades de inversión en Estados Unidos
               </h2>
-              <p className="text-white/60 text-lg leading-relaxed">
+              <p className="text-gray-500 text-lg leading-relaxed">
                 Mostramos oportunidades solo cuando tienen estructura y sentido.
                 El capital importa, pero el perfil decide.
               </p>
@@ -372,29 +368,27 @@ export default function Home() {
           </FadeIn>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-8">
-            {/* Card 1 — Abierta */}
             <FadeIn>
-              <div className="bg-[oklch(0.15_0.03_250)] border border-primary/20 rounded-xl p-8 h-full">
-                <span className="inline-block bg-primary/20 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-4">
+              <div className="bg-white border border-primary/20 rounded-xl p-8 h-full shadow-sm">
+                <span className="inline-block bg-blue-50 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-4">
                   Abierta ahora
                 </span>
-                <h3 className="text-xl font-serif text-white mb-3">
+                <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">
                   Fondo de Bienes Raíces en Estados Unidos
                 </h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-6">
+                <p className="text-gray-500 text-sm leading-relaxed mb-6">
                   Una vía patrimonial para inversionistas que buscan exposición
                   inmobiliaria con estructura y acompañamiento.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <a href="/bienes-raices-en-usa">
-                    <Button className="bg-primary hover:bg-primary/90 text-white gap-2 text-sm">
-                      Ver detalles del fondo{" "}
-                      <ArrowRight className="w-3 h-3" />
+                    <Button className="bg-primary hover:bg-blue-700 text-white gap-2 text-sm">
+                      Ver detalles del fondo <ArrowRight className="w-3 h-3" />
                     </Button>
                   </a>
                   <a
                     href="/perfil"
-                    className="inline-flex items-center gap-1 text-primary text-sm hover:text-primary/80 transition-colors self-center"
+                    className="inline-flex items-center gap-1 text-primary text-sm hover:text-blue-700 transition-colors self-center"
                   >
                     Evaluar mi Perfil <ArrowRight className="w-3 h-3" />
                   </a>
@@ -402,26 +396,24 @@ export default function Home() {
               </div>
             </FadeIn>
 
-            {/* Card 2 — Próxima */}
             <FadeIn delay={0.1}>
-              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 h-full relative overflow-hidden">
-                <span className="inline-block bg-white/10 text-white/50 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+              <div className="bg-white border border-gray-200 rounded-xl p-8 h-full shadow-sm">
+                <span className="inline-block bg-gray-100 text-gray-400 text-xs font-semibold px-3 py-1 rounded-full mb-4">
                   Próximamente
                 </span>
-                <h3 className="text-xl font-serif text-white mb-3">
+                <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">
                   Growth Partner
                 </h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-6">
+                <p className="text-gray-500 text-sm leading-relaxed mb-6">
                   Oportunidad en desarrollo. Acceso sujeto a perfil y alineación
                   con la estrategia.
                 </p>
                 <a href="/perfil">
                   <Button
                     variant="outline"
-                    className="border-white/20 text-white hover:bg-white/5 gap-2 text-sm"
+                    className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 gap-2 text-sm"
                   >
-                    Sumarme a lista prioritaria{" "}
-                    <ArrowRight className="w-3 h-3" />
+                    Sumarme a lista prioritaria <ArrowRight className="w-3 h-3" />
                   </Button>
                 </a>
               </div>
@@ -429,7 +421,7 @@ export default function Home() {
           </div>
 
           <FadeIn>
-            <p className="text-white/40 text-sm text-center max-w-xl mx-auto">
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto">
               Acceso sujeto a criterios de perfil, experiencia e intención (aun
               con capital disponible).
             </p>
@@ -438,18 +430,18 @@ export default function Home() {
       </section>
 
       {/* ═══ 6. ESTRUCTURA EMPRESARIAL ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
                 Estructura Empresarial en Estados Unidos
               </h2>
               <p className="text-primary text-sm font-semibold mb-6">
                 Abrir una empresa no es el objetivo. Es el primer paso para
                 operar o invertir con orden.
               </p>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">
+              <p className="text-gray-500 text-lg leading-relaxed mb-8">
                 Te ayudamos a construir una base empresarial clara: desde abrir
                 tu entidad, hasta preparar lo necesario para operar o invertir
                 con estrategia.
@@ -465,16 +457,15 @@ export default function Home() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-white/70">{item}</p>
+                    <p className="text-gray-600">{item}</p>
                   </div>
                 ))}
               </div>
 
               <div className="flex flex-wrap gap-4">
                 <a href="/estructura-de-inversion-en-usa">
-                  <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
-                    Ver Estructura Empresarial{" "}
-                    <ArrowRight className="w-4 h-4" />
+                  <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
+                    Ver Estructura Empresarial <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <Button
@@ -485,7 +476,7 @@ export default function Home() {
                       "Hola, me interesa estructurar mi empresa en Estados Unidos."
                     )
                   }
-                  className="border-white/20 text-white hover:bg-white/5 gap-2"
+                  className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 gap-2"
                 >
                   Evaluar mi Perfil
                 </Button>
@@ -496,14 +487,14 @@ export default function Home() {
       </section>
 
       {/* ═══ 7. EVENTOS ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
                 Eventos y experiencias en terreno
               </h2>
-              <p className="text-white/60 text-lg leading-relaxed">
+              <p className="text-gray-500 text-lg leading-relaxed">
                 Hay decisiones que no se toman desde una pantalla. Se toman
                 viendo activos, con contexto y con las personas correctas.
               </p>
@@ -512,17 +503,17 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
-              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 h-full hover:border-primary/20 transition-all">
+              <div className="bg-white border border-gray-200 rounded-xl p-8 h-full shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                 <MapPin className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-xl font-serif text-white mb-3">
+                <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">
                   Ruta Inmobiliaria en Estados Unidos
                 </h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-6">
+                <p className="text-gray-500 text-sm leading-relaxed mb-6">
                   Un evento presencial para entender oportunidades de bienes
                   raíces con estructura, criterio y networking.
                 </p>
                 <a href="/ruta-inmobiliaria-en-estados-unidos">
-                  <Button className="bg-primary hover:bg-primary/90 text-white gap-2 text-sm">
+                  <Button className="bg-primary hover:bg-blue-700 text-white gap-2 text-sm">
                     Ver Ruta Inmobiliaria <ArrowRight className="w-3 h-3" />
                   </Button>
                 </a>
@@ -530,30 +521,29 @@ export default function Home() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-8 h-full hover:border-primary/20 transition-all">
+              <div className="bg-white border border-gray-200 rounded-xl p-8 h-full shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
                 <Globe className="w-8 h-8 text-primary mb-4" />
-                <h3 className="text-xl font-serif text-white mb-3">
+                <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">
                   Florida Investment Week
                 </h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-6">
+                <p className="text-gray-500 text-sm leading-relaxed mb-6">
                   Terreno real. Propiedades reales. Números reales. (Acceso por
                   invitación/perfil)
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <a href="/investment-week">
-                    <Button className="bg-primary hover:bg-primary/90 text-white gap-2 text-sm">
-                      Ver Florida Investment Week{" "}
-                      <ArrowRight className="w-3 h-3" />
+                    <Button className="bg-primary hover:bg-blue-700 text-white gap-2 text-sm">
+                      Ver Investment Week <ArrowRight className="w-3 h-3" />
                     </Button>
                   </a>
                   <button
                     onClick={() =>
                       openWhatsApp(
                         WHATSAPP_PHONE,
-                        "Hola, me interesa la Florida Investment Week. Quiero evaluar mi perfil."
+                        "Hola, me interesa la Florida Investment Week."
                       )
                     }
-                    className="inline-flex items-center gap-1 text-primary text-sm hover:text-primary/80 transition-colors"
+                    className="inline-flex items-center gap-1 text-primary text-sm hover:text-blue-700 transition-colors"
                   >
                     Solicitar invitación <ArrowRight className="w-3 h-3" />
                   </button>
@@ -565,14 +555,14 @@ export default function Home() {
       </section>
 
       {/* ═══ 8. RECURSOS ═══ */}
-      <section className="section-dark py-20 md:py-28">
+      <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
                 Recursos educativos para tomar mejores decisiones
               </h2>
-              <p className="text-white/60 text-lg leading-relaxed">
+              <p className="text-gray-500 text-lg leading-relaxed">
                 Contenido para empresarios e inversionistas que quieren claridad
                 antes de ejecutar.
               </p>
@@ -605,12 +595,12 @@ export default function Home() {
             ].map((r, i) => (
               <FadeIn key={i} delay={i * 0.1}>
                 <a href={r.href} className="block h-full">
-                  <div className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 h-full hover:border-primary/20 transition-all group">
+                  <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full hover:shadow-lg hover:-translate-y-1 transition-all group">
                     <r.icon className="w-8 h-8 text-primary mb-4" />
-                    <h3 className="text-lg font-serif text-white mb-2">
+                    <h3 className="text-lg font-bold text-[#0B1F3A] mb-2">
                       {r.title}
                     </h3>
-                    <p className="text-white/50 text-sm leading-relaxed mb-4">
+                    <p className="text-gray-500 text-sm leading-relaxed mb-4">
                       {r.desc}
                     </p>
                     <span className="text-primary text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
@@ -624,11 +614,11 @@ export default function Home() {
 
           <FadeIn>
             <div className="text-center">
-              <p className="text-white/50 mb-6">
+              <p className="text-gray-400 mb-6">
                 ¿Listo para pasar de información a acción?
               </p>
               <a href="/perfil">
-                <Button className="bg-primary hover:bg-primary/90 text-white gap-2">
+                <Button className="bg-primary hover:bg-blue-700 text-white gap-2">
                   Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
@@ -638,14 +628,14 @@ export default function Home() {
       </section>
 
       {/* ═══ 9. AUTORIDAD ═══ */}
-      <section className="section-darker py-20 md:py-28">
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-serif text-white mb-6">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
                 Quiénes somos
               </h2>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">
+              <p className="text-gray-500 text-lg leading-relaxed mb-8">
                 Comprando América es una comunidad privada de empresarios e
                 inversionistas latinos enfocada en estructura, estrategia y
                 ejecución en Estados Unidos.
@@ -653,10 +643,9 @@ export default function Home() {
               <a href="/quienes-somos">
                 <Button
                   variant="outline"
-                  className="border-white/20 text-white hover:bg-white/5 gap-2"
+                  className="border-gray-300 text-[#0B1F3A] hover:bg-white gap-2"
                 >
-                  Conocer la historia y el equipo{" "}
-                  <ArrowRight className="w-4 h-4" />
+                  Conocer la historia y el equipo <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
@@ -664,12 +653,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ 10. CTA FINAL ═══ */}
-      <section className="section-dark py-24 md:py-32">
+      {/* ═══ 10. CTA FINAL (dark) ═══ */}
+      <section className="bg-[#0B1F3A] py-24 md:py-32">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-6">
                 Si tu objetivo es invertir o expandirte en Estados Unidos,
                 empieza por tu perfil
               </h2>
@@ -679,14 +668,14 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap justify-center gap-4 mb-6">
                 <a href="/perfil">
-                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-primary/20">
+                  <Button className="bg-primary hover:bg-blue-700 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
                     Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/membresia">
                   <Button
                     variant="outline"
-                    className="border-white/20 text-white hover:bg-white/5 px-8 py-6 text-base"
+                    className="border-white/20 text-white hover:bg-white/10 px-8 py-6 text-base"
                   >
                     Conocer la Membresía
                   </Button>
@@ -699,7 +688,7 @@ export default function Home() {
                     "Hola, vi Comprando América y me gustaría saber más."
                   )
                 }
-                className="inline-flex items-center gap-1 text-primary text-sm hover:text-primary/80 transition-colors"
+                className="inline-flex items-center gap-1 text-blue-400 text-sm hover:text-blue-300 transition-colors"
               >
                 Hablar por WhatsApp <ArrowRight className="w-3 h-3" />
               </button>

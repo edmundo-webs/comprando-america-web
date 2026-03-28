@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { NAV_ITEMS, IMAGES } from "@/lib/constants";
-import { openWhatsApp, WHATSAPP_PHONE, WHATSAPP_MESSAGE } from "@/lib/whatsapp";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -19,14 +18,18 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-[oklch(0.10_0.03_250/0.95)] backdrop-blur-xl shadow-2xl shadow-black/20"
+          ? "bg-white/95 backdrop-blur-xl shadow-md border-b border-gray-100"
           : "bg-transparent"
       }`}
     >
       <div className="container flex items-center justify-between h-20">
         {/* Logo */}
-        <a href="#hero" className="flex items-center gap-2 group">
-          <img src={IMAGES.logo} alt="Comprando América" className="h-12 w-12 transition-transform group-hover:scale-105" />
+        <a href="/" className="flex items-center gap-2 group">
+          <img
+            src={IMAGES.logo}
+            alt="Comprando América"
+            className="h-12 w-12 transition-transform group-hover:scale-105"
+          />
         </a>
 
         {/* Desktop Nav */}
@@ -40,7 +43,11 @@ export default function Navbar() {
             >
               <a
                 href={item.href}
-                className="px-4 py-2 text-sm font-medium text-white/80 hover:text-primary transition-colors flex items-center gap-1"
+                className={`px-4 py-2 text-sm font-medium transition-colors flex items-center gap-1 ${
+                  scrolled
+                    ? "text-gray-600 hover:text-primary"
+                    : "text-white/90 hover:text-white"
+                }`}
               >
                 {item.label}
                 {item.children && <ChevronDown className="w-3 h-3" />}
@@ -50,13 +57,13 @@ export default function Navbar() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 8 }}
-                  className="absolute top-full left-0 mt-1 bg-[oklch(0.15_0.03_250)] border border-border rounded-lg shadow-2xl shadow-black/40 py-2 min-w-[220px]"
+                  className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl py-2 min-w-[220px]"
                 >
                   {item.children.map((child) => (
                     <a
                       key={child.label}
                       href={child.href}
-                      className="block px-4 py-2.5 text-sm text-white/70 hover:text-primary hover:bg-white/5 transition-colors"
+                      className="block px-4 py-2.5 text-sm text-gray-600 hover:text-primary hover:bg-blue-50 transition-colors"
                     >
                       {child.label}
                     </a>
@@ -67,7 +74,7 @@ export default function Navbar() {
           ))}
           <a
             href="/perfil"
-            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-primary-dark transition-colors inline-block"
+            className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-blue-700 transition-colors inline-block shadow-sm"
           >
             Evaluar Perfil
           </a>
@@ -76,7 +83,7 @@ export default function Navbar() {
         {/* Mobile Toggle */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden text-white p-2"
+          className={`lg:hidden p-2 ${scrolled ? "text-gray-700" : "text-white"}`}
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -89,7 +96,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-[oklch(0.10_0.03_250/0.98)] backdrop-blur-xl border-t border-border overflow-hidden"
+            className="lg:hidden bg-white border-t border-gray-100 shadow-lg overflow-hidden"
           >
             <div className="container py-6 space-y-1">
               {NAV_ITEMS.map((item) => (
@@ -97,7 +104,7 @@ export default function Navbar() {
                   <a
                     href={item.href}
                     onClick={() => !item.children && setIsOpen(false)}
-                    className="block px-4 py-3 text-white/80 hover:text-primary transition-colors font-medium"
+                    className="block px-4 py-3 text-gray-700 hover:text-primary transition-colors font-medium"
                   >
                     {item.label}
                   </a>
@@ -108,7 +115,7 @@ export default function Navbar() {
                           key={child.label}
                           href={child.href}
                           onClick={() => setIsOpen(false)}
-                          className="block px-4 py-2 text-sm text-white/60 hover:text-primary transition-colors"
+                          className="block px-4 py-2 text-sm text-gray-500 hover:text-primary transition-colors"
                         >
                           {child.label}
                         </a>
@@ -120,7 +127,7 @@ export default function Navbar() {
               <a
                 href="/perfil"
                 onClick={() => setIsOpen(false)}
-                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)]"
+                className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)] hover:bg-blue-700 transition-colors"
               >
                 Evaluar Perfil
               </a>

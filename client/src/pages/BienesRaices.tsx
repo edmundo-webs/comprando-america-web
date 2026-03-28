@@ -27,14 +27,14 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 // ─── Pillar Card ───
 function PillarCard({ icon: Icon, title, description }: { icon: React.ElementType; title: string; description: string }) {
   return (
-    <div className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full">
+    <div className="group relative bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 hover:border-blue-300 transition-all duration-500 h-full">
       <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
       <div className="relative">
-        <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+        <div className="w-12 h-12 rounded-lg bg-blue-50 text-primary flex items-center justify-center mb-4 group-hover:bg-blue-100 transition-colors">
           <Icon className="w-6 h-6" />
         </div>
-        <h3 className="text-lg font-serif text-white mb-3">{title}</h3>
-        <p className="text-white/50 text-sm leading-relaxed">{description}</p>
+        <h3 className="text-lg font-serif text-[#0B1F3A] mb-3">{title}</h3>
+        <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
       </div>
     </div>
   );
@@ -127,12 +127,12 @@ export default function BienesRaices() {
               <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
                 Inversión Inmobiliaria
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-white leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-7xl font-serif text-[#0B1F3A] leading-[1.1] mb-6">
                 Bienes Raíces en{" "}
                 <span className="gradient-text-primary">Estados Unidos</span>:{" "}
                 Acceso a Oportunidades Filtradas
               </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
+              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-10 max-w-2xl">
                 Invertir en bienes raíces en Estados Unidos no se trata de "empezar": se trata de asignar capital con criterios. Desde $100,000 USD, accede a oportunidades con estructura legal, fiscal, análisis financiero y acompañamiento estratégico.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
@@ -153,10 +153,10 @@ export default function BienesRaices() {
           <FadeIn>
             <div className="text-center mb-12">
               <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Oportunidades Reales</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-white mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-[#0B1F3A] mb-6">
                 Explora el Mercado Inmobiliario
               </h2>
-              <p className="text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
+              <p className="text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto">
                 Conoce las mejores oportunidades de inversión inmobiliaria en Estados Unidos y cómo nuestros miembros acceden a proyectos rentables.
               </p>
             </div>
@@ -164,7 +164,7 @@ export default function BienesRaices() {
 
           <FadeIn delay={0.1}>
             <div className="max-w-4xl mx-auto">
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-black">
+              <div className="relative rounded-2xl overflow-hidden border border-gray-200 bg-black">
                 <video
                   src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
                   controls
@@ -214,17 +214,17 @@ export default function BienesRaices() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
-                    <p className="text-white/70 text-lg">{item}</p>
+                    <p className="text-gray-500 text-lg">{item}</p>
                   </div>
                 ))}
               </div>
             </FadeIn>
             <FadeIn delay={0.2}>
-              <div className="bg-gradient-to-br from-primary/10 to-emerald/10 border border-primary/20 rounded-2xl p-8">
-                <h3 className="text-2xl font-serif text-white mb-4">Inversión Mínima</h3>
+              <div className="bg-gradient-to-br from-primary/10 to-emerald/10 border border-blue-200 rounded-2xl p-8">
+                <h3 className="text-2xl font-serif text-[#0B1F3A] mb-4">Inversión Mínima</h3>
                 <div className="text-5xl font-bold text-primary mb-2">$100,000</div>
-                <p className="text-white/70 mb-6">USD para acceder a oportunidades filtradas y acompañamiento profesional</p>
-                <p className="text-white/50 text-sm">Todos nuestros miembros cuentan con estructura legal y fiscal optimizada para maximizar retornos.</p>
+                <p className="text-gray-500 mb-6">USD para acceder a oportunidades filtradas y acompañamiento profesional</p>
+                <p className="text-gray-400 text-sm">Todos nuestros miembros cuentan con estructura legal y fiscal optimizada para maximizar retornos.</p>
               </div>
             </FadeIn>
           </div>
@@ -242,12 +242,12 @@ export default function BienesRaices() {
           <div className="grid md:grid-cols-2 gap-6">
             {commonMistakes.map((mistake, i) => (
               <FadeIn key={mistake.title} delay={i * 0.1}>
-                <div className="bg-[oklch(0.15_0.03_250)] border border-red-500/20 rounded-xl p-6 hover:border-red-500/40 transition-all duration-500">
+                <div className="bg-[#F5F7FA] border border-red-500/20 rounded-xl p-6 hover:border-red-500/40 transition-all duration-500">
                   <div className="flex items-start gap-4">
                     <AlertCircle className="w-6 h-6 text-red-500 shrink-0 mt-1" />
                     <div>
-                      <h3 className="text-lg font-serif text-white mb-2">{mistake.title}</h3>
-                      <p className="text-white/60 text-sm">{mistake.description}</p>
+                      <h3 className="text-lg font-serif text-[#0B1F3A] mb-2">{mistake.title}</h3>
+                      <p className="text-gray-500 text-sm">{mistake.description}</p>
                     </div>
                   </div>
                 </div>
@@ -268,11 +268,11 @@ export default function BienesRaices() {
           <FadeIn>
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, i) => (
-                <AccordionItem key={i} value={`item-${i}`} className="bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-lg px-6">
+                <AccordionItem key={i} value={`item-${i}`} className="bg-[#F5F7FA] border border-gray-200 rounded-lg px-6">
                   <AccordionTrigger className="text-white hover:text-primary transition-colors py-4">
                     <span className="text-left font-serif text-lg">{faq.question}</span>
                   </AccordionTrigger>
-                  <AccordionContent className="text-white/70 pb-4">{faq.answer}</AccordionContent>
+                  <AccordionContent className="text-gray-500 pb-4">{faq.answer}</AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
@@ -291,7 +291,7 @@ export default function BienesRaices() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
               <div className="space-y-4">
-                <h3 className="text-xl font-serif text-white mb-6">✅ Eres Candidato Si:</h3>
+                <h3 className="text-xl font-serif text-[#0B1F3A] mb-6">✅ Eres Candidato Si:</h3>
                 {[
                   "Cuentas con capacidad de inversión desde $100,000 USD",
                   "Buscas invertir en bienes raíces en Estados Unidos",
@@ -300,14 +300,14 @@ export default function BienesRaices() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                    <p className="text-white/70">{item}</p>
+                    <p className="text-gray-500">{item}</p>
                   </div>
                 ))}
               </div>
             </FadeIn>
             <FadeIn delay={0.2}>
               <div className="space-y-4">
-                <h3 className="text-xl font-serif text-white mb-6">❌ No es Para Ti Si:</h3>
+                <h3 className="text-xl font-serif text-[#0B1F3A] mb-6">❌ No es Para Ti Si:</h3>
                 {[
                   "Aún estás explorando sin capital disponible",
                   "Buscas inversiones con retorno inmediato",
@@ -316,7 +316,7 @@ export default function BienesRaices() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                    <p className="text-white/70">{item}</p>
+                    <p className="text-gray-500">{item}</p>
                   </div>
                 ))}
               </div>
@@ -331,10 +331,10 @@ export default function BienesRaices() {
           <div className="max-w-2xl mx-auto">
             <FadeIn>
               <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">
+                <h2 className="text-3xl md:text-4xl font-serif text-[#0B1F3A] mb-4">
                   ¿Quieres Saber si Puedes Formar Parte?
                 </h2>
-                <p className="text-white/60">
+                <p className="text-gray-500">
                   Completa el formulario y déjanos acompañarte en tu ingreso al mercado estadounidense con estrategia, respaldo y visión a largo plazo.
                 </p>
               </div>

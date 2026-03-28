@@ -63,7 +63,7 @@ function AllyCard({ ally, index }: { ally: Ally; index: number }) {
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      className="group relative bg-[oklch(0.15_0.03_250)] border border-white/5 rounded-xl p-6 hover:border-primary/30 transition-all duration-500 h-full"
+      className="group relative bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 hover:border-blue-300 transition-all duration-500 h-full"
     >
       <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
       
@@ -73,14 +73,14 @@ function AllyCard({ ally, index }: { ally: Ally; index: number }) {
           <img
             src={ally.image}
             alt={ally.name}
-            className="w-24 h-24 rounded-full object-cover border-2 border-primary/20 group-hover:border-primary/50 transition-colors"
+            className="w-24 h-24 rounded-full object-cover border-2 border-blue-200 group-hover:border-primary/50 transition-colors"
           />
         </div>
 
         {/* Content */}
         <h3 className="text-lg font-serif text-white text-center mb-2">{ally.name}</h3>
         <p className="text-primary text-sm font-semibold text-center mb-3">{ally.specialty}</p>
-        <p className="text-white/60 text-sm leading-relaxed text-center">{ally.description}</p>
+        <p className="text-gray-500 text-sm leading-relaxed text-center">{ally.description}</p>
       </div>
     </motion.div>
   );
@@ -106,7 +106,7 @@ export default function AlliesSection() {
           <h2 className="text-4xl md:text-5xl font-serif text-white mb-4">
             Aliados Expertos
           </h2>
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
             Acceso a un equipo de profesionales especializados en estructura legal, fiscal, inmigración y estrategia comercial para tu éxito en Estados Unidos.
           </p>
         </motion.div>
