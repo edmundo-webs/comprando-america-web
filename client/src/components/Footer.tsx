@@ -1,8 +1,22 @@
 import { EXTERNAL_LINKS } from "@/lib/constants";
+import { WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { Mail, MapPin, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
+    <>
+    {/* WhatsApp flotante — global, todas las páginas */}
+    <a
+      href={`https://wa.me/${WHATSAPP_PHONE}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-40 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all hover:scale-105"
+      title="Hablar con un asesor"
+      aria-label="WhatsApp"
+    >
+      <MessageCircle className="w-6 h-6" />
+    </a>
+
     <footer className="bg-[#0B1F3A] border-t border-white/5">
       <div className="container py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
@@ -82,5 +96,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+    </>
   );
 }

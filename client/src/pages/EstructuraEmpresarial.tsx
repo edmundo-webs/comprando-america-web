@@ -672,15 +672,6 @@ export default function EstructuraEmpresarial() {
         </div>
       </section>
 
-      {/* ═══ BOTÓN FLOTANTE WHATSAPP ═══ */}
-      <a
-        href={`https://wa.me/${WHATSAPP_PHONE}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-40 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg transition-all"
-        title="Hablar con un asesor"
-      >
-        <MessageCircle className="w-6 h-6" />
       </a>
 
       {/* ═══ STICKY CTA MOBILE ═══ */}
