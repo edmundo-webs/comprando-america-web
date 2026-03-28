@@ -97,7 +97,7 @@ export default function EstructuraEmpresarial() {
 
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#F5F7FA] via-white to-[#EFF6FF]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0B1F3A] to-[#0E2544]" />
         <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="container relative z-10">
@@ -287,9 +287,8 @@ export default function EstructuraEmpresarial() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
-              <div className="bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/20 rounded-2xl p-8 h-full">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl">🤠</span>
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 h-full">
+                <div className="mb-6">
                   <h3 className="text-2xl font-serif text-white">Texas</h3>
                 </div>
                 <div className="space-y-3 mb-8">
@@ -315,9 +314,8 @@ export default function EstructuraEmpresarial() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/20 rounded-2xl p-8 h-full">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-3xl">🌴</span>
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 h-full">
+                <div className="mb-6">
                   <h3 className="text-2xl font-serif text-white">Florida</h3>
                 </div>
                 <div className="space-y-3 mb-8">
@@ -517,7 +515,7 @@ export default function EstructuraEmpresarial() {
               <h2 className="text-3xl md:text-4xl text-white mb-4">
                 Costo del servicio
               </h2>
-              <div className="inline-block bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/30 rounded-2xl p-10 mb-10">
+              <div className="inline-block bg-[#0F2847] border border-blue-500/30 rounded-2xl p-10 mb-10">
                 <p className="text-5xl md:text-6xl font-serif text-white font-bold mb-2">
                   $1,499{" "}
                   <span className="text-white/50 text-2xl font-normal">

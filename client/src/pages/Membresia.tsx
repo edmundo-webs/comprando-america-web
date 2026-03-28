@@ -684,7 +684,7 @@ export default function Membresia() {
           </FadeIn>
 
           <FadeIn>
-            <div className="max-w-5xl mx-auto bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/20 rounded-2xl p-8 md:p-12">
+            <div className="max-w-5xl mx-auto bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 md:p-12">
               <div className="flex flex-col md:flex-row gap-10 items-start">
                 {/* Photo */}
                 <div className="flex-shrink-0 mx-auto md:mx-0">

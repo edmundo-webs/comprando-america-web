@@ -82,7 +82,7 @@ export default function Oportunidades() {
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#F5F7FA] via-white to-[#EFF6FF]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0B1F3A] to-[#0E2544]" />
         <div className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full bg-blue-500/10 blur-3xl" />
 
         <div className="container relative z-10">
@@ -339,7 +339,7 @@ export default function Oportunidades() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Card 1 — Active */}
             <FadeIn>
-              <div className="relative bg-gradient-to-br from-[#F5F7FA] to-white border border-blue-500/20 rounded-2xl p-8 h-full group hover:border-primary/40 transition-all">
+              <div className="relative bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 h-full group hover:border-primary/40 transition-all">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                   Activa
