@@ -515,8 +515,8 @@ export default function Membresia() {
 
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12">
             {[
-              { num: "01", title: "Cumbres Presenciales", desc: "Eventos anuales donde miembros conectan y expanden su red." },
-              { num: "02", title: "Viajes de Inspección", desc: "Visitas guiadas a oportunidades de inversión en vivo." },
+              { num: "01", title: "Cumbres Presenciales", desc: "Eventos anuales donde miembros conectan y expanden su red.", image: "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w800" },
+              { num: "02", title: "Viajes de Inspección", desc: "Visitas guiadas a oportunidades de inversión en vivo.", image: WORKSHOP_IMAGE },
               { num: "03", title: "Cenas Privadas", desc: "Reuniones exclusivas donde se cierran negocios y se construyen relaciones.", image: DINNER_IMAGE },
             ].map((e, i) => (
               <FadeIn key={i} delay={i * 0.1}>
