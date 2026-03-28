@@ -81,9 +81,11 @@ export default function Oportunidades() {
 
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0B1F3A] to-[#0E2544]" />
-        <div className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute inset-0">
+          <img src="https://lh3.googleusercontent.com/d/1uOK0Jci_KGtDiBIInQTZ846vel77scKF=w1920" alt="Presentación de oportunidades de inversión" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/90 via-[#0B1F3A]/80 to-[#0B1F3A]/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/30" />
+        </div>
 
         <div className="container relative z-10">
           <FadeIn>
@@ -216,6 +218,12 @@ export default function Oportunidades() {
             </div>
           </FadeIn>
         </div>
+      </section>
+
+      {/* ── Photo break ── */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/d/1V6gOyC2icDLgQJ7oXlkRzM2rm3zK6E8g=w1920" alt="Sesión de análisis de inversiones" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/30 to-[#0B1F3A]" />
       </section>
 
       {/* ═══ 4. DEAL DAY ═══ */}
@@ -421,6 +429,12 @@ export default function Oportunidades() {
             </div>
           </FadeIn>
         </div>
+      </section>
+
+      {/* ── Photo break ── */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/d/1RK1ICQKrETpZBFYH_NoZmnYzMULHREYu=w1920" alt="Equipo empresarial Comprando América" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/30 to-[#0B1F3A]" />
       </section>
 
       {/* ═══ 8. CONEXIÓN CON MEMBRESÍA ═══ */}

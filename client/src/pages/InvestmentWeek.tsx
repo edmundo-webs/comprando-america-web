@@ -115,9 +115,11 @@ export default function InvestmentWeek() {
 
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[80vh] flex items-center py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[oklch(0.08_0.02_260)] via-background to-[oklch(0.10_0.04_250)]" />
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-primary/3 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-amber-500/3 blur-3xl" />
+        <div className="absolute inset-0">
+          <img src="https://lh3.googleusercontent.com/d/1VKFcr6XRJ81P6XX9JbQ_GQvTsQdcvsQC=w1920" alt="Cena privada de inversionistas" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/40" />
+        </div>
 
         <div className="container relative z-10">
           <FadeIn>
