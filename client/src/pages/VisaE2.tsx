@@ -80,8 +80,11 @@ export default function VisaE2() {
 
       {/* ═══ 1. HERO ═══ */}
       <section className="relative isolate min-h-[85vh] flex items-center pt-20 pb-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0B1F3A] to-[#0E2544]" />
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="absolute inset-0">
+          <img src="https://lh3.googleusercontent.com/d/1g5ApkdXmFYicSGapOeC8pji80OYNhTyi=w1920" alt="Joven empresario en evento de inversión" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/90 via-[#0B1F3A]/80 to-[#0B1F3A]/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/30" />
+        </div>
 
         <div className="container relative z-10">
           <FadeIn>
@@ -245,6 +248,12 @@ export default function VisaE2() {
             </div>
           </FadeIn>
         </div>
+      </section>
+
+      {/* ── Photo break ── */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <img src="https://lh3.googleusercontent.com/d/1W18Hemz89zVF0btcfAbTiCgyZ3cymPj4=w1920" alt="Empresarios participando activamente" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/30 to-[#0B1F3A]" />
       </section>
 
       {/* ═══ 5. CÓMO FUNCIONA ═══ */}
