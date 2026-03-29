@@ -317,97 +317,71 @@ export default function ClubInversion() {
               </FadeIn>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ═══ PLATAFORMA DIGITAL + PROGRAMA — ☀️ BLANCO ═══ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
-        <div className="container">
+          {/* ── Plataforma digital — compact block ── */}
           <FadeIn>
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-14">
-                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Plataforma Digital</p>
-                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Todo queda grabado. Aprende a tu ritmo.</h2>
-                <p className="text-[#6B7280] text-lg max-w-2xl mx-auto">
-                  Todas las grabaciones de eventos, sesiones y el programa educativo completo disponibles en nuestra plataforma digital. Si no puedes asistir, lo ves cuando puedas.
-                </p>
+            <div className="max-w-4xl mx-auto mt-14 bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div>
+                  <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase font-mono mb-2">Plataforma Digital</p>
+                  <h3 className="text-xl text-white font-semibold mb-2">Todo queda grabado. Aprende a tu ritmo.</h3>
+                  <p className="text-slate-400 text-sm">Grabaciones de eventos, sesiones y programa educativo completo. Si no puedes asistir, lo ves cuando puedas.</p>
+                </div>
+                <button
+                  onClick={() => setOpenPanel(openPanel === "programa" ? null : "programa")}
+                  className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-300 transition-colors whitespace-nowrap"
+                >
+                  Ver programa educativo
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${openPanel === "programa" ? "rotate-180" : ""}`} />
+                </button>
               </div>
+
+              <AnimatePresence>
+                {openPanel === "programa" && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="grid md:grid-cols-2 gap-6 mt-8 pt-8 border-t border-[#1E3A5F]">
+                      {[
+                        {
+                          num: "01", title: "Detección de Oportunidades",
+                          items: ["Encontrando 'la zona de genialidad'", "Dónde y cómo buscar oportunidades", "Cómo abordar dueños que no venden", "Diferenciar una oportunidad real", "Due diligence y pasos de compra", "Cómo financiar la adquisición"],
+                        },
+                        {
+                          num: "02", title: "Evaluación de Oportunidades",
+                          items: ["Valuación antes de ofertar", "Métodos para valuar una empresa", "Cómo calcular el SDE", "10 indicadores de valor", "LOI vs APA en la oferta", "Negociación y cierre"],
+                        },
+                        {
+                          num: "03", title: "Operación de Negocios",
+                          items: ["Administrar tu negocio en EE.UU.", "Adquirir clientes según el giro", "Aumentar valor de clientes actuales", "Reducir gastos fijos", "Encontrar las personas correctas", "Operar a distancia"],
+                        },
+                        {
+                          num: "04", title: "Crecimiento de Negocios",
+                          items: ["Cultura EE.UU. vs Latinoamérica", "Etapas según el giro", "Financiamiento para crecer", "Digitalización de procesos", "Adquisición de clientes", "Diferenciación y marca"],
+                        },
+                      ].map((mod) => (
+                        <div key={mod.num}>
+                          <p className="text-blue-400 text-xs font-mono font-bold mb-2">{mod.num} — {mod.title}</p>
+                          <ul className="space-y-1">
+                            {mod.items.map((item, j) => (
+                              <li key={j} className="flex items-start gap-2">
+                                <CheckCircle2 className="w-3 h-3 text-blue-400/60 flex-shrink-0 mt-1" />
+                                <span className="text-slate-400 text-xs">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </FadeIn>
-
-          {/* 4 Módulos educativos — expandable */}
-          <div className="max-w-4xl mx-auto space-y-4">
-            <FadeIn>
-              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6 font-mono">Programa Educativo</p>
-            </FadeIn>
-            {[
-              {
-                num: "01",
-                title: "Detección de Oportunidades",
-                items: [
-                  "Encontrando 'la zona de genialidad'",
-                  "Dónde y cómo buscar oportunidades de compra de negocios",
-                  "Cómo abordar a dueños de negocios que no están en venta",
-                  "Especificaciones de compra: diferenciar una oportunidad real",
-                  "Due diligence y pasos para comprar un negocio",
-                  "Cómo financiar un negocio que vas a adquirir",
-                ],
-              },
-              {
-                num: "02",
-                title: "Evaluación de Oportunidades",
-                items: [
-                  "Cómo conciliar la valuación antes de hacer una oferta",
-                  "Métodos para valuar una empresa",
-                  "Cómo calcular el SDE de un negocio",
-                  "10 indicadores de valor en un negocio",
-                  "Cuándo usar LOI vs APA en la oferta",
-                  "Pasos en la negociación y cierre de una oferta",
-                ],
-              },
-              {
-                num: "03",
-                title: "Operación de Negocios Adquiridos",
-                items: [
-                  "Claves para administrar tu negocio en Estados Unidos",
-                  "Cómo adquirir clientes según el giro",
-                  "Cómo aumentar el valor de los clientes actuales",
-                  "Internacionalización: reducir gastos fijos para eficientar operación",
-                  "Cómo encontrar las personas correctas para la operación",
-                  "Delegar: cómo y cuándo operar tu negocio a distancia",
-                ],
-              },
-              {
-                num: "04",
-                title: "Crecimiento de Negocios Adquiridos",
-                items: [
-                  "Diferencias de la cultura de negocios EE.UU. vs Latinoamérica",
-                  "Etapas de los negocios en EE.UU. según su giro",
-                  "Traer el futuro al presente en la evolución de tu negocio",
-                  "Estrategias de financiamiento para el crecimiento",
-                  "Digitalización en procesos y adquisición de clientes",
-                  "Diferenciación y construcción de marca",
-                ],
-              },
-            ].map((mod, i) => (
-              <FadeIn key={i} delay={i * 0.05}>
-                <DetailPanel
-                  title={`${mod.num} — ${mod.title}`}
-                  isOpen={openPanel === mod.num}
-                  onToggle={() => setOpenPanel(openPanel === mod.num ? null : mod.num)}
-                >
-                  <ul className="space-y-2">
-                    {mod.items.map((item, j) => (
-                      <li key={j} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </DetailPanel>
-              </FadeIn>
-            ))}
-          </div>
         </div>
       </section>
 
