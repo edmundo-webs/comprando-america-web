@@ -49,7 +49,7 @@ function SEOHead() {
 }
 
 /* ─── Photos ─── */
-const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1g5ApkdXmFYicSGapOeC8pji80OYNhTyi=w1920"; // young entrepreneur
+const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1OUXlN1giz2Et67lrb9L1oQNwQsBCqmGo=w1920";
 const E2_SLIDE = "https://lh3.googleusercontent.com/d/18YEBJnh06dYaZ8ZsvxqEpcuFtaikz5-x=w1920"; // E-2 requirements slide
 const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920"; // packed room
 
