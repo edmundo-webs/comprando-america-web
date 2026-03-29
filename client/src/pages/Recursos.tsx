@@ -510,7 +510,7 @@ export default function Recursos() {
                 <a href="/membresia">
                   <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-5 hover:border-blue-500/20 transition-all text-center">
                     <p className="text-primary text-sm font-semibold mb-1">
-                      Membresía
+                      Club de Inversión
                     </p>
                     <p className="text-white/50 text-xs">Comunidad privada</p>
                   </div>

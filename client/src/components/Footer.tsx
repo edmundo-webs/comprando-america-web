@@ -32,7 +32,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-white/50 text-sm leading-relaxed">
-              Membresía privada de empresarios e inversionistas latinos enfocada en estructura, estrategia y ejecución en Estados Unidos.
+              Club de inversión privado de empresarios e inversionistas latinos enfocada en estructura, estrategia y ejecución en Estados Unidos.
             </p>
             <p className="text-white/30 text-xs mt-4">
               Contenido informativo. La elegibilidad, resultados y estructuras dependen del perfil y del caso.
@@ -43,7 +43,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4 text-sm tracking-wider uppercase">Inversión</h4>
             <ul className="space-y-2.5">
-              <li><a href="/membresia" className="text-white/50 hover:text-blue-400 text-sm transition-colors">Membresía</a></li>
+              <li><a href="/membresia" className="text-white/50 hover:text-blue-400 text-sm transition-colors">Club de Inversión</a></li>
               <li><a href="/oportunidades-de-inversion-en-estados-unidos" className="text-white/50 hover:text-blue-400 text-sm transition-colors">Oportunidades</a></li>
               <li><a href="/estructura-empresarial-en-estados-unidos" className="text-white/50 hover:text-blue-400 text-sm transition-colors">Estructura Empresarial</a></li>
               <li><a href="/visa-e2-inversion-en-estados-unidos" className="text-white/50 hover:text-blue-400 text-sm transition-colors">Visa E-2</a></li>

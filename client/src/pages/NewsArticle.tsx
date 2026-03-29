@@ -21,7 +21,7 @@ const CTA_CONFIG: Record<string, { title: string; description: string; buttonTex
   "economia-finanzas": {
     title: "¿Quieres proteger tu patrimonio invirtiendo en USA?",
     description: "Únete a nuestra comunidad de inversionistas y accede a oportunidades exclusivas de inversión en Estados Unidos. Te ayudamos a diversificar tu portafolio con criterio y estructura.",
-    buttonText: "Conoce la Membresía",
+    buttonText: "Conoce el Club de Inversión",
     link: "/membresia",
     icon: <TrendingUp className="w-6 h-6" />,
   },

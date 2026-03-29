@@ -461,7 +461,7 @@ export default function InvestmentWeek() {
                 </a>
                 <a href="/membresia">
                   <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 px-8 py-6 text-base">
-                    Conoce la Membresía
+                    Conoce el Club de Inversión
                   </Button>
                 </a>
               </div>

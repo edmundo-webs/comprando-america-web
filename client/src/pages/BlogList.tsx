@@ -224,7 +224,7 @@ export default function BlogList() {
               <Link href="/membresia">
                 <a>
                   <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-10 py-6 text-lg gap-2">
-                    Conocer Membresía <ArrowRight className="w-5 h-5" />
+                    Conocer Club de Inversión <ArrowRight className="w-5 h-5" />
                   </Button>
                 </a>
               </Link>

@@ -130,7 +130,7 @@ export default function Formacion() {
                 Como miembro de Comprando América, accedes a una formación estratégica diseñada exclusivamente para latinos que quieren invertir, expandirse o establecerse en Estados Unidos con respaldo y visión empresarial.
               </p>
               <p className="text-base text-white/60 leading-relaxed mb-10 max-w-2xl">
-                Este contenido grabado forma parte de tu membresía anual y te entrega las bases que necesitas para tomar decisiones informadas, entender las estructuras legales y financieras del mercado, y avanzar con acompañamiento real.
+                Este contenido grabado forma parte de tu club de inversión anual y te entrega las bases que necesitas para tomar decisiones informadas, entender las estructuras legales y financieras del mercado, y avanzar con acompañamiento real.
               </p>
               <a href="#formulario">
                 <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-base gap-2">

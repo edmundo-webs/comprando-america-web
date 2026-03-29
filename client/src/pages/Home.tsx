@@ -65,7 +65,7 @@ function SEOHead() {
     if (meta) {
       meta.setAttribute(
         "content",
-        "Membresía privada, oportunidades y estructura para invertir y expandirte en Estados Unidos. Evalúa tu perfil y accede a una comunidad con criterio."
+        "Club de inversión privado, oportunidades y estructura para invertir y expandirte en Estados Unidos. Evalúa tu perfil y accede a una comunidad con criterio."
       );
     }
   }, []);
@@ -496,7 +496,7 @@ export default function Home() {
                 </a>
                 <a href="/membresia">
                   <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
-                    Conocer la Membresía
+                    Conocer el Club de Inversión
                   </Button>
                 </a>
               </div>

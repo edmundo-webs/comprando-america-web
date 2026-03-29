@@ -532,13 +532,13 @@ export default function Eventos() {
               </h2>
               <p className="text-white/60 text-lg leading-relaxed mb-10">
                 Muchos de los participantes continúan su proceso a través de la
-                membresía, accediendo a oportunidades y estructurando su empresa
+                club de inversión, accediendo a oportunidades y estructurando su empresa
                 en Estados Unidos.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/membresia">
                   <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
-                    Conocer membresía <ArrowRight className="w-4 h-4" />
+                    Conocer el club de inversión <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/oportunidades-de-inversion-en-estados-unidos">

@@ -108,7 +108,7 @@ export const BLOG_POSTS = [
 export const FAQ_ITEMS = [
   {
     question: "¿Qué es la comunidad Comprando América?",
-    answer: "Comprando América es una comunidad privada de empresarios e inversionistas latinos que, a través de una membresía, acceden a oportunidades de inversión en negocios en Estados Unidos desde $100,000 USD. Ofrecemos acompañamiento experto, eventos presenciales, viajes de inspección y asesoría en áreas clave para crear, adquirir o escalar negocios de forma estratégica y segura.",
+    answer: "Comprando América es una comunidad privada de empresarios e inversionistas latinos que, a través de un club de inversión, acceden a oportunidades de inversión en negocios en Estados Unidos desde $100,000 USD. Ofrecemos acompañamiento experto, eventos presenciales, viajes de inspección y asesoría en áreas clave para crear, adquirir o escalar negocios de forma estratégica y segura.",
   },
   {
     question: "¿Cuáles son los requisitos para unirse?",
@@ -116,14 +116,14 @@ export const FAQ_ITEMS = [
   },
   {
     question: "¿Qué incluye la Comunidad?",
-    answer: "La membresía incluye acceso a los 6 pilares: Deal Day, Deal Finding, Americaniza tu Operación, Visa a la Medida, Círculo Experto y Real Estate Optimizado. Además, apertura de empresa y cuentas bancarias, inversiones exclusivas, consultorías 1:1, y construcción de crédito para extranjeros.",
+    answer: "El club de inversión incluye acceso a los 6 pilares: Deal Day, Deal Finding, Americaniza tu Operación, Visa a la Medida, Círculo Experto y Real Estate Optimizado. Además, apertura de empresa y cuentas bancarias, inversiones exclusivas, consultorías 1:1, y construcción de crédito para extranjeros.",
   },
   {
     question: "¿Quiénes están en la comunidad?",
     answer: "Empresarios e inversionistas latinos de diversos países que comparten el objetivo de invertir y crear patrimonio en Estados Unidos de forma estratégica y segura.",
   },
   {
-    question: "¿Cuánto dura la membresía?",
-    answer: "La membresía es vitalicia. Una vez que eres aceptado, tienes acceso permanente a todos los beneficios y recursos de la comunidad.",
+    question: "¿Cuánto dura el club de inversión?",
+    answer: "El club de inversión es vitalicio. Una vez que eres aceptado, tienes acceso permanente a todos los beneficios y recursos de la comunidad.",
   },
 ];

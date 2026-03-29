@@ -75,7 +75,7 @@ export default function QuienesSomos() {
               </div>
               <a href="/membresia">
                 <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                  Conoce la Membresía <ArrowRight className="w-4 h-4" />
+                  Conoce el Club de Inversión <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
@@ -288,7 +288,7 @@ export default function QuienesSomos() {
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/membresia">
                   <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
-                    Conoce la Membresía <ArrowRight className="w-4 h-4" />
+                    Conoce el Club de Inversión <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/perfil">

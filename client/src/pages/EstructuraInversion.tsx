@@ -232,7 +232,7 @@ export default function EstructuraInversion() {
               <h2 className="text-3xl md:text-4xl text-white text-center mb-12">Preguntas frecuentes</h2>
               <Accordion type="single" collapsible className="space-y-4">
                 {[
-                  { q: "¿Cuánto cuesta crear una empresa en Estados Unidos?", a: "Depende del estado, tipo de entidad y servicios necesarios (registro, agente registrado, cumplimiento, contabilidad y asesoría legal). En nuestra membresía, el objetivo es estructurar bien desde el inicio para evitar costos repetidos. Nuestro servicio de apertura de LLC tiene un costo base de $1,500 dólares por entidad registrada." },
+                  { q: "¿Cuánto cuesta crear una empresa en Estados Unidos?", a: "Depende del estado, tipo de entidad y servicios necesarios (registro, agente registrado, cumplimiento, contabilidad y asesoría legal). En nuestra club de inversión, el objetivo es estructurar bien desde el inicio para evitar costos repetidos. Nuestro servicio de apertura de LLC tiene un costo base de $1,500 dólares por entidad registrada." },
                   { q: "¿Qué se necesita para abrir una empresa en Estados Unidos?", a: "Los requisitos varían por entidad y estado. Normalmente se requiere identificación, agente registrado y documentación de constitución; además, es clave definir propósito y estructura de la entidad antes de registrarla. Nosotros te guiamos en el proceso completo." },
                   { q: "¿Cuáles son los tipos de empresas en Estados Unidos?", a: "LLC, S-Corp y C-Corp. La elección depende de riesgo, operación, estrategia fiscal y objetivos de inversión. Cada estructura tiene implicaciones diferentes en términos de responsabilidad personal, impuestos y flexibilidad operativa." },
                 ].map((faq, i) => (
@@ -304,7 +304,7 @@ export default function EstructuraInversion() {
                 </a>
                 <a href="/membresia">
                   <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
-                    Conocer membresía
+                    Conocer el club de inversión
                   </Button>
                 </a>
               </div>

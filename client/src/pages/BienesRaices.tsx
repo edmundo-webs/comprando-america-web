@@ -319,12 +319,12 @@ export default function BienesRaices() {
             </FadeIn>
             <FadeIn delay={0.1}>
               <div className="bg-white border border-gray-200 rounded-xl p-8 h-full shadow-sm">
-                <h3 className="text-xl text-[#0B1F3A] font-semibold mb-4">Conoce la membresía</h3>
+                <h3 className="text-xl text-[#0B1F3A] font-semibold mb-4">Conoce el club de inversión</h3>
                 <p className="text-[#4B5563] text-sm leading-relaxed mb-6">
                   La comunidad es el espacio donde se presentan y discuten oportunidades con respaldo profesional.
                 </p>
                 <a href="/membresia">
-                  <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white gap-2 w-full">Ver membresía <ArrowRight className="w-4 h-4" /></Button>
+                  <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white gap-2 w-full">Ver club de inversión <ArrowRight className="w-4 h-4" /></Button>
                 </a>
               </div>
             </FadeIn>

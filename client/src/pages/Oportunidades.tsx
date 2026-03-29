@@ -322,16 +322,16 @@ export default function Oportunidades() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Membresía</p>
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Club de Inversión</p>
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
-                La mayoría de las oportunidades se presentan dentro de la membresía
+                La mayoría de las oportunidades se presentan dentro de el club de inversión
               </h2>
               <p className="text-[#4B5563] text-lg leading-relaxed mb-10">
                 La comunidad es el espacio donde se presentan oportunidades, se discuten con expertos y se toman decisiones con respaldo profesional.
               </p>
               <a href="/membresia">
                 <Button className="bg-primary hover:bg-blue-600 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
-                  Conocer la membresía <ArrowRight className="w-4 h-4" />
+                  Conocer el club de inversión <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
@@ -439,7 +439,7 @@ export default function Oportunidades() {
                 </a>
                 <a href="/membresia">
                   <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
-                    Conocer membresía
+                    Conocer el club de inversión
                   </Button>
                 </a>
                 <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa conocer las oportunidades de inversión en Estados Unidos.")} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
