@@ -24,21 +24,19 @@ export const EXTERNAL_LINKS = {
 };
 
 export const NAV_ITEMS = [
-  { label: "Inicio", href: "/" },
   { label: "Comunidad", href: "/membresia" },
   { label: "Inversión", href: "#", children: [
-    { label: "Oportunidades", href: "/oportunidades-de-inversion-en-estados-unidos" },
-    { label: "Estructura Empresarial", href: "/estructura-de-inversion-en-usa" },
-    { label: "Visa E-2", href: "/visa-e2-inversion-en-estados-unidos" },
-    { label: "Bienes Raíces", href: "/bienes-raices-en-usa" },
+    { label: "Proteger patrimonio", href: "/oportunidades-de-inversion-en-estados-unidos" },
+    { label: "Migrar con inversión", href: "/visa-e2-inversion-en-estados-unidos" },
+    { label: "Estructura empresarial", href: "/estructura-de-inversion-en-usa" },
   ]},
   { label: "Eventos", href: "/eventos" },
   { label: "Recursos", href: "/recursos", children: [
     { label: "Podcast", href: "/podcast" },
     { label: "Noticias", href: "/news" },
     { label: "Blog", href: "/blog" },
-    { label: "Quiénes Somos", href: "/quienes-somos" },
   ]},
+  { label: "Quiénes Somos", href: "/quienes-somos" },
 ];
 
 export const STATS = [
