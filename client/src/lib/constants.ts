@@ -25,7 +25,7 @@ export const EXTERNAL_LINKS = {
 
 export const NAV_ITEMS = [
   { label: "Inicio", href: "/" },
-  { label: "Membresía", href: "/membresia" },
+  { label: "Comunidad", href: "/membresia" },
   { label: "Inversión", href: "#", children: [
     { label: "Oportunidades", href: "/oportunidades-de-inversion-en-estados-unidos" },
     { label: "Estructura Empresarial", href: "/estructura-de-inversion-en-usa" },
