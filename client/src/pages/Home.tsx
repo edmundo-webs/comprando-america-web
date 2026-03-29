@@ -230,7 +230,7 @@ export default function Home() {
                   </Button>
                 </a>
               </div>
-              <p className="text-slate-500 text-sm">La comunidad es privada. El acceso se valida por perfil.</p>
+              <p className="text-slate-500 text-sm">El club de inversión es exclusivo. El acceso se valida por perfil.</p>
             </div>
           </FadeIn>
         </div>
