@@ -305,7 +305,7 @@ export default function Home() {
 
             <FadeIn delay={0.1}>
               <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-xl overflow-hidden h-full">
-                <img src={DINNER} alt="Cena privada de inversionistas" className="w-full h-48 object-cover" />
+                <img src="https://lh3.googleusercontent.com/d/1CqOlO-lELT7-uQhCI26MjP19ibLQu95N=w1200" alt="Inversión y ruta migratoria" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <span className="inline-block bg-blue-500/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-4">Activa</span>
                   <h3 className="text-xl font-bold text-white mb-3">Inversión + Ruta migratoria</h3>
