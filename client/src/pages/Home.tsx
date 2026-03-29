@@ -239,9 +239,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Photo break — workshop numbers ── */}
+      {/* ── Photo break — panel de expertos ── */}
       <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={WORKSHOP} alt="Sesión de análisis de inversión" className="w-full h-full object-cover" />
+        <img src="https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920" alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0E2544] via-transparent to-[#F5F7FA]" />
       </section>
 
