@@ -368,7 +368,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src="https://res.cloudinary.com/dofccqypz/image/upload/v1774537559/comprando-america/eventos/hpwrp8ofq5delfnpo9ro.jpg" alt="Ruta Inmobiliaria" className="w-full h-48 object-cover" />
+                <img src="https://lh3.googleusercontent.com/d/1jmPjN24MUpLYCLu2uizThN6ej938xfD3=w1200" alt="Ruta Inmobiliaria" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <MapPin className="w-8 h-8 text-primary mb-4" />
                   <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Ruta Inmobiliaria</h3>
