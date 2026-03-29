@@ -277,18 +277,20 @@ export default function Oportunidades() {
               </div>
             </FadeIn>
 
-            {/* Card 2 — Coming Soon */}
+            {/* Card 2 — Inversión + Ruta migratoria */}
             <FadeIn delay={0.1}>
-              <div className="relative bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 h-full">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-200 text-[#6B7280] text-xs font-semibold uppercase tracking-wider mb-6">
-                  <span className="w-2 h-2 rounded-full bg-gray-400" /> Próximamente
+              <div className="relative bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full group hover:border-primary/40 transition-all">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" /> Activa
                 </div>
-                <TrendingUp className="w-10 h-10 text-[#9CA3AF] mb-4" />
-                <h3 className="text-2xl text-[#6B7280] font-semibold mb-4">Growth Partner</h3>
-                <p className="text-[#9CA3AF] text-sm leading-relaxed mb-8">
-                  Oportunidad en preparación. Acceso exclusivo para miembros activos de la comunidad.
+                <TrendingUp className="w-10 h-10 text-primary mb-4" />
+                <h3 className="text-2xl text-white font-semibold mb-4">Inversión + Ruta migratoria</h3>
+                <p className="text-slate-400 text-sm leading-relaxed mb-8">
+                  Tienes $300,000 dólares y quieres migrar a Estados Unidos.
                 </p>
-                <Button disabled className="w-full opacity-50 cursor-not-allowed bg-gray-300 text-gray-500">En desarrollo</Button>
+                <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el modelo de Inversión + Ruta migratoria.")} className="bg-primary hover:bg-blue-600 text-white gap-2 w-full">
+                  Evaluar si este modelo encaja contigo <ArrowRight className="w-4 h-4" />
+                </Button>
               </div>
             </FadeIn>
           </div>
