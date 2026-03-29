@@ -310,14 +310,12 @@ export default function Home() {
 
             <FadeIn delay={0.1}>
               <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8 h-full">
-                <span className="inline-block bg-[#132D50] text-slate-500 text-xs font-semibold px-3 py-1 rounded-full mb-4">Próximamente</span>
-                <h3 className="text-xl font-bold text-white mb-3">Growth Partner</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-6">Oportunidad en desarrollo. Acceso sujeto a perfil y alineación con la estrategia.</p>
-                <a href="/perfil">
-                  <Button variant="outline" className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] gap-2 text-sm">
-                    Sumarme a lista prioritaria <ArrowRight className="w-3 h-3" />
-                  </Button>
-                </a>
+                <span className="inline-block bg-blue-500/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-4">Activa</span>
+                <h3 className="text-xl font-bold text-white mb-3">Inversión + Ruta migratoria</h3>
+                <p className="text-slate-400 text-sm leading-relaxed mb-6">Tienes $300,000 dólares y quieres migrar a Estados Unidos.</p>
+                <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el modelo de Inversión + Ruta migratoria.")} className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm">
+                  Evaluar si este modelo encaja contigo <ArrowRight className="w-3 h-3" />
+                </Button>
               </div>
             </FadeIn>
           </div>
