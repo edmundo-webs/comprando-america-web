@@ -166,8 +166,8 @@ export default function Home() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: Users, title: "Membresía privada", desc: "Comunidad, criterio y oportunidades en espacios exclusivos.", cta: "Ver Membresía", href: "/membresia", highlight: true },
-              { icon: Globe, title: "Visa E-2 (Inversionista)", desc: "Entiende cómo se conecta inversión, negocio y viabilidad migratoria.", cta: "Ver guía", href: "/visa-e2-inversion-en-estados-unidos" },
+              { icon: Users, title: "Comunidad", desc: "Comunidad, criterio y oportunidades en espacios exclusivos.", cta: "Ver Membresía", href: "/membresia", highlight: true },
+              { icon: Globe, title: "Ruta migratoria", desc: "Entiende cómo se conecta inversión, negocio y viabilidad migratoria.", cta: "Ver guía", href: "/visa-e2-inversion-en-estados-unidos" },
               { icon: TrendingUp, title: "Oportunidades activas", desc: "Accede a oportunidades reales si tu perfil es el adecuado.", cta: "Ver oportunidades", href: "/oportunidades-de-inversion-en-estados-unidos" },
               { icon: Building2, title: "Estructura Empresarial", desc: "Abrir una empresa es el inicio. Estructurarla correctamente es la diferencia.", cta: "Ver Estructura", href: "/estructura-de-inversion-en-usa" },
             ].map((card, i) => (
