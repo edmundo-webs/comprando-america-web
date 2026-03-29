@@ -194,21 +194,21 @@ export default function Home() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Producto estrella
+                La Red de Contactos
               </p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-6">
-                La Membresía es el núcleo del ecosistema
+                Comprando América es el núcleo del ecosistema
               </h2>
               <p className="text-slate-400 text-lg leading-relaxed mb-8">
                 La información no basta. La diferencia está en tener criterio,
-                comunidad y una ruta clara para ejecutar. Dentro de la Membresía
+                comunidad y una ruta clara para ejecutar. Dentro de la comunidad
                 suceden las conversaciones que no se publican: acceso, análisis y decisiones.
               </p>
 
               <div className="space-y-3 mb-10">
                 {[
                   "Deal Day mensual: oportunidades presentadas en sesión privada",
-                  "Comunidad de empresarios e inversionistas con intención real",
+                  "Club de empresarios e inversionistas con intención real",
                   "Acompañamiento estratégico para estructurar y avanzar",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -221,7 +221,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-4 mb-6">
                 <a href="/membresia">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                    Quiero conocer la Membresía <ArrowRight className="w-4 h-4" />
+                    Quiero conocer la Comunidad <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/perfil">
@@ -230,7 +230,7 @@ export default function Home() {
                   </Button>
                 </a>
               </div>
-              <p className="text-slate-500 text-sm">La Membresía es privada. El acceso se valida por perfil.</p>
+              <p className="text-slate-500 text-sm">La comunidad es privada. El acceso se valida por perfil.</p>
             </div>
           </FadeIn>
         </div>
