@@ -144,30 +144,9 @@ const PLANS = [
   },
 ];
 
-/* ─── Expandable detail panel ─── */
-function DetailPanel({ title, children, isOpen, onToggle }: { title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void }) {
-  return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
-      <button onClick={onToggle} className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
-        <span className="text-[#0B1F3A] font-semibold">{title}</span>
-        <ChevronDown className={`w-5 h-5 text-primary transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}>
-            <div className="px-5 pb-5 text-[#4B5563] text-sm leading-relaxed">{children}</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 /* ═══════════════════════════════════════════════════════ */
 
 export default function ClubInversion() {
-  const [openPanel, setOpenPanel] = useState<string | null>(null);
-
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <SEOHead />
@@ -345,59 +324,7 @@ export default function ClubInversion() {
                 ))}
               </div>
 
-              {/* Expandable Deal Finding curriculum */}
-              <button
-                onClick={() => setOpenPanel(openPanel === "programa" ? null : "programa")}
-                className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-300 transition-colors"
-              >
-                Ver contenido del programa Deal Finding
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${openPanel === "programa" ? "rotate-180" : ""}`} />
-              </button>
 
-              <AnimatePresence>
-                {openPanel === "programa" && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="grid md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-[#1E3A5F]">
-                      {[
-                        {
-                          num: "01", title: "Detección de Oportunidades",
-                          items: ["Encontrando 'la zona de genialidad'", "Dónde y cómo buscar oportunidades de compra", "Cómo abordar dueños que no están en venta", "Diferenciar una oportunidad real", "Due diligence y pasos para comprar", "Cómo financiar un negocio a adquirir"],
-                        },
-                        {
-                          num: "02", title: "Evaluación de Oportunidades",
-                          items: ["Conciliar la valuación antes de ofertar", "Métodos para valuar una empresa", "Cómo calcular el SDE de un negocio", "10 indicadores de valor", "Cuándo usar LOI vs APA", "Negociación y cierre de oferta"],
-                        },
-                        {
-                          num: "03", title: "Operación de Negocios Adquiridos",
-                          items: ["Claves para administrar en EE.UU.", "Cómo adquirir clientes según el giro", "Aumentar valor de clientes actuales", "Internacionalización y reducción de gastos", "Encontrar las personas correctas", "Delegar: operar tu negocio a distancia"],
-                        },
-                        {
-                          num: "04", title: "Crecimiento de Negocios Adquiridos",
-                          items: ["Cultura de negocios EE.UU. vs LATAM", "Etapas de negocios según el giro", "Traer el futuro al presente", "Financiamiento para crecimiento", "Digitalización de procesos y clientes", "Diferenciación y construcción de marca"],
-                        },
-                      ].map((mod) => (
-                        <div key={mod.num}>
-                          <p className="text-blue-400 text-xs font-mono font-bold mb-2">{mod.num} — {mod.title}</p>
-                          <ul className="space-y-1">
-                            {mod.items.map((item, j) => (
-                              <li key={j} className="flex items-start gap-2">
-                                <CheckCircle2 className="w-3 h-3 text-blue-400/60 flex-shrink-0 mt-1" />
-                                <span className="text-slate-400 text-xs">{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           </FadeIn>
         </div>
