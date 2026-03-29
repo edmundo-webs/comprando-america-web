@@ -321,20 +321,38 @@ export default function ClubInversion() {
           {/* ── Plataforma digital — compact block ── */}
           <FadeIn>
             <div className="max-w-4xl mx-auto mt-14 bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8">
-              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-6">
                 <div>
                   <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase font-mono mb-2">Plataforma Digital</p>
                   <h3 className="text-xl text-white font-semibold mb-2">Todo queda grabado. Aprende a tu ritmo.</h3>
-                  <p className="text-slate-400 text-sm">Grabaciones de eventos, sesiones y programa educativo completo. Si no puedes asistir, lo ves cuando puedas.</p>
+                  <p className="text-slate-400 text-sm">Si no puedes asistir, lo ves cuando puedas. Toda la experiencia en un solo lugar.</p>
                 </div>
-                <button
-                  onClick={() => setOpenPanel(openPanel === "programa" ? null : "programa")}
-                  className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-300 transition-colors whitespace-nowrap"
-                >
-                  Ver programa educativo
-                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${openPanel === "programa" ? "rotate-180" : ""}`} />
-                </button>
               </div>
+
+              {/* 5 programs grid */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+                {[
+                  { title: "Deal Finding", desc: "Programa educativo de 4 módulos para detectar, evaluar, operar y escalar negocios." },
+                  { title: "Americaniza tu Empresa", desc: "Curso completo de +70 videos grabados para operar en EE.UU." },
+                  { title: "Asamblea de Miembros", desc: "Archivo completo de todas las sesiones mensuales." },
+                  { title: "Cumbre de Emprendimiento", desc: "Grabaciones de todas las cumbres presenciales." },
+                  { title: "Deal Day", desc: "Historial de sesiones de oportunidades de inversión presentadas." },
+                ].map((prog, i) => (
+                  <div key={i} className="bg-[#132D50] border border-[#1E3A5F] rounded-lg p-4">
+                    <p className="text-white text-sm font-semibold mb-1">{prog.title}</p>
+                    <p className="text-slate-500 text-xs leading-relaxed">{prog.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Expandable Deal Finding curriculum */}
+              <button
+                onClick={() => setOpenPanel(openPanel === "programa" ? null : "programa")}
+                className="inline-flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-300 transition-colors"
+              >
+                Ver contenido del programa Deal Finding
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${openPanel === "programa" ? "rotate-180" : ""}`} />
+              </button>
 
               <AnimatePresence>
                 {openPanel === "programa" && (
@@ -345,23 +363,23 @@ export default function ClubInversion() {
                     transition={{ duration: 0.4 }}
                     className="overflow-hidden"
                   >
-                    <div className="grid md:grid-cols-2 gap-6 mt-8 pt-8 border-t border-[#1E3A5F]">
+                    <div className="grid md:grid-cols-2 gap-6 mt-6 pt-6 border-t border-[#1E3A5F]">
                       {[
                         {
                           num: "01", title: "Detección de Oportunidades",
-                          items: ["Encontrando 'la zona de genialidad'", "Dónde y cómo buscar oportunidades", "Cómo abordar dueños que no venden", "Diferenciar una oportunidad real", "Due diligence y pasos de compra", "Cómo financiar la adquisición"],
+                          items: ["Encontrando 'la zona de genialidad'", "Dónde y cómo buscar oportunidades de compra", "Cómo abordar dueños que no están en venta", "Diferenciar una oportunidad real", "Due diligence y pasos para comprar", "Cómo financiar un negocio a adquirir"],
                         },
                         {
                           num: "02", title: "Evaluación de Oportunidades",
-                          items: ["Valuación antes de ofertar", "Métodos para valuar una empresa", "Cómo calcular el SDE", "10 indicadores de valor", "LOI vs APA en la oferta", "Negociación y cierre"],
+                          items: ["Conciliar la valuación antes de ofertar", "Métodos para valuar una empresa", "Cómo calcular el SDE de un negocio", "10 indicadores de valor", "Cuándo usar LOI vs APA", "Negociación y cierre de oferta"],
                         },
                         {
-                          num: "03", title: "Operación de Negocios",
-                          items: ["Administrar tu negocio en EE.UU.", "Adquirir clientes según el giro", "Aumentar valor de clientes actuales", "Reducir gastos fijos", "Encontrar las personas correctas", "Operar a distancia"],
+                          num: "03", title: "Operación de Negocios Adquiridos",
+                          items: ["Claves para administrar en EE.UU.", "Cómo adquirir clientes según el giro", "Aumentar valor de clientes actuales", "Internacionalización y reducción de gastos", "Encontrar las personas correctas", "Delegar: operar tu negocio a distancia"],
                         },
                         {
-                          num: "04", title: "Crecimiento de Negocios",
-                          items: ["Cultura EE.UU. vs Latinoamérica", "Etapas según el giro", "Financiamiento para crecer", "Digitalización de procesos", "Adquisición de clientes", "Diferenciación y marca"],
+                          num: "04", title: "Crecimiento de Negocios Adquiridos",
+                          items: ["Cultura de negocios EE.UU. vs LATAM", "Etapas de negocios según el giro", "Traer el futuro al presente", "Financiamiento para crecimiento", "Digitalización de procesos y clientes", "Diferenciación y construcción de marca"],
                         },
                       ].map((mod) => (
                         <div key={mod.num}>
