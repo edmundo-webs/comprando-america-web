@@ -1,7 +1,8 @@
 /*
- * Club de Inversión 2026 — Simplified, fear-resolving structure
+ * Club de Inversión 2026 — Central product page
  * /club-de-inversion-en-estados-unidos
- * 8 sections, dynamic tabs, no scroll fatigue
+ * No external navigation — everything stays on page
+ * Pillars + authority + fear-resolving
  */
 
 import { useEffect, useState } from "react";
@@ -18,11 +19,16 @@ import {
   Globe,
   UserCheck,
   Users,
-  Scale,
   FileCheck,
   Rocket,
   X,
-  Play,
+  CalendarDays,
+  Presentation,
+  MessageSquare,
+  Crown,
+  Handshake,
+  ChevronDown,
+  Star,
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
@@ -35,7 +41,7 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
   );
 }
 
-/* ─── CountUp ─── */
+/* ─── StatCounter ─── */
 function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
   const { ref, isInView } = useInView();
   useEffect(() => {
@@ -45,9 +51,9 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
     let start = 0;
     const step = (ts: number) => {
       if (!start) start = ts;
-      const progress = Math.min((ts - start) / 2000, 1);
-      el.textContent = String(Math.floor(progress * value));
-      if (progress < 1) requestAnimationFrame(step);
+      const p = Math.min((ts - start) / 2000, 1);
+      el.textContent = String(Math.floor(p * value));
+      if (p < 1) requestAnimationFrame(step);
       else el.textContent = String(value);
     };
     requestAnimationFrame(step);
@@ -73,6 +79,7 @@ function SEOHead() {
 /* ─── Photos ─── */
 const HERO = "https://lh3.googleusercontent.com/d/1rbRZbnInyEGqnf51XjSXo_5HsBp81dUc=w1920";
 const PANEL = "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920";
+const NETWORKING = "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1200";
 
 /* ─── Experts ─── */
 const EXPERTS = [
@@ -99,7 +106,7 @@ const PLANS = [
       "3 módulos de formación",
       "Sesiones 1:1 con expertos",
       "Comunidad privada + eventos digitales",
-      "Eventos presenciales anuales",
+      "Acceso VIP a eventos presenciales",
     ],
     value: "$19,150",
     savings: "$11,650",
@@ -137,10 +144,29 @@ const PLANS = [
   },
 ];
 
+/* ─── Expandable detail panel ─── */
+function DetailPanel({ title, children, isOpen, onToggle }: { title: string; children: React.ReactNode; isOpen: boolean; onToggle: () => void }) {
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white">
+      <button onClick={onToggle} className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+        <span className="text-[#0B1F3A] font-semibold">{title}</span>
+        <ChevronDown className={`w-5 h-5 text-primary transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}>
+            <div className="px-5 pb-5 text-[#4B5563] text-sm leading-relaxed">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════════════════════ */
 
 export default function ClubInversion() {
-  const [activeTab, setActiveTab] = useState<"patrimonio" | "migrar">("patrimonio");
+  const [openPanel, setOpenPanel] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
@@ -161,11 +187,14 @@ export default function ClubInversion() {
               Club Privado · Desde $100,000 USD
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
-              Tu inversión merece{" "}
-              <span className="gradient-text-primary">estructura</span>, no improvisación
+              El club de inversión para latinos en{" "}
+              <span className="gradient-text-primary">Estados Unidos</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-8 max-w-2xl">
-              Acompañamos a empresarios latinos a invertir en Estados Unidos con criterio, equipo real y un sistema probado. No vendemos sueños — construimos estructura.
+            <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-4 max-w-2xl">
+              No es solo encontrar oportunidades — es encontrar las que realmente te hacen sentido. Con estructura, criterio y una comunidad de empresarios que están en el mismo camino que tú.
+            </p>
+            <p className="text-slate-500 text-sm mb-8">
+              No es una carrera. Es un proceso con acompañamiento real.
             </p>
             <div className="flex flex-wrap gap-4">
               <a href="/perfil">
@@ -181,137 +210,118 @@ export default function ClubInversion() {
         </div>
       </section>
 
-      {/* ═══ 2. LAS 2 RUTAS — ☀️ BLANCO ═══ */}
+      {/* ═══ 2. QUÉ RESOLVEMOS — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">¿Cuál es tu objetivo?</h2>
-              <p className="text-[#6B7280] text-lg">Cada ruta tiene un proceso diferente. Identifica la tuya.</p>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">¿Qué resuelve este club?</h2>
+              <p className="text-[#6B7280] text-lg max-w-2xl mx-auto">
+                Formar parte del club no solo te conecta a oportunidades — te integra a una estructura diseñada para avanzar con claridad, estrategia y seguimiento real.
+              </p>
             </div>
           </FadeIn>
 
-          {/* Tab buttons */}
-          <FadeIn>
-            <div className="flex justify-center gap-3 mb-10">
-              <button
-                onClick={() => setActiveTab("patrimonio")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all ${
-                  activeTab === "patrimonio"
-                    ? "bg-primary text-white shadow-lg shadow-blue-600/20"
-                    : "bg-white text-[#6B7280] hover:bg-gray-100 border border-gray-200"
-                }`}
-              >
-                <Shield className="w-4 h-4" /> Proteger patrimonio
-              </button>
-              <button
-                onClick={() => setActiveTab("migrar")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full text-sm font-semibold transition-all ${
-                  activeTab === "migrar"
-                    ? "bg-primary text-white shadow-lg shadow-blue-600/20"
-                    : "bg-white text-[#6B7280] hover:bg-gray-100 border border-gray-200"
-                }`}
-              >
-                <Globe className="w-4 h-4" /> Migrar con inversión
-              </button>
-            </div>
-          </FadeIn>
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <FadeIn>
+              <div className="bg-white border border-gray-200 rounded-xl p-6 h-full">
+                <Shield className="w-8 h-8 text-primary mb-4" />
+                <h3 className="text-lg font-bold text-[#0B1F3A] mb-3">Proteger patrimonio</h3>
+                <p className="text-[#4B5563] text-sm leading-relaxed mb-4">
+                  Inversión en dólares con estructura legal, diversificación fuera de tu país y bienes raíces con análisis previo.
+                </p>
+                <div className="space-y-2">
+                  {["Desde $100,000 USD", "LLC + cuenta bancaria", "Bienes raíces con criterio", "Sin necesidad de migrar"].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                      <span className="text-[#6B7280] text-xs">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeIn>
 
-          {/* Tab content */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.3 }}
-              className="max-w-3xl mx-auto"
-            >
-              {activeTab === "patrimonio" ? (
-                <div className="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 shadow-sm">
-                  <h3 className="text-2xl font-bold text-[#0B1F3A] mb-4">Quiero proteger y diversificar mi patrimonio</h3>
-                  <p className="text-[#4B5563] leading-relaxed mb-6">
-                    Tienes capital en tu país y quieres moverlo a un entorno más estable. Buscas invertir en dólares con estructura legal, sin improvisación, y con acompañamiento real.
-                  </p>
-                  <div className="grid sm:grid-cols-2 gap-3 mb-8">
-                    {[
-                      "Inversión desde $100,000 USD",
-                      "Estructura LLC + cuenta bancaria",
-                      "Bienes raíces con análisis previo",
-                      "Planeación fiscal y patrimonial",
-                      "No necesitas migrar",
-                      "Acompañamiento continuo",
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span className="text-[#4B5563] text-sm">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <a href="/oportunidades-de-inversion-en-estados-unidos">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full sm:w-auto">
-                      Ver opciones de inversión <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </a>
+            <FadeIn delay={0.1}>
+              <div className="bg-white border border-gray-200 rounded-xl p-6 h-full">
+                <Globe className="w-8 h-8 text-primary mb-4" />
+                <h3 className="text-lg font-bold text-[#0B1F3A] mb-3">Migrar con inversión</h3>
+                <p className="text-[#4B5563] text-sm leading-relaxed mb-4">
+                  Ruta migratoria real conectando tu inversión con visa E-2, negocio en operación y estructura completa.
+                </p>
+                <div className="space-y-2">
+                  {["Desde $150,000 USD", "Visa E-2 de inversionista", "Negocio real en operación", "Plan USCIS-ready"].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0" />
+                      <span className="text-[#6B7280] text-xs">{item}</span>
+                    </div>
+                  ))}
                 </div>
-              ) : (
-                <div className="bg-white border border-gray-200 rounded-2xl p-8 md:p-10 shadow-sm">
-                  <h3 className="text-2xl font-bold text-[#0B1F3A] mb-4">Quiero migrar a Estados Unidos con inversión</h3>
-                  <p className="text-[#4B5563] leading-relaxed mb-6">
-                    Tienes capital y quieres una ruta migratoria real. Buscas conectar tu inversión con una visa de inversionista (E-2) y operar un negocio real en Estados Unidos.
-                  </p>
-                  <div className="grid sm:grid-cols-2 gap-3 mb-8">
-                    {[
-                      "Inversión desde $150,000 USD",
-                      "Visa E-2 de inversionista",
-                      "Negocio real en operación",
-                      "Estructura legal completa",
-                      "Plan de negocios USCIS-ready",
-                      "Acompañamiento migratorio",
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span className="text-[#4B5563] text-sm">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <a href="/visa-e2-inversion-en-estados-unidos">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full sm:w-auto">
-                      Ver ruta migratoria <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </a>
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
-      {/* ═══ 3. CÓMO FUNCIONA — navy ═══ */}
+      {/* ═══ 3. PILARES — navy ═══ */}
       <section className="bg-[#091A30] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl text-white mb-4">¿Cómo funciona?</h2>
-              <p className="text-slate-400 text-lg">No tienes que saber todo. Nosotros te guiamos paso a paso.</p>
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">¿Qué incluye?</p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">Herramientas concretas para evaluar, estructurar y ejecutar</h2>
+              <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+                Cada mes, los miembros participan en sesiones de análisis, educación y presentación de oportunidades exclusivas.
+              </p>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { icon: UserCheck, step: "01", title: "Evalúas tu perfil", desc: "Respondemos si este camino es viable para ti. Sin compromisos." },
-              { icon: Users, step: "02", title: "Te asignamos equipo", desc: "Abogados, CPA, estrategas. Tu equipo desde el día 1." },
-              { icon: FileCheck, step: "03", title: "Estructuramos", desc: "LLC, cuentas, estrategia fiscal y migratoria diseñadas para ti." },
-              { icon: Rocket, step: "04", title: "Ejecutas", desc: "Inviertes o migras con estructura clara y acompañamiento continuo." },
-            ].map((item, i) => (
-              <FadeIn key={i} delay={i * 0.08}>
-                <div className="text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center mx-auto mb-4">
-                    <item.icon className="w-7 h-7 text-blue-400" />
+              {
+                icon: Presentation,
+                title: "Deal Day",
+                desc: "Cada mes analizamos en vivo oportunidades de inversión filtradas por el equipo. Cada oportunidad se presenta con soporte legal y financiero. Solo el 20% pasa el filtro.",
+                badge: "Mensual",
+              },
+              {
+                icon: CalendarDays,
+                title: "Asamblea Mensual",
+                desc: "Sesión donde revisamos casos reales de miembros y presentamos un tema educativo estratégico. Dos secciones: educación + oportunidades exclusivas.",
+                badge: "Mensual",
+              },
+              {
+                icon: MessageSquare,
+                title: "Mentorías en Tiempo Real",
+                desc: "Aprende directamente de inversionistas que ya compraron negocios en EE.UU. y los expertos que los acompañaron. Sesiones privadas presenciales y digitales.",
+              },
+              {
+                icon: Handshake,
+                title: "Conversaciones Exclusivas",
+                desc: "Acceso a empresarios, compradores de franquicias y expertos del ecosistema de inversión que comparten estrategias y resultados reales.",
+              },
+              {
+                icon: Star,
+                title: "Eventos Presenciales VIP",
+                desc: "Cumbres, Ruta Inmobiliaria e Investment Week sin costo adicional. Eres invitado VIP. Abogados, banqueros, contadores y especialistas en un mismo espacio.",
+                badge: "Incluido",
+              },
+              {
+                icon: Crown,
+                title: "Mesa de Dueños",
+                desc: "Grupo privado donde miembros con experiencia invirtiendo en EE.UU. evalúan y mejoran negociaciones y oportunidades con criterio operativo y financiero real.",
+                badge: "Comunidad",
+              },
+            ].map((pilar, i) => (
+              <FadeIn key={i} delay={i * 0.06}>
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
+                  <div className="flex items-center justify-between mb-4">
+                    <pilar.icon className="w-8 h-8 text-blue-400" />
+                    {pilar.badge && (
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">{pilar.badge}</span>
+                    )}
                   </div>
-                  <span className="text-blue-400 text-xs font-mono font-bold">{item.step}</span>
-                  <h3 className="text-white font-semibold mt-2 mb-2">{item.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                  <h3 className="text-white font-semibold mb-3">{pilar.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{pilar.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -319,13 +329,44 @@ export default function ClubInversion() {
         </div>
       </section>
 
-      {/* ═══ 4. POR QUÉ CONFIAR — ☀️ BLANCO ═══ */}
+      {/* ═══ 4. CÓMO FUNCIONA — ☀️ BLANCO ═══ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">¿Por qué confiar en Comprando América?</h2>
-              <p className="text-[#6B7280] text-lg">Números reales. Equipo real. Resultados reales.</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">¿Cómo funciona?</h2>
+              <p className="text-[#6B7280] text-lg">No tienes que saber todo. Nosotros te guiamos paso a paso.</p>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+            {[
+              { icon: UserCheck, step: "01", title: "Evalúas tu perfil", desc: "Te decimos con claridad si este camino es viable para ti." },
+              { icon: Users, step: "02", title: "Te asignamos equipo", desc: "Abogados, CPA, estrategas. Tu equipo desde el día 1." },
+              { icon: FileCheck, step: "03", title: "Estructuramos", desc: "LLC, cuentas, estrategia fiscal y migratoria diseñadas para ti." },
+              { icon: Rocket, step: "04", title: "Ejecutas con criterio", desc: "Inviertes cuando hay encaje real. Sin presión. Sin carreras." },
+            ].map((item, i) => (
+              <FadeIn key={i} delay={i * 0.08}>
+                <div className="text-center">
+                  <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
+                    <item.icon className="w-7 h-7 text-primary" />
+                  </div>
+                  <span className="text-primary text-xs font-mono font-bold">{item.step}</span>
+                  <h3 className="text-[#0B1F3A] font-semibold mt-2 mb-2">{item.title}</h3>
+                  <p className="text-[#6B7280] text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 5. CONFIANZA — navy ═══ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl text-white mb-4">Números reales. Equipo real.</h2>
             </div>
           </FadeIn>
 
@@ -339,30 +380,28 @@ export default function ClubInversion() {
             </div>
           </FadeIn>
 
-          {/* Experts mini-grid */}
+          {/* Experts */}
           <FadeIn>
-            <div className="text-center mb-8">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase font-mono">Equipo Multidisciplinario</p>
-            </div>
+            <p className="text-center text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase font-mono mb-8">Equipo Multidisciplinario</p>
           </FadeIn>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 max-w-4xl mx-auto mb-10">
             {EXPERTS.map((expert, i) => (
               <FadeIn key={i} delay={i * 0.05}>
                 <div className="text-center">
-                  <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full overflow-hidden border-2 border-gray-200 hover:border-primary/40 transition-all mb-3">
+                  <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full overflow-hidden border-2 border-[#1E3A5F] hover:border-primary/50 transition-all mb-3">
                     <img src={expert.img} alt={expert.name} className="w-full h-full object-cover" />
                   </div>
-                  <p className="text-[#0B1F3A] text-xs font-semibold">{expert.name}</p>
-                  <p className="text-[#9CA3AF] text-[10px]">{expert.role}</p>
+                  <p className="text-white text-xs font-semibold">{expert.name}</p>
+                  <p className="text-slate-500 text-[10px]">{expert.role}</p>
                 </div>
               </FadeIn>
             ))}
           </div>
 
           <FadeIn>
-            <div className="text-center mt-10">
+            <div className="text-center">
               <a href="/quienes-somos">
-                <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 gap-2">
+                <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2">
                   Conocer al equipo completo <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
@@ -371,13 +410,18 @@ export default function ClubInversion() {
         </div>
       </section>
 
-      {/* ═══ 5. TESTIMONIOS VIDEO — navy ═══ */}
-      <section className="bg-[#0E2544] py-20 md:py-28">
+      {/* ── Photo break ── */}
+      <section className="relative h-56 md:h-72 overflow-hidden">
+        <img src={PANEL} alt="Panel de expertos" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0E2544]" />
+      </section>
+
+      {/* ═══ 6. TESTIMONIOS VIDEO — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Historias reales de miembros</h2>
-              <p className="text-slate-400 text-lg">Empresarios que ya están invirtiendo con estructura.</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Miembros que ya están invirtiendo</h2>
             </div>
           </FadeIn>
 
@@ -387,7 +431,7 @@ export default function ClubInversion() {
               { name: "Gerardo Bejarano", videoId: "6J6IIPFsTD0" },
             ].map((t, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden">
+                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
                   <div className="aspect-video">
                     <iframe
                       src={`https://www.youtube.com/embed/${t.videoId}?rel=0&modestbranding=1`}
@@ -398,8 +442,8 @@ export default function ClubInversion() {
                     />
                   </div>
                   <div className="p-4 text-center">
-                    <p className="text-white font-semibold">{t.name}</p>
-                    <p className="text-slate-500 text-xs">Miembro de Comprando América</p>
+                    <p className="text-[#0B1F3A] font-semibold">{t.name}</p>
+                    <p className="text-[#9CA3AF] text-xs">Miembro de Comprando América</p>
                   </div>
                 </div>
               </FadeIn>
@@ -408,31 +452,31 @@ export default function ClubInversion() {
         </div>
       </section>
 
-      {/* ═══ 6. PERFIL IDEAL — ☀️ BLANCO ═══ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
+      {/* ═══ 7. PERFIL IDEAL — navy ═══ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-12 text-center">¿Es para ti?</h2>
+            <h2 className="text-3xl md:text-4xl text-white mb-12 text-center">¿Es para ti?</h2>
           </FadeIn>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
-              <div className="bg-white border border-green-200 rounded-xl p-8 h-full">
-                <h3 className="text-[#0B1F3A] font-semibold mb-6 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-500" /> Es para ti si:
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-xl p-8 h-full">
+                <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-blue-400" /> Es para ti si:
                 </h3>
                 <ul className="space-y-3">
                   {[
                     "Puedes invertir $100,000 USD o más",
-                    "Buscas diversificación internacional",
+                    "Buscas diversificación con estructura",
                     "Valoras proceso sobre improvisación",
                     "Entiendes que proteger capital es prioridad",
                     "Quieres acompañamiento real, no teoría",
-                    "Buscas ejecutar con orden y criterio",
+                    "Buscas una comunidad, no un curso",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="text-green-500 font-bold text-sm mt-0.5">✓</span>
-                      <span className="text-[#374151] text-sm">{item}</span>
+                      <span className="text-blue-400 font-bold text-sm mt-0.5">✓</span>
+                      <span className="text-slate-300 text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -440,9 +484,9 @@ export default function ClubInversion() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="bg-white border border-gray-200 rounded-xl p-8 h-full">
-                <h3 className="text-[#0B1F3A] font-semibold mb-6 flex items-center gap-2">
-                  <X className="w-5 h-5 text-[#9CA3AF]" /> No es para ti si:
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8 h-full">
+                <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
+                  <X className="w-5 h-5 text-slate-500" /> No es para ti si:
                 </h3>
                 <ul className="space-y-3">
                   {[
@@ -450,12 +494,12 @@ export default function ClubInversion() {
                     "Esperas que otros decidan por ti",
                     "No tienes capital disponible",
                     "Quieres comisiones o intermediarios",
-                    "Buscas cursos o mentoría genérica",
+                    "Buscas cursos genéricos",
                     "Esperas resultados sin estructura",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="text-[#D1D5DB] text-sm mt-0.5">✕</span>
-                      <span className="text-[#6B7280] text-sm">{item}</span>
+                      <span className="text-slate-500 text-sm mt-0.5">✕</span>
+                      <span className="text-slate-400 text-sm">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -464,20 +508,20 @@ export default function ClubInversion() {
           </div>
 
           <FadeIn>
-            <p className="text-center text-[#4B5563] mt-10 max-w-xl mx-auto">
-              Esto no es para todos. <span className="text-[#0B1F3A] font-semibold">Es para quien entiende que estructurar bien es más importante que entrar rápido.</span>
+            <p className="text-center text-slate-300 mt-10 max-w-xl mx-auto">
+              Esto no es para todos. <span className="text-white font-semibold">Es para quien entiende que estructurar bien es más importante que entrar rápido.</span>
             </p>
           </FadeIn>
         </div>
       </section>
 
-      {/* ═══ 7. PLANES — navy ═══ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-28">
+      {/* ═══ 8. PLANES — ☀️ BLANCO ═══ */}
+      <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Planes de acceso</h2>
-              <p className="text-slate-400 text-lg">Elige el nivel que mejor se ajuste a tu estrategia.</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Planes de acceso</h2>
+              <p className="text-[#6B7280] text-lg">Elige el nivel que mejor se ajuste a tu estrategia.</p>
             </div>
           </FadeIn>
 
@@ -486,32 +530,29 @@ export default function ClubInversion() {
               <FadeIn key={plan.name} delay={i * 0.1}>
                 <div className={`relative rounded-2xl p-6 border h-full flex flex-col ${
                   plan.popular
-                    ? "bg-[#0F2847] border-primary/40 ring-2 ring-primary/20 shadow-xl shadow-blue-600/10"
-                    : "bg-[#0F2847] border-[#1E3A5F]"
+                    ? "bg-white border-primary/40 ring-2 ring-primary/20 shadow-xl shadow-blue-600/10"
+                    : "bg-white border-gray-200 shadow-sm"
                 }`}>
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white px-3 py-0.5 rounded-full text-xs font-semibold">
-                      Más Popular
-                    </div>
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white px-3 py-0.5 rounded-full text-xs font-semibold">Más Popular</div>
                   )}
-                  <h3 className="text-xl font-bold text-white mb-1">
+                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-1">
                     Investor <span className="text-primary">{plan.name}</span>
                   </h3>
                   <div className="mb-4">
                     <div className="text-3xl font-bold text-primary mb-1">{plan.price}</div>
-                    <p className="text-slate-500 text-xs">{plan.ideal}</p>
+                    <p className="text-[#9CA3AF] text-xs">{plan.ideal}</p>
                   </div>
-                  <div className="mb-4 pb-4 border-b border-[#1E3A5F] text-xs">
-                    <p className="text-slate-300"><strong>Valor:</strong> {plan.value}</p>
-                    <p className="text-blue-400"><strong>Ahorro:</strong> {plan.savings}</p>
+                  <div className="mb-4 pb-4 border-b border-gray-100 text-xs">
+                    <p className="text-[#374151]"><strong>Valor:</strong> {plan.value}</p>
+                    <p className="text-primary"><strong>Ahorro:</strong> {plan.savings}</p>
                   </div>
 
-                  {/* Features VISIBLE — no accordion */}
                   <ul className="space-y-2 mb-6 flex-grow">
                     {plan.features.map((f, fi) => (
                       <li key={fi} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-                        <span className="text-slate-300 text-xs">{f}</span>
+                        <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span className="text-[#4B5563] text-xs">{f}</span>
                       </li>
                     ))}
                   </ul>
@@ -520,7 +561,7 @@ export default function ClubInversion() {
                     <Button className={`w-full py-3 font-semibold gap-2 text-sm ${
                       plan.popular
                         ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                        : "bg-[#1E3A5F] hover:bg-[#2A4A6B] text-white"
+                        : "bg-[#0B1F3A] hover:bg-[#0E2544] text-white"
                     }`}>
                       Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                     </Button>
@@ -532,7 +573,7 @@ export default function ClubInversion() {
         </div>
       </section>
 
-      {/* ═══ 8. CTA FINAL — deep navy ═══ */}
+      {/* ═══ 9. CTA FINAL — deep navy ═══ */}
       <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
           <FadeIn>
