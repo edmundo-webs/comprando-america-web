@@ -63,7 +63,7 @@ const VIDEO_POSTER =
 
 // Fotos reales desde Google Drive (Pagina web > Fotos CA)
 const HERO_IMAGE =
-  "https://lh3.googleusercontent.com/d/1QndwkGRoUpPQHUOPUcMe9B1kC5TfowoV=w1920"; // audiencia completa en evento
+  "https://lh3.googleusercontent.com/d/1rbRZbnInyEGqnf51XjSXo_5HsBp81dUc=w1920";
 
 const EDMUNDO_PORTRAIT =
   "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800"; // retrato rooftop profesional
