@@ -83,7 +83,7 @@ export default function Home() {
       {/* ═══ 1. HERO ═══ */}
       <section className="relative min-h-screen flex items-center">
         <div className="absolute inset-0">
-          <img src={IMAGES.hero} alt="Skyline" className="w-full h-full object-cover" />
+          <img src="https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w1920" alt="Edmundo Treviño — Comprando América" className="w-full h-full object-cover object-top" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-transparent" />
         </div>
@@ -96,7 +96,7 @@ export default function Home() {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Membresía Privada para Inversionistas
+                Comunidad Exclusiva para Inversionistas
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-7xl text-white leading-[1.1] mb-6">
                 Invierte en Estados Unidos con{" "}
@@ -104,7 +104,7 @@ export default function Home() {
                 y comunidad
               </h1>
               <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-6 max-w-2xl">
-                Comprando América es una membresía privada para empresarios e
+                Comprando América es una comunidad exclusiva para empresarios e
                 inversionistas latinos que buscan oportunidades filtradas,
                 acompañamiento estratégico y una ruta clara para ejecutar.
               </p>
@@ -123,9 +123,9 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                <a href="/membresia">
+                <a href="/quienes-somos">
                   <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto shadow-lg shadow-blue-600/25">
-                    Conocer la Membresía <ArrowRight className="w-4 h-4" />
+                    Quiénes Somos <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/perfil">
@@ -135,8 +135,8 @@ export default function Home() {
                 </a>
               </div>
 
-              <a href="/bienes-raices-en-usa" className="inline-flex items-center gap-1 text-blue-400 text-sm hover:text-blue-300 transition-colors">
-                Ver oportunidades abiertas <ArrowRight className="w-3 h-3" />
+              <a href="/oportunidades-de-inversion-en-estados-unidos" className="inline-flex items-center gap-1 text-blue-400 text-sm hover:text-blue-300 transition-colors">
+                Ver oportunidades <ArrowRight className="w-3 h-3" />
               </a>
 
               <p className="text-slate-500 text-xs mt-6 max-w-lg">
