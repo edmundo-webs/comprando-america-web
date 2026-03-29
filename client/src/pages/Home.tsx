@@ -4,12 +4,12 @@
  * Stats + Edmundo CEO + Experts + Testimonials + Events
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
 import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -21,6 +21,11 @@ import {
   Newspaper,
   BookOpen,
   Quote,
+  ChevronDown,
+  X,
+  Briefcase,
+  GraduationCap,
+  Building,
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
@@ -103,6 +108,143 @@ const TESTIMONIALS = [
   { name: "Alejandro", city: "Ciudad de México", quote: "Lo que más valoré fue el acompañamiento del equipo multidisciplinario. No es teoría, es ejecución.", initials: "A" },
   { name: "Ricardo", city: "Monterrey", quote: "Después de asistir a la Cumbre entendí el valor del networking con empresarios que ya están invirtiendo.", initials: "R" },
 ];
+
+/* ─── Edmundo Expandable Section ─── */
+function EdmundoSection() {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <section className="bg-[#F5F7FA] py-20 md:py-28">
+      <div className="container">
+        <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+          <FadeIn>
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+              <img src={EDMUNDO_PORTRAIT} alt="Edmundo Treviño — CEO Comprando América" className="w-full h-[450px] object-cover object-top" />
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div>
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Liderazgo</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Edmundo Treviño</h2>
+              <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-6">Fundador y CEO · Comprando América</p>
+              <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
+                Empresario serial con más de dos décadas de experiencia operando entre México y Estados Unidos. Fundador y CEO de 9 empresas activas en EE.UU.
+              </p>
+              <div className="space-y-3 mb-8">
+                {[
+                  "MBA en Economía Industrial",
+                  "Maestría en Sistema Fiscal en Estados Unidos",
+                  "+20 años en comercio internacional",
+                  "Más de 8 empresas operando en EE.UU. y México",
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="text-[#374151] text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:text-blue-700 transition-colors"
+              >
+                {expanded ? "Cerrar" : "Conocer más sobre Edmundo"}
+                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} />
+              </button>
+            </div>
+          </FadeIn>
+        </div>
+
+        {/* ─── Expandable bio panel ─── */}
+        <AnimatePresence>
+          {expanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              <div className="max-w-5xl mx-auto mt-12 bg-white border border-gray-200 rounded-2xl p-8 md:p-12 shadow-lg">
+                <div className="flex items-center justify-between mb-8">
+                  <h3 className="text-2xl font-bold text-[#0B1F3A]">Biografía completa</h3>
+                  <button onClick={() => setExpanded(false)} className="text-[#9CA3AF] hover:text-[#0B1F3A] transition-colors">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-10">
+                  {/* Left column — narrative */}
+                  <div className="space-y-4 text-[#4B5563] text-sm leading-relaxed">
+                    <p>
+                      Edmundo Treviño es empresario, inversionista y fundador de Comprando América, una comunidad privada de empresarios e inversionistas latinos enfocada en crear, adquirir y escalar negocios en Estados Unidos.
+                    </p>
+                    <p>
+                      Con más de 20 años de experiencia en comercio internacional y operaciones empresariales entre México y Estados Unidos, Edmundo ha fundado y operado más de 9 empresas activas en ambos países, abarcando sectores como transporte, servicios financieros, bienes raíces y consultoría estratégica.
+                    </p>
+                    <p>
+                      Es egresado del MBA en Economía Industrial y cuenta con una Maestría en el Sistema Fiscal de Estados Unidos. Su enfoque se centra en la creación de riqueza patrimonial a través de estructura, criterio y ejecución — no de promesas.
+                    </p>
+                    <p>
+                      A través de Comprando América, Edmundo ha acompañado a decenas de empresarios en la apertura de más de 50 LLCs, la evaluación de oportunidades de inversión y la estructuración de rutas migratorias basadas en inversión real.
+                    </p>
+                  </div>
+
+                  {/* Right column — structured info */}
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <GraduationCap className="w-5 h-5 text-primary" />
+                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Formación Académica</h4>
+                      </div>
+                      <div className="space-y-2 pl-7">
+                        {["MBA en Economía Industrial", "Maestría en Sistema Fiscal en EE.UU.", "Formación continua en inversión inmobiliaria y corporativa"].map((item, i) => (
+                          <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Building className="w-5 h-5 text-primary" />
+                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Empresas y Operaciones</h4>
+                      </div>
+                      <div className="space-y-2 pl-7">
+                        {["9+ empresas activas en EE.UU. y México", "Transporte, servicios financieros, bienes raíces", "Consultoría estratégica para inversionistas latinos", "50+ LLCs estructuradas para miembros de la comunidad"].map((item, i) => (
+                          <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Briefcase className="w-5 h-5 text-primary" />
+                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Enfoque Actual</h4>
+                      </div>
+                      <div className="space-y-2 pl-7">
+                        {["Comunidad de inversión Comprando América", "Cumbres y eventos presenciales de inversión", "Viajes de inspección inmobiliaria en Florida", "Acompañamiento estratégico E-2 y estructura empresarial"].map((item, i) => (
+                          <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-10 pt-8 border-t border-gray-100 text-center">
+                  <a href="/quienes-somos">
+                    <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white gap-2">
+                      Conoce al equipo completo <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </section>
+  );
+}
 
 /* ═══════════════════════════════════════════════════════ */
 
@@ -234,45 +376,7 @@ export default function Home() {
       </section>
 
       {/* ═══ 4. EDMUNDO CEO — ☀️ BLANCO ═══ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
-        <div className="container">
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-            <FadeIn>
-              <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
-                <img src={EDMUNDO_PORTRAIT} alt="Edmundo Treviño — CEO Comprando América" className="w-full h-[450px] object-cover object-top" />
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <div>
-                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Liderazgo</p>
-                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Edmundo Treviño</h2>
-                <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-6">Fundador y CEO · Comprando América</p>
-                <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
-                  Empresario serial con más de dos décadas de experiencia operando entre México y Estados Unidos. Fundador y CEO de 9 empresas activas en EE.UU.
-                </p>
-                <div className="space-y-3 mb-8">
-                  {[
-                    "MBA en Economía Industrial",
-                    "Maestría en Sistema Fiscal en Estados Unidos",
-                    "+20 años en comercio internacional",
-                    "Más de 8 empresas operando en EE.UU. y México",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                      <span className="text-[#374151] text-sm">{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <a href="https://edmundotrevino.com" target="_blank" rel="noopener noreferrer">
-                  <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white gap-2">
-                    Conoce más sobre Edmundo <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
+      <EdmundoSection />
 
       {/* ═══ 5. EXPERTOS — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
