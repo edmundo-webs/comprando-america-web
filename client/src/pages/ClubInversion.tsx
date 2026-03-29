@@ -320,7 +320,98 @@ export default function ClubInversion() {
         </div>
       </section>
 
-      {/* ═══ 4. CÓMO FUNCIONA — ☀️ BLANCO ═══ */}
+      {/* ═══ PLATAFORMA DIGITAL + PROGRAMA — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-14">
+                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Plataforma Digital</p>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Todo queda grabado. Aprende a tu ritmo.</h2>
+                <p className="text-[#6B7280] text-lg max-w-2xl mx-auto">
+                  Todas las grabaciones de eventos, sesiones y el programa educativo completo disponibles en nuestra plataforma digital. Si no puedes asistir, lo ves cuando puedas.
+                </p>
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* 4 Módulos educativos — expandable */}
+          <div className="max-w-4xl mx-auto space-y-4">
+            <FadeIn>
+              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6 font-mono">Programa Educativo</p>
+            </FadeIn>
+            {[
+              {
+                num: "01",
+                title: "Detección de Oportunidades",
+                items: [
+                  "Encontrando 'la zona de genialidad'",
+                  "Dónde y cómo buscar oportunidades de compra de negocios",
+                  "Cómo abordar a dueños de negocios que no están en venta",
+                  "Especificaciones de compra: diferenciar una oportunidad real",
+                  "Due diligence y pasos para comprar un negocio",
+                  "Cómo financiar un negocio que vas a adquirir",
+                ],
+              },
+              {
+                num: "02",
+                title: "Evaluación de Oportunidades",
+                items: [
+                  "Cómo conciliar la valuación antes de hacer una oferta",
+                  "Métodos para valuar una empresa",
+                  "Cómo calcular el SDE de un negocio",
+                  "10 indicadores de valor en un negocio",
+                  "Cuándo usar LOI vs APA en la oferta",
+                  "Pasos en la negociación y cierre de una oferta",
+                ],
+              },
+              {
+                num: "03",
+                title: "Operación de Negocios Adquiridos",
+                items: [
+                  "Claves para administrar tu negocio en Estados Unidos",
+                  "Cómo adquirir clientes según el giro",
+                  "Cómo aumentar el valor de los clientes actuales",
+                  "Internacionalización: reducir gastos fijos para eficientar operación",
+                  "Cómo encontrar las personas correctas para la operación",
+                  "Delegar: cómo y cuándo operar tu negocio a distancia",
+                ],
+              },
+              {
+                num: "04",
+                title: "Crecimiento de Negocios Adquiridos",
+                items: [
+                  "Diferencias de la cultura de negocios EE.UU. vs Latinoamérica",
+                  "Etapas de los negocios en EE.UU. según su giro",
+                  "Traer el futuro al presente en la evolución de tu negocio",
+                  "Estrategias de financiamiento para el crecimiento",
+                  "Digitalización en procesos y adquisición de clientes",
+                  "Diferenciación y construcción de marca",
+                ],
+              },
+            ].map((mod, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <DetailPanel
+                  title={`${mod.num} — ${mod.title}`}
+                  isOpen={openPanel === mod.num}
+                  onToggle={() => setOpenPanel(openPanel === mod.num ? null : mod.num)}
+                >
+                  <ul className="space-y-2">
+                    {mod.items.map((item, j) => (
+                      <li key={j} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </DetailPanel>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 4. CÓMO FUNCIONA — white ═══ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
