@@ -216,7 +216,7 @@ export default function Membresia() {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Club de Inversión Vitalicio
+                Club de Inversión
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
                 Club Privado de Inversionistas en{" "}
