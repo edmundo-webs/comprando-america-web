@@ -6,6 +6,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Membresia from "./pages/Membresia";
+import ClubInversion from "./pages/ClubInversion";
 import BlogList from "./pages/BlogList";
 import DashboardLayout from "./components/DashboardLayout";
 import Dashboard from "./pages/admin/Dashboard";
@@ -40,6 +41,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path="/membresia" component={Membresia} />
+      <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
       <Route path="/blog" component={BlogList} />
       <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/bienes-raices-en-usa" component={BienesRaices} />
