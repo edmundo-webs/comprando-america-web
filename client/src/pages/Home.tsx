@@ -415,29 +415,35 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ 6. TESTIMONIOS — ☀️ BLANCO ═══ */}
+      {/* ═══ 6. TESTIMONIOS VIDEO — ☀️ BLANCO ═══ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Lo que dicen nuestros miembros</h2>
+              <p className="text-[#6B7280] text-lg">Testimonios reales de empresarios que ya están invirtiendo.</p>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {TESTIMONIALS.map((t, i) => (
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              { name: "Arturo Orozco", videoId: "WYNwoTzG8Ss" },
+              { name: "Gerardo Bejarano", videoId: "6J6IIPFsTD0" },
+            ].map((t, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full relative">
-                  <Quote className="w-8 h-8 text-primary/20 mb-4" />
-                  <p className="text-[#374151] text-sm leading-relaxed mb-6 italic">"{t.quote}"</p>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                      {t.initials}
-                    </div>
-                    <div>
-                      <p className="text-[#0B1F3A] font-semibold text-sm">{t.name}</p>
-                      <p className="text-[#9CA3AF] text-xs">{t.city}</p>
-                    </div>
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+                  <div className="aspect-video">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${t.videoId}?rel=0&modestbranding=1`}
+                      title={`Testimonio de ${t.name}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div className="p-4 text-center">
+                    <p className="text-[#0B1F3A] font-semibold">{t.name}</p>
+                    <p className="text-[#9CA3AF] text-xs">Miembro de Comprando América</p>
                   </div>
                 </div>
               </FadeIn>
