@@ -452,12 +452,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Photo break — panel de expertos ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={PANEL} alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-white/50" />
-      </section>
-
       {/* ═══ 7. OPORTUNIDADES — navy ═══ */}
       <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
@@ -498,6 +492,12 @@ export default function Home() {
             </FadeIn>
           </div>
         </div>
+      </section>
+
+      {/* ── Photo break — panel de expertos ── */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <img src={PANEL} alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0B1F3A]" />
       </section>
 
       {/* ═══ 8. EVENTOS — ☀️ BLANCO ═══ */}
