@@ -1,10 +1,10 @@
 /*
  * Home 2026 — Premium Investment Club
- * Navy dark base (#0B1F3A) + Blue accent (#2563EB) + Inter/Manrope
- * Real event photos throughout for authenticity
+ * Profiling-first: 2 paths (Proteger patrimonio / Migrar con inversión)
+ * Stats + Edmundo CEO + Experts + Testimonials + Events
  */
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
@@ -12,22 +12,15 @@ import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
   ArrowRight,
   CheckCircle2,
-  Users,
+  Shield,
   Globe,
-  TrendingUp,
-  Building2,
   MapPin,
   Mic,
   Newspaper,
   BookOpen,
+  Quote,
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
@@ -40,25 +33,78 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
   );
 }
 
+/* ─── CountUp ─── */
+function useCountUp(target: number, duration: number, trigger: boolean) {
+  const ref = useRef(0);
+  const frameRef = useRef<number>();
+  const [count, setCount] = [ref.current, (v: number) => { ref.current = v; }];
+  useEffect(() => {
+    if (!trigger) return;
+    let start = 0;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      const value = Math.floor(progress * target);
+      setCount(value);
+      document.querySelectorAll(`[data-count="${target}"]`).forEach(el => { el.textContent = String(value); });
+      if (progress < 1) frameRef.current = requestAnimationFrame(step);
+      else document.querySelectorAll(`[data-count="${target}"]`).forEach(el => { el.textContent = String(target); });
+    };
+    frameRef.current = requestAnimationFrame(step);
+    return () => { if (frameRef.current) cancelAnimationFrame(frameRef.current); };
+  }, [trigger, target, duration]);
+}
+
+function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const { ref, isInView } = useInView();
+  useCountUp(value, 2000, isInView);
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-primary text-3xl md:text-4xl font-bold mb-1"><span data-count={value}>0</span>{suffix}</div>
+      <p className="text-slate-400 text-xs uppercase tracking-wider">{label}</p>
+    </div>
+  );
+}
+
 /* ─── SEO ─── */
 function SEOHead() {
   useEffect(() => {
     document.title = "Comprando América | Inversión y estructura en Estados Unidos";
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Club de inversión privado, oportunidades y estructura para invertir y expandirte en Estados Unidos. Evalúa tu perfil y accede a una comunidad con criterio.");
+    if (meta) meta.setAttribute("content", "Club de inversión privado para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Comunidad exclusiva con criterio.");
   }, []);
   return null;
 }
 
 /* ─── Photos ─── */
-const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w1920"; // Edmundo rooftop
-const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920"; // packed room
-const NETWORKING = "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1920"; // networking
-const WORKSHOP = "https://lh3.googleusercontent.com/d/1mQWgGjGOCgTU8BsOl3Rgdh5mGR3eObRd=w1200"; // numbers on board
-const VOTING = "https://lh3.googleusercontent.com/d/1GD7WkmClhHj8UH6qyhIavtIuwt6tp2jZ=w1920"; // estructura
+const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w1920";
+const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
+const NETWORKING = "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1920";
 const EDMUNDO_PORTRAIT = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800";
-const DINNER = "https://lh3.googleusercontent.com/d/1VKFcr6XRJ81P6XX9JbQ_GQvTsQdcvsQC=w1920"; // private dinner
-const AERIAL = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg"; // inspection
+const PANEL = "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920";
+const AERIAL = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
+const RUTA_PHOTO = "https://lh3.googleusercontent.com/d/1jmPjN24MUpLYCLu2uizThN6ej938xfD3=w1200";
+const INVEST_WEEK = "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200";
+const MIGRAR_PHOTO = "https://lh3.googleusercontent.com/d/1CqOlO-lELT7-uQhCI26MjP19ibLQu95N=w1200";
+
+/* ─── Experts ─── */
+const EXPERTS = [
+  { name: "Joe Farucci", role: "Bienes Raíces", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png" },
+  { name: "Tomás Resendez", role: "Inmigración", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439162/comprando-america/QGuNYwiuoAkxjDwj.png" },
+  { name: "Daniel Palacios", role: "CPA & Fiscal", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439036/comprando-america/CPGtnnreqZlWVzgL.png" },
+  { name: "Aubrey Dwyer", role: "Derecho Corporativo", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439166/comprando-america/QZAlYTAoaVokeCSo.jpg" },
+  { name: "Destiny Bounds", role: "Corporativo & PI", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif" },
+  { name: "John McKee", role: "Estrategia Comercial", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439314/comprando-america/sZacCQEqvoOyeOMO.avif" },
+];
+
+/* ─── Testimonials ─── */
+const TESTIMONIALS = [
+  { name: "Carlos", city: "Monterrey", quote: "Entré buscando cómo estructurar mi expansión a Estados Unidos. El equipo me ayudó a abrir mi LLC correctamente y entender la estructura fiscal.", initials: "C" },
+  { name: "Alejandro", city: "Ciudad de México", quote: "Lo que más valoré fue el acompañamiento del equipo multidisciplinario. No es teoría, es ejecución.", initials: "A" },
+  { name: "Ricardo", city: "Monterrey", quote: "Después de asistir a la Cumbre entendí el valor del networking con empresarios que ya están invirtiendo.", initials: "R" },
+];
+
+/* ═══════════════════════════════════════════════════════ */
 
 export default function Home() {
   return (
@@ -78,124 +124,113 @@ export default function Home() {
           <div className="max-w-3xl">
             <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
               <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Comunidad Exclusiva para Inversionistas
+                Club Privado de Inversión · Desde $100,000 USD
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-7xl text-white leading-[1.1] mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
                 Invierte en Estados Unidos con{" "}
                 <span className="gradient-text-primary">criterio, estructura</span> y comunidad
               </h1>
-              <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-6 max-w-2xl">
-                Comprando América es una comunidad exclusiva para empresarios e inversionistas latinos que buscan oportunidades filtradas, acompañamiento estratégico y una ruta clara para ejecutar.
+              <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-8 max-w-2xl">
+                Comunidad exclusiva para empresarios e inversionistas latinos que buscan proteger su patrimonio o construir una ruta migratoria a través de inversión real en Estados Unidos.
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 mb-8 max-w-2xl">
-                {["Oportunidades presentadas en sesiones privadas", "Estructura empresarial desde el inicio", "Acceso por perfil (no por curiosidad)"].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2 text-slate-300">
-                    <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                    <span className="text-sm">{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                <a href="/quienes-somos">
-                  <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 w-full sm:w-auto shadow-lg shadow-blue-600/25">
-                    Quiénes Somos <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-                <a href="/perfil">
-                  <Button variant="outline" className="border-slate-500 text-white hover:bg-white/10 px-8 py-6 text-base w-full sm:w-auto">
-                    Evaluar mi Perfil
-                  </Button>
-                </a>
-              </div>
-
-              <a href="/oportunidades-de-inversion-en-estados-unidos" className="inline-flex items-center gap-1 text-blue-400 text-sm hover:text-blue-300 transition-colors">
-                Ver oportunidades <ArrowRight className="w-3 h-3" />
-              </a>
+              <p className="text-slate-500 text-xs mb-2">Acceso sujeto a criterios de perfil. Sin promesas irreales.</p>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ═══ 2. VITRINA — ☀️ BLANCO ═══ */}
+      {/* ═══ 2. PERFILAMIENTO — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#0B1F3A]">¿Por dónde empezar?</h2>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#0B1F3A] mb-4">¿Qué estás buscando?</h2>
+              <p className="text-[#6B7280] text-lg max-w-xl mx-auto">Identifica tu objetivo y te mostramos la ruta más clara.</p>
             </div>
           </FadeIn>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {[
-              { icon: Users, title: "Club de inversión", desc: "Comunidad, criterio y oportunidades en espacios exclusivos.", cta: "Ver club de inversión", href: "/membresia", highlight: true },
-              { icon: Globe, title: "Ruta migratoria", desc: "Entiende cómo se conecta inversión, negocio y viabilidad migratoria.", cta: "Ver guía", href: "/visa-e2-inversion-en-estados-unidos" },
-              { icon: TrendingUp, title: "Oportunidades activas", desc: "Accede a oportunidades reales si tu perfil es el adecuado.", cta: "Ver oportunidades", href: "/oportunidades-de-inversion-en-estados-unidos" },
-              { icon: Building2, title: "Estructura Empresarial", desc: "Abrir una empresa es el inicio. Estructurarla correctamente es la diferencia.", cta: "Ver Estructura", href: "/estructura-de-inversion-en-usa" },
-            ].map((card, i) => (
-              <FadeIn key={i} delay={i * 0.08}>
-                <a href={card.href} className="block h-full">
-                  <div className={`bg-white border rounded-xl p-6 h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group ${card.highlight ? "border-primary/40 shadow-md ring-1 ring-primary/10" : "border-gray-200 shadow-sm"}`}>
-                    <card.icon className="w-8 h-8 text-primary mb-4" />
-                    <h3 className="text-lg font-bold text-[#0B1F3A] mb-2">{card.title}</h3>
-                    <p className="text-[#6B7280] text-sm leading-relaxed mb-4">{card.desc}</p>
-                    <span className="text-primary text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-                      {card.cta} <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Card 1 — Proteger patrimonio */}
+            <FadeIn>
+              <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                  <Shield className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">Proteger mi patrimonio</h3>
+                <p className="text-[#4B5563] leading-relaxed mb-6">
+                  Quiero invertir en dólares con estructura legal, diversificar fuera de mi país y construir patrimonio en bienes raíces o negocios en Estados Unidos.
+                </p>
+                <div className="space-y-2 mb-8">
+                  {["Inversión desde $100,000 USD", "Estructura empresarial (LLC)", "Bienes raíces con acompañamiento", "Sin necesidad de migrar"].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span className="text-[#6B7280] text-sm">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <a href="/oportunidades-de-inversion-en-estados-unidos">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full py-6 text-base shadow-lg shadow-blue-600/15">
+                    Ver opciones de inversión <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </a>
-              </FadeIn>
-            ))}
+              </div>
+            </FadeIn>
+
+            {/* Card 2 — Migrar con inversión */}
+            <FadeIn delay={0.1}>
+              <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                  <Globe className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">Migrar con inversión</h3>
+                <p className="text-[#4B5563] leading-relaxed mb-6">
+                  Tengo capital y quiero una ruta migratoria real hacia Estados Unidos. Busco conectar inversión con una visa de inversionista (E-2) y estructura de negocio.
+                </p>
+                <div className="space-y-2 mb-8">
+                  {["Inversión desde $150,000 USD", "Visa E-2 de inversionista", "Negocio real en operación", "Ruta migratoria estructurada"].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span className="text-[#6B7280] text-sm">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <a href="/visa-e2-inversion-en-estados-unidos">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full py-6 text-base shadow-lg shadow-blue-600/15">
+                    Ver ruta migratoria <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
           </div>
+
+          <FadeIn>
+            <div className="text-center mt-10">
+              <a href="/perfil" className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors">
+                ¿No estás seguro? Evalúa tu perfil y te orientamos <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 3. STATS — navy ═══ */}
+      <section className="bg-[#091A30] py-16 md:py-20">
+        <div className="container">
+          <FadeIn>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+              <StatCounter value={38} suffix="+" label="Miembros activos" />
+              <StatCounter value={50} suffix="+" label="LLCs estructuradas" />
+              <StatCounter value={6} suffix="" label="Viajes de inspección" />
+              <StatCounter value={11} suffix="+" label="Visas tramitadas" />
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* ── Photo break — sala llena ── */}
-      <section className="relative h-72 md:h-96 overflow-hidden">
+      <section className="relative h-64 md:h-80 overflow-hidden">
         <img src={AUDIENCE} alt="Sala llena de inversionistas" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#091A30] via-transparent to-[#F5F7FA]" />
-      </section>
-
-      {/* ═══ 3. CLUB — DEEP NAVY ═══ */}
-      <section className="bg-[#091A30] py-20 md:py-28">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-            <FadeIn>
-              <div>
-                <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">La Red de Contactos</p>
-                <h2 className="text-3xl md:text-4xl text-white mb-6">Comprando América es el núcleo del ecosistema</h2>
-                <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                  La información no basta. La diferencia está en tener criterio, comunidad y una ruta clara para ejecutar. Dentro de la comunidad suceden las conversaciones que no se publican: acceso, análisis y decisiones.
-                </p>
-                <div className="space-y-3 mb-10">
-                  {["Deal Day mensual: oportunidades presentadas en sesión privada", "Club de empresarios e inversionistas con intención real", "Acompañamiento estratégico para estructurar y avanzar"].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-slate-300">{item}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex flex-wrap gap-4 mb-6">
-                  <a href="/membresia">
-                    <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                      Quiero conocer la Comunidad <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </a>
-                  <a href="/perfil">
-                    <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">Evaluar mi Perfil</Button>
-                  </a>
-                </div>
-                <p className="text-slate-500 text-sm">El club de inversión es exclusivo. El acceso se valida por perfil.</p>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="rounded-2xl overflow-hidden border border-[#1E3A5F] shadow-lg">
-                <img src={NETWORKING} alt="Networking entre miembros" className="w-full h-80 object-cover" />
-              </div>
-            </FadeIn>
-          </div>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#091A30]" />
       </section>
 
       {/* ═══ 4. EDMUNDO CEO — ☀️ BLANCO ═══ */}
@@ -239,63 +274,98 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Photo break — panel de expertos ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src="https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920" alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0E2544] via-transparent to-[#F5F7FA]" />
-      </section>
-
-      {/* ═══ 5. VISA E-2 FAQ — MEDIUM NAVY ═══ */}
+      {/* ═══ 5. EXPERTOS — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Visa E-2: las 3 preguntas que más nos hacen</h2>
-              <p className="text-slate-400 text-lg leading-relaxed mb-10">
-                La visa E-2 no se "tramita" como un formulario. Se construye a partir de una estructura de inversión y negocio bien diseñada.
-              </p>
+            <div className="text-center mb-14">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Equipo Multidisciplinario</p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">Respaldado por expertos en cada área</h2>
+              <p className="text-slate-400 text-lg max-w-2xl mx-auto">Abogados, CPAs, inversionistas y estrategas que acompañan a cada miembro en su proceso.</p>
+            </div>
+          </FadeIn>
 
-              <Accordion type="single" collapsible className="space-y-4 mb-10">
-                {[
-                  { q: "¿Qué es la visa E-2 y para quién aplica?", a: "Es una vía para operar un negocio en Estados Unidos basada en inversión (según nacionalidad y caso). Requiere estructura y ejecución real." },
-                  { q: "¿Cuál es la inversión mínima típica para una estrategia E-2?", a: "Depende del caso y del negocio, pero normalmente se evalúan estrategias desde montos relevantes para operar y demostrar actividad real." },
-                  { q: "¿Abrir una LLC es suficiente para una E-2?", a: "No. La LLC es una parte. Lo importante es la estructura completa: inversión, operación y evidencia." },
-                ].map((faq, i) => (
-                  <AccordionItem key={i} value={`visa-faq-${i}`} className="bg-[#132D50] border border-[#1E3A5F] rounded-xl px-6">
-                    <AccordionTrigger className="text-white text-left hover:no-underline py-5">{faq.q}</AccordionTrigger>
-                    <AccordionContent className="text-slate-400 leading-relaxed pb-5">{faq.a}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 max-w-4xl mx-auto mb-10">
+            {EXPERTS.map((expert, i) => (
+              <FadeIn key={i} delay={i * 0.05}>
+                <div className="text-center group">
+                  <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full overflow-hidden border-2 border-[#1E3A5F] group-hover:border-primary/50 transition-all mb-3">
+                    <img src={expert.img} alt={expert.name} className="w-full h-full object-cover" />
+                  </div>
+                  <p className="text-white text-xs font-semibold">{expert.name}</p>
+                  <p className="text-slate-500 text-[10px]">{expert.role}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
 
-              <div className="flex flex-wrap gap-4">
-                <a href="/visa-e2-inversion-en-estados-unidos">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Ver guía completa de Visa E-2 <ArrowRight className="w-4 h-4" /></Button>
-                </a>
-              </div>
+          <FadeIn>
+            <div className="text-center">
+              <a href="/membresia">
+                <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2">
+                  Conocer al equipo completo <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
             </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ═══ 6. OPORTUNIDADES — ☀️ BLANCO ═══ */}
+      {/* ═══ 6. TESTIMONIOS — ☀️ BLANCO ═══ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Oportunidades de inversión en Estados Unidos</h2>
-              <p className="text-[#4B5563] text-lg leading-relaxed">Mostramos oportunidades solo cuando tienen estructura y sentido. El capital importa, pero el perfil decide.</p>
+            <div className="text-center mb-14">
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Lo que dicen nuestros miembros</h2>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-8">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {TESTIMONIALS.map((t, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full relative">
+                  <Quote className="w-8 h-8 text-primary/20 mb-4" />
+                  <p className="text-[#374151] text-sm leading-relaxed mb-6 italic">"{t.quote}"</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                      {t.initials}
+                    </div>
+                    <div>
+                      <p className="text-[#0B1F3A] font-semibold text-sm">{t.name}</p>
+                      <p className="text-[#9CA3AF] text-xs">{t.city}</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Photo break — panel de expertos ── */}
+      <section className="relative h-64 md:h-80 overflow-hidden">
+        <img src={PANEL} alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-white/50" />
+      </section>
+
+      {/* ═══ 7. OPORTUNIDADES — navy ═══ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto mb-12">
+              <h2 className="text-3xl md:text-4xl text-white mb-4">Oportunidades activas</h2>
+              <p className="text-slate-400 text-lg">Mostramos oportunidades solo cuando tienen estructura y sentido.</p>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
-              <div className="bg-[#0B1F3A] border border-blue-500/30 rounded-xl overflow-hidden h-full">
-                <img src={AERIAL} alt="Vista aérea de inspección inmobiliaria" className="w-full h-48 object-cover" />
+              <div className="bg-[#0F2847] border border-blue-500/30 rounded-xl overflow-hidden h-full">
+                <img src={AERIAL} alt="Inspección inmobiliaria" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <span className="inline-block bg-blue-500/15 text-blue-400 text-xs font-semibold px-3 py-1 rounded-full mb-4">Abierta ahora</span>
-                  <h3 className="text-xl font-bold text-white mb-3">Fondo de Bienes Raíces en Estados Unidos</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6">Una vía patrimonial para inversionistas que buscan exposición inmobiliaria con estructura.</p>
+                  <h3 className="text-xl font-bold text-white mb-3">Fondo de Bienes Raíces</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6">Exposición inmobiliaria patrimonial con estructura y acompañamiento.</p>
                   <a href="/bienes-raices-en-usa">
                     <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver detalles <ArrowRight className="w-3 h-3" /></Button>
                   </a>
@@ -304,51 +374,16 @@ export default function Home() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-xl overflow-hidden h-full">
-                <img src="https://lh3.googleusercontent.com/d/1CqOlO-lELT7-uQhCI26MjP19ibLQu95N=w1200" alt="Inversión y ruta migratoria" className="w-full h-48 object-cover" />
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden h-full">
+                <img src={MIGRAR_PHOTO} alt="Inversión y ruta migratoria" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <span className="inline-block bg-blue-500/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-4">Activa</span>
                   <h3 className="text-xl font-bold text-white mb-3">Inversión + Ruta migratoria</h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-6">Tienes $300,000 dólares y quieres migrar a Estados Unidos.</p>
                   <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el modelo de Inversión + Ruta migratoria.")} className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">
-                    Evaluar si este modelo encaja contigo <ArrowRight className="w-3 h-3" />
+                    Evaluar si encaja contigo <ArrowRight className="w-3 h-3" />
                   </Button>
                 </div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ 7. ESTRUCTURA — navy ═══ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-28">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-            <FadeIn>
-              <div>
-                <h2 className="text-3xl md:text-4xl text-white mb-4">Estructura Empresarial en Estados Unidos</h2>
-                <p className="text-primary text-sm font-semibold mb-6">Abrir una empresa no es el objetivo. Es el primer paso para operar o invertir con orden.</p>
-                <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                  Te ayudamos a construir una base empresarial clara: desde abrir tu entidad, hasta preparar lo necesario para operar o invertir con estrategia.
-                </p>
-                <div className="space-y-3 mb-10">
-                  {["LLC u otra estructura según el caso", "Texas o Florida con criterio", "EIN y base operativa", "Preparación para operar o invertir"].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-slate-300">{item}</p>
-                    </div>
-                  ))}
-                </div>
-                <a href="/estructura-de-inversion-en-usa">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/15">
-                    Ver Estructura Empresarial <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="rounded-2xl overflow-hidden border border-[#1E3A5F] shadow-lg">
-                <img src={VOTING} alt="Miembros participando en sesión" className="w-full h-80 object-cover" />
               </div>
             </FadeIn>
           </div>
@@ -361,14 +396,14 @@ export default function Home() {
           <FadeIn>
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Eventos y experiencias en terreno</h2>
-              <p className="text-[#4B5563] text-lg">Hay decisiones que no se toman desde una pantalla. Se toman viendo activos, con contexto y con las personas correctas.</p>
+              <p className="text-[#4B5563] text-lg">Hay decisiones que no se toman desde una pantalla.</p>
             </div>
           </FadeIn>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src="https://lh3.googleusercontent.com/d/1jmPjN24MUpLYCLu2uizThN6ej938xfD3=w1200" alt="Ruta Inmobiliaria" className="w-full h-48 object-cover" />
+                <img src={RUTA_PHOTO} alt="Ruta Inmobiliaria" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <MapPin className="w-8 h-8 text-primary mb-4" />
                   <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Ruta Inmobiliaria</h3>
@@ -382,11 +417,11 @@ export default function Home() {
 
             <FadeIn delay={0.1}>
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src="https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200" alt="Florida Investment Week" className="w-full h-48 object-cover" />
+                <img src={INVEST_WEEK} alt="Florida Investment Week" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <Globe className="w-8 h-8 text-primary mb-4" />
                   <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Florida Investment Week</h3>
-                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Terreno real. Propiedades reales. Números reales. (Acceso por invitación)</p>
+                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Terreno real. Propiedades reales. Números reales. Acceso por invitación.</p>
                   <a href="/investment-week">
                     <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Investment Week <ArrowRight className="w-3 h-3" /></Button>
                   </a>
@@ -403,7 +438,7 @@ export default function Home() {
           <FadeIn>
             <div className="max-w-3xl mx-auto mb-12">
               <h2 className="text-3xl md:text-4xl text-white mb-4">Recursos para tomar mejores decisiones</h2>
-              <p className="text-slate-400 text-lg leading-relaxed">Contenido para empresarios e inversionistas que quieren claridad antes de ejecutar.</p>
+              <p className="text-slate-400 text-lg">Contenido para empresarios e inversionistas que quieren claridad antes de ejecutar.</p>
             </div>
           </FadeIn>
 
@@ -430,22 +465,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Photo break — audience ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src="https://res.cloudinary.com/dofccqypz/image/upload/v1774537561/comprando-america/eventos/fou8skfadwce2lodr5yc.jpg" alt="Evento Comprando América" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#091A30] via-transparent to-[#0E2544]" />
-      </section>
-
-      {/* ═══ 10. CTA FINAL — DEEP NAVY ═══ */}
+      {/* ═══ 10. CTA FINAL — deep navy ═══ */}
       <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-6">
-                Si tu objetivo es invertir o expandirte en Estados Unidos, empieza por tu perfil
+                ¿Tu objetivo es invertir o migrar a Estados Unidos?
               </h2>
               <p className="text-slate-400 text-lg leading-relaxed mb-10">
-                Te decimos con claridad si este camino hace sentido para ti y cuál sería el siguiente paso.
+                Empieza por evaluar tu perfil. Te decimos con claridad si este camino hace sentido para ti.
               </p>
               <div className="flex flex-wrap justify-center gap-4 mb-6">
                 <a href="/perfil">
