@@ -267,10 +267,10 @@ export default function ClubInversion() {
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">¿Qué incluye?</p>
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Herramientas concretas para evaluar, estructurar y ejecutar</h2>
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Estructura del Club</p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">¿Qué incluye tu membresía?</h2>
               <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-                Cada mes, los miembros participan en sesiones de análisis, educación y presentación de oportunidades exclusivas.
+                Una estructura integral diseñada para avanzar con claridad, estrategia y seguimiento real.
               </p>
             </div>
           </FadeIn>
@@ -280,46 +280,37 @@ export default function ClubInversion() {
               {
                 icon: Presentation,
                 title: "Deal Day",
-                desc: "Cada mes analizamos en vivo oportunidades de inversión filtradas por el equipo. Cada oportunidad se presenta con soporte legal y financiero. Solo el 20% pasa el filtro.",
-                badge: "Mensual",
+                desc: "De manera constante analizamos en vivo oportunidades de inversión en Estados Unidos. Cada oportunidad es filtrada por el equipo y presentada con soporte legal y financiero.",
               },
               {
                 icon: CalendarDays,
-                title: "Asamblea Mensual",
-                desc: "Sesión donde revisamos casos reales de miembros y presentamos un tema educativo estratégico. Dos secciones: educación + oportunidades exclusivas.",
-                badge: "Mensual",
+                title: "Sesiones con Expertos",
+                desc: "De manera mensual accedes a nuestras asambleas para resolver dudas específicas sobre inversión, estructuras legales, estrategias fiscales y análisis de proyectos.",
+              },
+              {
+                icon: Star,
+                title: "Eventos Presenciales",
+                desc: "Reunimos inversionistas, abogados, banqueros y especialistas para fortalecer relaciones y acelerar decisiones de nuestros miembros a lo largo del año.",
               },
               {
                 icon: MessageSquare,
                 title: "Mentorías en Tiempo Real",
-                desc: "Aprende directamente de inversionistas que ya compraron negocios en EE.UU. y los expertos que los acompañaron. Sesiones privadas presenciales y digitales.",
+                desc: "Aprende directamente de inversionistas que ya han invertido en Estados Unidos. Resuelve dudas en sesiones privadas presenciales y digitales.",
               },
               {
                 icon: Handshake,
                 title: "Conversaciones Exclusivas",
-                desc: "Acceso a empresarios, compradores de franquicias y expertos del ecosistema de inversión que comparten estrategias y resultados reales.",
-              },
-              {
-                icon: Star,
-                title: "Eventos Presenciales VIP",
-                desc: "Cumbres, Ruta Inmobiliaria e Investment Week sin costo adicional. Eres invitado VIP. Abogados, banqueros, contadores y especialistas en un mismo espacio.",
-                badge: "Incluido",
+                desc: "Accede a conversaciones con empresarios, compradores de franquicias y expertos del ecosistema que comparten sus estrategias y resultados.",
               },
               {
                 icon: Crown,
                 title: "Mesa de Dueños",
-                desc: "Grupo privado donde miembros con experiencia invirtiendo en EE.UU. evalúan y mejoran negociaciones y oportunidades con criterio operativo y financiero real.",
-                badge: "Comunidad",
+                desc: "Grupo privado donde miembros con experiencia ayudan a evaluar y mejorar negociaciones con criterio operativo y financiero.",
               },
             ].map((pilar, i) => (
               <FadeIn key={i} delay={i * 0.06}>
                 <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
-                  <div className="flex items-center justify-between mb-4">
-                    <pilar.icon className="w-8 h-8 text-blue-400" />
-                    {pilar.badge && (
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full">{pilar.badge}</span>
-                    )}
-                  </div>
+                  <pilar.icon className="w-8 h-8 text-blue-400 mb-4" />
                   <h3 className="text-white font-semibold mb-3">{pilar.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{pilar.desc}</p>
                 </div>
