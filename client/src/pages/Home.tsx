@@ -382,7 +382,7 @@ export default function Home() {
 
             <FadeIn delay={0.1}>
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src={DINNER} alt="Florida Investment Week — cena privada" className="w-full h-48 object-cover" />
+                <img src="https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200" alt="Florida Investment Week" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <Globe className="w-8 h-8 text-primary mb-4" />
                   <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Florida Investment Week</h3>
