@@ -38,6 +38,33 @@ async function startServer() {
   initializeRssScheduler();
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // ═══ IMAGE UPLOAD ENDPOINT ═══
+  app.post("/api/upload", async (req, res) => {
+    try {
+      // Verify auth via cookie (reuse tRPC context pattern)
+      const ctx = await createContext({ req, res } as any);
+      if (!ctx.user || (ctx.user.role !== "admin" && ctx.user.role !== "user")) {
+        return res.status(401).json({ error: "No autorizado" });
+      }
+
+      const { data, filename, contentType } = req.body;
+      if (!data || !filename) {
+        return res.status(400).json({ error: "Falta data o filename" });
+      }
+
+      // data is base64
+      const buffer = Buffer.from(data, "base64");
+      const { storagePut } = await import("../storage");
+      const key = `comprando-america/blog/${Date.now()}-${filename.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
+      const result = await storagePut(key, buffer, contentType || "image/jpeg");
+      return res.json({ url: result.url });
+    } catch (err: any) {
+      console.error("Upload error:", err);
+      return res.status(500).json({ error: err.message || "Error al subir imagen" });
+    }
+  });
+
   // tRPC API
   app.use(
     "/api/trpc",

@@ -6,13 +6,13 @@ import Placeholder from "@tiptap/extension-placeholder";
 import TextAlign from "@tiptap/extension-text-align";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef, useState } from "react";
 import {
   Bold, Italic, Underline as UnderlineIcon, Strikethrough,
   AlignLeft, AlignCenter, AlignRight, AlignJustify,
   List, ListOrdered, Quote, Code, Heading1, Heading2, Heading3,
   Link as LinkIcon, Image as ImageIcon, Highlighter, Undo, Redo,
-  Minus,
+  Minus, Upload, Loader2,
 } from "lucide-react";
 
 interface RichTextEditorProps {
@@ -110,6 +110,38 @@ export default function RichTextEditor({ content, onChange, placeholder = "Escri
     }
   }, [editor]);
 
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  const handleImageUpload = useCallback(async (file: File) => {
+    if (!editor) return;
+    setUploadingImage(true);
+    try {
+      const reader = new FileReader();
+      const base64 = await new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve((reader.result as string).split(",")[1]);
+        reader.onerror = () => reject(new Error("Error leyendo archivo"));
+        reader.readAsDataURL(file);
+      });
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ data: base64, filename: file.name, contentType: file.type }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: res.statusText }));
+        throw new Error(err.error || "Error al subir imagen");
+      }
+      const { url } = await res.json();
+      editor.chain().focus().setImage({ src: url }).run();
+    } catch (e: any) {
+      alert("Error subiendo imagen: " + (e.message || "desconocido"));
+    } finally {
+      setUploadingImage(false);
+    }
+  }, [editor]);
+
   if (!editor) return null;
 
   return (
@@ -194,9 +226,27 @@ export default function RichTextEditor({ content, onChange, placeholder = "Escri
         <ToolbarButton onClick={addLink} active={editor.isActive("link")} title="Insertar enlace">
           <LinkIcon className="w-4 h-4" />
         </ToolbarButton>
-        <ToolbarButton onClick={addImage} title="Insertar imagen">
+        <ToolbarButton onClick={addImage} title="Insertar imagen (URL)">
           <ImageIcon className="w-4 h-4" />
         </ToolbarButton>
+        <ToolbarButton
+          onClick={() => imageInputRef.current?.click()}
+          disabled={uploadingImage}
+          title="Subir imagen desde archivo"
+        >
+          {uploadingImage ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+        </ToolbarButton>
+        <input
+          ref={imageInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) handleImageUpload(file);
+            e.target.value = "";
+          }}
+        />
       </div>
 
       {/* Editor Content */}

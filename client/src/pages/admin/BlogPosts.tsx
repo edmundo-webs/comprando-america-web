@@ -25,13 +25,46 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Pencil, Trash2, Plus, Eye } from "lucide-react";
-import { useState } from "react";
+import { Pencil, Trash2, Plus, Eye, Upload, Loader2 } from "lucide-react";
+import { useState, useRef } from "react";
 import { toast } from "sonner";
+
+async function uploadImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const base64 = (reader.result as string).split(",")[1];
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            data: base64,
+            filename: file.name,
+            contentType: file.type,
+          }),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: res.statusText }));
+          throw new Error(err.error || "Error al subir imagen");
+        }
+        const { url } = await res.json();
+        resolve(url);
+      } catch (e) {
+        reject(e);
+      }
+    };
+    reader.onerror = () => reject(new Error("Error leyendo archivo"));
+    reader.readAsDataURL(file);
+  });
+}
 
 export default function BlogPosts() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<any>(null);
+  const [uploading, setUploading] = useState(false);
+  const featuredImageRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -251,13 +284,60 @@ export default function BlogPosts() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="featuredImage">Imagen destacada (URL)</Label>
-              <Input
-                id="featuredImage"
-                value={formData.featuredImage}
-                onChange={(e) => setFormData({ ...formData, featuredImage: e.target.value })}
-                placeholder="https://ejemplo.com/imagen.jpg"
-              />
+              <Label>Imagen destacada</Label>
+              <div className="space-y-3">
+                {formData.featuredImage && (
+                  <div className="relative">
+                    <img src={formData.featuredImage} alt="Preview" className="w-full max-h-48 object-cover rounded-lg border" />
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, featuredImage: "" })}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={uploading}
+                    onClick={() => featuredImageRef.current?.click()}
+                    className="gap-2"
+                  >
+                    {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                    {uploading ? "Subiendo..." : "Subir imagen"}
+                  </Button>
+                  <Input
+                    value={formData.featuredImage}
+                    onChange={(e) => setFormData({ ...formData, featuredImage: e.target.value })}
+                    placeholder="o pegar URL directamente"
+                    className="flex-1"
+                  />
+                </div>
+                <input
+                  ref={featuredImageRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setUploading(true);
+                    try {
+                      const url = await uploadImage(file);
+                      setFormData(prev => ({ ...prev, featuredImage: url }));
+                      toast.success("Imagen subida exitosamente");
+                    } catch (err: any) {
+                      toast.error(err.message || "Error al subir imagen");
+                    } finally {
+                      setUploading(false);
+                      e.target.value = "";
+                    }
+                  }}
+                />
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="status">Estado</Label>
