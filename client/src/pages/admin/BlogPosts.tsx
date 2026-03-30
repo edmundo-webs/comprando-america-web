@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Pencil, Trash2, Plus, Eye, Upload, Loader2 } from "lucide-react";
+import { Pencil, Trash2, Plus, Eye, Upload, Loader2, Sparkles } from "lucide-react";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 
@@ -64,6 +64,7 @@ export default function BlogPosts() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<any>(null);
   const [uploading, setUploading] = useState(false);
+  const [generating, setGenerating] = useState(false);
   const featuredImageRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -298,7 +299,7 @@ export default function BlogPosts() {
                     </button>
                   </div>
                 )}
-                <div className="flex gap-2">
+                <div className="flex gap-2 flex-wrap">
                   <Button
                     type="button"
                     variant="outline"
@@ -309,11 +310,46 @@ export default function BlogPosts() {
                     {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                     {uploading ? "Subiendo..." : "Subir imagen"}
                   </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={generating || !formData.title}
+                    onClick={async () => {
+                      if (!formData.title) {
+                        toast.error("Escribe un título primero");
+                        return;
+                      }
+                      setGenerating(true);
+                      try {
+                        const res = await fetch("/api/generate-image", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          credentials: "include",
+                          body: JSON.stringify({ title: formData.title, excerpt: formData.excerpt }),
+                        });
+                        if (!res.ok) {
+                          const err = await res.json().catch(() => ({ error: res.statusText }));
+                          throw new Error(err.error || "Error generando imagen");
+                        }
+                        const { url } = await res.json();
+                        setFormData(prev => ({ ...prev, featuredImage: url }));
+                        toast.success("Imagen generada con IA exitosamente");
+                      } catch (err: any) {
+                        toast.error(err.message || "Error generando imagen");
+                      } finally {
+                        setGenerating(false);
+                      }
+                    }}
+                    className="gap-2 border-purple-500/30 text-purple-400 hover:bg-purple-500/10"
+                  >
+                    {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                    {generating ? "Generando..." : "Generar con IA"}
+                  </Button>
                   <Input
                     value={formData.featuredImage}
                     onChange={(e) => setFormData({ ...formData, featuredImage: e.target.value })}
                     placeholder="o pegar URL directamente"
-                    className="flex-1"
+                    className="flex-1 min-w-[200px]"
                   />
                 </div>
                 <input

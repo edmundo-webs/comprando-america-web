@@ -65,6 +65,75 @@ async function startServer() {
     }
   });
 
+  // ═══ AI IMAGE GENERATION ENDPOINT ═══
+  app.post("/api/generate-image", async (req, res) => {
+    try {
+      // Verify auth
+      const ctx = await createContext({ req, res } as any);
+      if (!ctx.user || (ctx.user.role !== "admin" && ctx.user.role !== "user")) {
+        return res.status(401).json({ error: "No autorizado" });
+      }
+
+      const { title, excerpt } = req.body;
+      if (!title) {
+        return res.status(400).json({ error: "Falta el título del blog" });
+      }
+
+      const { ENV: envVars } = await import("./env");
+      if (!envVars.openaiApiKey) {
+        return res.status(503).json({ error: "API key de OpenAI no configurada. Agrega OPENAI_API_KEY en las variables de entorno." });
+      }
+
+      // Generate image with DALL-E 3
+      const prompt = `Professional, modern blog header image for a premium Latin American investment club. Topic: "${title}"${excerpt ? `. Context: ${excerpt.slice(0, 200)}` : ""}. Style: clean, corporate, navy blue and white tones, subtle gold accents. No text or words in the image. Photorealistic, editorial quality. 16:9 aspect ratio composition.`;
+
+      const openaiRes = await fetch("https://api.openai.com/v1/images/generations", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${envVars.openaiApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "dall-e-3",
+          prompt,
+          n: 1,
+          size: "1792x1024",
+          quality: "standard",
+          response_format: "b64_json",
+        }),
+      });
+
+      if (!openaiRes.ok) {
+        const err = await openaiRes.json().catch(() => ({}));
+        console.error("OpenAI error:", err);
+        return res.status(502).json({ error: err?.error?.message || "Error generando imagen con OpenAI" });
+      }
+
+      const openaiData = await openaiRes.json();
+      const b64 = openaiData.data?.[0]?.b64_json;
+      if (!b64) {
+        return res.status(502).json({ error: "OpenAI no retornó imagen" });
+      }
+
+      // Upload to Cloudinary
+      const buffer = Buffer.from(b64, "base64");
+      const { storagePut } = await import("../storage");
+      const slug = title
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "")
+        .slice(0, 60);
+      const key = `comprando-america/blog/ai-${slug}-${Date.now()}`;
+      const result = await storagePut(key, buffer, "image/png");
+
+      return res.json({ url: result.url, revised_prompt: openaiData.data?.[0]?.revised_prompt });
+    } catch (err: any) {
+      console.error("Generate image error:", err);
+      return res.status(500).json({ error: err.message || "Error generando imagen" });
+    }
+  });
+
   // tRPC API
   app.use(
     "/api/trpc",
