@@ -29,6 +29,122 @@ import { Pencil, Trash2, Plus, Eye, Upload, Loader2, Sparkles } from "lucide-rea
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 
+async function generateBrandedImage(title: string): Promise<string> {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1792;
+  canvas.height = 1024;
+  const ctx = canvas.getContext("2d")!;
+
+  // Navy gradient background
+  const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+  grad.addColorStop(0, "#0B1F3A");
+  grad.addColorStop(0.5, "#0E2544");
+  grad.addColorStop(1, "#091A30");
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Subtle grid pattern
+  ctx.strokeStyle = "rgba(37, 99, 235, 0.06)";
+  ctx.lineWidth = 1;
+  for (let x = 0; x < canvas.width; x += 80) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+  }
+  for (let y = 0; y < canvas.height; y += 80) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+  }
+
+  // Blue accent glow (top-right)
+  const glowGrad = ctx.createRadialGradient(1400, 200, 50, 1400, 200, 500);
+  glowGrad.addColorStop(0, "rgba(37, 99, 235, 0.15)");
+  glowGrad.addColorStop(1, "rgba(37, 99, 235, 0)");
+  ctx.fillStyle = glowGrad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Blue accent line (left)
+  ctx.fillStyle = "#2563EB";
+  ctx.fillRect(120, 340, 4, 200);
+
+  // "COMPRANDO AMÉRICA" tag
+  ctx.font = "600 18px 'Inter', 'Segoe UI', sans-serif";
+  ctx.fillStyle = "#3B82F6";
+  ctx.letterSpacing = "8px";
+  ctx.fillText("COMPRANDO AMÉRICA", 150, 400);
+
+  // Title — word wrap
+  ctx.font = "700 64px 'Inter', 'Segoe UI', sans-serif";
+  ctx.fillStyle = "#FFFFFF";
+  ctx.letterSpacing = "-1px";
+  const maxWidth = 1400;
+  const lineHeight = 80;
+  const words = title.split(" ");
+  let line = "";
+  let y = 480;
+  const lines: string[] = [];
+
+  for (const word of words) {
+    const test = line + (line ? " " : "") + word;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  }
+  lines.push(line);
+
+  // Limit to 3 lines
+  const displayLines = lines.slice(0, 3);
+  if (lines.length > 3) {
+    displayLines[2] = displayLines[2].slice(0, -3) + "...";
+  }
+
+  for (const l of displayLines) {
+    ctx.fillText(l, 150, y);
+    y += lineHeight;
+  }
+
+  // Bottom bar
+  ctx.fillStyle = "rgba(37, 99, 235, 0.3)";
+  ctx.fillRect(0, canvas.height - 4, canvas.width, 4);
+
+  // "comprandoamerica.com" bottom right
+  ctx.font = "400 20px 'Inter', 'Segoe UI', sans-serif";
+  ctx.fillStyle = "rgba(148, 163, 184, 0.5)";
+  ctx.textAlign = "right";
+  ctx.fillText("comprandoamerica.com", canvas.width - 120, canvas.height - 40);
+  ctx.textAlign = "left";
+
+  // Convert to blob and upload
+  const blob = await new Promise<Blob>((resolve) => {
+    canvas.toBlob((b) => resolve(b!), "image/png", 0.95);
+  });
+
+  const reader = new FileReader();
+  const base64 = await new Promise<string>((resolve) => {
+    reader.onload = () => resolve((reader.result as string).split(",")[1]);
+    reader.readAsDataURL(blob);
+  });
+
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      data: base64,
+      filename: `blog-cover-${Date.now()}.png`,
+      contentType: "image/png",
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: res.statusText }));
+    throw new Error(err.error || "Error subiendo imagen");
+  }
+
+  const { url } = await res.json();
+  return url;
+}
+
 async function uploadImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -65,6 +181,7 @@ export default function BlogPosts() {
   const [selectedPost, setSelectedPost] = useState<any>(null);
   const [uploading, setUploading] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [generatingBranded, setGeneratingBranded] = useState(false);
   const featuredImageRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -309,6 +426,31 @@ export default function BlogPosts() {
                   >
                     {uploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                     {uploading ? "Subiendo..." : "Subir imagen"}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={generatingBranded || !formData.title}
+                    onClick={async () => {
+                      if (!formData.title) {
+                        toast.error("Escribe un título primero");
+                        return;
+                      }
+                      setGeneratingBranded(true);
+                      try {
+                        const url = await generateBrandedImage(formData.title);
+                        setFormData(prev => ({ ...prev, featuredImage: url }));
+                        toast.success("Portada generada exitosamente");
+                      } catch (err: any) {
+                        toast.error(err.message || "Error generando portada");
+                      } finally {
+                        setGeneratingBranded(false);
+                      }
+                    }}
+                    className="gap-2"
+                  >
+                    {generatingBranded ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                    {generatingBranded ? "Generando..." : "Generar portada"}
                   </Button>
                   <Button
                     type="button"
