@@ -36,14 +36,12 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Estructura de Inversión en USA | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Estructura tu vehículo de inversión en Estados Unidos con claridad y estrategia. LLC, C-Corp, S-Corp según tu caso. Inversión desde $100,000 USD.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Estructura de Inversi\u00f3n en USA | Comprando Am\u00e9rica",
+  description: "Estructura tu veh\u00edculo de inversi\u00f3n en Estados Unidos con claridad y estrategia. LLC, C-Corp, S-Corp seg\u00fan tu caso.",
+  path: "/estructura-de-inversion-en-usa",
+};
 
 /* ─── Photos ─── */
 const HERO_IMAGE = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439156/comprando-america/NxiBRNllQxYRemFM.jpg";
@@ -53,7 +51,7 @@ const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13
 export default function EstructuraInversion() {
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

@@ -37,15 +37,12 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── Head (noindex) ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Florida Investment Week | Comprando América";
-    let meta = document.querySelector('meta[name="robots"]');
-    if (!meta) { meta = document.createElement("meta"); meta.setAttribute("name", "robots"); document.head.appendChild(meta); }
-    meta.setAttribute("content", "noindex, nofollow");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Florida Investment Week | Comprando América",
+  description: "Evento privado de inversión en Tampa, St. Pete y Clearwater. Solo por invitación. 1-4 mayo 2026.",
+  path: "/investment-week",
+};
 
 /* ─── Photos ─── */
 const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
@@ -67,7 +64,7 @@ export default function InvestmentWeek() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ BANNER ACCESO RESTRINGIDO ═══ */}

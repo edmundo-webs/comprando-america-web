@@ -35,14 +35,13 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Bienes Raíces en Estados Unidos | Inversión Inmobiliaria | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Inversión inmobiliaria en Estados Unidos desde $100,000 USD. Accede a oportunidades filtradas con estructura legal, fiscal y acompañamiento estratégico.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Bienes Ra\u00edces en Estados Unidos | Inversi\u00f3n Inmobiliaria | Comprando Am\u00e9rica",
+  description: "Inversi\u00f3n inmobiliaria en Estados Unidos desde $100,000 USD. Oportunidades filtradas con estructura legal y fiscal.",
+  path: "/bienes-raices-en-usa",
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfPuedo comprar propiedad en EE.UU. siendo extranjero?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. Con una LLC puedes adquirir bienes ra\u00edces sin necesidad de visa o residencia. La estructura protege tu inversi\u00f3n y facilita la operaci\u00f3n."}}, {"@type": "Question", "name": "\u00bfQu\u00e9 impuestos pago por bienes ra\u00edces en USA?", "acceptedAnswer": {"@type": "Answer", "text": "Depende del estado y tipo de propiedad. Incluye property tax anual, impuesto sobre la renta por rentas y posible FIRPTA al vender. Un CPA especializado estructura esto para ti."}}]},
+};
 
 const WA_MSG = "Hola, me interesa invertir en bienes raíces en Estados Unidos.";
 
@@ -54,7 +53,7 @@ const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13
 export default function BienesRaices() {
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

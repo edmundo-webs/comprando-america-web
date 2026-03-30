@@ -1,3 +1,4 @@
+import SEOHead from "@/components/SEOHead";
 import { motion } from "framer-motion";
 import { ArrowRight, Users, Briefcase, Globe, Shield, TrendingUp, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,6 +47,11 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 export default function QuienesSomos() {
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
+      <SEOHead
+        title="Quiénes Somos | Comprando América"
+        description="Conoce al equipo multidisciplinario detrás de Comprando América. Abogados, CPAs, estrategas y especialistas acompañando a inversionistas latinos en Estados Unidos."
+        path="/quienes-somos"
+      />
       <Navbar />
 
       {/* ═══ HERO — foto panel expertos ═══ */}

@@ -44,14 +44,13 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Estructura Empresarial en Estados Unidos | LLC Texas & Florida | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Estructura tu empresa correctamente en Estados Unidos. LLC en Texas o Florida desde $1,499 USD con acompañamiento completo.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Estructura Empresarial en Estados Unidos | LLC Texas & Florida | Comprando Am\u00e9rica",
+  description: "Estructura tu empresa correctamente en Estados Unidos. LLC en Texas o Florida desde $1,499 USD con acompa\u00f1amiento completo.",
+  path: "/estructura-empresarial-en-estados-unidos",
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfQu\u00e9 es una LLC y para qu\u00e9 sirve?", "acceptedAnswer": {"@type": "Answer", "text": "Una LLC protege tu patrimonio personal, permite abrir cuentas bancarias e invertir en d\u00f3lares desde cualquier pa\u00eds."}}, {"@type": "Question", "name": "\u00bfEs mejor LLC en Texas o Florida?", "acceptedAnswer": {"@type": "Answer", "text": "Ambos estados no tienen impuesto estatal sobre la renta. Texas ofrece mayor protecci\u00f3n patrimonial. Florida es ideal para bienes ra\u00edces."}}, {"@type": "Question", "name": "\u00bfPuedo abrir una LLC sin vivir en Estados Unidos?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. No necesitas visa ni residencia. Con pasaporte y un Registered Agent puedes estructurar tu LLC de forma remota."}}]},
+};
 
 /* ─── Checkout with Meta Pixel ─── */
 function handleCheckout(state: "texas" | "florida") {
@@ -69,7 +68,7 @@ const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13
 export default function EstructuraEmpresarial() {
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

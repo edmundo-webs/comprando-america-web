@@ -34,14 +34,13 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Eventos y Experiencias para Inversionistas | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Participa en eventos presenciales, viajes de inspección y encuentros privados para empresarios e inversionistas en Estados Unidos.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Eventos y Experiencias para Inversionistas | Comprando Am\u00e9rica",
+  description: "Participa en eventos presenciales, viajes de inspecci\u00f3n y encuentros privados para empresarios e inversionistas en Estados Unidos.",
+  path: "/eventos",
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfQu\u00e9 eventos organiza Comprando Am\u00e9rica?", "acceptedAnswer": {"@type": "Answer", "text": "Cumbres de emprendimiento, Ruta Inmobiliaria, Florida Investment Week, cenas privadas y asambleas mensuales para miembros."}}]},
+};
 
 /* ─── Photos ─── */
 const CLOUD = "https://res.cloudinary.com/dofccqypz/image/upload";
@@ -70,7 +69,7 @@ export default function Eventos() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

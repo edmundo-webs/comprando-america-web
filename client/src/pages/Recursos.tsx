@@ -33,14 +33,12 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Recursos Educativos para Inversionistas | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Accede a podcast, artículos y noticias estratégicas para empresarios e inversionistas que quieren expandirse hacia Estados Unidos.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Recursos Educativos para Inversionistas | Comprando Am\u00e9rica",
+  description: "Podcast, art\u00edculos y noticias estrat\u00e9gicas para empresarios e inversionistas que quieren expandirse hacia Estados Unidos.",
+  path: "/recursos",
+};
 
 /* ─── Episodes ─── */
 const episodes = [
@@ -76,7 +74,7 @@ export default function Recursos() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

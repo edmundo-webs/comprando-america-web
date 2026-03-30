@@ -36,14 +36,13 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Oportunidades de Inversión en Estados Unidos | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Accede a oportunidades de inversión filtradas y evaluadas en Estados Unidos. Inversión desde $100,000 USD con estructura profesional.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Oportunidades de Inversi\u00f3n en Estados Unidos | Comprando Am\u00e9rica",
+  description: "Accede a oportunidades de inversi\u00f3n filtradas y evaluadas en Estados Unidos. Inversi\u00f3n desde $100,000 USD con estructura profesional.",
+  path: "/oportunidades-de-inversion-en-estados-unidos",
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfQu\u00e9 tipo de oportunidades ofrece Comprando Am\u00e9rica?", "acceptedAnswer": {"@type": "Answer", "text": "Bienes ra\u00edces, adquisici\u00f3n de negocios, franquicias y rutas migratorias con visa E-2. Cada oportunidad es filtrada con soporte legal y financiero."}}, {"@type": "Question", "name": "\u00bfCu\u00e1nto necesito para invertir?", "acceptedAnswer": {"@type": "Answer", "text": "Desde $100,000 USD para protecci\u00f3n patrimonial. Desde $150,000 USD para ruta migratoria con visa E-2."}}]},
+};
 
 /* ─── Photos ─── */
 const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1uOK0Jci_KGtDiBIInQTZ846vel77scKF=w1920"; // dual presenters
@@ -57,7 +56,7 @@ export default function Oportunidades() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

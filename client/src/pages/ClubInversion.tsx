@@ -67,14 +67,20 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Club de Inversión en Estados Unidos | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Club privado de inversión para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Acompañamiento legal, fiscal y migratorio.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Club de Inversión en Estados Unidos | Comprando América",
+  description: "Club privado de inversión para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Acompañamiento legal, fiscal y migratorio.",
+  path: "/club-de-inversion-en-estados-unidos",
+  schema: [
+    { "@context": "https://schema.org", "@type": "Product", "name": "Club de Inversión Comprando América", "description": "Club privado de inversión para empresarios latinos en Estados Unidos", "brand": { "@type": "Brand", "name": "Comprando América" }, "offers": { "@type": "AggregateOffer", "lowPrice": "10000", "highPrice": "25000", "priceCurrency": "USD" } },
+    { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+      { "@type": "Question", "name": "¿Qué incluye el club de inversión?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías en tiempo real, eventos presenciales VIP, conversaciones exclusivas y Mesa de Dueños." } },
+      { "@type": "Question", "name": "¿Cuánto cuesta la membresía?", "acceptedAnswer": { "@type": "Answer", "text": "Desde $10,000 USD (Investor Entry) hasta $25,000 USD (Investor Legacy) con diferentes niveles de acceso y acompañamiento." } },
+      { "@type": "Question", "name": "¿Para quién es este club?", "acceptedAnswer": { "@type": "Answer", "text": "Empresarios latinos que pueden invertir desde $100,000 USD, buscan diversificación con estructura y valoran el acompañamiento profesional." } }
+    ] }
+  ],
+};
 
 /* ─── Photos ─── */
 const HERO = "https://lh3.googleusercontent.com/d/1rbRZbnInyEGqnf51XjSXo_5HsBp81dUc=w1920";
@@ -149,7 +155,7 @@ const PLANS = [
 export default function ClubInversion() {
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

@@ -35,14 +35,12 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Ruta Inmobiliaria en Estados Unidos | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Sala privada presencial para empresarios e inversionistas. Oportunidades reales de inversión inmobiliaria en Estados Unidos. Monterrey, 18 de abril 2026.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Ruta Inmobiliaria en Estados Unidos | Comprando Am\u00e9rica",
+  description: "Sala privada presencial para empresarios e inversionistas. Oportunidades reales de inversi\u00f3n inmobiliaria. Monterrey, 18 de abril 2026.",
+  path: "/ruta-inmobiliaria-en-estados-unidos",
+};
 
 /* ─── Constants ─── */
 const CLOVER_URL = "https://link.clover.com/urlshortener/Pk8sN9";
@@ -80,7 +78,7 @@ export default function RutaInmobiliaria() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO — video bg ═══ */}

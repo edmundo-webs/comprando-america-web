@@ -1,0 +1,15 @@
+# Robots.txt for Comprando América
+# https://comprandoamerica.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin and CMS areas
+Disallow: /cms/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://comprandoamerica.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

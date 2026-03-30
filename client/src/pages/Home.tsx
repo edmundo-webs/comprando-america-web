@@ -72,14 +72,23 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Comprando América | Inversión y estructura en Estados Unidos";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Club de inversión privado para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Comunidad exclusiva con criterio.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Comprando América | Inversión y estructura en Estados Unidos",
+  description: "Club de inversión privado para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Comunidad exclusiva con criterio.",
+  path: "/",
+  schema: {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "¿Cómo invertir en Estados Unidos desde México?", "acceptedAnswer": { "@type": "Answer", "text": "Con Comprando América puedes invertir desde $100,000 USD a través de una LLC en Texas o Florida, con estructura legal, fiscal y acompañamiento para bienes raíces o adquisición de negocios." } },
+      { "@type": "Question", "name": "¿Qué es la visa E-2 de inversionista?", "acceptedAnswer": { "@type": "Answer", "text": "La visa E-2 permite a inversionistas extranjeros vivir y trabajar en EE.UU. operando un negocio real. Requiere inversión sustancial (desde $150,000 USD) y un plan de negocios aprobado por USCIS." } },
+      { "@type": "Question", "name": "¿Necesito vivir en Estados Unidos para invertir?", "acceptedAnswer": { "@type": "Answer", "text": "No. Puedes proteger tu patrimonio invirtiendo en dólares con una LLC y cuenta bancaria en EE.UU. sin necesidad de residir o migrar." } },
+      { "@type": "Question", "name": "¿Qué incluye el club de inversión de Comprando América?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías, eventos presenciales VIP, conversaciones exclusivas con inversionistas activos y la Mesa de Dueños — comunidad privada de evaluación." } },
+      { "@type": "Question", "name": "¿Es mejor invertir en Texas o Florida?", "acceptedAnswer": { "@type": "Answer", "text": "Depende de tu objetivo. Texas ofrece protección patrimonial fuerte y sin impuesto estatal sobre la renta. Florida tiene ventajas para bienes raíces y clima favorable. Analizamos tu caso específico." } }
+    ]
+  }
+};
 
 /* ─── Photos ─── */
 const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w1920";
@@ -251,7 +260,7 @@ function EdmundoSection() {
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO — Edmundo rooftop ═══ */}

@@ -39,14 +39,13 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 }
 
 /* ─── SEO ─── */
-function SEOHead() {
-  useEffect(() => {
-    document.title = "Visa E-2 Inversión en Estados Unidos | Guía Estratégica | Comprando América";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "La visa E-2 no es un trámite. Es el resultado de una estructura de inversión bien diseñada. Entiende cómo funciona realmente y si aplica para tu perfil.");
-  }, []);
-  return null;
-}
+import SEOHead from "@/components/SEOHead";
+const PAGE_SEO = {
+  title: "Visa E-2 Inversi\u00f3n en Estados Unidos | Gu\u00eda Estrat\u00e9gica | Comprando Am\u00e9rica",
+  description: "La visa E-2 no es un tr\u00e1mite. Es el resultado de una estructura de inversi\u00f3n bien dise\u00f1ada. Entiende c\u00f3mo funciona y si aplica para tu perfil.",
+  path: "/visa-e2-inversion-en-estados-unidos",
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfCu\u00e1nto dinero necesito para la visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "La inversi\u00f3n m\u00ednima sugerida es de $150,000 USD, aunque depende del tipo de negocio. El capital debe ser sustancial y en riesgo."}}, {"@type": "Question", "name": "\u00bfPuedo llevar a mi familia con visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. El c\u00f3nyuge recibe permiso de trabajo autom\u00e1tico y los hijos menores de 21 a\u00f1os pueden estudiar en EE.UU."}}, {"@type": "Question", "name": "\u00bfCu\u00e1l es la diferencia entre visa E-2 y EB-5?", "acceptedAnswer": {"@type": "Answer", "text": "La E-2 requiere menor inversi\u00f3n (~$150K vs $800K+), es renovable indefinidamente pero no da residencia directa. La EB-5 otorga Green Card pero requiere mayor capital."}}]},
+};
 
 /* ─── Photos ─── */
 const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1OUXlN1giz2Et67lrb9L1oQNwQsBCqmGo=w1920";
@@ -56,7 +55,7 @@ const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13
 export default function VisaE2() {
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead />
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}

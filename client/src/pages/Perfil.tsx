@@ -1,3 +1,4 @@
+import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MemberTestimonialSlider from "@/components/MemberTestimonialSlider";
@@ -234,6 +235,11 @@ export default function Perfil() {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <SEOHead
+        title="Evaluar mi Perfil de Inversión | Comprando América"
+        description="Evalúa si el club de inversión de Comprando América es para ti. Responde unas preguntas y conoce tu ruta ideal de inversión en Estados Unidos."
+        path="/perfil"
+      />
       <Navbar />
 
       {step === "form" && (
