@@ -214,7 +214,7 @@ export const appRouter = router({
       }))
       .mutation(async ({ ctx, input }) => {
         requireCmsAccess(ctx.user.role);
-        await db.createBlogPost({ ...input, authorId: ctx.user.id });
+        await db.createBlogPost({ ...input, createdBy: ctx.user.id });
         return { success: true };
       }),
     // CMS: update post

@@ -32,16 +32,22 @@ export type InsertUser = typeof users.$inferInsert;
  */
 export const blogPosts = mysqlTable("blog_posts", {
   id: int("id").autoincrement().primaryKey(),
-  title: varchar("title", { length: 255 }).notNull(),
-  slug: varchar("slug", { length: 255 }).notNull().unique(),
-  excerpt: text("excerpt"),
+  title: varchar("title", { length: 500 }).notNull(),
+  slug: varchar("slug", { length: 500 }).notNull().unique(),
   content: text("content").notNull(),
-  featuredImage: varchar("featured_image", { length: 500 }),
-  authorId: int("author_id").notNull(),
+  htmlContent: text("htmlContent"),
+  excerpt: text("excerpt"),
+  featuredImage: text("featuredImage"),
+  language: mysqlEnum("language", ["es", "en"]).default("es").notNull(),
   status: mysqlEnum("status", ["draft", "published", "archived"]).default("draft").notNull(),
-  publishedAt: timestamp("published_at"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  metaDescription: varchar("metaDescription", { length: 160 }),
+  category: varchar("category", { length: 100 }),
+  tags: text("tags"),
+  newsletterId: int("newsletterId"),
+  publishedAt: timestamp("publishedAt"),
+  createdBy: int("createdBy"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type BlogPost = typeof blogPosts.$inferSelect;
