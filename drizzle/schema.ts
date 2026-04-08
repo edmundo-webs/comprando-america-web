@@ -77,7 +77,7 @@ export type InsertNewsArticle = typeof newsArticles.$inferInsert;
  * News feeds table
  * Stores RSS feed URLs and configuration
  */
-export const newsFeeds = mysqlTable("ca_news_feeds", {
+export const newsFeeds = mysqlTable("news_feeds", {
   id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   url: varchar("url", { length: 1000 }).notNull().unique(),
@@ -95,7 +95,7 @@ export type InsertNewsFeed = typeof newsFeeds.$inferInsert;
  * News subscribers table
  * Stores email subscriptions for news notifications
  */
-export const newsSubscribers = mysqlTable("ca_news_subscribers", {
+export const newsSubscribers = mysqlTable("news_subscribers", {
   id: int("id").autoincrement().primaryKey(),
   email: varchar("email", { length: 320 }).notNull().unique(),
   name: varchar("name", { length: 255 }),
