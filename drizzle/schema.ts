@@ -57,7 +57,7 @@ export type InsertBlogPost = typeof blogPosts.$inferInsert;
  * News articles table
  * Stores editorial news articles written by the Comprando América team
  */
-export const newsArticles = mysqlTable("news_articles", {
+export const newsArticles = mysqlTable("ca_news_articles", {
   id: int("id").autoincrement().primaryKey(),
   title: varchar("title", { length: 500 }).notNull(),
   slug: varchar("slug", { length: 500 }).notNull().unique(),
@@ -68,12 +68,12 @@ export const newsArticles = mysqlTable("news_articles", {
   source: varchar("source", { length: 255 }).notNull(),
   author: varchar("author", { length: 255 }).default("Equipo Comprando América").notNull(),
   category: mysqlEnum("category", ["visas-migracion", "economia-finanzas", "bienes-raices", "llc-negocios", "inversiones"]).notNull(),
-  imageUrl: varchar("image_url", { length: 1000 }),
-  ctaType: varchar("cta_type", { length: 100 }), // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
-  publishedAt: timestamp("published_at").notNull(),
-  fetchedAt: timestamp("fetched_at").defaultNow().notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  imageUrl: varchar("imageUrl", { length: 1000 }),
+  ctaType: varchar("ctaType", { length: 100 }), // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
+  publishedAt: timestamp("publishedAt").notNull(),
+  fetchedAt: timestamp("fetchedAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type NewsArticle = typeof newsArticles.$inferSelect;
@@ -83,15 +83,12 @@ export type InsertNewsArticle = typeof newsArticles.$inferInsert;
  * News feeds table
  * Stores RSS feed URLs and configuration
  */
-export const newsFeeds = mysqlTable("news_feeds", {
+export const newsFeeds = mysqlTable("ca_news_feeds", {
   id: int("id").autoincrement().primaryKey(),
-  name: varchar("name", { length: 255 }).notNull(),
-  url: varchar("url", { length: 1000 }).notNull().unique(),
-  category: mysqlEnum("category", ["visas-migracion", "economia-finanzas", "bienes-raices", "llc-negocios", "inversiones"]).notNull(),
-  isActive: mysqlEnum("is_active", ["true", "false"]).default("true").notNull(),
-  lastFetchedAt: timestamp("last_fetched_at"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  name: varchar("name", { length: 255 }),
+  url: varchar("url", { length: 1000 }),
+  category: varchar("category", { length: 50 }),
+  createdAt: timestamp("createdAt").defaultNow(),
 });
 
 export type NewsFeed = typeof newsFeeds.$inferSelect;
@@ -101,17 +98,17 @@ export type InsertNewsFeed = typeof newsFeeds.$inferInsert;
  * News subscribers table
  * Stores email subscriptions for news notifications
  */
-export const newsSubscribers = mysqlTable("news_subscribers", {
+export const newsSubscribers = mysqlTable("ca_news_subscribers", {
   id: int("id").autoincrement().primaryKey(),
   email: varchar("email", { length: 320 }).notNull().unique(),
   name: varchar("name", { length: 255 }),
   categories: text("categories").notNull(), // JSON array of subscribed categories
-  isActive: mysqlEnum("is_active", ["true", "false"]).default("true").notNull(),
-  verificationToken: varchar("verification_token", { length: 255 }),
-  isVerified: mysqlEnum("is_verified", ["true", "false"]).default("false").notNull(),
-  unsubscribeToken: varchar("unsubscribe_token", { length: 255 }).unique(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+  isActive: varchar("isActive", { length: 5 }).default("true"),
+  verificationToken: varchar("verificationToken", { length: 255 }),
+  isVerified: varchar("isVerified", { length: 5 }).default("false"),
+  unsubscribeToken: varchar("unsubscribeToken", { length: 255 }).unique(),
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow(),
 });
 
 export type NewsSubscriber = typeof newsSubscribers.$inferSelect;
