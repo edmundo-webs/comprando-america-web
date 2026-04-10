@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { NAV_ITEMS, IMAGES } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocation } from "wouter";
 import { EconomicTicker } from "@/components/EconomicTicker";
 
 export default function Navbar() {
+  const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -201,7 +203,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </nav>
-    {typeof window !== 'undefined' && window.location.pathname.startsWith('/news') && <EconomicTicker />}
+    {location.startsWith('/news') && <EconomicTicker />}
     </>
   );
 }
