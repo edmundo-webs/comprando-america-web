@@ -508,7 +508,7 @@ export async function getVerifiedSubscribersByCategory(category: string) {
     )
   );
 
-  return subscribers.filter((sub) => {
+  return subscribers.filter((sub: any) => {
     const categories = JSON.parse(sub.categories);
     return categories.includes(category) || categories.includes("all");
   });

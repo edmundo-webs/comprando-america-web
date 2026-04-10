@@ -94,7 +94,7 @@ export async function fetchAndParseFeed(feed: RssFeed): Promise<void> {
     }
 
     // Update last fetched timestamp
-    await db.updateNewsFeed(feed.id, { lastFetchedAt: new Date() });
+    await db.updateNewsFeed(feed.id, { // lastFetchedAt: new Date() });
 
     console.log(
       `[RSS] Feed ${feed.name}: ${successCount} new articles, ${duplicateCount} duplicates`
