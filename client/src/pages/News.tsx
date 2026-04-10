@@ -1,3 +1,4 @@
+import { EconomicTicker } from "@/components/EconomicTicker";
 import { useState, useMemo, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { NewsList } from "@/components/NewsList";
@@ -114,7 +115,7 @@ export default function News() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-28 pb-16 section-dark overflow-hidden">
+      <section className="relative pt-36 pb-16 section-dark overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-gold/5" />
         <div className="container relative z-10">
           <span className="inline-block text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
@@ -132,7 +133,7 @@ export default function News() {
       </section>
 
       {/* Search & Filter Bar */}
-      <section className="sticky top-20 z-40 bg-[oklch(0.12_0.03_250/0.95)] backdrop-blur-xl border-b border-[#1E3A5F]">
+      <section className="sticky top-[126px] z-30 bg-[oklch(0.12_0.03_250/0.95)] backdrop-blur-xl border-b border-[#1E3A5F]">
         <div className="container py-4">
           {/* Search */}
           <div className="relative mb-4">
@@ -236,6 +237,7 @@ export default function News() {
       </div>
 
       <Footer />
+      <EconomicTicker />
     </div>
   );
 }

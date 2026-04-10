@@ -1,3 +1,4 @@
+import { EconomicTicker } from "@/components/EconomicTicker";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { trpc } from "@/lib/trpc";
@@ -116,7 +117,7 @@ export default function NewsArticle() {
       <Navbar />
 
       {/* Article Header */}
-      <section className="pt-28 pb-12 section-dark">
+      <section className="pt-36 pb-12 section-dark">
         <div className="container">
           <div className="max-w-3xl mx-auto">
             {/* Back link */}
@@ -277,6 +278,7 @@ export default function NewsArticle() {
       )}
 
       <Footer />
+      <EconomicTicker />
     </div>
   );
 }

@@ -16,9 +16,12 @@ export async function getDb() {
         ssl: { rejectUnauthorized: true },
         connectionLimit: 5,
       });
+      // Test the connection to ensure it's not silently failing later
+      const conn = await pool.getConnection();
+      conn.release();
       _db = drizzle(pool);
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      console.error("[Database] Failed to connect:", error);
       _db = null;
     }
   }
