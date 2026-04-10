@@ -1,4 +1,3 @@
-import { EconomicTicker } from "@/components/EconomicTicker";
 import { useState, useMemo, useEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { NewsList } from "@/components/NewsList";
@@ -237,7 +236,6 @@ export default function News() {
       </div>
 
       <Footer />
-      <EconomicTicker />
     </div>
   );
 }

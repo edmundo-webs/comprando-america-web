@@ -1,4 +1,3 @@
-import { EconomicTicker } from "@/components/EconomicTicker";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { trpc } from "@/lib/trpc";
@@ -278,7 +277,6 @@ export default function NewsArticle() {
       )}
 
       <Footer />
-      <EconomicTicker />
     </div>
   );
 }

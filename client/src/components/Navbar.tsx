@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { NAV_ITEMS, IMAGES } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
+import { EconomicTicker } from "@/components/EconomicTicker";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +28,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
@@ -199,5 +201,7 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </nav>
+    {typeof window !== 'undefined' && window.location.pathname.startsWith('/news') && <EconomicTicker />}
+    </>
   );
 }
