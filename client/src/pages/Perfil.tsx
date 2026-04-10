@@ -676,14 +676,14 @@ export default function Perfil() {
                         {/* Pregunta 7 */}
                         <div>
                           <label className="block text-lg font-semibold text-white mb-4">
-                            ¿Cuál es tu ingreso anual aproximado?
+                            ¿Cuál es tu ingreso anual aproximado? (USD)
                           </label>
                           <div className="space-y-3">
                             {[
-                              { value: "100k-250k", label: "$100k – $250k" },
-                              { value: "250k-500k", label: "$250k – $500k" },
-                              { value: "500k-1m", label: "$500k – $1M" },
-                              { value: "1m", label: "Más de $1M" },
+                              { value: "100k-250k", label: "$100k – $250k USD" },
+                              { value: "250k-500k", label: "$250k – $500k USD" },
+                              { value: "500k-1m", label: "$500k – $1M USD" },
+                              { value: "1m", label: "Más de $1M USD" },
                             ].map((option) => (
                               <label key={option.value} className="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-[#0F2847] transition">
                                 <input
