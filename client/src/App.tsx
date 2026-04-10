@@ -34,7 +34,6 @@ import Eventos from "./pages/Eventos";
 import InvestmentWeek from "./pages/InvestmentWeek";
 import Recursos from "./pages/Recursos";
 import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
-import VisaE2 from "./pages/VisaE2";
 
 function Router() {
   return (
