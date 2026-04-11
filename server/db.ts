@@ -351,7 +351,7 @@ export async function getActiveNewsFeeds() {
     console.warn("[Database] Cannot get active news feeds: database not available");
     return [];
   }
-  return await db.select().from(newsFeeds).where(eq(newsFeeds.isActive, "true"));
+  return await db.select().from(newsFeeds);
 }
 
 export async function getNewsFeedsByCategory(category: string) {
