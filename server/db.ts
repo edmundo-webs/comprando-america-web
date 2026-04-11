@@ -361,7 +361,7 @@ export async function getNewsFeedsByCategory(category: string) {
     return [];
   }
   return await db.select().from(newsFeeds)
-    .where(and(eq(newsFeeds.category, category as any), eq(newsFeeds.isActive, "true" as any)));
+    .where(and(eq(newsFeeds.category, category as any)));
 }
 
 export async function getNewsFeedById(id: number) {
