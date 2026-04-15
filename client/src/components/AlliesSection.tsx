@@ -10,7 +10,7 @@ interface Ally {
 
 const allies: Ally[] = [
   {
-    name: "Joe Farucci",
+    name: "Joe Faraci",
     specialty: "Inversionista en Bienes Raíces",
     description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
     image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
