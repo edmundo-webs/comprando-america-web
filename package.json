@@ -10,7 +10,13 @@
     "check": "echo skipping tsc",
     "format": "prettier --write .",
     "test": "vitest run",
-    "db:push": "drizzle-kit generate && drizzle-kit migrate"
+    "db:push": "drizzle-kit generate && drizzle-kit migrate",
+    "news:seed-feeds": "tsx server/ingest/seed-feeds.ts",
+    "news:ingest": "tsx server/ingest/fetch.ts",
+    "news:rewrite": "tsx server/ai/rewrite.ts",
+    "news:images": "tsx server/ai/generate-images.ts",
+    "news:auto-publish": "tsx server/ai/auto-publish.ts",
+    "news:pipeline": "pnpm news:ingest && pnpm news:rewrite && pnpm news:images && pnpm news:auto-publish"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

@@ -8,6 +8,13 @@ export const ENV = {
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME ?? "",
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY ?? "",
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET ?? "",
-  // OpenAI (for AI image generation)
+  // OpenAI (for AI image generation in CMS — separate from the news pipeline)
   openaiApiKey: process.env.OPENAI_API_KEY ?? "",
+  // News publishing pipeline (shared credentials with Web-News-TTS)
+  geminiApiKey: process.env.GEMINI_API_KEY ?? "",
+  pexelsApiKey: process.env.PEXELS_API_KEY ?? "",
+  // Metricool — social distribution
+  metricoolApiKey: process.env.METRICOOL_API_KEY ?? "",
+  metricoolUserId: process.env.METRICOOL_USER_ID ?? "1748825",
+  metricoolBlogId: process.env.METRICOOL_BLOG_ID ?? "4294668",
 };
