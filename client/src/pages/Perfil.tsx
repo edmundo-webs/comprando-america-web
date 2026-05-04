@@ -156,7 +156,7 @@ export default function Perfil() {
       readinessLevel = "Perfil listo para inversión";
       readinessPercentage = Math.min(100, 70 + (score - 70));
       cta = "Agendar llamada estratégica";
-      link = "https://calendly.com/diegoalcalamo10/30min?month=2025-02";
+      link = "https://wa.me/523346766178";
     } else if (score >= 40) {
       readinessLevel = "Perfil en desarrollo";
       readinessPercentage = 40 + (score - 40);
