@@ -37,50 +37,28 @@ export interface SourceSeed {
 
 export const SOURCES: SourceSeed[] = [
   // ─────────────── VISAS Y MIGRACIÓN ───────────────
+  // Note: USCIS, State Department, Univision, Voz de América and Boundless
+  // were dropped here — the official .gov feeds 404 (RSS discontinued) and
+  // the news outlets' feeds either malformed XML or blocked the bot UA.
+  // Replaced with the two largest US immigration law firms' blogs, which
+  // publish detailed E-2 / treaty-investor analyses regularly.
   {
-    slug: "uscis-newsroom",
-    name: "USCIS Newsroom",
-    homepage: "https://www.uscis.gov/newsroom",
-    feedUrl: "https://www.uscis.gov/news/rss-feeds/uscis-rss-feed",
-    category: "visas-migracion",
-    language: "en",
-    priority: 10,
-  },
-  {
-    slug: "state-dept-press",
-    name: "U.S. Department of State Press Releases",
-    homepage: "https://www.state.gov/press-releases/",
-    feedUrl: "https://www.state.gov/rss-feed/press-releases/feed/",
+    slug: "murthy-law",
+    name: "Murthy Law Firm — Immigration",
+    homepage: "https://www.murthy.com/",
+    feedUrl: "https://www.murthy.com/feed/",
     category: "visas-migracion",
     language: "en",
     priority: 9,
   },
   {
-    slug: "univision-inmigracion",
-    name: "Univision Noticias — Inmigración",
-    homepage: "https://www.univision.com/noticias/inmigracion",
-    feedUrl: "https://feeds.univision.com/feeds/rss/news/inmigracion",
-    category: "visas-migracion",
-    language: "es",
-    priority: 8,
-  },
-  {
-    slug: "voa-inmigracion",
-    name: "Voz de América — Inmigración",
-    homepage: "https://www.vozdeamerica.com/z/3470",
-    feedUrl: "https://www.vozdeamerica.com/api/zybmoer",
-    category: "visas-migracion",
-    language: "es",
-    priority: 7,
-  },
-  {
-    slug: "boundless-blog",
-    name: "Boundless — Immigration News",
-    homepage: "https://www.boundless.com/blog/",
-    feedUrl: "https://www.boundless.com/blog/feed/",
+    slug: "bal-immigration",
+    name: "Berry Appleman & Leiden — Immigration",
+    homepage: "https://www.bal.com/",
+    feedUrl: "https://www.bal.com/feed/",
     category: "visas-migracion",
     language: "en",
-    priority: 6,
+    priority: 9,
   },
 
   // ─────────────── ECONOMÍA Y FINANZAS ───────────────
@@ -167,43 +145,40 @@ export const SOURCES: SourceSeed[] = [
     language: "en",
     priority: 7,
   },
+  // Bisnow Texas + South Florida dropped (404 on /feed). Replaced with Redfin
+  // News (data-rich, market reports) and Real Estate News by Mike Sumsky.
   {
-    slug: "bisnow-texas",
-    name: "Bisnow — Texas",
-    homepage: "https://www.bisnow.com/texas",
-    feedUrl: "https://www.bisnow.com/texas/feed",
+    slug: "redfin-news",
+    name: "Redfin News",
+    homepage: "https://www.redfin.com/news",
+    feedUrl: "https://www.redfin.com/news/feed/",
     category: "bienes-raices",
     language: "en",
-    priority: 7,
+    priority: 8,
   },
   {
-    slug: "bisnow-south-florida",
-    name: "Bisnow — South Florida",
-    homepage: "https://www.bisnow.com/south-florida",
-    feedUrl: "https://www.bisnow.com/south-florida/feed",
+    slug: "real-estate-news-blog",
+    name: "Real Estate News Blog",
+    homepage: "https://realestatenewsblog.com/",
+    feedUrl: "https://feeds.feedburner.com/RealEstateNewsBlog",
     category: "bienes-raices",
     language: "en",
-    priority: 7,
+    priority: 6,
   },
 
   // ─────────────── LLC Y NEGOCIOS (estructura + fiscal) ───────────────
+  // IRS, Treasury and SBA RSS feeds were all 404 — those agencies stopped
+  // publishing public RSS in favor of GovDelivery email. Tax Foundation,
+  // Kiplinger Taxes plus the addition of CNBC Personal Finance carry the
+  // category instead.
   {
-    slug: "irs-newsroom",
-    name: "IRS Newsroom",
-    homepage: "https://www.irs.gov/newsroom",
-    feedUrl: "https://www.irs.gov/pub/irs-utl/rss/news-releases.xml",
+    slug: "cnbc-personal-finance",
+    name: "CNBC — Personal Finance",
+    homepage: "https://www.cnbc.com/personal-finance/",
+    feedUrl: "https://www.cnbc.com/id/10000115/device/rss/rss.html",
     category: "llc-negocios",
     language: "en",
-    priority: 10,
-  },
-  {
-    slug: "treasury-press",
-    name: "U.S. Treasury — Press Releases",
-    homepage: "https://home.treasury.gov/news/press-releases",
-    feedUrl: "https://home.treasury.gov/system/files/126/press-releases.rss",
-    category: "llc-negocios",
-    language: "en",
-    priority: 9,
+    priority: 8,
   },
   {
     slug: "tax-foundation",
@@ -219,15 +194,6 @@ export const SOURCES: SourceSeed[] = [
     name: "Kiplinger — Taxes",
     homepage: "https://www.kiplinger.com/taxes",
     feedUrl: "https://www.kiplinger.com/feed/all",
-    category: "llc-negocios",
-    language: "en",
-    priority: 7,
-  },
-  {
-    slug: "sba-press",
-    name: "SBA — Press Releases",
-    homepage: "https://www.sba.gov/about-sba/sba-newsroom",
-    feedUrl: "https://www.sba.gov/feeds/press-releases",
     category: "llc-negocios",
     language: "en",
     priority: 7,
@@ -253,10 +219,19 @@ export const SOURCES: SourceSeed[] = [
     priority: 7,
   },
   {
-    slug: "investopedia-markets",
-    name: "Investopedia — Markets",
-    homepage: "https://www.investopedia.com/markets-news-4427704",
-    feedUrl: "https://www.investopedia.com/feedbuilder/feed/getfeed/?feedName=rss_articles",
+    slug: "cnbc-markets",
+    name: "CNBC — Markets",
+    homepage: "https://www.cnbc.com/markets/",
+    feedUrl: "https://www.cnbc.com/id/15839135/device/rss/rss.html",
+    category: "inversiones",
+    language: "en",
+    priority: 8,
+  },
+  {
+    slug: "motley-fool",
+    name: "The Motley Fool",
+    homepage: "https://www.fool.com/",
+    feedUrl: "https://www.fool.com/feeds/index.aspx",
     category: "inversiones",
     language: "en",
     priority: 7,
