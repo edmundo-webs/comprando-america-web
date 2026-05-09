@@ -274,5 +274,10 @@ run()
     console.error("Rewrite pipeline failed:", err);
     process.exitCode = 1;
   })
-  .finally(() => closeCliDb());
+  .finally(async () => {
+    await closeCliDb();
+    // Force exit: keep-alive sockets from the LLM client (fetch) can hold
+    // the event loop open after the work is done.
+    process.exit(process.exitCode ?? 0);
+  });
 

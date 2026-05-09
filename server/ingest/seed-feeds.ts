@@ -73,4 +73,7 @@ run()
     console.error("seed-feeds failed:", err);
     process.exitCode = 1;
   })
-  .finally(() => closeCliDb());
+  .finally(async () => {
+    await closeCliDb();
+    process.exit(process.exitCode ?? 0);
+  });
