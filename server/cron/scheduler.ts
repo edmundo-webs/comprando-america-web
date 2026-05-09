@@ -17,8 +17,8 @@
  * Disable the scheduler by setting DISABLE_NEWS_CRON=true.
  */
 import { spawn } from "node:child_process";
+import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import cron from "node-cron";
 
 const TZ = "America/Chicago";
@@ -26,24 +26,48 @@ const TASK_TIMEOUT_MS = 20 * 60 * 1000; // 20 minutes per stage
 
 let activeTasks = 0;
 
+/**
+ * Resolve project root reliably. We can't trust import.meta.url because
+ * esbuild bundles this module into dist/index.js — the path of the bundle
+ * is two levels off from where the source file lives. process.cwd() is
+ * what `pnpm start` uses, which IS the project root on Render.
+ */
+function findProjectRoot(): string {
+  return process.cwd();
+}
+
+/**
+ * Find the tsx binary. Prefer the local pnpm-style location, fall back to
+ * letting the OS resolve "tsx" from PATH (the env shell pnpm sets up).
+ */
+function findTsx(projectRoot: string): string {
+  const candidates = [
+    path.join(projectRoot, "node_modules", ".bin", "tsx"),
+    path.join(projectRoot, "node_modules", ".pnpm", "node_modules", ".bin", "tsx"),
+  ];
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return c;
+  }
+  // Last resort: rely on PATH. pnpm exposes binstubs for installed deps so
+  // when this process was started via `pnpm start`, "tsx" should resolve.
+  return "tsx";
+}
+
 function runStage(name: string, scriptRelativeToRoot: string): Promise<void> {
   return new Promise((resolve) => {
     activeTasks++;
     console.log(`[cron] ▶ ${name}`);
     const start = Date.now();
 
-    // Project root: cron/scheduler.ts → server/cron/ → server/ → project root
-    const here = path.dirname(fileURLToPath(import.meta.url));
-    const projectRoot = path.resolve(here, "..", "..");
+    const projectRoot = findProjectRoot();
     const scriptPath = path.resolve(projectRoot, scriptRelativeToRoot);
-    // Use the local tsx binstub so we don't depend on pnpm being in PATH
-    // at runtime (Render's prod image may not include it).
-    const tsxBin = path.resolve(projectRoot, "node_modules", ".bin", "tsx");
+    const tsxBin = findTsx(projectRoot);
 
     const child = spawn(tsxBin, [scriptPath], {
       cwd: projectRoot,
       env: process.env,
       stdio: "pipe",
+      shell: tsxBin === "tsx", // need a shell only if we're falling back to PATH lookup
     });
 
     const killer = setTimeout(() => {
