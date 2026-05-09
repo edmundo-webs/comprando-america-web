@@ -236,13 +236,17 @@ export async function deleteBlogPost(id: number) {
 }
 
 // ═══ NEWS ARTICLES QUERIES ═══
+// All public-facing queries filter by status='published' so the portal
+// never surfaces candidates / drafts / rejects from the workflow.
 export async function getLatestNewsArticles(limit: number = 20) {
   const db = await getDb();
   if (!db) {
     console.warn("[Database] Cannot get news articles: database not available");
     return [];
   }
-  return await db.select().from(newsArticles).orderBy(desc(newsArticles.publishedAt)).limit(limit);
+  return await db.select().from(newsArticles)
+    .where(eq(newsArticles.status, "published"))
+    .orderBy(desc(newsArticles.publishedAt)).limit(limit);
 }
 
 export async function getNewsArticlesByCategory(category: string, limit: number = 20) {
@@ -252,7 +256,7 @@ export async function getNewsArticlesByCategory(category: string, limit: number 
     return [];
   }
   return await db.select().from(newsArticles)
-    .where(eq(newsArticles.category, category as any))
+    .where(and(eq(newsArticles.category, category as any), eq(newsArticles.status, "published")))
     .orderBy(desc(newsArticles.publishedAt))
     .limit(limit);
 }
@@ -264,7 +268,7 @@ export async function searchNewsArticles(query: string, limit: number = 20) {
     return [];
   }
   return await db.select().from(newsArticles)
-    .where(like(newsArticles.title, `%${query}%`))
+    .where(and(like(newsArticles.title, `%${query}%`), eq(newsArticles.status, "published")))
     .orderBy(desc(newsArticles.publishedAt))
     .limit(limit);
 }
