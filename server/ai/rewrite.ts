@@ -74,12 +74,65 @@ function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
+/**
+ * Tolerant JSON parser. Handles three things the LLM commonly mangles:
+ *   1. ```json ... ``` markdown fences
+ *   2. Trailing prose after the JSON object ("Here's your JSON: {...}")
+ *   3. Truncated output (max_tokens cut the response mid-string).
+ *      For #3 we close any open string/array/object brackets in order so
+ *      a JSON.parse at least lands a usable partial result.
+ */
 function safeJsonParse(text: string): any {
-  const cleaned = text
+  let cleaned = text
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/```\s*$/, "")
     .trim();
-  return JSON.parse(cleaned);
+
+  // Strip anything before the first { and after the last } that pairs.
+  const firstBrace = cleaned.indexOf("{");
+  if (firstBrace > 0) cleaned = cleaned.slice(firstBrace);
+
+  // Quick path: clean parse works.
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    /* fall through to truncation recovery */
+  }
+
+  // Truncation recovery: walk the string tracking quote/bracket state.
+  let inString = false;
+  let escape = false;
+  const stack: string[] = [];
+  let lastSafeEnd = -1;
+  for (let i = 0; i < cleaned.length; i++) {
+    const ch = cleaned[i];
+    if (escape) { escape = false; continue; }
+    if (ch === "\\") { escape = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === "{" || ch === "[") stack.push(ch);
+    else if (ch === "}" || ch === "]") stack.pop();
+    if (stack.length === 0 && (ch === "}" || ch === "]")) {
+      lastSafeEnd = i;
+    }
+  }
+
+  // If we closed the structure cleanly somewhere, parse up to that point.
+  if (lastSafeEnd > 0) {
+    return JSON.parse(cleaned.slice(0, lastSafeEnd + 1));
+  }
+
+  // Otherwise rebuild a closed version: close the open string, then close
+  // every bracket on the stack in reverse. We also drop any trailing
+  // comma / whitespace right before the closing.
+  let recovered = cleaned;
+  if (inString) recovered += '"';
+  recovered = recovered.replace(/[,\s]+$/, "");
+  while (stack.length) {
+    const open = stack.pop();
+    recovered += open === "{" ? "}" : "]";
+  }
+  return JSON.parse(recovered);
 }
 
 interface RelevanceResult {

@@ -90,9 +90,14 @@ async function openaiGenerate(
       { role: "user", content: userPrompt },
     ],
     temperature: opts?.temperature ?? 0.7,
-    max_tokens: opts?.maxOutputTokens ?? 4096,
+    // GLM cloud was truncating responses at 4096 — bumping to 8192 gives
+    // the rewrite stage room for a 600-1100 word body in JSON format.
+    max_tokens: opts?.maxOutputTokens ?? 8192,
   };
-  if (opts?.jsonMode) {
+  // response_format=json_object isn't universally supported. Some Ollama
+  // backends return empty bodies when it's set on a model that doesn't
+  // implement it. Allow disabling via env var (LLM_DISABLE_JSON_MODE=true).
+  if (opts?.jsonMode && process.env.LLM_DISABLE_JSON_MODE !== "true") {
     body.response_format = { type: "json_object" };
   }
 

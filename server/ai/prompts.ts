@@ -152,7 +152,7 @@ Tags: ${raw.tags.join(", ")}
 CTA objetivo: ${ctaLabel[raw.ctaTarget] || raw.ctaTarget}
 
 CONTENIDO ORIGINAL:
-${raw.content.slice(0, 12_000)}
+${raw.content.slice(0, 6_000)}
 
 Responde con este JSON exacto:
 {
