@@ -118,7 +118,11 @@ async function scoreRelevance(article: {
     temperature: 0.2,
     maxOutputTokens: 512,
     jsonMode: true,
-    model: "gemini-2.5-flash-lite",
+    // No `model` override — let the backend pick:
+    //   - LLM_BASE_URL set: uses LLM_DEFAULT_MODEL (e.g. glm-5.1:cloud)
+    //   - GEMINI_API_KEY: walks the gemini-2.5-flash → flash-lite fallback
+    // Hardcoding "gemini-2.5-flash-lite" here used to break the OpenAI-
+    // compatible backend with "model not found" 404s.
   });
 
   return safeJsonParse(raw) as RelevanceResult;
