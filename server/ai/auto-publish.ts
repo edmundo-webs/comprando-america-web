@@ -101,8 +101,11 @@ async function run() {
     .from(newsArticles)
     .where(eq(newsArticles.status, "draft"));
 
+  // Only publish drafts that already have a Cloudinary CDN image — never
+  // promote an article with the raw RSS source's hotlinked image (those
+  // expire / get blocked / serve different sizes per visitor).
   const ready = drafts.filter(
-    (d) => activeCategories.includes(d.category as Category) && (d.imageUrl ?? "").startsWith("https://")
+    (d) => activeCategories.includes(d.category as Category) && (d.imageUrl ?? "").includes("res.cloudinary.com")
   );
 
   if (ready.length === 0) {

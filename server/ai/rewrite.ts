@@ -24,7 +24,7 @@ import {
 } from "./prompts";
 
 const BATCH_SIZE = 10;
-const MIN_RELEVANCE = 7; // stricter than Web-News-TTS (6) — quality over volume
+const MIN_RELEVANCE = 8; // strict — anything below 8/10 is rejected. Quality over volume.
 const DELAY_MS = 1500;
 
 const ALLOWED_CATEGORIES = new Set([
@@ -35,6 +35,40 @@ const ALLOWED_CATEGORIES = new Set([
   "inversiones",
 ]);
 const ALLOWED_CTA = new Set(["visa-e2", "bienes-raices", "estructura", "expansion", "formacion", "membresia"]);
+
+/**
+ * Cheap Spanish-language check used to reject LLM outputs that came back
+ * in English (the original feeds are mostly English; some LLM backends
+ * silently ignore "respond in Spanish" instructions when the source is
+ * English-heavy).
+ *
+ * Heuristic: count the share of common Spanish-only words and accented
+ * characters. Genuine Spanish articles score >0.8 typically; English
+ * outputs score <0.2.
+ */
+function spanishConfidence(text: string): number {
+  if (!text) return 0;
+  const t = text.toLowerCase();
+  // Strong signals: Spanish stop-words + accented vowels + ñ
+  const esWords = [
+    " el ", " la ", " los ", " las ", " un ", " una ", " unos ", " unas ",
+    " de ", " del ", " que ", " con ", " para ", " por ", " pero ", " como ",
+    " es ", " son ", " está ", " están ", " ser ", " ha ", " he ", " hay ",
+    "ción", "sión", "más ", "según", " año ", "mexicano", "inversión",
+  ];
+  const enWords = [
+    " the ", " of ", " and ", " is ", " are ", " was ", " were ", " in ", " on ",
+    " for ", " that ", " this ", " with ", " from ", " by ", " be ", " been ",
+    " have ", " has ", " will ", " would ", " could ", " should ",
+  ];
+  const accentMatches = (t.match(/[áéíóúñ¿¡]/g) || []).length;
+  const esHits = esWords.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0);
+  const enHits = enWords.reduce((n, w) => n + (t.includes(w) ? 1 : 0), 0);
+  // Normalize: each ES hit + accents counts toward Spanish; EN hits counts against.
+  const score = esHits * 1.0 + Math.min(accentMatches / 5, 5) - enHits * 1.0;
+  // Map roughly to [0, 1]
+  return Math.max(0, Math.min(1, score / 12));
+}
 
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
@@ -185,9 +219,12 @@ async function run() {
       });
       scored++;
 
-      const finalCategory = ALLOWED_CATEGORIES.has(relevance.best_category)
-        ? (relevance.best_category as any)
-        : (row.category as any);
+      // Category is LOCKED to the feed's category. We don't let the LLM
+      // change it — every feed is already pre-classified into one of the
+      // 5 brand categories, and that's the editorial source of truth.
+      // (Web-News-TTS lets the LLM pick because its 7 categories overlap;
+      // ours are disjoint enough that "the feed knows best.")
+      const finalCategory = (row.category ?? "economia-finanzas") as any;
       const finalCta = ALLOWED_CTA.has(relevance.cta_target)
         ? relevance.cta_target
         : "membresia";
@@ -235,6 +272,26 @@ async function run() {
         tags: relevance.suggested_tags || [],
         ctaTarget: finalCta,
       });
+
+      // Validate the output is actually Spanish. Some LLM backends ignore
+      // "respond in Spanish" when the source content is English-heavy and
+      // happily echo back English text. Reject those instead of publishing
+      // mojibake on the live portal.
+      const langSample = `${result.title_es ?? ""} ${result.excerpt_es ?? ""} ${(result.body_es ?? "").slice(0, 1500)}`;
+      const langScore = spanishConfidence(langSample);
+      if (langScore < 0.4) {
+        await db
+          .update(newsArticles)
+          .set({
+            status: "rejected",
+            rejectionReason: `LLM output not Spanish (confidence=${langScore.toFixed(2)})`,
+          })
+          .where(eq(newsArticles.id, row.id));
+        rejected++;
+        console.log(`    ✘ rejected: not Spanish (confidence=${langScore.toFixed(2)})`);
+        await sleep(DELAY_MS);
+        continue;
+      }
 
       // Use the AI-suggested slug if it's clean; otherwise derive one and
       // disambiguate with the article id so we never collide on the unique
