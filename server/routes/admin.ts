@@ -23,7 +23,7 @@
  */
 import { and, desc, eq, like, type SQL } from "drizzle-orm";
 import { Router, type NextFunction, type Request, type Response } from "express";
-import { newsArticles, newsFeeds } from "../../drizzle/schema";
+import { blogPosts, newsArticles, newsFeeds } from "../../drizzle/schema";
 import { ENV } from "../_core/env";
 import { triggerPipelineNow } from "../cron/scheduler";
 import { getDb } from "../db";
@@ -339,6 +339,214 @@ adminRouter.post("/run-pipeline", async (_req, res) => {
     res.json({ started: true, message: "Pipeline launched in background. Tail Render logs for progress." });
   } catch (err: any) {
     console.error("[admin] run-pipeline error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// BLOG POSTS — separate table from news articles. The agent (Nikki)
+// uses these endpoints to author and manage long-form editorial blog
+// content (vs. the news pipeline which is automated from RSS).
+// ═══════════════════════════════════════════════════════════════════
+
+const ALLOWED_BLOG_LANGUAGES = new Set(["es", "en"]);
+const ALLOWED_BLOG_STATUSES = new Set(["draft", "published", "archived"]);
+const EDITABLE_BLOG_FIELDS = new Set([
+  "title",
+  "slug",
+  "content",
+  "htmlContent",
+  "excerpt",
+  "featuredImage",
+  "language",
+  "status",
+  "metaDescription",
+  "category",
+  "tags",
+  "publishedAt",
+]);
+
+function pickEditableBlog(body: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(body)) {
+    if (!EDITABLE_BLOG_FIELDS.has(k)) continue;
+    if (v === undefined) continue;
+    out[k] = v;
+  }
+  if (Array.isArray(out.tags)) out.tags = JSON.stringify(out.tags);
+  if (typeof out.publishedAt === "string") out.publishedAt = new Date(out.publishedAt);
+  return out;
+}
+
+function validateBlogPatch(patch: Record<string, unknown>): string | null {
+  if (typeof patch.language === "string" && !ALLOWED_BLOG_LANGUAGES.has(patch.language)) {
+    return `Invalid language. Allowed: ${Array.from(ALLOWED_BLOG_LANGUAGES).join(", ")}`;
+  }
+  if (typeof patch.status === "string" && !ALLOWED_BLOG_STATUSES.has(patch.status)) {
+    return `Invalid status. Allowed: ${Array.from(ALLOWED_BLOG_STATUSES).join(", ")}`;
+  }
+  return null;
+}
+
+function slugifyTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 100);
+}
+
+// ---- LIST blog posts ----
+adminRouter.get("/blog/posts", async (req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    const status = typeof req.query.status === "string" ? req.query.status : undefined;
+    const language = typeof req.query.language === "string" ? req.query.language : undefined;
+    const search = typeof req.query.search === "string" ? req.query.search.trim() : "";
+    const limit = Math.min(asInt(req.query.limit, 20) ?? 20, 100);
+
+    const conditions: SQL[] = [];
+    if (status && ALLOWED_BLOG_STATUSES.has(status)) {
+      conditions.push(eq(blogPosts.status, status as any));
+    }
+    if (language && ALLOWED_BLOG_LANGUAGES.has(language)) {
+      conditions.push(eq(blogPosts.language, language as any));
+    }
+    if (search) {
+      conditions.push(like(blogPosts.title, `%${search}%`));
+    }
+
+    const rows = await db
+      .select()
+      .from(blogPosts)
+      .where(conditions.length ? and(...conditions) : undefined)
+      .orderBy(desc(blogPosts.publishedAt), desc(blogPosts.createdAt))
+      .limit(limit);
+    res.json({ count: rows.length, posts: rows });
+  } catch (err: any) {
+    console.error("[admin] list blog posts error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ---- DETAIL blog post ----
+adminRouter.get("/blog/posts/:id", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    const row = await db.select().from(blogPosts).where(eq(blogPosts.id, id)).limit(1);
+    if (row.length === 0) return res.status(404).json({ error: "Not found" });
+    res.json(row[0]);
+  } catch (err: any) {
+    console.error("[admin] get blog post error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ---- CREATE blog post ----
+adminRouter.post("/blog/posts", async (req, res) => {
+  try {
+    if (!req.body || typeof req.body !== "object") {
+      return res.status(400).json({ error: "Body must be a JSON object" });
+    }
+    const patch = pickEditableBlog(req.body);
+    if (typeof patch.title !== "string" || !patch.title.trim()) {
+      return res.status(400).json({ error: "title is required" });
+    }
+    if (typeof patch.content !== "string" || !patch.content.trim()) {
+      return res.status(400).json({ error: "content is required" });
+    }
+    const validationError = validateBlogPatch(patch);
+    if (validationError) return res.status(400).json({ error: validationError });
+
+    if (typeof patch.slug !== "string" || !patch.slug.trim()) {
+      patch.slug = `${slugifyTitle(patch.title as string)}-${Date.now()}`;
+    }
+
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    const result = await db.insert(blogPosts).values(patch as any);
+    const id = Number((result as any)[0]?.insertId);
+    const created = await db.select().from(blogPosts).where(eq(blogPosts.id, id)).limit(1);
+    res.status(201).json({ created: true, post: created[0] });
+  } catch (err: any) {
+    console.error("[admin] create blog post error:", err);
+    if (/duplicate.*slug/i.test(err.message || "")) {
+      return res.status(409).json({ error: "slug already exists" });
+    }
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ---- UPDATE blog post ----
+adminRouter.put("/blog/posts/:id", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    if (!req.body || typeof req.body !== "object") {
+      return res.status(400).json({ error: "Body must be a JSON object" });
+    }
+    const patch = pickEditableBlog(req.body);
+    if (Object.keys(patch).length === 0) {
+      return res.status(400).json({
+        error: `No editable fields supplied. Allowed: ${Array.from(EDITABLE_BLOG_FIELDS).join(", ")}`,
+      });
+    }
+    const validationError = validateBlogPatch(patch);
+    if (validationError) return res.status(400).json({ error: validationError });
+
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    await db.update(blogPosts).set(patch as any).where(eq(blogPosts.id, id));
+    const refreshed = await db.select().from(blogPosts).where(eq(blogPosts.id, id)).limit(1);
+    if (refreshed.length === 0) return res.status(404).json({ error: "Not found after update" });
+    res.json({ updated: Object.keys(patch), post: refreshed[0] });
+  } catch (err: any) {
+    console.error("[admin] update blog post error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ---- SOFT DELETE blog post (archive) ----
+adminRouter.delete("/blog/posts/:id", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    await db.update(blogPosts).set({ status: "archived" }).where(eq(blogPosts.id, id));
+    res.json({ archived: true, id });
+  } catch (err: any) {
+    console.error("[admin] archive blog post error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ---- PUBLISH blog post ----
+adminRouter.post("/blog/posts/:id/publish", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    await db
+      .update(blogPosts)
+      .set({ status: "published", publishedAt: new Date() })
+      .where(eq(blogPosts.id, id));
+    res.json({ published: true, id });
+  } catch (err: any) {
+    console.error("[admin] publish blog post error:", err);
     res.status(500).json({ error: err.message || "Internal error" });
   }
 });
