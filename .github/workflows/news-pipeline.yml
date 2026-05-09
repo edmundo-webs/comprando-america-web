@@ -1,10 +1,12 @@
 name: News pipeline
 
+# Scheduling moved to the in-process Render cron (server/cron/scheduler.ts)
+# in Fase 1.5. This workflow now only runs on manual dispatch — keep it
+# around for one-off operational tasks (seed-feeds, backfills, debugging
+# a single stage without touching production).
 on:
-  # 4 ticks/day, evenly spread (every 6h): 06, 12, 18, 00 UTC.
-  # Each tick attempts: ingest → rewrite → images → auto-publish (1 article).
-  schedule:
-    - cron: "0 6,12,18,0 * * *"
+  # schedule:
+  #   - cron: "0 6,12,18,0 * * *"
   workflow_dispatch:
     inputs:
       stage:

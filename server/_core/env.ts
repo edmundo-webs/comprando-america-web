@@ -10,9 +10,16 @@ export const ENV = {
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET ?? "",
   // OpenAI (for AI image generation in CMS — separate from the news pipeline)
   openaiApiKey: process.env.OPENAI_API_KEY ?? "",
-  // News publishing pipeline (shared credentials with Web-News-TTS)
+  // News publishing pipeline — LLM (OpenAI-compatible: Ollama / GLM cloud).
+  // If LLM_BASE_URL is set, the pipeline routes all text generation through it.
+  // Otherwise it falls back to GEMINI_API_KEY (legacy path).
+  llmBaseUrl: process.env.LLM_BASE_URL ?? "",
+  llmApiKey: process.env.LLM_API_KEY ?? "",
+  llmDefaultModel: process.env.LLM_DEFAULT_MODEL ?? "glm-5.1:cloud",
   geminiApiKey: process.env.GEMINI_API_KEY ?? "",
   pexelsApiKey: process.env.PEXELS_API_KEY ?? "",
+  // Admin REST API token for the external editor agent (OpenClaw / Yael)
+  adminToken: process.env.ADMIN_TOKEN ?? "",
   // Metricool — social distribution
   metricoolApiKey: process.env.METRICOOL_API_KEY ?? "",
   metricoolUserId: process.env.METRICOOL_USER_ID ?? "1748825",
