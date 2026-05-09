@@ -43,6 +43,13 @@
       "when": 1771772289029,
       "tag": "0005_huge_fat_cobra",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1778284800000,
+      "tag": "0006_news_publishing_pipeline",
+      "breakpoints": true
     }
   ]
 }

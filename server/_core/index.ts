@@ -8,6 +8,8 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { initializeRssScheduler } from "../rss-sync";
+import { startScheduler } from "../cron/scheduler";
+import { adminRouter } from "../routes/admin";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -34,10 +36,15 @@ async function startServer() {
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-  // Initialize RSS feed scheduler
+  // Legacy in-process RSS scheduler is now a no-op shim; the news pipeline
+  // runs on cron (server/cron/scheduler.ts) instead.
   initializeRssScheduler();
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // Admin REST API for the external editor agent (OpenClaw / Yael).
+  // Mounted before the catch-all so it owns /api/admin/*.
+  app.use("/api/admin", adminRouter);
 
   // ═══ IMAGE UPLOAD ENDPOINT ═══
   app.post("/api/upload", async (req, res) => {
@@ -158,6 +165,9 @@ async function startServer() {
 
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    // Start the in-process news pipeline scheduler. No-op in dev unless
+    // ENABLE_NEWS_CRON=true; respects DISABLE_NEWS_CRON=true to opt out.
+    startScheduler();
   });
 }
 
