@@ -251,4 +251,9 @@ run(filter)
     console.error("Ingestion failed:", err);
     process.exitCode = 1;
   })
-  .finally(() => closeCliDb());
+  .finally(async () => {
+    await closeCliDb();
+    // Force exit: rss-parser keeps HTTP keep-alive sockets open, and the
+    // scheduler can't dispatch the next stage until the child process exits.
+    process.exit(process.exitCode ?? 0);
+  });
