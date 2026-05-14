@@ -20,6 +20,7 @@
  *   GET    /candidates            Pending items awaiting AI review
  *   GET    /sources               All RSS feeds + their health
  *   POST   /run-pipeline          Trigger the full ingest -> publish chain now
+ *   POST   /seed-feeds            (Re)seed ca_news_feeds from sources.ts
  */
 import { and, desc, eq, like, type SQL } from "drizzle-orm";
 import { Router, type NextFunction, type Request, type Response } from "express";
@@ -27,6 +28,7 @@ import { blogPosts, newsArticles, newsFeeds } from "../../drizzle/schema";
 import { ENV } from "../_core/env";
 import { triggerPipelineNow } from "../cron/scheduler";
 import { getDb } from "../db";
+import { seedFeeds } from "../ingest/seed-feeds";
 
 // ---- Allow-lists for the agent's PUT payload ----
 const ALLOWED_CATEGORIES = new Set([
@@ -339,6 +341,22 @@ adminRouter.post("/run-pipeline", async (_req, res) => {
     res.json({ started: true, message: "Pipeline launched in background. Tail Render logs for progress." });
   } catch (err: any) {
     console.error("[admin] run-pipeline error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ---- SEED FEEDS (one-shot bootstrap / refresh of ca_news_feeds) ----
+// Reuses the same idempotent logic as `pnpm news:seed-feeds`. Safe to
+// call repeatedly — existing rows are updated only when their seed
+// definition changed, new rows are inserted, nothing is deleted.
+adminRouter.post("/seed-feeds", async (_req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const result = await seedFeeds(db);
+    res.json(result);
+  } catch (err: any) {
+    console.error("[admin] seed-feeds error:", err);
     res.status(500).json({ error: err.message || "Internal error" });
   }
 });
