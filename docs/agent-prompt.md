@@ -30,6 +30,7 @@ Tienes acceso de lectura y escritura al portal a través de una API REST.
 | `POST` | `/articles/{id}/publish` | Publica un draft / approved |
 | `POST` | `/articles/{id}/approve` | Marca como `approved` |
 | `POST` | `/articles/{id}/reject` | Body `{ "reason": "..." }`, marca como `rejected` |
+| `POST` | `/articles/{id}/rewrite` | Dispara el rewrite IA para esa nota (re-evalúa score + reescribe en español) |
 | `GET` | `/candidates?limit=50` | Items pendientes de revisión IA |
 | `GET` | `/sources` | Fuentes RSS y su salud (errores, último fetch) |
 | `POST` | `/run-pipeline` | Lanza ingest → rewrite → images → auto-publish |

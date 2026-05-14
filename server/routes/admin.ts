@@ -16,6 +16,7 @@
  *   POST   /articles/:id/publish  Promote draft/approved -> published
  *   POST   /articles/:id/approve  Promote draft -> approved
  *   POST   /articles/:id/reject   Mark as rejected (with optional reason)
+ *   POST   /articles/:id/rewrite  Run the AI rewrite stage on one article
  *
  *   GET    /candidates            Pending items awaiting AI review
  *   GET    /sources               All RSS feeds + their health
@@ -26,7 +27,7 @@ import { and, desc, eq, like, type SQL } from "drizzle-orm";
 import { Router, type NextFunction, type Request, type Response } from "express";
 import { blogPosts, newsArticles, newsFeeds } from "../../drizzle/schema";
 import { ENV } from "../_core/env";
-import { triggerPipelineNow } from "../cron/scheduler";
+import { rewriteArticleNow, triggerPipelineNow } from "../cron/scheduler";
 import { getDb } from "../db";
 import { seedFeeds } from "../ingest/seed-feeds";
 
@@ -272,6 +273,24 @@ adminRouter.post("/articles/:id/approve", async (req, res) => {
     res.json({ approved: true, id });
   } catch (err: any) {
     console.error("[admin] approve error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// Run the rewrite stage on a single article right now (fire-and-forget).
+// Lets the editor / Nikki re-evaluate an article — useful when threshold
+// changed, or when a candidate is buried behind the regular batch order.
+adminRouter.post("/articles/:id/rewrite", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const result = await rewriteArticleNow(id);
+    if (!result.started) {
+      return res.status(409).json({ started: false, reason: result.reason });
+    }
+    res.json({ started: true, id, message: "Rewrite launched in background. Tail Render logs for progress." });
+  } catch (err: any) {
+    console.error("[admin] rewrite trigger error:", err);
     res.status(500).json({ error: err.message || "Internal error" });
   }
 });
