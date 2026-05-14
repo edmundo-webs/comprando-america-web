@@ -536,13 +536,13 @@ export default function Home() {
 
             <FadeIn delay={0.1}>
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src={INVEST_WEEK} alt="Florida Investment Week" className="w-full h-48 object-cover" />
+                <img src={INVEST_WEEK} alt="Florida Investment Weekend II" className="w-full h-48 object-cover" />
                 <div className="p-8">
                   <Globe className="w-8 h-8 text-primary mb-4" />
-                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Florida Investment Week</h3>
+                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Florida Investment Weekend II</h3>
                   <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Terreno real. Propiedades reales. Números reales. Acceso por invitación.</p>
                   <a href="/investment-week">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Investment Week <ArrowRight className="w-3 h-3" /></Button>
+                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Investment Weekend II <ArrowRight className="w-3 h-3" /></Button>
                   </a>
                 </div>
               </div>

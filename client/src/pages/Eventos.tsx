@@ -39,7 +39,7 @@ const PAGE_SEO = {
   title: "Eventos y Experiencias para Inversionistas | Comprando Am\u00e9rica",
   description: "Participa en eventos presenciales, viajes de inspecci\u00f3n y encuentros privados para empresarios e inversionistas en Estados Unidos.",
   path: "/eventos",
-  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfQu\u00e9 eventos organiza Comprando Am\u00e9rica?", "acceptedAnswer": {"@type": "Answer", "text": "Cumbres de emprendimiento, Ruta Inmobiliaria, Florida Investment Week, cenas privadas y asambleas mensuales para miembros."}}]},
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfQu\u00e9 eventos organiza Comprando Am\u00e9rica?", "acceptedAnswer": {"@type": "Answer", "text": "Cumbres de emprendimiento, Ruta Inmobiliaria, Florida Investment Weekend II, cenas privadas y asambleas mensuales para miembros."}}]},
 };
 
 /* ─── Photos ─── */
@@ -214,7 +214,7 @@ export default function Eventos() {
               <FadeIn delay={0.1} className="order-2 lg:order-1">
                 <div>
                   <Globe className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">Florida Investment Week</h3>
+                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">Florida Investment Weekend II</h3>
                   <p className="text-[#4B5563] text-lg leading-relaxed mb-6">Viaje de inspección donde visitamos oportunidades y analizamos proyectos directamente en Estados Unidos.</p>
 
                   <div className="space-y-3 mb-6">
@@ -244,7 +244,7 @@ export default function Eventos() {
 
               <FadeIn className="order-1 lg:order-2">
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
-                  <img src={PHOTOS.investWeek} alt="Florida Investment Week" className="absolute inset-0 w-full h-full object-cover" />
+                  <img src={PHOTOS.investWeek} alt="Florida Investment Weekend II" className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                   <div className="absolute bottom-4 left-4">
                     <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-xs font-semibold uppercase tracking-wider">
