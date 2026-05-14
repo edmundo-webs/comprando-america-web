@@ -24,7 +24,7 @@ import {
 } from "./prompts";
 
 const BATCH_SIZE = 10;
-const MIN_RELEVANCE = 8; // strict — anything below 8/10 is rejected. Quality over volume.
+const MIN_RELEVANCE = 6; // pass everything ≥6: clearly relevant + tangentially useful (Fed news, macro, market context). Strict-strict (8) was producing zero drafts; we'll raise it back if the portal starts looking noisy.
 const DELAY_MS = 1500;
 
 const ALLOWED_CATEGORIES = new Set([
