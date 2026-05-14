@@ -126,8 +126,17 @@ async function openaiGenerate(
         throw new Error(json.error?.message || `HTTP ${res.status}`);
       }
 
-      const text = json.choices?.[0]?.message?.content?.trim();
-      if (!text) throw new Error("LLM returned empty response");
+      const choice = json.choices?.[0];
+      const text = choice?.message?.content?.trim();
+      if (!text) {
+        // Diagnostic: print the raw response so we can see what GLM actually
+        // returned. Most likely culprits when this fires: finish_reason
+        // "content_filter" / "length" / null, or a non-standard response
+        // envelope.
+        const dump = JSON.stringify(json).slice(0, 800);
+        console.warn(`[llm] empty content from ${model} (HTTP ${res.status}) attempt ${attempt + 1}. Response head: ${dump}`);
+        throw new Error("LLM returned empty response");
+      }
       return text;
     } catch (err: any) {
       lastError = err?.message || String(err);
