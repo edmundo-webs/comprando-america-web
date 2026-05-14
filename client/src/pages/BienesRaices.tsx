@@ -96,28 +96,15 @@ export default function BienesRaices() {
         </div>
       </section>
 
-      {/* ═══ 2. VIDEO — ☀️ BLANCO ═══ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="text-center mb-10">
-              <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Oportunidades Reales</p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">Explora el Mercado Inmobiliario</h2>
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <div className="max-w-4xl mx-auto">
-              <div className="rounded-2xl overflow-hidden border border-gray-200 bg-black shadow-lg aspect-video">
-                <iframe
-                  src="https://www.youtube.com/embed/lqLEo1065uw"
-                  title="Explora el Mercado Inmobiliario"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </div>
-            </div>
-          </FadeIn>
+      {/* ═══ 2. VIDEO ═══ */}
+      <section className="relative bg-black">
+        <div className="max-w-7xl mx-auto">
+          <video
+            src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
+            controls
+            playsInline
+            className="w-full h-auto"
+          />
         </div>
       </section>
 
