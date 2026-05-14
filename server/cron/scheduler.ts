@@ -53,17 +53,17 @@ function findTsx(projectRoot: string): string {
   return "tsx";
 }
 
-function runStage(name: string, scriptRelativeToRoot: string): Promise<void> {
+function runStage(name: string, scriptRelativeToRoot: string, extraArgs: string[] = []): Promise<void> {
   return new Promise((resolve) => {
     activeTasks++;
-    console.log(`[cron] ▶ ${name}`);
+    console.log(`[cron] ▶ ${name}${extraArgs.length ? " " + extraArgs.join(" ") : ""}`);
     const start = Date.now();
 
     const projectRoot = findProjectRoot();
     const scriptPath = path.resolve(projectRoot, scriptRelativeToRoot);
     const tsxBin = findTsx(projectRoot);
 
-    const child = spawn(tsxBin, [scriptPath], {
+    const child = spawn(tsxBin, [scriptPath, ...extraArgs], {
       cwd: projectRoot,
       env: process.env,
       stdio: "pipe",
@@ -107,6 +107,22 @@ async function runPipeline() {
   await runStage("images", "server/ai/generate-images.ts");
   await runStage("auto-publish", "server/ai/auto-publish.ts");
   console.log("[cron] ✔ pipeline tick complete");
+}
+
+/**
+ * Trigger the rewrite stage for a single article id. Used by the admin
+ * endpoint POST /api/admin/articles/:id/rewrite so the editor (or Nikki)
+ * can force a re-evaluation without queueing behind the normal batch.
+ *
+ * Spawns `tsx server/ai/rewrite.ts --id N` and returns immediately
+ * (fire-and-forget — caller can tail logs).
+ */
+export async function rewriteArticleNow(id: number): Promise<{ started: boolean; reason?: string }> {
+  if (activeTasks >= 3) {
+    return { started: false, reason: `too many concurrent tasks (${activeTasks})` };
+  }
+  void runStage(`rewrite[id=${id}]`, "server/ai/rewrite.ts", ["--id", String(id)]);
+  return { started: true };
 }
 
 /**
