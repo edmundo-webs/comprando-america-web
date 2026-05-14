@@ -1,0 +1,74 @@
+name: News pipeline
+
+# Scheduling moved to the in-process Render cron (server/cron/scheduler.ts)
+# in Fase 1.5. This workflow now only runs on manual dispatch — keep it
+# around for one-off operational tasks (seed-feeds, backfills, debugging
+# a single stage without touching production).
+on:
+  # schedule:
+  #   - cron: "0 6,12,18,0 * * *"
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "Single stage to run (default: full pipeline)"
+        required: false
+        default: "all"
+        type: choice
+        options:
+          - all
+          - ingest
+          - rewrite
+          - images
+          - auto-publish
+          - seed-feeds
+
+concurrency:
+  group: news-pipeline
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+      CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+      CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+      NODE_ENV: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Seed feeds (only if requested)
+        if: ${{ github.event.inputs.stage == 'seed-feeds' }}
+        run: pnpm news:seed-feeds
+
+      - name: Ingest
+        if: ${{ github.event.inputs.stage == 'all' || github.event.inputs.stage == 'ingest' || github.event_name == 'schedule' }}
+        run: pnpm news:ingest
+
+      - name: AI rewrite
+        if: ${{ github.event.inputs.stage == 'all' || github.event.inputs.stage == 'rewrite' || github.event_name == 'schedule' }}
+        run: pnpm news:rewrite
+
+      - name: Generate hero images
+        if: ${{ github.event.inputs.stage == 'all' || github.event.inputs.stage == 'images' || github.event_name == 'schedule' }}
+        run: pnpm news:images
+
+      - name: Auto-publish (1 article)
+        if: ${{ github.event.inputs.stage == 'all' || github.event.inputs.stage == 'auto-publish' || github.event_name == 'schedule' }}
+        run: pnpm news:auto-publish
