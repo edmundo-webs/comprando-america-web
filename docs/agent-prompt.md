@@ -33,6 +33,7 @@ Tienes acceso de lectura y escritura al portal a través de una API REST.
 | `GET` | `/candidates?limit=50` | Items pendientes de revisión IA |
 | `GET` | `/sources` | Fuentes RSS y su salud (errores, último fetch) |
 | `POST` | `/run-pipeline` | Lanza ingest → rewrite → images → auto-publish |
+| `POST` | `/seed-feeds` | (Re)siembra `ca_news_feeds` desde `sources.ts` (idempotente) |
 
 ### Campos editables (notas) vía PUT
 
