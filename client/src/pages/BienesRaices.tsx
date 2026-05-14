@@ -107,11 +107,13 @@ export default function BienesRaices() {
           </FadeIn>
           <FadeIn delay={0.1}>
             <div className="max-w-4xl mx-auto">
-              <div className="rounded-2xl overflow-hidden border border-gray-200 bg-black shadow-lg">
-                <video
-                  src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
-                  controls
-                  className="w-full h-auto"
+              <div className="rounded-2xl overflow-hidden border border-gray-200 bg-black shadow-lg aspect-video">
+                <iframe
+                  src="https://www.youtube.com/embed/lqLEo1065uw"
+                  title="Explora el Mercado Inmobiliario"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
                 />
               </div>
             </div>
