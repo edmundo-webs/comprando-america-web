@@ -127,12 +127,15 @@ async function openaiGenerate(
       }
 
       const choice = json.choices?.[0];
-      const text = choice?.message?.content?.trim();
+      // Ollama's reasoning-class models (GLM-5.1 cloud, DeepSeek-R1, etc.)
+      // put their chain-of-thought in `message.reasoning` and the final
+      // answer in `message.content`. When the model spins for too long
+      // and never finalizes, content is empty but reasoning has the half-
+      // finished analysis. Fall back to reasoning as last resort —
+      // safeJsonParse downstream can recover a partial JSON if one exists.
+      const msg: any = choice?.message ?? {};
+      const text = (msg.content ?? "").trim() || (msg.reasoning ?? "").trim();
       if (!text) {
-        // Diagnostic: print the raw response so we can see what GLM actually
-        // returned. Most likely culprits when this fires: finish_reason
-        // "content_filter" / "length" / null, or a non-standard response
-        // envelope.
         const dump = JSON.stringify(json).slice(0, 800);
         console.warn(`[llm] empty content from ${model} (HTTP ${res.status}) attempt ${attempt + 1}. Response head: ${dump}`);
         throw new Error("LLM returned empty response");
