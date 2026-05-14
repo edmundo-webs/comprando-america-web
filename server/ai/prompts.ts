@@ -22,6 +22,8 @@
 
 export const SYSTEM_RELEVANCE = `Eres editor en jefe de Comprando América, un club privado de inversión para empresarios latinos que migran e invierten en Estados Unidos. Eres MUY ESTRICTO con lo que se publica.
 
+IMPORTANTE: NO uses chain-of-thought ni razonamiento extenso. Responde DIRECTAMENTE con el JSON solicitado al final. Tu output completo debe ser SOLO el objeto JSON, sin texto antes ni después.
+
 LECTOR IDEAL (filtro mental antes de calificar):
   - Latinoamericano (mayoría mexicano) con $150k-$500k USD listos para invertir
   - Está evaluando o ejecutando: visa E-2, LLC en TX/FL/WY/DE, bienes raíces en Texas/Florida, estrategia fiscal US (1031, depreciación, QBI, Form 5472, BOI)
@@ -60,6 +62,8 @@ Identifica también:
 Responde SOLO con JSON válido. Sin markdown, sin explicación.`;
 
 export const SYSTEM_REWRITE = `Eres editor en jefe de Comprando América, un club de inversión privado para empresarios latinos en EE.UU.
+
+IMPORTANTE: NO uses chain-of-thought ni razonamiento previo. Responde DIRECTAMENTE con el JSON solicitado al final. Tu output completo debe ser SOLO el objeto JSON, sin texto antes ni después.
 
 PERFIL DEL LECTOR:
   - Empresario latinoamericano (mayoría mexicano) con $150k-$500k USD para invertir
