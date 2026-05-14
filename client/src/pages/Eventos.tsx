@@ -188,19 +188,11 @@ export default function Eventos() {
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap gap-4 text-slate-400 text-sm mb-8">
-                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-blue-400" /> Monterrey</span>
-                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-blue-400" /> 18 abril 2026</span>
-                  </div>
+                  <p className="text-slate-500 text-sm mb-8 italic">Próximas fechas por anunciar</p>
 
-                  <div className="flex flex-wrap gap-4">
-                    <a href="/ruta-inmobiliaria-en-estados-unidos">
-                      <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Reservar mi lugar <ArrowRight className="w-4 h-4" /></Button>
-                    </a>
-                    <a href="/ruta-inmobiliaria-en-estados-unidos">
-                      <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2">Ver detalles</Button>
-                    </a>
-                  </div>
+                  <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)} className="bg-primary hover:bg-blue-600 text-white gap-2">
+                    Lista prioritaria <ArrowRight className="w-4 h-4" />
+                  </Button>
                 </div>
               </FadeIn>
             </div>
@@ -227,18 +219,13 @@ export default function Eventos() {
                   </div>
 
                   <div className="flex flex-wrap gap-4 text-[#6B7280] text-sm mb-8">
-                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Florida, EE.UU.</span>
-                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-primary" /> 1–4 mayo 2026</span>
+                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater, Florida</span>
+                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-primary" /> 24–27 julio 2026</span>
                   </div>
 
-                  <div className="flex flex-wrap gap-4">
-                    <a href="/investment-week">
-                      <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Aplicar al viaje <ArrowRight className="w-4 h-4" /></Button>
-                    </a>
-                    <a href="/investment-week">
-                      <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 gap-2">Ver detalles</Button>
-                    </a>
-                  </div>
+                  <a href="/investment-week">
+                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Ver detalles <ArrowRight className="w-4 h-4" /></Button>
+                  </a>
                 </div>
               </FadeIn>
 
@@ -248,7 +235,7 @@ export default function Eventos() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                   <div className="absolute bottom-4 left-4">
                     <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-xs font-semibold uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> Mayo 2026
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> Julio 2026
                     </span>
                   </div>
                 </div>
