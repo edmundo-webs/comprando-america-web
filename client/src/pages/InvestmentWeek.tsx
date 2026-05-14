@@ -39,8 +39,8 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 /* ─── Head (noindex) ─── */
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
-  title: "Florida Investment Week | Comprando América",
-  description: "Evento privado de inversión en Tampa, St. Pete y Clearwater. Solo por invitación. 1-4 mayo 2026.",
+  title: "Florida Investment Weekend II | Comprando América",
+  description: "Evento privado de inversión en Tampa, St. Pete y Clearwater. Solo por invitación. 24-27 julio 2026.",
   path: "/investment-week",
 };
 
@@ -55,7 +55,7 @@ const TEAM = [
   { name: "Joe", role: "Inversiones", photo: "/team/joe.jpg" },
 ];
 
-const WA_APPLY = "Hola, me interesa aplicar a la Florida Investment Week (1-4 mayo 2026).";
+const WA_APPLY = "Hola, me interesa aplicar al Florida Investment Weekend II (24-27 julio 2026).";
 
 export default function InvestmentWeek() {
   const scrollToApply = () => {
@@ -96,10 +96,13 @@ export default function InvestmentWeek() {
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
-                Florida Investment Week
+                Florida Investment Weekend II
               </h1>
-              <p className="text-xl md:text-2xl text-slate-400 mb-12">
-                Acceso directo a activos, estructura y decisiones reales en Estados Unidos
+              <p className="text-xl md:text-2xl text-slate-400 mb-4">
+                Dos tipos de activo: Casas Unifamiliares y Parques de Casas Móviles
+              </p>
+              <p className="text-lg text-slate-500 mb-12">
+                Terreno real. Propiedades reales. Números reales.
               </p>
 
               {/* Team portraits */}
@@ -135,7 +138,7 @@ export default function InvestmentWeek() {
                   <MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater
                 </span>
                 <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <CalendarDays className="w-4 h-4 text-primary" /> 1–4 mayo 2026
+                  <CalendarDays className="w-4 h-4 text-primary" /> 24–27 julio 2026
                 </span>
                 <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
                   <Users className="w-4 h-4 text-primary" /> Cupo limitado
@@ -164,12 +167,12 @@ export default function InvestmentWeek() {
                 <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
                   No es un seminario. <span className="text-primary">Es una experiencia en terreno</span>
                 </h2>
-                <p className="text-[#4B5563] text-lg leading-relaxed mb-8">Durante 4 días:</p>
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-8">Durante el fin de semana:</p>
                 <div className="space-y-4">
                   {[
-                    "Visitas activos reales en operación",
-                    "Analizas oportunidades directamente en sitio",
-                    "Entiendes estructuras con contexto completo",
+                    "Visitas parques de casas móviles y casas unifamiliares en operación",
+                    "Analizas oportunidades directamente en sitio con el equipo",
+                    "Entiendes la estructura legal, fiscal y operativa de cada activo",
                     "Conectas con inversionistas que ya están ejecutando",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
@@ -233,26 +236,26 @@ export default function InvestmentWeek() {
           <div className="max-w-4xl mx-auto space-y-6">
             {[
               {
-                day: "Día 1", title: "Bienvenida", date: "1 de mayo, 2026",
-                items: ["Llegada a Tampa", "Sesión estratégica de apertura", "Tendencias del mercado inmobiliario", "Presentación del equipo y aliados", "Análisis preliminar de activos", "Cena privada de networking"],
+                day: "Día 1", title: "Llegada y Bienvenida", date: "Viernes 24 de julio, 2026",
+                items: ["Llegada a Tampa — Alojamiento recomendado en St. Petersburg", "5:30 PM — Sesión de bienvenida", "¿Por qué Florida? Tendencias del mercado inmobiliario 2026", "Presentación del equipo", "Los dos activos que analizaremos y por qué complementan un portafolio", "7:30 PM — Cena de networking con el equipo y otros inversionistas"],
               },
               {
-                day: "Día 2", title: "Residencial", date: "2 de mayo, 2026",
-                morning: "Sesión teórica",
-                morningItems: ["Cómo funciona el mercado residencial", "Cómo leer un deal (NOI, Cap Rate, Cash-on-Cash)", "Financiamiento y estructura", "Estrategia fiscal para inversionistas"],
-                afternoon: "Recorrido en campo",
-                afternoonItems: ["Visitas a propiedades residenciales", "Análisis en vivo de oportunidades"],
+                day: "Día 2", title: "Parques de Casas Móviles", date: "Sábado 25 de julio, 2026",
+                morning: "Teoría",
+                morningItems: ["Por qué los Mobile Home Parks son el activo más resiliente", "Cómo se valúa un parque", "Palancas de valor: infill, submetering, rent-to-own, estabilización", "Estructura del fondo y cómo participar", "Escenarios de retorno ilustrativos", "Eficiencia fiscal del fondo"],
+                afternoon: "Campo",
+                afternoonItems: ["Visita a parques activos adquiridos por el fondo en Clearwater, Largo y Tampa", "Ver parques antes y después de la operación", "Sesión de preguntas sobre la operación de los parques", "Comparativa: residencial vs parques — ¿cuál es para ti?"],
               },
               {
-                day: "Día 3", title: "Mobile Home Parks", date: "3 de mayo, 2026",
-                morning: "Análisis estratégico",
-                morningItems: ["Por qué este activo es resiliente", "Cómo se valúa un mobile home park", "Palancas de valor y optimización", "Estructura del fondo de inversión"],
-                afternoon: "Inspección en campo",
-                afternoonItems: ["Visita a parques activos en operación", "Análisis real de métricas y condiciones", "Comparativa de activos en terreno"],
+                day: "Día 3", title: "Casas Unifamiliares, Zonas y Sección 8", date: "Domingo 26 de julio, 2026",
+                morning: "Teoría",
+                morningItems: ["Cómo funciona el mercado residencial en Florida: demanda, migración, zonas clave", "Cómo leer un deal: NOI, Cap Rate, Cash-on-Cash con ejemplos reales", "Cómo comprar siendo extranjero: DSCR loans, financiamiento, LLC", "Estrategia fiscal: depreciación, FIRPTA — lo que necesitas saber antes de comprar"],
+                afternoon: "Campo",
+                afternoonItems: ["Recorrido por las zonas de inversión en St. Petersburg", "Visitas a propiedades: casas y condos disponibles", "Análisis en vivo con el equipo frente al activo", "Sesiones 1 a 1 disponibles para interesados"],
               },
               {
-                day: "Día 4", title: "Regreso", date: "4 de mayo, 2026",
-                items: ["Salida libre desde Tampa u Orlando", "Cierre de conclusiones y próximos pasos individuales"],
+                day: "Día 4", title: "Regreso", date: "Lunes 27 de julio, 2026",
+                items: ["Regreso libre desde el aeropuerto de Tampa o de Orlando (2 horas de distancia)"],
               },
             ].map((d, i) => (
               <FadeIn key={i} delay={i * 0.05}>
