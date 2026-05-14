@@ -96,15 +96,53 @@ export default function BienesRaices() {
         </div>
       </section>
 
-      {/* ═══ 2. VIDEO ═══ */}
-      <section className="relative bg-black">
-        <div className="max-w-7xl mx-auto">
-          <video
-            src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
-            controls
-            playsInline
-            className="w-full h-auto"
-          />
+      {/* ═══ 2. VIDEO + ANÁLISIS — ☀️ BLANCO ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
+        <div className="container">
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <FadeIn>
+              <div className="max-w-sm mx-auto lg:mx-0">
+                <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 bg-black">
+                  <video
+                    src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
+                    controls
+                    playsInline
+                    className="w-full h-auto"
+                  />
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <div>
+                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Edmundo Treviño</p>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+                  El mercado inmobiliario en EE.UU. sigue siendo una de las mejores formas de proteger y hacer crecer tu capital
+                </h2>
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
+                  En este video, Edmundo analiza por qué los inversionistas latinos están volteando a ver a Estados Unidos como destino de inversión y cómo estructurar tu entrada al mercado de forma inteligente.
+                </p>
+                <div className="space-y-4 mb-8">
+                  {[
+                    "Florida lidera en crecimiento demográfico y demanda de vivienda",
+                    "Estructuras como LLC permiten invertir con protección patrimonial",
+                    "El financiamiento DSCR abre puertas a inversionistas extranjeros",
+                    "La clave está en tener un equipo y un proceso, no solo una propiedad",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-[#374151]">{item}</p>
+                    </div>
+                  ))}
+                </div>
+                <a href="/perfil">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2">
+                    Evaluar mi perfil <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
