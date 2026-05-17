@@ -126,6 +126,21 @@ export async function rewriteArticleNow(id: number): Promise<{ started: boolean;
 }
 
 /**
+ * Trigger the hero-image resolver for a single article id. Lets the editor
+ * unstick a draft whose imageUrl ended up null (rawImageUrl missing,
+ * og:image failed, Pexels found no title match — common for niche legal
+ * notes like USCIS form changes). The image stage will now also fall back
+ * to category-based Pexels queries.
+ */
+export async function regenerateImageNow(id: number): Promise<{ started: boolean; reason?: string }> {
+  if (activeTasks >= 3) {
+    return { started: false, reason: `too many concurrent tasks (${activeTasks})` };
+  }
+  void runStage(`images[id=${id}]`, "server/ai/generate-images.ts", ["--id", String(id)]);
+  return { started: true };
+}
+
+/**
  * Manual trigger used by POST /api/admin/run-pipeline. Exposed here so the
  * route handler doesn't have to know about the spawning mechanics.
  */

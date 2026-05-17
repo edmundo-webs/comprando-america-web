@@ -27,7 +27,7 @@ import { and, desc, eq, like, type SQL } from "drizzle-orm";
 import { Router, type NextFunction, type Request, type Response } from "express";
 import { blogPosts, newsArticles, newsFeeds } from "../../drizzle/schema";
 import { ENV } from "../_core/env";
-import { rewriteArticleNow, triggerPipelineNow } from "../cron/scheduler";
+import { regenerateImageNow, rewriteArticleNow, triggerPipelineNow } from "../cron/scheduler";
 import { getDb } from "../db";
 import { seedFeeds } from "../ingest/seed-feeds";
 
@@ -291,6 +291,24 @@ adminRouter.post("/articles/:id/rewrite", async (req, res) => {
     res.json({ started: true, id, message: "Rewrite launched in background. Tail Render logs for progress." });
   } catch (err: any) {
     console.error("[admin] rewrite trigger error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// Force-regenerate the hero image for a single article. Use when a draft
+// is stuck without imageUrl (auto-publish skips it). Runs the same image
+// cascade as the cron `images` stage including the new category fallback.
+adminRouter.post("/articles/:id/regenerate-image", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const result = await regenerateImageNow(id);
+    if (!result.started) {
+      return res.status(409).json({ started: false, reason: result.reason });
+    }
+    res.json({ started: true, id, message: "Image generation launched in background." });
+  } catch (err: any) {
+    console.error("[admin] regenerate-image trigger error:", err);
     res.status(500).json({ error: err.message || "Internal error" });
   }
 });

@@ -1,9 +1,11 @@
 /**
  * Hero image resolver for drafted articles. Free-source cascade:
  *
- *   1. rawImageUrl  — captured from the RSS item during ingest
- *   2. og:image     — fetched from the source page <meta>
- *   3. Pexels       — stock photo search using the article title
+ *   1. rawImageUrl     — captured from the RSS item during ingest
+ *   2. og:image        — fetched from the source page <meta>
+ *   3. Pexels (title)  — stock photo search using the article title
+ *   4. Pexels (category fallback) — generic search by category keywords
+ *      so we never leave a draft without an image
  *
  * The chosen source is downloaded and re-uploaded to Cloudinary so the
  * portal serves a stable CDN URL we control. No paid AI image generation
@@ -25,6 +27,17 @@ const DELAY_MS = 1500;
 const OG_FETCH_TIMEOUT_MS = 8000;
 const USER_AGENT =
   "ComprandoAmericaBot/1.0 (+https://comprandoamerica.com/news)";
+
+// Generic Pexels search keywords per category, used as last-resort fallback
+// when the article-title search returns nothing (common with niche legal /
+// regulatory notes like USCIS form changes).
+const CATEGORY_FALLBACK_QUERIES: Record<string, string[]> = {
+  "visas-migracion": ["passport stamp", "us immigration office", "visa document"],
+  "economia-finanzas": ["stock market chart", "financial data screen", "us dollar bills"],
+  "bienes-raices": ["modern house exterior", "real estate sign", "florida property"],
+  "llc-negocios": ["business office desk", "tax documents", "law office"],
+  "inversiones": ["investment chart", "trading screen", "wall street"],
+};
 
 function sleep(ms: number) {
   return new Promise((r) => setTimeout(r, ms));
@@ -93,7 +106,7 @@ async function downloadAsBase64(url: string): Promise<{ base64: string; mimeType
 interface ResolvedImage {
   base64: string;
   mimeType: string;
-  source: "raw-feed" | "og-image" | "pexels";
+  source: "raw-feed" | "og-image" | "pexels" | "pexels-category";
 }
 
 async function resolveHeroImage(row: {
@@ -101,6 +114,7 @@ async function resolveHeroImage(row: {
   title: string | null;
   rawImageUrl: string | null;
   url: string | null;
+  category: string | null;
 }): Promise<ResolvedImage | null> {
   // 1) Raw RSS image — already discovered during ingest
   if (row.rawImageUrl) {
@@ -126,6 +140,17 @@ async function resolveHeroImage(row: {
     const result = await getPexelsHeroBase64(row.title);
     if (result) {
       return { base64: result.base64, mimeType: "image/jpeg", source: "pexels" };
+    }
+  }
+
+  // 4) Last resort: Pexels with category-specific generic queries. Try each
+  // until one returns something. This guarantees we never leave a draft
+  // without a hero image — auto-publish requires Cloudinary URL to promote.
+  const queries = CATEGORY_FALLBACK_QUERIES[row.category ?? ""] ?? ["business news"];
+  for (const q of queries) {
+    const result = await getPexelsHeroBase64(q);
+    if (result) {
+      return { base64: result.base64, mimeType: "image/jpeg", source: "pexels-category" };
     }
   }
 
@@ -181,6 +206,7 @@ async function run() {
         title: row.title,
         rawImageUrl: row.rawImageUrl,
         url: row.url,
+        category: row.category as string | null,
       });
 
       if (!result) {
