@@ -368,6 +368,29 @@ adminRouter.get("/sources", async (_req, res) => {
   }
 });
 
+// ---- HEALTH (which env vars are wired up; no values exposed) ----
+adminRouter.get("/health", async (_req, res) => {
+  const present = (v: string | undefined) => !!(v && v.length > 0);
+  res.json({
+    ok: true,
+    timestamp: new Date().toISOString(),
+    env: {
+      DATABASE_URL: present(process.env.DATABASE_URL),
+      ADMIN_TOKEN: present(process.env.ADMIN_TOKEN),
+      LLM_BASE_URL: present(process.env.LLM_BASE_URL),
+      LLM_API_KEY: present(process.env.LLM_API_KEY),
+      LLM_DEFAULT_MODEL: process.env.LLM_DEFAULT_MODEL || null,
+      LLM_DISABLE_JSON_MODE: process.env.LLM_DISABLE_JSON_MODE === "true",
+      GEMINI_API_KEY: present(process.env.GEMINI_API_KEY),
+      PEXELS_API_KEY: present(process.env.PEXELS_API_KEY),
+      CLOUDINARY_CLOUD_NAME: present(process.env.CLOUDINARY_CLOUD_NAME),
+      CLOUDINARY_API_KEY: present(process.env.CLOUDINARY_API_KEY),
+      CLOUDINARY_API_SECRET: present(process.env.CLOUDINARY_API_SECRET),
+      METRICOOL_API_KEY: present(process.env.METRICOOL_API_KEY),
+    },
+  });
+});
+
 // ---- TRIGGER PIPELINE ----
 adminRouter.post("/run-pipeline", async (_req, res) => {
   try {
