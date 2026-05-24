@@ -19,6 +19,7 @@
     "news:pipeline": "pnpm news:ingest && pnpm news:rewrite && pnpm news:images && pnpm news:auto-publish"
   },
   "dependencies": {
+    "@esbuild/linux-x64": "^0.28.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
@@ -125,6 +126,10 @@
     },
     "overrides": {
       "tailwindcss>nanoid": "3.3.7"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "esbuild"
+    ]
   }
 }
