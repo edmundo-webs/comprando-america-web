@@ -34,6 +34,7 @@ import Eventos from "./pages/Eventos";
 import InvestmentWeek from "./pages/InvestmentWeek";
 import Recursos from "./pages/Recursos";
 import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
+import DiagnosticoPage from "./pages/DiagnosticoPage";
 
 function Router() {
   return (
@@ -64,6 +65,7 @@ function Router() {
       <Route path="/terminos" component={TermsAndConditions} />
       <Route path="/privacidad" component={PrivacyPolicy} />
       <Route path="/disclaimers" component={Disclaimers} />
+      <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
