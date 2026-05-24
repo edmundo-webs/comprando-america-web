@@ -7,7 +7,7 @@ Mover tareas entre secciones conforme avanzan.
 ---
 
 ## 🔴 Alta Prioridad (próximas sesiones)
-> Por definir con el equipo
+- [ ] Analizar y estructurar CMS_ComprandoAmerica
 
 ## 🟡 Media Prioridad
 - [ ] Revisar y optimizar SEO en páginas principales (meta tags, OG tags)
@@ -21,7 +21,7 @@ Mover tareas entre secciones conforme avanzan.
 - [ ] Sistema de leads / captura de contactos mejorado
 
 ## ✅ Completado
-*(vacío por ahora — aquí se irán moviendo tareas terminadas)*
+- [x] Migrar DiagnosticoPage al sitio principal con ruta `/diagnostico`
 
 ---
-*Última actualización: Mayo 2026*
+*Última actualización: 24 mayo 2026*
