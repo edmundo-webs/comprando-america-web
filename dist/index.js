@@ -27,8 +27,22 @@ var init_env = __esm({
       cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME ?? "",
       cloudinaryApiKey: process.env.CLOUDINARY_API_KEY ?? "",
       cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET ?? "",
-      // OpenAI (for AI image generation)
-      openaiApiKey: process.env.OPENAI_API_KEY ?? ""
+      // OpenAI (for AI image generation in CMS — separate from the news pipeline)
+      openaiApiKey: process.env.OPENAI_API_KEY ?? "",
+      // News publishing pipeline — LLM (OpenAI-compatible: Ollama / GLM cloud).
+      // If LLM_BASE_URL is set, the pipeline routes all text generation through it.
+      // Otherwise it falls back to GEMINI_API_KEY (legacy path).
+      llmBaseUrl: process.env.LLM_BASE_URL ?? "",
+      llmApiKey: process.env.LLM_API_KEY ?? "",
+      llmDefaultModel: process.env.LLM_DEFAULT_MODEL ?? "glm-5.1:cloud",
+      geminiApiKey: process.env.GEMINI_API_KEY ?? "",
+      pexelsApiKey: process.env.PEXELS_API_KEY ?? "",
+      // Admin REST API token for the external editor agent (OpenClaw / Yael)
+      adminToken: process.env.ADMIN_TOKEN ?? "",
+      // Metricool — social distribution
+      metricoolApiKey: process.env.METRICOOL_API_KEY ?? "",
+      metricoolUserId: process.env.METRICOOL_USER_ID ?? "1748825",
+      metricoolBlogId: process.env.METRICOOL_BLOG_ID ?? "4294668"
     };
   }
 });
@@ -212,7 +226,7 @@ import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 
 // drizzle/schema.ts
-import { int, mysqlEnum, mysqlTable, text, timestamp, varchar } from "drizzle-orm/mysql-core";
+import { int, mysqlEnum, mysqlTable, text, timestamp, tinyint, uniqueIndex, varchar } from "drizzle-orm/mysql-core";
 var users = mysqlTable("users", {
   /**
    * Surrogate primary key. Auto-incremented numeric value managed by the database.
@@ -256,7 +270,7 @@ var newsArticles = mysqlTable("ca_news_articles", {
   description: text("description"),
   content: text("content"),
   body: text("body"),
-  // Full HTML editorial content
+  // Full HTML editorial content (rewritten by Gemini)
   url: varchar("url", { length: 1e3 }).notNull(),
   source: varchar("source", { length: 255 }).notNull(),
   author: varchar("author", { length: 255 }).default("Equipo Comprando Am\xE9rica").notNull(),
@@ -264,17 +278,53 @@ var newsArticles = mysqlTable("ca_news_articles", {
   imageUrl: varchar("imageUrl", { length: 1e3 }),
   ctaType: varchar("ctaType", { length: 100 }),
   // membresia, formacion, visa-e2, bienes-raices, estructura, expansion
+  // --- Editorial workflow ---
+  status: mysqlEnum("status", ["candidate", "draft", "approved", "published", "rejected", "archived"]).default("published").notNull(),
+  relevanceScore: tinyint("relevanceScore"),
+  rejectionReason: varchar("rejectionReason", { length: 256 }),
+  // --- Raw payload captured from feed (kept verbatim for re-processing) ---
+  rawTitle: text("rawTitle"),
+  rawSummary: text("rawSummary"),
+  rawContent: text("rawContent"),
+  rawAuthor: varchar("rawAuthor", { length: 256 }),
+  rawImageUrl: varchar("rawImageUrl", { length: 1024 }),
+  externalHash: varchar("externalHash", { length: 64 }),
+  // SHA-256 of normalized URL, used for dedup
+  feedId: int("feedId"),
+  // FK to ca_news_feeds.id (soft reference, no DB constraint)
+  // --- AI / image enrichment ---
+  heroImagePrompt: text("heroImagePrompt"),
+  // prompt used for Pexels search / Gemini fallback
+  tags: text("tags"),
+  // JSON array of editorial tags
+  // --- Timestamps ---
   publishedAt: timestamp("publishedAt").notNull(),
+  // original publish date from the source feed
+  publishedAtInternal: timestamp("publishedAtInternal"),
+  // when WE published it on Comprando América
+  draftedAt: timestamp("draftedAt"),
+  approvedAt: timestamp("approvedAt"),
   fetchedAt: timestamp("fetchedAt").defaultNow().notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull()
-});
+}, (table) => ({
+  externalHashIdx: uniqueIndex("ca_news_articles_externalHash_unique").on(table.externalHash)
+}));
 var newsFeeds = mysqlTable("ca_news_feeds", {
   id: int("id").autoincrement().primaryKey(),
   name: varchar("name", { length: 255 }),
   url: varchar("url", { length: 1e3 }),
   category: varchar("category", { length: 50 }),
-  createdAt: timestamp("createdAt").defaultNow()
+  language: mysqlEnum("language", ["es", "en"]).default("es").notNull(),
+  priority: tinyint("priority").default(5).notNull(),
+  // 1 (low) - 10 (high), used for ranking when multiple candidates compete for the same slot
+  isActive: varchar("isActive", { length: 5 }).default("true").notNull(),
+  lastFetchedAt: timestamp("lastFetchedAt"),
+  lastError: text("lastError"),
+  consecutiveFailures: int("consecutiveFailures").default(0).notNull(),
+  // auto-deactivate after 5 in a row
+  createdAt: timestamp("createdAt").defaultNow(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow()
 });
 var newsSubscribers = mysqlTable("ca_news_subscribers", {
   id: int("id").autoincrement().primaryKey(),
@@ -288,6 +338,33 @@ var newsSubscribers = mysqlTable("ca_news_subscribers", {
   unsubscribeToken: varchar("unsubscribeToken", { length: 255 }).unique(),
   createdAt: timestamp("createdAt").defaultNow(),
   updatedAt: timestamp("updatedAt").defaultNow()
+});
+var socialPosts = mysqlTable("ca_social_posts", {
+  id: int("id").autoincrement().primaryKey(),
+  articleId: int("articleId"),
+  network: mysqlEnum("network", ["facebook", "instagram", "tiktok", "linkedin", "threads", "x", "youtube"]).notNull(),
+  postType: mysqlEnum("postType", ["carousel", "reel", "short", "post", "story"]).notNull(),
+  language: mysqlEnum("language", ["es", "en"]).default("es").notNull(),
+  caption: text("caption"),
+  mediaUrls: text("mediaUrls"),
+  // JSON array of Cloudinary URLs (slides for a carousel, single image for a post, etc.)
+  metricoolId: varchar("metricoolId", { length: 128 }),
+  scheduledAt: timestamp("scheduledAt"),
+  postedAt: timestamp("postedAt"),
+  status: mysqlEnum("status", ["queued", "scheduled", "posted", "failed"]).default("queued").notNull(),
+  error: text("error"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull()
+});
+var ingestionRuns = mysqlTable("ca_ingestion_runs", {
+  id: int("id").autoincrement().primaryKey(),
+  feedId: int("feedId"),
+  startedAt: timestamp("startedAt").defaultNow().notNull(),
+  finishedAt: timestamp("finishedAt"),
+  itemsFound: int("itemsFound").default(0).notNull(),
+  itemsNew: int("itemsNew").default(0).notNull(),
+  itemsSkipped: int("itemsSkipped").default(0).notNull(),
+  error: text("error")
 });
 
 // server/db.ts
@@ -494,7 +571,7 @@ async function getLatestNewsArticles(limit = 20) {
     console.warn("[Database] Cannot get news articles: database not available");
     return [];
   }
-  return await db.select().from(newsArticles).orderBy(desc(newsArticles.publishedAt)).limit(limit);
+  return await db.select().from(newsArticles).where(eq(newsArticles.status, "published")).orderBy(desc(newsArticles.publishedAt)).limit(limit);
 }
 async function getNewsArticlesByCategory(category, limit = 20) {
   const db = await getDb();
@@ -502,7 +579,7 @@ async function getNewsArticlesByCategory(category, limit = 20) {
     console.warn("[Database] Cannot get news articles: database not available");
     return [];
   }
-  return await db.select().from(newsArticles).where(eq(newsArticles.category, category)).orderBy(desc(newsArticles.publishedAt)).limit(limit);
+  return await db.select().from(newsArticles).where(and(eq(newsArticles.category, category), eq(newsArticles.status, "published"))).orderBy(desc(newsArticles.publishedAt)).limit(limit);
 }
 async function searchNewsArticles(query, limit = 20) {
   const db = await getDb();
@@ -510,7 +587,7 @@ async function searchNewsArticles(query, limit = 20) {
     console.warn("[Database] Cannot search news articles: database not available");
     return [];
   }
-  return await db.select().from(newsArticles).where(like(newsArticles.title, `%${query}%`)).orderBy(desc(newsArticles.publishedAt)).limit(limit);
+  return await db.select().from(newsArticles).where(and(like(newsArticles.title, `%${query}%`), eq(newsArticles.status, "published"))).orderBy(desc(newsArticles.publishedAt)).limit(limit);
 }
 async function getNewsArticleById(id) {
   const db = await getDb();
@@ -553,15 +630,6 @@ async function deleteNewsArticle(id) {
   }
   await db.delete(newsArticles).where(eq(newsArticles.id, id));
 }
-async function deleteOldNewsArticles(daysOld = 30) {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot delete old news articles: database not available");
-    return;
-  }
-  const cutoffDate = new Date(Date.now() - daysOld * 24 * 60 * 60 * 1e3);
-  await db.delete(newsArticles).where(lt(newsArticles.publishedAt, cutoffDate));
-}
 async function getAllNewsFeeds() {
   const db = await getDb();
   if (!db) {
@@ -569,14 +637,6 @@ async function getAllNewsFeeds() {
     return [];
   }
   return await db.select().from(newsFeeds);
-}
-async function getActiveNewsFeeds() {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot get active news feeds: database not available");
-    return [];
-  }
-  return await db.select().from(newsFeeds).where(eq(newsFeeds.isActive, "true"));
 }
 async function createNewsFeed(data) {
   const db = await getDb();
@@ -587,14 +647,6 @@ async function createNewsFeed(data) {
   await db.insert(newsFeeds).values(data);
   const result = await db.select().from(newsFeeds).where(eq(newsFeeds.url, data.url)).limit(1);
   return result.length > 0 ? result[0] : void 0;
-}
-async function updateNewsFeed(id, data) {
-  const db = await getDb();
-  if (!db) {
-    console.warn("[Database] Cannot update news feed: database not available");
-    return;
-  }
-  await db.update(newsFeeds).set(data).where(eq(newsFeeds.id, id));
 }
 async function deleteNewsFeed(id) {
   const db = await getDb();
@@ -1162,114 +1214,895 @@ function serveStatic(app) {
 }
 
 // server/rss-sync.ts
-import Parser from "rss-parser";
-import * as cron from "node-cron";
-var parser = new Parser({
-  customFields: {
-    item: [
-      ["media:content", "mediaContent"],
-      ["media:thumbnail", "mediaThumbnail"],
-      ["enclosure", "enclosure"]
-    ]
+function initializeRssScheduler() {
+  console.log(
+    "[rss-sync] DEPRECATED initializer. The scheduler has moved to GitHub Actions; this is a no-op."
+  );
+}
+
+// server/cron/scheduler.ts
+import { spawn } from "node:child_process";
+import fs2 from "node:fs";
+import path3 from "node:path";
+import cron from "node-cron";
+var TZ = "America/Chicago";
+var TASK_TIMEOUT_MS = 20 * 60 * 1e3;
+var activeTasks = 0;
+function findProjectRoot() {
+  return process.cwd();
+}
+function findTsx(projectRoot) {
+  const candidates = [
+    path3.join(projectRoot, "node_modules", ".bin", "tsx"),
+    path3.join(projectRoot, "node_modules", ".pnpm", "node_modules", ".bin", "tsx")
+  ];
+  for (const c of candidates) {
+    if (fs2.existsSync(c)) return c;
+  }
+  return "tsx";
+}
+function runStage(name, scriptRelativeToRoot, extraArgs = []) {
+  return new Promise((resolve) => {
+    activeTasks++;
+    console.log(`[cron] \u25B6 ${name}${extraArgs.length ? " " + extraArgs.join(" ") : ""}`);
+    const start = Date.now();
+    const projectRoot = findProjectRoot();
+    const scriptPath = path3.resolve(projectRoot, scriptRelativeToRoot);
+    const tsxBin = findTsx(projectRoot);
+    const child = spawn(tsxBin, [scriptPath, ...extraArgs], {
+      cwd: projectRoot,
+      env: process.env,
+      stdio: "pipe",
+      shell: tsxBin === "tsx"
+      // need a shell only if we're falling back to PATH lookup
+    });
+    const killer = setTimeout(() => {
+      console.warn(`[cron] \u23F0 ${name} timed out after ${TASK_TIMEOUT_MS / 1e3}s \u2014 killing`);
+      child.kill("SIGKILL");
+    }, TASK_TIMEOUT_MS);
+    child.stdout?.on("data", (d) => process.stdout.write(`[${name}] ${d}`));
+    child.stderr?.on("data", (d) => process.stderr.write(`[${name}] ${d}`));
+    child.on("exit", (code, signal) => {
+      clearTimeout(killer);
+      activeTasks--;
+      const elapsed = ((Date.now() - start) / 1e3).toFixed(1);
+      console.log(
+        `[cron] ${code === 0 ? "\u2714" : "\u2718"} ${name} exited code=${code}${signal ? ` signal=${signal}` : ""} in ${elapsed}s`
+      );
+      resolve();
+    });
+    child.on("error", (err) => {
+      clearTimeout(killer);
+      activeTasks--;
+      console.error(`[cron] \u2718 ${name} failed to spawn: ${err.message}`);
+      resolve();
+    });
+  });
+}
+async function runPipeline() {
+  if (activeTasks > 0) {
+    console.log(`[cron] \u23ED pipeline tick skipped \u2014 ${activeTasks} task(s) still running`);
+    return;
+  }
+  await runStage("ingest", "server/ingest/fetch.ts");
+  await runStage("rewrite", "server/ai/rewrite.ts");
+  await runStage("images", "server/ai/generate-images.ts");
+  await runStage("auto-publish", "server/ai/auto-publish.ts");
+  console.log("[cron] \u2714 pipeline tick complete");
+}
+async function rewriteArticleNow(id) {
+  if (activeTasks >= 3) {
+    return { started: false, reason: `too many concurrent tasks (${activeTasks})` };
+  }
+  void runStage(`rewrite[id=${id}]`, "server/ai/rewrite.ts", ["--id", String(id)]);
+  return { started: true };
+}
+async function regenerateImageNow(id) {
+  if (activeTasks >= 3) {
+    return { started: false, reason: `too many concurrent tasks (${activeTasks})` };
+  }
+  void runStage(`images[id=${id}]`, "server/ai/generate-images.ts", ["--id", String(id)]);
+  return { started: true };
+}
+async function triggerPipelineNow() {
+  if (activeTasks > 0) {
+    return { started: false, reason: `pipeline busy (${activeTasks} task(s) running)` };
+  }
+  void runPipeline();
+  return { started: true };
+}
+function startScheduler() {
+  if (process.env.DISABLE_NEWS_CRON === "true") {
+    console.log("[cron] DISABLE_NEWS_CRON=true \u2014 scheduler not started");
+    return;
+  }
+  if (process.env.NODE_ENV !== "production" && process.env.ENABLE_NEWS_CRON !== "true") {
+    console.log("[cron] dev environment \u2014 scheduler not started (set ENABLE_NEWS_CRON=true to override)");
+    return;
+  }
+  cron.schedule(
+    "0 0,6,12,18 * * *",
+    () => {
+      runPipeline().catch((err) => console.error("[cron] pipeline crashed:", err));
+    },
+    { timezone: TZ }
+  );
+  console.log(`[cron] Scheduler started \u2014 jobs registered (TZ=${TZ})`);
+  console.log("[cron]   \u2022 pipeline tick: 00:00, 06:00, 12:00, 18:00 CT");
+}
+
+// server/routes/admin.ts
+import { and as and2, desc as desc2, eq as eq3, like as like2 } from "drizzle-orm";
+import { Router } from "express";
+init_env();
+
+// server/ingest/seed-feeds.ts
+import { eq as eq2 } from "drizzle-orm";
+
+// server/_core/dbClient.ts
+import "dotenv/config";
+import { drizzle as drizzle2 } from "drizzle-orm/mysql2";
+import mysql2 from "mysql2/promise";
+var _pool = null;
+var _db2 = null;
+function getCliDb() {
+  if (_db2) return _db2;
+  const url = process.env.DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is required");
+  _pool = mysql2.createPool({
+    uri: url,
+    ssl: { rejectUnauthorized: true },
+    connectionLimit: 4
+  });
+  _db2 = drizzle2(_pool);
+  return _db2;
+}
+async function closeCliDb() {
+  if (_pool) {
+    await _pool.end();
+    _pool = null;
+    _db2 = null;
+  }
+}
+
+// server/ingest/sources.ts
+var SOURCES = [
+  // ─────────────── VISAS Y MIGRACIÓN ───────────────
+  // Note: USCIS, State Department, Univision, Voz de América and Boundless
+  // were dropped here — the official .gov feeds 404 (RSS discontinued) and
+  // the news outlets' feeds either malformed XML or blocked the bot UA.
+  // Replaced with the two largest US immigration law firms' blogs, which
+  // publish detailed E-2 / treaty-investor analyses regularly.
+  {
+    slug: "murthy-law",
+    name: "Murthy Law Firm \u2014 Immigration",
+    homepage: "https://www.murthy.com/",
+    feedUrl: "https://www.murthy.com/feed/",
+    category: "visas-migracion",
+    language: "en",
+    priority: 9
+  },
+  {
+    slug: "bal-immigration",
+    name: "Berry Appleman & Leiden \u2014 Immigration",
+    homepage: "https://www.bal.com/",
+    feedUrl: "https://www.bal.com/feed/",
+    category: "visas-migracion",
+    language: "en",
+    priority: 9
+  },
+  // ─────────────── ECONOMÍA Y FINANZAS ───────────────
+  {
+    slug: "wsj-markets",
+    name: "WSJ \u2014 Markets",
+    homepage: "https://www.wsj.com/news/markets",
+    feedUrl: "https://feeds.a.dj.com/rss/RSSMarketsMain.xml",
+    category: "economia-finanzas",
+    language: "en",
+    priority: 9
+  },
+  {
+    slug: "cnbc-top",
+    name: "CNBC \u2014 Top News",
+    homepage: "https://www.cnbc.com",
+    feedUrl: "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+    category: "economia-finanzas",
+    language: "en",
+    priority: 8
+  },
+  {
+    slug: "marketwatch-top",
+    name: "MarketWatch \u2014 Top Stories",
+    homepage: "https://www.marketwatch.com",
+    feedUrl: "http://feeds.marketwatch.com/marketwatch/topstories/",
+    category: "economia-finanzas",
+    language: "en",
+    priority: 7
+  },
+  {
+    slug: "el-financiero",
+    name: "El Financiero (M\xE9xico)",
+    homepage: "https://www.elfinanciero.com.mx",
+    feedUrl: "https://www.elfinanciero.com.mx/rss/",
+    category: "economia-finanzas",
+    language: "es",
+    priority: 8
+  },
+  {
+    slug: "expansion-economia",
+    name: "Expansi\xF3n \u2014 Econom\xEDa",
+    homepage: "https://expansion.mx/economia",
+    feedUrl: "https://expansion.mx/rss/economia",
+    category: "economia-finanzas",
+    language: "es",
+    priority: 7
+  },
+  // ─────────────── BIENES RAÍCES (Texas-heavy + Florida) ───────────────
+  {
+    slug: "texas-realtors",
+    name: "Texas REALTORS",
+    homepage: "https://www.texasrealestate.com/about-us/news-and-events/",
+    feedUrl: "https://www.texasrealestate.com/feed/",
+    category: "bienes-raices",
+    language: "en",
+    priority: 10
+  },
+  {
+    slug: "florida-realtors",
+    name: "Florida Realtors",
+    homepage: "https://www.floridarealtors.org/news-media",
+    feedUrl: "https://www.floridarealtors.org/news-media/rss.xml",
+    category: "bienes-raices",
+    language: "en",
+    priority: 10
+  },
+  {
+    slug: "housingwire",
+    name: "HousingWire",
+    homepage: "https://www.housingwire.com",
+    feedUrl: "https://www.housingwire.com/feed/",
+    category: "bienes-raices",
+    language: "en",
+    priority: 8
+  },
+  {
+    slug: "realtor-com-news",
+    name: "Realtor.com News",
+    homepage: "https://www.realtor.com/news/",
+    feedUrl: "https://www.realtor.com/news/feed/",
+    category: "bienes-raices",
+    language: "en",
+    priority: 7
+  },
+  // Bisnow Texas + South Florida dropped (404 on /feed). Replaced with Redfin
+  // News (data-rich, market reports) and Real Estate News by Mike Sumsky.
+  {
+    slug: "redfin-news",
+    name: "Redfin News",
+    homepage: "https://www.redfin.com/news",
+    feedUrl: "https://www.redfin.com/news/feed/",
+    category: "bienes-raices",
+    language: "en",
+    priority: 8
+  },
+  {
+    slug: "real-estate-news-blog",
+    name: "Real Estate News Blog",
+    homepage: "https://realestatenewsblog.com/",
+    feedUrl: "https://feeds.feedburner.com/RealEstateNewsBlog",
+    category: "bienes-raices",
+    language: "en",
+    priority: 6
+  },
+  // ─────────────── LLC Y NEGOCIOS (estructura + fiscal) ───────────────
+  // IRS, Treasury and SBA RSS feeds were all 404 — those agencies stopped
+  // publishing public RSS in favor of GovDelivery email. Tax Foundation,
+  // Kiplinger Taxes plus the addition of CNBC Personal Finance carry the
+  // category instead.
+  {
+    slug: "cnbc-personal-finance",
+    name: "CNBC \u2014 Personal Finance",
+    homepage: "https://www.cnbc.com/personal-finance/",
+    feedUrl: "https://www.cnbc.com/id/10000115/device/rss/rss.html",
+    category: "llc-negocios",
+    language: "en",
+    priority: 8
+  },
+  {
+    slug: "tax-foundation",
+    name: "Tax Foundation",
+    homepage: "https://taxfoundation.org",
+    feedUrl: "https://taxfoundation.org/feed/",
+    category: "llc-negocios",
+    language: "en",
+    priority: 8
+  },
+  {
+    slug: "kiplinger-tax",
+    name: "Kiplinger \u2014 Taxes",
+    homepage: "https://www.kiplinger.com/taxes",
+    feedUrl: "https://www.kiplinger.com/feed/all",
+    category: "llc-negocios",
+    language: "en",
+    priority: 7
+  },
+  // ─────────────── INVERSIONES ───────────────
+  {
+    slug: "cnbc-investing",
+    name: "CNBC \u2014 Investing",
+    homepage: "https://www.cnbc.com/investing/",
+    feedUrl: "https://www.cnbc.com/id/15839069/device/rss/rss.html",
+    category: "inversiones",
+    language: "en",
+    priority: 9
+  },
+  {
+    slug: "yahoo-finance",
+    name: "Yahoo Finance \u2014 News",
+    homepage: "https://finance.yahoo.com/news/",
+    feedUrl: "https://finance.yahoo.com/news/rssindex",
+    category: "inversiones",
+    language: "en",
+    priority: 7
+  },
+  {
+    slug: "cnbc-markets",
+    name: "CNBC \u2014 Markets",
+    homepage: "https://www.cnbc.com/markets/",
+    feedUrl: "https://www.cnbc.com/id/15839135/device/rss/rss.html",
+    category: "inversiones",
+    language: "en",
+    priority: 8
+  },
+  {
+    slug: "motley-fool",
+    name: "The Motley Fool",
+    homepage: "https://www.fool.com/",
+    feedUrl: "https://www.fool.com/feeds/index.aspx",
+    category: "inversiones",
+    language: "en",
+    priority: 7
+  },
+  {
+    slug: "seeking-alpha",
+    name: "Seeking Alpha \u2014 Latest Articles",
+    homepage: "https://seekingalpha.com",
+    feedUrl: "https://seekingalpha.com/feed.xml",
+    category: "inversiones",
+    language: "en",
+    priority: 6
+  }
+];
+
+// server/ingest/seed-feeds.ts
+async function seedFeeds(db) {
+  const result = {
+    inserted: 0,
+    updated: 0,
+    unchanged: 0,
+    total: SOURCES.length,
+    details: []
+  };
+  for (const seed of SOURCES) {
+    const existing = await db.select().from(newsFeeds).where(eq2(newsFeeds.url, seed.feedUrl)).limit(1);
+    if (existing.length === 0) {
+      await db.insert(newsFeeds).values({
+        name: seed.name,
+        url: seed.feedUrl,
+        category: seed.category,
+        language: seed.language ?? "es",
+        priority: seed.priority ?? 5,
+        isActive: "true"
+      });
+      result.inserted++;
+      result.details.push({ slug: seed.slug, action: "inserted", category: seed.category });
+      continue;
+    }
+    const row = existing[0];
+    const wantsUpdate = row.name !== seed.name || row.category !== seed.category || row.priority !== (seed.priority ?? 5) || row.language !== (seed.language ?? "es");
+    if (wantsUpdate) {
+      await db.update(newsFeeds).set({
+        name: seed.name,
+        category: seed.category,
+        language: seed.language ?? "es",
+        priority: seed.priority ?? 5
+      }).where(eq2(newsFeeds.id, row.id));
+      result.updated++;
+      result.details.push({ slug: seed.slug, action: "updated", category: seed.category });
+    } else {
+      result.unchanged++;
+      result.details.push({ slug: seed.slug, action: "unchanged", category: seed.category });
+    }
+  }
+  return result;
+}
+async function runCli() {
+  const db = getCliDb();
+  const r = await seedFeeds(db);
+  for (const d of r.details) {
+    const mark = d.action === "inserted" ? "+" : d.action === "updated" ? "~" : " ";
+    console.log(`  ${mark} ${d.action.padEnd(9)} ${d.slug.padEnd(28)} [${d.category}]`);
+  }
+  console.log(
+    `
+Done. inserted=${r.inserted}  updated=${r.updated}  unchanged=${r.unchanged}  total=${r.total}`
+  );
+}
+if (process.argv[1] && process.argv[1].endsWith("seed-feeds.ts")) {
+  runCli().catch((err) => {
+    console.error("seed-feeds failed:", err);
+    process.exitCode = 1;
+  }).finally(async () => {
+    await closeCliDb();
+    process.exit(process.exitCode ?? 0);
+  });
+}
+
+// server/routes/admin.ts
+var ALLOWED_CATEGORIES = /* @__PURE__ */ new Set([
+  "visas-migracion",
+  "economia-finanzas",
+  "bienes-raices",
+  "llc-negocios",
+  "inversiones"
+]);
+var ALLOWED_STATUSES = /* @__PURE__ */ new Set([
+  "candidate",
+  "draft",
+  "approved",
+  "published",
+  "rejected",
+  "archived"
+]);
+var ALLOWED_CTA = /* @__PURE__ */ new Set([
+  "visa-e2",
+  "bienes-raices",
+  "estructura",
+  "expansion",
+  "formacion",
+  "membresia"
+]);
+var EDITABLE_FIELDS = /* @__PURE__ */ new Set([
+  "title",
+  "slug",
+  "description",
+  "body",
+  "imageUrl",
+  "category",
+  "status",
+  "tags",
+  "ctaType",
+  "rejectionReason",
+  "heroImagePrompt"
+]);
+function requireToken(req, res, next) {
+  const expected = ENV.adminToken;
+  if (!expected) {
+    return res.status(503).json({
+      error: "Admin API disabled: set ADMIN_TOKEN in the environment to enable."
+    });
+  }
+  const header = req.header("authorization") || "";
+  const bearer = header.toLowerCase().startsWith("bearer ") ? header.slice(7).trim() : null;
+  const queryToken = typeof req.query.token === "string" ? req.query.token : null;
+  const supplied = bearer || queryToken;
+  if (!supplied || supplied !== expected) {
+    return res.status(401).json({ error: "Invalid or missing admin token" });
+  }
+  next();
+}
+function asInt(v, fallback) {
+  if (typeof v === "string" && v.trim() !== "") {
+    const n = parseInt(v, 10);
+    if (!Number.isNaN(n)) return n;
+  }
+  if (typeof v === "number") return v;
+  return fallback;
+}
+function pickEditable(body) {
+  const out = {};
+  for (const [k, v] of Object.entries(body)) {
+    if (!EDITABLE_FIELDS.has(k)) continue;
+    if (v === void 0) continue;
+    out[k] = v;
+  }
+  return out;
+}
+function validateUpdate(patch) {
+  if (typeof patch.category === "string" && !ALLOWED_CATEGORIES.has(patch.category)) {
+    return `Invalid category. Allowed: ${Array.from(ALLOWED_CATEGORIES).join(", ")}`;
+  }
+  if (typeof patch.status === "string" && !ALLOWED_STATUSES.has(patch.status)) {
+    return `Invalid status. Allowed: ${Array.from(ALLOWED_STATUSES).join(", ")}`;
+  }
+  if (typeof patch.ctaType === "string" && patch.ctaType && !ALLOWED_CTA.has(patch.ctaType)) {
+    return `Invalid ctaType. Allowed: ${Array.from(ALLOWED_CTA).join(", ")}`;
+  }
+  if (Array.isArray(patch.tags)) {
+    patch.tags = JSON.stringify(patch.tags);
+  }
+  return null;
+}
+var adminRouter = Router();
+adminRouter.use(requireToken);
+adminRouter.get("/articles", async (req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const status = typeof req.query.status === "string" ? req.query.status : void 0;
+    const category = typeof req.query.category === "string" ? req.query.category : void 0;
+    const search = typeof req.query.search === "string" ? req.query.search.trim() : "";
+    const limit = Math.min(asInt(req.query.limit, 20) ?? 20, 100);
+    const conditions = [];
+    if (status && ALLOWED_STATUSES.has(status)) {
+      conditions.push(eq3(newsArticles.status, status));
+    }
+    if (category && ALLOWED_CATEGORIES.has(category)) {
+      conditions.push(eq3(newsArticles.category, category));
+    }
+    if (search) {
+      conditions.push(like2(newsArticles.title, `%${search}%`));
+    }
+    const rows = await db.select().from(newsArticles).where(conditions.length ? and2(...conditions) : void 0).orderBy(desc2(newsArticles.publishedAtInternal), desc2(newsArticles.publishedAt)).limit(limit);
+    res.json({ count: rows.length, articles: rows });
+  } catch (err) {
+    console.error("[admin] list articles error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
   }
 });
-function extractImageUrl(item) {
-  if (item.mediaContent?.url) {
-    return item.mediaContent.url;
-  }
-  if (item.mediaThumbnail?.url) {
-    return item.mediaThumbnail.url;
-  }
-  if (item.enclosure?.url && item.enclosure.type?.startsWith("image")) {
-    return item.enclosure.url;
-  }
-  if (item.image?.url) {
-    return item.image.url;
-  }
-  return void 0;
-}
-async function fetchAndParseFeed(feed) {
+adminRouter.get("/articles/:id", async (req, res) => {
   try {
-    console.log(`[RSS] Fetching feed: ${feed.name} (${feed.url})`);
-    const parsedFeed = await parser.parseURL(feed.url);
-    if (!parsedFeed.items || parsedFeed.items.length === 0) {
-      console.warn(`[RSS] No items found in feed: ${feed.name}`);
-      return;
-    }
-    let successCount = 0;
-    let duplicateCount = 0;
-    for (const item of parsedFeed.items) {
-      try {
-        if (!item.title || !item.link) {
-          continue;
-        }
-        const slugify = (text2) => text2.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").substring(0, 200);
-        const slug = `${slugify(item.title)}-${Date.now()}`;
-        const article = {
-          title: item.title,
-          slug,
-          description: item.contentSnippet || item.summary || "",
-          content: item.content || item.description || "",
-          url: item.link,
-          source: feed.name,
-          category: feed.category,
-          imageUrl: extractImageUrl(item),
-          publishedAt: item.pubDate ? new Date(item.pubDate) : /* @__PURE__ */ new Date()
-        };
-        const result = await createNewsArticle(article);
-        if (result) {
-          successCount++;
-        } else {
-          duplicateCount++;
-        }
-      } catch (error) {
-        console.warn(`[RSS] Error processing item from ${feed.name}:`, error);
-      }
-    }
-    await updateNewsFeed(feed.id, {});
-    console.log(
-      `[RSS] Feed ${feed.name}: ${successCount} new articles, ${duplicateCount} duplicates`
-    );
-  } catch (error) {
-    console.error(`[RSS] Error fetching feed ${feed.name}:`, error);
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const row = await db.select().from(newsArticles).where(eq3(newsArticles.id, id)).limit(1);
+    if (row.length === 0) return res.status(404).json({ error: "Not found" });
+    res.json(row[0]);
+  } catch (err) {
+    console.error("[admin] get article error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
   }
-}
-async function syncAllFeeds() {
+});
+adminRouter.put("/articles/:id", async (req, res) => {
   try {
-    console.log("[RSS] Starting feed synchronization...");
-    const feeds = await getActiveNewsFeeds();
-    if (!feeds || feeds.length === 0) {
-      console.warn("[RSS] No active feeds found");
-      return;
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    if (!req.body || typeof req.body !== "object") {
+      return res.status(400).json({ error: "Body must be a JSON object" });
     }
-    console.log(`[RSS] Found ${feeds.length} active feeds`);
-    for (const feed of feeds) {
-      await fetchAndParseFeed(feed);
-      await new Promise((resolve) => setTimeout(resolve, 1e3));
+    const patch = pickEditable(req.body);
+    if (Object.keys(patch).length === 0) {
+      return res.status(400).json({
+        error: `No editable fields supplied. Allowed: ${Array.from(EDITABLE_FIELDS).join(", ")}`
+      });
     }
-    await deleteOldNewsArticles(30);
-    console.log("[RSS] Feed synchronization completed");
-  } catch (error) {
-    console.error("[RSS] Error during feed synchronization:", error);
+    const validationError = validateUpdate(patch);
+    if (validationError) return res.status(400).json({ error: validationError });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(newsArticles).set(patch).where(eq3(newsArticles.id, id));
+    const refreshed = await db.select().from(newsArticles).where(eq3(newsArticles.id, id)).limit(1);
+    if (refreshed.length === 0) return res.status(404).json({ error: "Not found after update" });
+    res.json({ updated: Object.keys(patch), article: refreshed[0] });
+  } catch (err) {
+    console.error("[admin] update article error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
   }
-}
-function initializeRssScheduler() {
+});
+adminRouter.delete("/articles/:id", async (req, res) => {
   try {
-    cron.schedule("0 */4 * * *", async () => {
-      console.log("[RSS] Running scheduled feed sync...");
-      await syncAllFeeds();
-    });
-    console.log("[RSS] RSS scheduler initialized (runs every 4 hours)");
-    setTimeout(() => {
-      console.log("[RSS] Running initial feed sync on startup...");
-      syncAllFeeds().catch(
-        (error) => console.error("[RSS] Error in initial sync:", error)
-      );
-    }, 5e3);
-  } catch (error) {
-    console.error("[RSS] Error initializing scheduler:", error);
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(newsArticles).set({ status: "archived" }).where(eq3(newsArticles.id, id));
+    res.json({ archived: true, id });
+  } catch (err) {
+    console.error("[admin] archive article error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
   }
+});
+adminRouter.post("/articles/:id/publish", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(newsArticles).set({
+      status: "published",
+      publishedAtInternal: /* @__PURE__ */ new Date(),
+      approvedAt: /* @__PURE__ */ new Date()
+    }).where(eq3(newsArticles.id, id));
+    res.json({ published: true, id });
+  } catch (err) {
+    console.error("[admin] publish error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.post("/articles/:id/approve", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(newsArticles).set({ status: "approved", approvedAt: /* @__PURE__ */ new Date() }).where(eq3(newsArticles.id, id));
+    res.json({ approved: true, id });
+  } catch (err) {
+    console.error("[admin] approve error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.post("/articles/:id/rewrite", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const result = await rewriteArticleNow(id);
+    if (!result.started) {
+      return res.status(409).json({ started: false, reason: result.reason });
+    }
+    res.json({ started: true, id, message: "Rewrite launched in background. Tail Render logs for progress." });
+  } catch (err) {
+    console.error("[admin] rewrite trigger error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.post("/articles/:id/regenerate-image", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const result = await regenerateImageNow(id);
+    if (!result.started) {
+      return res.status(409).json({ started: false, reason: result.reason });
+    }
+    res.json({ started: true, id, message: "Image generation launched in background." });
+  } catch (err) {
+    console.error("[admin] regenerate-image trigger error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.post("/articles/:id/reject", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const reason = typeof req.body?.reason === "string" && req.body.reason.trim() ? req.body.reason.trim().slice(0, 256) : "Rejected by editor";
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(newsArticles).set({ status: "rejected", rejectionReason: reason }).where(eq3(newsArticles.id, id));
+    res.json({ rejected: true, id, reason });
+  } catch (err) {
+    console.error("[admin] reject error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.get("/candidates", async (req, res) => {
+  try {
+    const limit = Math.min(asInt(req.query.limit, 50) ?? 50, 200);
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const rows = await db.select().from(newsArticles).where(eq3(newsArticles.status, "candidate")).orderBy(desc2(newsArticles.fetchedAt)).limit(limit);
+    res.json({ count: rows.length, candidates: rows });
+  } catch (err) {
+    console.error("[admin] candidates error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.get("/sources", async (_req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const rows = await db.select().from(newsFeeds).orderBy(desc2(newsFeeds.priority));
+    res.json({ count: rows.length, sources: rows });
+  } catch (err) {
+    console.error("[admin] sources error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.get("/health", async (_req, res) => {
+  const present = (v) => !!(v && v.length > 0);
+  res.json({
+    ok: true,
+    timestamp: (/* @__PURE__ */ new Date()).toISOString(),
+    env: {
+      DATABASE_URL: present(process.env.DATABASE_URL),
+      ADMIN_TOKEN: present(process.env.ADMIN_TOKEN),
+      LLM_BASE_URL: present(process.env.LLM_BASE_URL),
+      LLM_API_KEY: present(process.env.LLM_API_KEY),
+      LLM_DEFAULT_MODEL: process.env.LLM_DEFAULT_MODEL || null,
+      LLM_DISABLE_JSON_MODE: process.env.LLM_DISABLE_JSON_MODE === "true",
+      GEMINI_API_KEY: present(process.env.GEMINI_API_KEY),
+      PEXELS_API_KEY: present(process.env.PEXELS_API_KEY),
+      CLOUDINARY_CLOUD_NAME: present(process.env.CLOUDINARY_CLOUD_NAME),
+      CLOUDINARY_API_KEY: present(process.env.CLOUDINARY_API_KEY),
+      CLOUDINARY_API_SECRET: present(process.env.CLOUDINARY_API_SECRET),
+      METRICOOL_API_KEY: present(process.env.METRICOOL_API_KEY)
+    }
+  });
+});
+adminRouter.post("/run-pipeline", async (_req, res) => {
+  try {
+    const result = await triggerPipelineNow();
+    if (!result.started) {
+      return res.status(409).json({ started: false, reason: result.reason });
+    }
+    res.json({ started: true, message: "Pipeline launched in background. Tail Render logs for progress." });
+  } catch (err) {
+    console.error("[admin] run-pipeline error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.post("/seed-feeds", async (_req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const result = await seedFeeds(db);
+    res.json(result);
+  } catch (err) {
+    console.error("[admin] seed-feeds error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+var ALLOWED_BLOG_LANGUAGES = /* @__PURE__ */ new Set(["es", "en"]);
+var ALLOWED_BLOG_STATUSES = /* @__PURE__ */ new Set(["draft", "published", "archived"]);
+var EDITABLE_BLOG_FIELDS = /* @__PURE__ */ new Set([
+  "title",
+  "slug",
+  "content",
+  "htmlContent",
+  "excerpt",
+  "featuredImage",
+  "language",
+  "status",
+  "metaDescription",
+  "category",
+  "tags",
+  "publishedAt"
+]);
+function pickEditableBlog(body) {
+  const out = {};
+  for (const [k, v] of Object.entries(body)) {
+    if (!EDITABLE_BLOG_FIELDS.has(k)) continue;
+    if (v === void 0) continue;
+    out[k] = v;
+  }
+  if (Array.isArray(out.tags)) out.tags = JSON.stringify(out.tags);
+  if (typeof out.publishedAt === "string") out.publishedAt = new Date(out.publishedAt);
+  return out;
 }
+function validateBlogPatch(patch) {
+  if (typeof patch.language === "string" && !ALLOWED_BLOG_LANGUAGES.has(patch.language)) {
+    return `Invalid language. Allowed: ${Array.from(ALLOWED_BLOG_LANGUAGES).join(", ")}`;
+  }
+  if (typeof patch.status === "string" && !ALLOWED_BLOG_STATUSES.has(patch.status)) {
+    return `Invalid status. Allowed: ${Array.from(ALLOWED_BLOG_STATUSES).join(", ")}`;
+  }
+  return null;
+}
+function slugifyTitle(title) {
+  return title.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 100);
+}
+adminRouter.get("/blog/posts", async (req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const status = typeof req.query.status === "string" ? req.query.status : void 0;
+    const language = typeof req.query.language === "string" ? req.query.language : void 0;
+    const search = typeof req.query.search === "string" ? req.query.search.trim() : "";
+    const limit = Math.min(asInt(req.query.limit, 20) ?? 20, 100);
+    const conditions = [];
+    if (status && ALLOWED_BLOG_STATUSES.has(status)) {
+      conditions.push(eq3(blogPosts.status, status));
+    }
+    if (language && ALLOWED_BLOG_LANGUAGES.has(language)) {
+      conditions.push(eq3(blogPosts.language, language));
+    }
+    if (search) {
+      conditions.push(like2(blogPosts.title, `%${search}%`));
+    }
+    const rows = await db.select().from(blogPosts).where(conditions.length ? and2(...conditions) : void 0).orderBy(desc2(blogPosts.publishedAt), desc2(blogPosts.createdAt)).limit(limit);
+    res.json({ count: rows.length, posts: rows });
+  } catch (err) {
+    console.error("[admin] list blog posts error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.get("/blog/posts/:id", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const row = await db.select().from(blogPosts).where(eq3(blogPosts.id, id)).limit(1);
+    if (row.length === 0) return res.status(404).json({ error: "Not found" });
+    res.json(row[0]);
+  } catch (err) {
+    console.error("[admin] get blog post error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.post("/blog/posts", async (req, res) => {
+  try {
+    if (!req.body || typeof req.body !== "object") {
+      return res.status(400).json({ error: "Body must be a JSON object" });
+    }
+    const patch = pickEditableBlog(req.body);
+    if (typeof patch.title !== "string" || !patch.title.trim()) {
+      return res.status(400).json({ error: "title is required" });
+    }
+    if (typeof patch.content !== "string" || !patch.content.trim()) {
+      return res.status(400).json({ error: "content is required" });
+    }
+    const validationError = validateBlogPatch(patch);
+    if (validationError) return res.status(400).json({ error: validationError });
+    if (typeof patch.slug !== "string" || !patch.slug.trim()) {
+      patch.slug = `${slugifyTitle(patch.title)}-${Date.now()}`;
+    }
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    const result = await db.insert(blogPosts).values(patch);
+    const id = Number(result[0]?.insertId);
+    const created = await db.select().from(blogPosts).where(eq3(blogPosts.id, id)).limit(1);
+    res.status(201).json({ created: true, post: created[0] });
+  } catch (err) {
+    console.error("[admin] create blog post error:", err);
+    if (/duplicate.*slug/i.test(err.message || "")) {
+      return res.status(409).json({ error: "slug already exists" });
+    }
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.put("/blog/posts/:id", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    if (!req.body || typeof req.body !== "object") {
+      return res.status(400).json({ error: "Body must be a JSON object" });
+    }
+    const patch = pickEditableBlog(req.body);
+    if (Object.keys(patch).length === 0) {
+      return res.status(400).json({
+        error: `No editable fields supplied. Allowed: ${Array.from(EDITABLE_BLOG_FIELDS).join(", ")}`
+      });
+    }
+    const validationError = validateBlogPatch(patch);
+    if (validationError) return res.status(400).json({ error: validationError });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(blogPosts).set(patch).where(eq3(blogPosts.id, id));
+    const refreshed = await db.select().from(blogPosts).where(eq3(blogPosts.id, id)).limit(1);
+    if (refreshed.length === 0) return res.status(404).json({ error: "Not found after update" });
+    res.json({ updated: Object.keys(patch), post: refreshed[0] });
+  } catch (err) {
+    console.error("[admin] update blog post error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.delete("/blog/posts/:id", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(blogPosts).set({ status: "archived" }).where(eq3(blogPosts.id, id));
+    res.json({ archived: true, id });
+  } catch (err) {
+    console.error("[admin] archive blog post error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+adminRouter.post("/blog/posts/:id/publish", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+    await db.update(blogPosts).set({ status: "published", publishedAt: /* @__PURE__ */ new Date() }).where(eq3(blogPosts.id, id));
+    res.json({ published: true, id });
+  } catch (err) {
+    console.error("[admin] publish blog post error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
 
 // server/_core/index.ts
 function isPortAvailable(port) {
@@ -1296,6 +2129,7 @@ async function startServer() {
   app.use(express2.urlencoded({ limit: "50mb", extended: true }));
   initializeRssScheduler();
   registerOAuthRoutes(app);
+  app.use("/api/admin", adminRouter);
   app.post("/api/upload", async (req, res) => {
     try {
       const ctx = await createContext({ req, res });
@@ -1386,6 +2220,7 @@ async function startServer() {
   }
   server.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
+    startScheduler();
   });
 }
 startServer().catch(console.error);
