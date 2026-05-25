@@ -34,11 +34,14 @@ import Eventos from "./pages/Eventos";
 import InvestmentWeek from "./pages/InvestmentWeek";
 import Recursos from "./pages/Recursos";
 import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
+import DiagnosticoPage from "./pages/DiagnosticoPage";
+import Home2Page from "./pages/Home2Page";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/home2"} component={Home2Page} />
       <Route path="/membresia" component={Membresia} />
       <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
       <Route path="/blog" component={BlogList} />
@@ -64,6 +67,7 @@ function Router() {
       <Route path="/terminos" component={TermsAndConditions} />
       <Route path="/privacidad" component={PrivacyPolicy} />
       <Route path="/disclaimers" component={Disclaimers} />
+      <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
