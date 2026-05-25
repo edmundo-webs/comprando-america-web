@@ -24,4 +24,10 @@ export const ENV = {
   metricoolApiKey: process.env.METRICOOL_API_KEY ?? "",
   metricoolUserId: process.env.METRICOOL_USER_ID ?? "1748825",
   metricoolBlogId: process.env.METRICOOL_BLOG_ID ?? "4294668",
+  // SMTP — outbound email (nodemailer)
+  smtpHost: process.env.SMTP_HOST ?? "",
+  smtpPort: parseInt(process.env.SMTP_PORT ?? "587", 10),
+  smtpUser: process.env.SMTP_USER ?? "",
+  smtpPass: process.env.SMTP_PASS ?? "",
+  smtpFrom: process.env.SMTP_FROM ?? "",
 };

@@ -4,23 +4,36 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 interface ProspectFormProps {
   variant?: "dark" | "light";
   title?: string;
 }
 
+const EMPTY_FORM = {
+  nombre: "",
+  apellido: "",
+  email: "",
+  telefono: "",
+  pais: "México",
+  interes: [] as string[],
+  etapa: "",
+  tipoInversionista: "",
+  capacidad: "",
+};
+
 export default function ProspectForm({ variant = "dark", title = "Solicita más información" }: ProspectFormProps) {
-  const [formData, setFormData] = useState({
-    nombre: "",
-    apellido: "",
-    email: "",
-    telefono: "",
-    pais: "México",
-    interes: [] as string[],
-    etapa: "",
-    tipoInversionista: "",
-    capacidad: "",
+  const [formData, setFormData] = useState(EMPTY_FORM);
+
+  const submitMutation = trpc.prospects.submit.useMutation({
+    onSuccess: () => {
+      toast.success("¡Gracias! Nos pondremos en contacto contigo pronto.");
+      setFormData(EMPTY_FORM);
+    },
+    onError: (err) => {
+      toast.error(err.message || "Hubo un error al enviar. Por favor intenta de nuevo.");
+    },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -29,11 +42,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
       toast.error("Por favor completa los campos requeridos");
       return;
     }
-    toast.success("¡Gracias! Nos pondremos en contacto contigo pronto.");
-    setFormData({
-      nombre: "", apellido: "", email: "", telefono: "",
-      pais: "México", interes: [], etapa: "", tipoInversionista: "", capacidad: "",
-    });
+    submitMutation.mutate(formData);
   };
 
   const bgClass = variant === "dark"
@@ -198,10 +207,11 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
 
         <Button
           type="submit"
+          disabled={submitMutation.isPending}
           className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 text-base gap-2"
         >
           <Send className="w-4 h-4" />
-          Enviar Solicitud
+          {submitMutation.isPending ? "Enviando..." : "Enviar Solicitud"}
         </Button>
       </form>
     </div>

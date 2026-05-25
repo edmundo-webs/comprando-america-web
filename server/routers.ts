@@ -9,6 +9,7 @@ import { NOT_ADMIN_ERR_MSG } from "@shared/const";
 import bcrypt from "bcryptjs";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
+import { sendEmail } from "./_core/email";
 
 // Helper: create CMS session cookie using the SDK's signSession
 // The SDK verifySession expects { openId, appId, name } in the JWT payload
@@ -383,6 +384,85 @@ export const appRouter = router({
           throw new TRPCError({ code: "NOT_FOUND", message: "Token de desuscripcion invalido" });
         }
         return { success: true, message: "Te has desuscrito correctamente" };
+      }),
+  }),
+
+  // ═══ PROSPECTS ROUTER ═══
+  prospects: router({
+    submit: publicProcedure
+      .input(z.object({
+        nombre: z.string().min(1, "El nombre es requerido"),
+        apellido: z.string().optional(),
+        email: z.string().email("Email inválido"),
+        telefono: z.string().optional(),
+        pais: z.string().default("México"),
+        interes: z.array(z.string()).default([]),
+        etapa: z.string().optional(),
+        tipoInversionista: z.string().optional(),
+        capacidad: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const GOOGLE_SCRIPT_URL =
+          "https://script.google.com/macros/s/AKfycbx-_X22SxOXfOAgNZInCC25B3OFZYEaHCW3DFolr1Pnqw3MJMsNsStFKrt7DrbAx4sHLw/exec";
+
+        // 1. Send to Google Sheets via Apps Script
+        const sheetsPayload = {
+          nombre: input.nombre,
+          apellido: input.apellido ?? "",
+          email: input.email,
+          telefono: input.telefono ?? "",
+          pais: input.pais,
+          interes: input.interes.join(" | "),
+          etapa: input.etapa ?? "",
+          tipoInversionista: input.tipoInversionista ?? "",
+          capacidad: input.capacidad ?? "",
+          fecha: new Date().toISOString(),
+        };
+
+        try {
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(sheetsPayload),
+          });
+        } catch (err) {
+          console.error("[prospects] Google Sheets error:", err);
+          // Don't throw — still send the email even if Sheets fails
+        }
+
+        // 2. Send notification email
+        const interesHtml = input.interes.length
+          ? `<ul>${input.interes.map((i) => `<li>${i}</li>`).join("")}</ul>`
+          : "<em>No especificado</em>";
+
+        const emailHtml = `
+          <div style="font-family:sans-serif;max-width:600px;margin:auto;color:#1a1a1a;">
+            <h2 style="background:#0f4c35;color:#fff;padding:16px 24px;border-radius:8px 8px 0 0;margin:0;">
+              Nuevo Prospecto — Comprando América
+            </h2>
+            <div style="border:1px solid #e5e7eb;border-top:none;padding:24px;border-radius:0 0 8px 8px;">
+              <table style="width:100%;border-collapse:collapse;font-size:15px;">
+                <tr><td style="padding:8px 4px;color:#6b7280;width:40%"><strong>Nombre</strong></td><td style="padding:8px 4px;">${input.nombre} ${input.apellido ?? ""}</td></tr>
+                <tr style="background:#f9fafb;"><td style="padding:8px 4px;color:#6b7280;"><strong>Email</strong></td><td style="padding:8px 4px;"><a href="mailto:${input.email}">${input.email}</a></td></tr>
+                <tr><td style="padding:8px 4px;color:#6b7280;"><strong>Teléfono</strong></td><td style="padding:8px 4px;">${input.telefono || "—"}</td></tr>
+                <tr style="background:#f9fafb;"><td style="padding:8px 4px;color:#6b7280;"><strong>País</strong></td><td style="padding:8px 4px;">${input.pais}</td></tr>
+                <tr><td style="padding:8px 4px;color:#6b7280;"><strong>Etapa</strong></td><td style="padding:8px 4px;">${input.etapa || "—"}</td></tr>
+                <tr style="background:#f9fafb;"><td style="padding:8px 4px;color:#6b7280;"><strong>Tipo de inversionista</strong></td><td style="padding:8px 4px;">${input.tipoInversionista || "—"}</td></tr>
+                <tr><td style="padding:8px 4px;color:#6b7280;"><strong>Capacidad de inversión</strong></td><td style="padding:8px 4px;">${input.capacidad || "—"}</td></tr>
+                <tr style="background:#f9fafb;"><td style="padding:8px 4px;color:#6b7280;vertical-align:top;"><strong>Intereses</strong></td><td style="padding:8px 4px;">${interesHtml}</td></tr>
+                <tr><td style="padding:8px 4px;color:#6b7280;"><strong>Fecha</strong></td><td style="padding:8px 4px;">${new Date().toLocaleString("es-MX", { timeZone: "America/Mexico_City" })}</td></tr>
+              </table>
+            </div>
+          </div>
+        `;
+
+        await sendEmail({
+          to: "dalia@buyingamerica.group",
+          subject: `Nuevo prospecto: ${input.nombre} ${input.apellido ?? ""} — ${input.email}`,
+          html: emailHtml,
+        });
+
+        return { success: true };
       }),
   }),
 });
