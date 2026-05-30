@@ -20,8 +20,12 @@ export const ENV = {
   pexelsApiKey: process.env.PEXELS_API_KEY ?? "",
   // Admin REST API token for the external editor agent (OpenClaw / Yael)
   adminToken: process.env.ADMIN_TOKEN ?? "",
-  // Metricool — social distribution
+  // Metricool — social distribution, multi-brand.
+  // The Comprando América blogId defaults to the one the user shared earlier
+  // (1748825/4294668). METRICOOL_BLOG_ET (Edmundo Treviño) must be set in
+  // Render to enable that brand.
   metricoolApiKey: process.env.METRICOOL_API_KEY ?? "",
   metricoolUserId: process.env.METRICOOL_USER_ID ?? "1748825",
-  metricoolBlogId: process.env.METRICOOL_BLOG_ID ?? "4294668",
+  metricoolBlogCA: process.env.METRICOOL_BLOG_CA ?? "4294668",
+  metricoolBlogET: process.env.METRICOOL_BLOG_ET ?? "",
 };
