@@ -86,6 +86,65 @@ Para artículos editoriales largos que tú escribes desde cero (no vienen del RS
 
 ---
 
+## Endpoints — REDES SOCIALES (`social/*`)
+
+Distribución a Facebook, Instagram, TikTok, LinkedIn, Threads, Twitter, YouTube vía Metricool. Soporta dos cuentas: **Comprando América** y **Edmundo Treviño**.
+
+| Método | Ruta | Función |
+|---|---|---|
+| `POST` | `/social/publish` | Programa o publica un post (multi-network) |
+| `GET` | `/social/posts?status=&brand=&network=&limit=` | Lista posts despachados |
+| `GET` | `/social/posts/{id}` | Detalle de un post |
+
+### Body de `POST /social/publish`
+
+```json
+{
+  "brand": "comprando-america" | "edmundo-trevino",   // requerido
+  "networks": ["facebook","instagram","threads"],     // requerido, no vacío
+  "caption": "Texto del post",                        // requerido
+  "mediaUrls": ["https://res.cloudinary.com/.../1.jpg",
+                "https://res.cloudinary.com/.../2.jpg"],
+  "scheduledAt": "2026-05-18T15:00:00.000Z",          // opcional; si lo omites publica en ~2 min
+  "timezone": "America/Mexico_City",                  // opcional (default America/Mexico_City)
+  "postType": "post"|"reel"|"story"|"carousel"|"short", // opcional, se infiere
+  "articleId": 12345                                  // opcional, para referencia cruzada
+}
+```
+
+### Brands válidos
+
+- `comprando-america` → cuentas de Comprando América
+- `edmundo-trevino` → cuentas personales de Edmundo Treviño
+
+### Networks válidos
+
+`facebook`, `instagram`, `tiktok`, `linkedin`, `threads`, `twitter`, `youtube`
+
+### Reglas para social
+
+1. **Cada post debe especificar `brand`.** Sin brand, error 400.
+2. **`mediaUrls` debe ser https público.** Idealmente Cloudinary (`res.cloudinary.com`). Metricool las normaliza automáticamente.
+3. **Para `instagram` y `tiktok`, casi siempre se requiere al menos 1 imagen o video** — el endpoint sí acepta texto-only pero Instagram/TikTok lo rechazarán al publicar.
+4. **`scheduledAt`** debe ser ISO 8601 UTC y futuro. Si lo omites, el post sale en ~2 minutos (tiempo que Metricool tarda en ingestar).
+5. **Cuando publiques un carrusel**, manda múltiples URLs en `mediaUrls` y `postType: "carousel"`.
+
+### Ejemplo curl
+
+```bash
+curl -X POST "https://comprandoamerica.com/api/admin/social/publish?token=$TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "brand": "comprando-america",
+    "networks": ["facebook","instagram","threads"],
+    "caption": "USCIS endurece criterios para Visa E-2 a partir de julio 2026 ↓\n\nAnálisis completo en https://comprandoamerica.com/news",
+    "mediaUrls": ["https://res.cloudinary.com/dgruohz6f/image/upload/v1.../hero.jpg"],
+    "scheduledAt": "2026-05-18T15:00:00.000Z"
+  }'
+```
+
+---
+
 ## Categorías válidas (notas)
 
 - `visas-migracion` — Visa E-2, USCIS, consulados, treaty investors

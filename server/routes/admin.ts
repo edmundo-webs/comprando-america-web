@@ -25,11 +25,12 @@
  */
 import { and, desc, eq, like, type SQL } from "drizzle-orm";
 import { Router, type NextFunction, type Request, type Response } from "express";
-import { blogPosts, newsArticles, newsFeeds } from "../../drizzle/schema";
+import { blogPosts, newsArticles, newsFeeds, socialPosts } from "../../drizzle/schema";
 import { ENV } from "../_core/env";
 import { regenerateImageNow, rewriteArticleNow, runStageNow, triggerPipelineNow } from "../cron/scheduler";
 import { getDb } from "../db";
 import { seedFeeds } from "../ingest/seed-feeds";
+import { schedulePost, type Brand, type Network } from "../social/metricool";
 
 // ---- Allow-lists for the agent's PUT payload ----
 const ALLOWED_CATEGORIES = new Set([
@@ -387,6 +388,9 @@ adminRouter.get("/health", async (_req, res) => {
       CLOUDINARY_API_KEY: present(process.env.CLOUDINARY_API_KEY),
       CLOUDINARY_API_SECRET: present(process.env.CLOUDINARY_API_SECRET),
       METRICOOL_API_KEY: present(process.env.METRICOOL_API_KEY),
+      METRICOOL_USER_ID: present(process.env.METRICOOL_USER_ID),
+      METRICOOL_BLOG_CA: present(process.env.METRICOOL_BLOG_CA || process.env.METRICOOL_BLOG_ID),
+      METRICOOL_BLOG_ET: present(process.env.METRICOOL_BLOG_ET),
     },
   });
 });
@@ -644,5 +648,177 @@ adminRouter.post("/blog/posts/:id/publish", async (req, res) => {
   } catch (err: any) {
     console.error("[admin] publish blog post error:", err);
     res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// SOCIAL POSTING — Metricool, multi-brand
+// The agent (Nikki) calls these to publish or schedule across
+// Comprando América and Edmundo Treviño accounts.
+// ═══════════════════════════════════════════════════════════════════
+
+const ALLOWED_BRANDS = new Set<Brand>(["comprando-america", "edmundo-trevino"]);
+const ALLOWED_NETWORKS = new Set<Network>([
+  "facebook",
+  "instagram",
+  "tiktok",
+  "linkedin",
+  "threads",
+  "twitter",
+  "youtube",
+]);
+
+// POST /api/admin/social/publish — publish now (or schedule with scheduledAt)
+// Body: {
+//   brand:       "comprando-america" | "edmundo-trevino",
+//   networks:    ["facebook","instagram",...],
+//   caption:     "Post text",
+//   mediaUrls:   ["https://...","https://..."],
+//   scheduledAt: "2026-05-17T15:00:00.000Z",   // optional, ISO. omit = now+2min
+//   timezone:    "America/Mexico_City",         // optional
+//   postType:    "post" | "reel" | "story" | "carousel" | "short",  // optional
+//   articleId:   12345                          // optional, for tracking
+// }
+adminRouter.post("/social/publish", async (req, res) => {
+  try {
+    const body = (req.body ?? {}) as Record<string, any>;
+    const brand = String(body.brand || "");
+    if (!ALLOWED_BRANDS.has(brand as Brand)) {
+      return res.status(400).json({
+        error: `Invalid brand. Allowed: ${Array.from(ALLOWED_BRANDS).join(", ")}`,
+      });
+    }
+    if (typeof body.caption !== "string" || !body.caption.trim()) {
+      return res.status(400).json({ error: "caption (string) is required" });
+    }
+    if (!Array.isArray(body.networks) || body.networks.length === 0) {
+      return res.status(400).json({ error: "networks (non-empty array) is required" });
+    }
+    const networks = body.networks
+      .map((n: any) => String(n).toLowerCase())
+      .filter((n: string) => ALLOWED_NETWORKS.has(n as Network)) as Network[];
+    if (networks.length === 0) {
+      return res.status(400).json({
+        error: `No valid networks. Allowed: ${Array.from(ALLOWED_NETWORKS).join(", ")}`,
+      });
+    }
+    const mediaUrls = Array.isArray(body.mediaUrls)
+      ? body.mediaUrls.map((u: any) => String(u)).filter(Boolean)
+      : [];
+
+    const postType = ["post", "reel", "story", "carousel", "short"].includes(body.postType)
+      ? body.postType
+      : mediaUrls.length > 1
+        ? "carousel"
+        : "post";
+
+    const metricoolId = await schedulePost({
+      brand: brand as Brand,
+      networks,
+      text: body.caption,
+      mediaUrls,
+      dateTime: typeof body.scheduledAt === "string" ? body.scheduledAt : undefined,
+      timezone: typeof body.timezone === "string" ? body.timezone : undefined,
+      postType,
+      youtubeTitle: typeof body.youtubeTitle === "string" ? body.youtubeTitle : undefined,
+    });
+
+    // Log every dispatched post in ca_social_posts. We tag the brand by
+    // prefixing metricoolId — avoids a schema migration to add a column.
+    const db = await getDb();
+    let localId: number | null = null;
+    if (db) {
+      const inserted = await db.insert(socialPosts).values({
+        articleId: typeof body.articleId === "number" ? body.articleId : null,
+        network: networks[0] as any,
+        postType: postType as any,
+        language: "es",
+        caption: body.caption.slice(0, 65000),
+        mediaUrls: JSON.stringify(mediaUrls),
+        metricoolId: `${brand}:${metricoolId}`,
+        scheduledAt: body.scheduledAt ? new Date(body.scheduledAt) : new Date(Date.now() + 120000),
+        status: "scheduled",
+      });
+      localId = Number((inserted as any)?.[0]?.insertId || 0) || null;
+    }
+
+    res.json({
+      ok: true,
+      brand,
+      networks,
+      metricoolId,
+      localId,
+      message: `Post dispatched to Metricool for ${brand}`,
+    });
+  } catch (err: any) {
+    console.error("[admin] social/publish error:", err?.message);
+    res.status(500).json({ error: err?.message || "Internal error" });
+  }
+});
+
+// GET /api/admin/social/posts — list dispatched social posts (brand parsed
+// out of metricoolId prefix). Query: status, brand, network, limit
+adminRouter.get("/social/posts", async (req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    const status = typeof req.query.status === "string" ? req.query.status : undefined;
+    const brandFilter = typeof req.query.brand === "string" ? req.query.brand : undefined;
+    const networkFilter = typeof req.query.network === "string" ? req.query.network : undefined;
+    const limit = Math.min(asInt(req.query.limit, 20) ?? 20, 100);
+
+    const conditions: SQL[] = [];
+    if (status) conditions.push(eq(socialPosts.status, status as any));
+    if (networkFilter && ALLOWED_NETWORKS.has(networkFilter as Network)) {
+      conditions.push(eq(socialPosts.network, networkFilter as any));
+    }
+    if (brandFilter && ALLOWED_BRANDS.has(brandFilter as Brand)) {
+      conditions.push(like(socialPosts.metricoolId, `${brandFilter}:%`));
+    }
+
+    const rows = await db
+      .select()
+      .from(socialPosts)
+      .where(conditions.length ? and(...conditions) : undefined)
+      .orderBy(desc(socialPosts.createdAt))
+      .limit(limit);
+
+    // Split brand prefix out of metricoolId for the response
+    const posts = rows.map((r: any) => {
+      const mid: string = r.metricoolId ?? "";
+      const colon = mid.indexOf(":");
+      const brand = colon > 0 ? mid.slice(0, colon) : null;
+      const realId = colon > 0 ? mid.slice(colon + 1) : mid;
+      return { ...r, brand, metricoolId: realId };
+    });
+
+    res.json({ count: posts.length, posts });
+  } catch (err: any) {
+    console.error("[admin] social/posts list error:", err?.message);
+    res.status(500).json({ error: err?.message || "Internal error" });
+  }
+});
+
+// GET /api/admin/social/posts/:id — single dispatched social post
+adminRouter.get("/social/posts/:id", async (req, res) => {
+  try {
+    const id = asInt(req.params.id);
+    if (!id) return res.status(400).json({ error: "Invalid id" });
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    const rows = await db.select().from(socialPosts).where(eq(socialPosts.id, id)).limit(1);
+    if (rows.length === 0) return res.status(404).json({ error: "Not found" });
+
+    const r: any = rows[0];
+    const mid: string = r.metricoolId ?? "";
+    const colon = mid.indexOf(":");
+    const brand = colon > 0 ? mid.slice(0, colon) : null;
+    const realId = colon > 0 ? mid.slice(colon + 1) : mid;
+    res.json({ ...r, brand, metricoolId: realId });
+  } catch (err: any) {
+    console.error("[admin] social/posts get error:", err?.message);
+    res.status(500).json({ error: err?.message || "Internal error" });
   }
 });
