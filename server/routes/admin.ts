@@ -27,7 +27,7 @@ import { and, desc, eq, like, type SQL } from "drizzle-orm";
 import { Router, type NextFunction, type Request, type Response } from "express";
 import { blogPosts, newsArticles, newsFeeds } from "../../drizzle/schema";
 import { ENV } from "../_core/env";
-import { regenerateImageNow, rewriteArticleNow, triggerPipelineNow } from "../cron/scheduler";
+import { regenerateImageNow, rewriteArticleNow, runStageNow, triggerPipelineNow } from "../cron/scheduler";
 import { getDb } from "../db";
 import { seedFeeds } from "../ingest/seed-feeds";
 
@@ -401,6 +401,24 @@ adminRouter.post("/run-pipeline", async (_req, res) => {
     res.json({ started: true, message: "Pipeline launched in background. Tail Render logs for progress." });
   } catch (err: any) {
     console.error("[admin] run-pipeline error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+// ---- INDIVIDUAL STAGE (agent-driven, granular control) ----
+// Lets the external agent run one stage at a time instead of the full chain.
+// Valid stages: ingest | rewrite | images | auto-publish
+adminRouter.post("/pipeline/:stage", async (req, res) => {
+  try {
+    const stage = String(req.params.stage || "").toLowerCase();
+    const result = await runStageNow(stage);
+    if (!result.started) {
+      const code = (result.reason || "").startsWith("unknown") ? 400 : 409;
+      return res.status(code).json(result);
+    }
+    res.json({ ...result, message: `Stage "${stage}" launched in background.` });
+  } catch (err: any) {
+    console.error("[admin] pipeline/:stage error:", err);
     res.status(500).json({ error: err.message || "Internal error" });
   }
 });
