@@ -147,7 +147,12 @@ export async function schedulePost(opts: SchedulePostOpts): Promise<string> {
   }
 
   // Default schedule: 2 minutes from now (gives Metricool a moment to ingest).
-  const dt = opts.dateTime || new Date(Date.now() + 2 * 60 * 1000).toISOString();
+  // Metricool insists on `yyyy-MM-ddTHH:mm:ss` (NO milliseconds, NO trailing Z).
+  // toISOString() returns "2026-05-30T06:23:45.123Z" — strip the .NNNZ.
+  const toMetricoolDate = (iso: string) => iso.replace(/\.\d{3}Z?$/, "").replace(/Z$/, "");
+  const dt = toMetricoolDate(
+    opts.dateTime || new Date(Date.now() + 2 * 60 * 1000).toISOString()
+  );
   const tz = opts.timezone || "America/Mexico_City";
 
   const body: Record<string, any> = {
