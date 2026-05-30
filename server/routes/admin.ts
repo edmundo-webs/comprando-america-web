@@ -391,6 +391,7 @@ adminRouter.get("/health", async (_req, res) => {
       METRICOOL_USER_ID: present(process.env.METRICOOL_USER_ID),
       METRICOOL_BLOG_CA: present(process.env.METRICOOL_BLOG_CA || process.env.METRICOOL_BLOG_ID),
       METRICOOL_BLOG_ET: present(process.env.METRICOOL_BLOG_ET),
+      METRICOOL_BLOG_TUM: present(process.env.METRICOOL_BLOG_TUM),
     },
   });
 });
@@ -657,7 +658,11 @@ adminRouter.post("/blog/posts/:id/publish", async (req, res) => {
 // Comprando América and Edmundo Treviño accounts.
 // ═══════════════════════════════════════════════════════════════════
 
-const ALLOWED_BRANDS = new Set<Brand>(["comprando-america", "edmundo-trevino"]);
+const ALLOWED_BRANDS = new Set<Brand>([
+  "comprando-america",
+  "edmundo-trevino",
+  "theusmarketer",
+]);
 const ALLOWED_NETWORKS = new Set<Network>([
   "facebook",
   "instagram",

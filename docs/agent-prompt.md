@@ -88,7 +88,7 @@ Para artículos editoriales largos que tú escribes desde cero (no vienen del RS
 
 ## Endpoints — REDES SOCIALES (`social/*`)
 
-Distribución a Facebook, Instagram, TikTok, LinkedIn, Threads, Twitter, YouTube vía Metricool. Soporta dos cuentas: **Comprando América** y **Edmundo Treviño**.
+Distribución a Facebook, Instagram, TikTok, LinkedIn, Threads, Twitter, YouTube vía Metricool. Soporta tres cuentas: **Comprando América**, **Edmundo Treviño** y **TheUsMarketer**.
 
 | Método | Ruta | Función |
 |---|---|---|
@@ -100,7 +100,7 @@ Distribución a Facebook, Instagram, TikTok, LinkedIn, Threads, Twitter, YouTube
 
 ```json
 {
-  "brand": "comprando-america" | "edmundo-trevino",   // requerido
+  "brand": "comprando-america" | "edmundo-trevino" | "theusmarketer",  // requerido
   "networks": ["facebook","instagram","threads"],     // requerido, no vacío
   "caption": "Texto del post",                        // requerido
   "mediaUrls": ["https://res.cloudinary.com/.../1.jpg",
@@ -114,8 +114,9 @@ Distribución a Facebook, Instagram, TikTok, LinkedIn, Threads, Twitter, YouTube
 
 ### Brands válidos
 
-- `comprando-america` → cuentas de Comprando América
-- `edmundo-trevino` → cuentas personales de Edmundo Treviño
+- `comprando-america` → cuentas de Comprando América (blogId 4294668)
+- `edmundo-trevino` → cuentas personales de Edmundo Treviño (blogId 2116706)
+- `theusmarketer` → cuentas de TheUsMarketer (blogId 2116739)
 
 ### Networks válidos
 

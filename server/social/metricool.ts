@@ -8,8 +8,10 @@
  * Required env vars:
  *   METRICOOL_API_KEY     X-Mc-Auth token from Metricool > Account > API
  *   METRICOOL_USER_ID     numeric user id (from Metricool dashboard URL)
- *   METRICOOL_BLOG_CA     blogId for the Comprando América brand
- *   METRICOOL_BLOG_ET     blogId for the Edmundo Treviño brand
+ *   METRICOOL_BLOG_CA     blogId for the Comprando América brand (4294668)
+ *                         (or legacy METRICOOL_BLOG_ID fallback)
+ *   METRICOOL_BLOG_ET     blogId for the Edmundo Treviño brand (2116706)
+ *   METRICOOL_BLOG_TUM    blogId for the TheUsMarketer brand (2116739)
  *
  * Docs: https://static.metricool.com/API+DOC/API+English.pdf (lightly outdated;
  * payload below was reverse-engineered from the Metricool web UI calls).
@@ -17,7 +19,7 @@
 
 const BASE = "https://app.metricool.com/api";
 
-export type Brand = "comprando-america" | "edmundo-trevino";
+export type Brand = "comprando-america" | "edmundo-trevino" | "theusmarketer";
 
 export type Network =
   | "facebook"
@@ -40,18 +42,24 @@ function getAuth(brand: Brand): MetricoolAuth {
   if (!apiKey || !userId) {
     throw new Error("METRICOOL_API_KEY and METRICOOL_USER_ID must be set");
   }
-  // CA reads METRICOOL_BLOG_CA, fallback to the legacy METRICOOL_BLOG_ID
-  // (so the user doesn't have to rename anything if only CA is used).
-  // ET reads METRICOOL_BLOG_ET and has no fallback — set it in Render.
+  // Brand → env-var name. CA also accepts the legacy METRICOOL_BLOG_ID as
+  // a fallback so the user doesn't have to rename anything for that account.
+  const envNames: Record<Brand, string[]> = {
+    "comprando-america": ["METRICOOL_BLOG_CA", "METRICOOL_BLOG_ID"],
+    "edmundo-trevino": ["METRICOOL_BLOG_ET"],
+    theusmarketer: ["METRICOOL_BLOG_TUM"],
+  };
+  const tries = envNames[brand];
   let blogId: string | undefined;
-  if (brand === "comprando-america") {
-    blogId = process.env.METRICOOL_BLOG_CA || process.env.METRICOOL_BLOG_ID;
-  } else {
-    blogId = process.env.METRICOOL_BLOG_ET;
+  for (const name of tries) {
+    const v = process.env[name];
+    if (v) {
+      blogId = v;
+      break;
+    }
   }
   if (!blogId) {
-    const envName = brand === "comprando-america" ? "METRICOOL_BLOG_CA" : "METRICOOL_BLOG_ET";
-    throw new Error(`${envName} not set (required to post as ${brand})`);
+    throw new Error(`${tries[0]} not set (required to post as ${brand})`);
   }
   return { apiKey, userId, blogId };
 }
