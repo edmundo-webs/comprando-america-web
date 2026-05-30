@@ -140,6 +140,31 @@ export async function regenerateImageNow(id: number): Promise<{ started: boolean
   return { started: true };
 }
 
+/** Scripts behind each pipeline stage, for the granular stage endpoints. */
+const STAGE_SCRIPTS: Record<string, string> = {
+  ingest: "server/ingest/fetch.ts",
+  rewrite: "server/ai/rewrite.ts",
+  images: "server/ai/generate-images.ts",
+  "auto-publish": "server/ai/auto-publish.ts",
+};
+
+/**
+ * Run a single pipeline stage on demand (fire-and-forget). Used by the
+ * external agent through POST /api/admin/pipeline/:stage so it can drive
+ * the flow step-by-step instead of the full chain.
+ */
+export async function runStageNow(stage: string): Promise<{ started: boolean; reason?: string; stage?: string }> {
+  const script = STAGE_SCRIPTS[stage];
+  if (!script) {
+    return { started: false, reason: `unknown stage "${stage}". Valid: ${Object.keys(STAGE_SCRIPTS).join(", ")}` };
+  }
+  if (activeTasks >= 3) {
+    return { started: false, reason: `too many concurrent tasks (${activeTasks})` };
+  }
+  void runStage(stage, script);
+  return { started: true, stage };
+}
+
 /**
  * Manual trigger used by POST /api/admin/run-pipeline. Exposed here so the
  * route handler doesn't have to know about the spawning mechanics.
@@ -155,14 +180,14 @@ export async function triggerPipelineNow(): Promise<{ started: boolean; reason?:
 }
 
 export function startScheduler(): void {
-  if (process.env.DISABLE_NEWS_CRON === "true") {
-    console.log("[cron] DISABLE_NEWS_CRON=true — scheduler not started");
-    return;
-  }
-
-  // Skip in dev so `pnpm dev` doesn't kick off ingest runs while you code.
-  if (process.env.NODE_ENV !== "production" && process.env.ENABLE_NEWS_CRON !== "true") {
-    console.log("[cron] dev environment — scheduler not started (set ENABLE_NEWS_CRON=true to override)");
+  // News automation is OPT-IN. By default Render does NOT run the pipeline —
+  // an external agent (OpenClaw on Telegram) drives ingest / rewrite /
+  // images / publish through the /api/admin endpoints instead.
+  // Set ENABLE_NEWS_CRON=true to restore the old 4×/day in-process cron.
+  if (process.env.ENABLE_NEWS_CRON !== "true") {
+    console.log(
+      "[cron] News automation disabled — the external agent drives the pipeline via /api/admin. Set ENABLE_NEWS_CRON=true to re-enable the in-process cron."
+    );
     return;
   }
 
