@@ -33,20 +33,8 @@ export function EconomicTicker() {
             "proName": "OANDA:NAS100USD"
           },
           {
-            "description": "Mexico ETF (proxy IPC)",
-            "proName": "NYSEARCA:EWW"
-          },
-          {
             "description": "IEF Treasury 7-10Y (proxy Fed)",
             "proName": "NASDAQ:IEF"
-          },
-          {
-            "description": "TIPS (proxy inflación EE.UU.)",
-            "proName": "AMEX:TIP"
-          },
-          {
-            "description": "Oro (refugio inflación)",
-            "proName": "TVC:GOLD"
           },
           {
             "description": "Bitcoin",
