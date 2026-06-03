@@ -33,20 +33,20 @@ export function EconomicTicker() {
             "proName": "OANDA:NAS100USD"
           },
           {
-            "description": "Bolsa Mexicana (IPC)",
-            "proName": "BMV:ME"
+            "description": "Bolsa Mexicana (NAFTRAC, sigue IPC)",
+            "proName": "BMV:NAFTRAC11"
           },
           {
-            "description": "Tasa Fed (EE.UU.)",
-            "proName": "ECONOMICS:USINTR"
+            "description": "Treasury 10Y (proxy tasas Fed)",
+            "proName": "TVC:US10Y"
           },
           {
-            "description": "Inflación EE.UU.",
-            "proName": "ECONOMICS:USIRYY"
+            "description": "TIPS (proxy inflación EE.UU.)",
+            "proName": "AMEX:TIP"
           },
           {
-            "description": "Inflación México",
-            "proName": "ECONOMICS:MXIRYY"
+            "description": "Oro (refugio inflación)",
+            "proName": "TVC:GOLD"
           },
           {
             "description": "Bitcoin",
