@@ -33,12 +33,12 @@ export function EconomicTicker() {
             "proName": "OANDA:NAS100USD"
           },
           {
-            "description": "Bolsa Mexicana (NAFTRAC, sigue IPC)",
-            "proName": "BMV:NAFTRAC11"
+            "description": "Mexico ETF (proxy IPC)",
+            "proName": "NYSEARCA:EWW"
           },
           {
-            "description": "Treasury 10Y (proxy tasas Fed)",
-            "proName": "TVC:US10Y"
+            "description": "IEF Treasury 7-10Y (proxy Fed)",
+            "proName": "NASDAQ:IEF"
           },
           {
             "description": "TIPS (proxy inflación EE.UU.)",
