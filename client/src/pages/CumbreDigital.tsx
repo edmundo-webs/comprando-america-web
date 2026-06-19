@@ -100,7 +100,7 @@ const AGENDA = [
 const PAGE_SEO = {
   title: "Primera Cumbre Digital | Comprando América",
   description:
-    "Regístrate gratis a la Primera Cumbre Digital de Comprando América. Sábado 22 de agosto 2026, 10 AM Houston / 9 AM México. Transmisión en vivo por YouTube y Facebook.",
+    "Regístrate gratis a la Primera Cumbre Digital de Comprando América. Sábado 22 de agosto 2026, 10 AM – 3 PM México / 11 AM – 4 PM Houston. Transmisión en vivo por YouTube y Facebook.",
   path: "/cumbre-digital",
 };
 
@@ -217,7 +217,7 @@ export default function CumbreDigital() {
             </div>
             <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl text-sm text-slate-200">
               <Clock className="w-4 h-4 text-primary flex-shrink-0" />
-              10:00 AM Houston · 9:00 AM México
+              11:00 AM Houston · 10:00 AM México
             </div>
             <div className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2.5 rounded-xl text-sm text-slate-200">
               <Wifi className="w-4 h-4 text-primary flex-shrink-0" />
@@ -324,7 +324,7 @@ export default function CumbreDigital() {
               Agenda · 22 de agosto
             </h2>
             <p className="text-slate-400 mt-3">
-              10:00 AM – 3:00 PM (Houston) · 9:00 AM – 2:00 PM (México)
+              10:00 AM – 3:00 PM (México) · 11:00 AM – 4:00 PM (Houston)
             </p>
           </FadeIn>
 
