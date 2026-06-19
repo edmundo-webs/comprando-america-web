@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trpc } from "@/lib/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -112,13 +113,22 @@ export default function CumbreDigital() {
     email: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+
+  const registerMutation = trpc.leads.create.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      toast.success("¡Registro exitoso! Te esperamos el 22 de agosto.");
+    },
+    onError: (err) => {
+      toast.error(err.message || "Ocurrió un error. Intenta de nuevo.");
+    },
+  });
 
   const scrollToForm = () => {
     document.getElementById("registro")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.nombreCompleto.trim()) {
       toast.error("Por favor ingresa tu nombre completo.");
@@ -133,11 +143,12 @@ export default function CumbreDigital() {
       return;
     }
 
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setLoading(false);
-    setSubmitted(true);
-    toast.success("¡Registro exitoso! Te esperamos el 22 de agosto.");
+    registerMutation.mutate({
+      nombreCompleto: formData.nombreCompleto.trim(),
+      whatsapp: `${formData.countryCode} ${formData.whatsapp.trim()}`,
+      email: formData.email.trim(),
+      fuente: "cumbre-digital",
+    });
   };
 
   return (
@@ -489,10 +500,10 @@ export default function CumbreDigital() {
 
                   <Button
                     type="submit"
-                    disabled={loading}
+                    disabled={registerMutation.isPending}
                     className="w-full bg-primary hover:bg-blue-500 text-white font-bold py-3 text-base gap-2 h-12 rounded-xl"
                   >
-                    {loading ? (
+                    {registerMutation.isPending ? (
                       <span className="flex items-center gap-2">
                         <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                         Registrando...

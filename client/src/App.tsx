@@ -37,6 +37,7 @@ import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
 import DiagnosticoPage from "./pages/DiagnosticoPage";
 import Home2Page from "./pages/Home2Page";
 import CumbreDigital from "./pages/CumbreDigital";
+import Leads from "./pages/admin/Leads";
 
 function Router() {
   return (
@@ -84,6 +85,11 @@ function Router() {
       <Route path={"/cms/blog-posts"} component={() => (
         <DashboardLayout>
           <BlogPosts />
+        </DashboardLayout>
+      )} />
+      <Route path={"/cms/leads"} component={() => (
+        <DashboardLayout>
+          <Leads />
         </DashboardLayout>
       )} />
       <Route path={"/404"} component={NotFound} />
