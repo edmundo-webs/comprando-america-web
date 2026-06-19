@@ -24,6 +24,9 @@ export async function setupVite(app: Express, server: Server) {
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 
+    // Let Express handle /api/* — don't serve index.html for API routes
+    if (url.startsWith("/api")) return next();
+
     try {
       const clientTemplate = path.resolve(
         import.meta.dirname,
@@ -60,8 +63,10 @@ export function serveStatic(app: Express) {
 
   app.use(express.static(distPath));
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
+  // Catch-all: serve index.html for any non-API route so client-side
+  // routing (e.g. /cumbre-digital) works on direct browser navigation.
+  app.use("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) return next();
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
