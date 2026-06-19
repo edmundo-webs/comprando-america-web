@@ -1,4 +1,4 @@
-import { eq, desc, and, like, inArray, lt } from "drizzle-orm";
+import { eq, desc, and, like, inArray, lt, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed, newsSubscribers, NewsSubscriber, InsertNewsSubscriber, leads, Lead, InsertLead } from "../drizzle/schema";
@@ -486,9 +486,11 @@ export async function createLead(data: InsertLead): Promise<Lead | undefined> {
     console.warn("[Database] Cannot create lead: database not available");
     return undefined;
   }
-  const { nombreCompleto, whatsapp, email, fuente } = data;
-  const result = await db.insert(leads).values({ nombreCompleto, whatsapp, email, fuente });
-  const id = Number(result[0].insertId);
+  const { nombreCompleto, whatsapp, email, fuente = 'general' } = data;
+  const result = await db.execute(
+    sql`INSERT INTO ca_leads (nombreCompleto, whatsapp, email, fuente) VALUES (${nombreCompleto}, ${whatsapp}, ${email}, ${fuente})`
+  );
+  const id = Number((result as any)[0].insertId);
   const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
   return row.length > 0 ? row[0] : undefined;
 }
