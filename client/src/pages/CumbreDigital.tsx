@@ -88,7 +88,7 @@ const TEMAS = [
   },
   {
     icon: <Star className="w-6 h-6" />,
-    titulo: "Próximos pasos: membresía y oportunidades activas",
+    titulo: "Próximos pasos y oportunidades activas",
     desc: "Cómo seguir conectado con Comprando América y qué oportunidades están disponibles ahora para quienes quieren avanzar.",
   },
 ];
@@ -103,7 +103,7 @@ const SPEAKERS = [
   {
     name: "Tomás Reséndez",
     role: "Estrategia Migratoria",
-    photo: "/team/joe.jpg",
+    photo: "/team/tomas.jpg",
     bio: "Experto en opciones migratorias para inversionistas latinoamericanos en Estados Unidos. Visa E-2, estructura y contexto regulatorio actual.",
   },
   {
