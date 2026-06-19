@@ -103,13 +103,13 @@ const SPEAKERS = [
   {
     name: "Tomás Reséndez",
     role: "Estrategia Migratoria",
-    photo: "/team/tomas.jpg",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439328/comprando-america/ukgTQSSvdQDxOgaS.jpg",
     bio: "Experto en opciones migratorias para inversionistas latinoamericanos en Estados Unidos. Visa E-2, estructura y contexto regulatorio actual.",
   },
   {
-    name: "Diego",
+    name: "Diego Alcalá",
     role: "Operaciones e Inversiones",
-    photo: "/team/diego.jpg",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1781894896/tts-news/wjjnswgxf6mv7kml8j8m.jpg",
     bio: "Especialista en evaluación de oportunidades y operación de negocios en el mercado estadounidense.",
   },
 ];
