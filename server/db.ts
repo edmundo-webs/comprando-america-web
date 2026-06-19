@@ -486,7 +486,8 @@ export async function createLead(data: InsertLead): Promise<Lead | undefined> {
     console.warn("[Database] Cannot create lead: database not available");
     return undefined;
   }
-  const result = await db.insert(leads).values(data);
+  const { nombreCompleto, whatsapp, email, fuente } = data;
+  const result = await db.insert(leads).values({ nombreCompleto, whatsapp, email, fuente });
   const id = Number(result[0].insertId);
   const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
   return row.length > 0 ? row[0] : undefined;
