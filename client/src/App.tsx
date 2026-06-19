@@ -36,6 +36,7 @@ import Recursos from "./pages/Recursos";
 import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
 import DiagnosticoPage from "./pages/DiagnosticoPage";
 import Home2Page from "./pages/Home2Page";
+import CumbreDigital from "./pages/CumbreDigital";
 
 function Router() {
   return (
@@ -68,6 +69,7 @@ function Router() {
       <Route path="/privacidad" component={PrivacyPolicy} />
       <Route path="/disclaimers" component={Disclaimers} />
       <Route path="/diagnostico" component={DiagnosticoPage} />
+      <Route path="/cumbre-digital" component={CumbreDigital} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
