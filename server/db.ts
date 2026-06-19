@@ -1,7 +1,7 @@
 import { eq, desc, and, like, inArray, lt } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
-import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed, newsSubscribers, NewsSubscriber, InsertNewsSubscriber } from "../drizzle/schema";
+import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed, newsSubscribers, NewsSubscriber, InsertNewsSubscriber, leads, Lead, InsertLead } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: any = null;
@@ -477,6 +477,28 @@ export async function updateSubscriberCategories(
     .update(newsSubscribers)
     .set({ categories: JSON.stringify(categories) })
     .where(eq(newsSubscribers.email, email));
+}
+
+// ═══ CRM LEADS QUERIES ═══
+export async function createLead(data: InsertLead): Promise<Lead | undefined> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot create lead: database not available");
+    return undefined;
+  }
+  const result = await db.insert(leads).values(data);
+  const id = Number(result[0].insertId);
+  const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
+  return row.length > 0 ? row[0] : undefined;
+}
+
+export async function getAllLeads(): Promise<Lead[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get leads: database not available");
+    return [];
+  }
+  return await db.select().from(leads).orderBy(desc(leads.createdAt));
 }
 
 export async function unsubscribeNewsSubscriber(token: string) {

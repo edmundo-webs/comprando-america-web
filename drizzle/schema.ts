@@ -196,3 +196,19 @@ export const ingestionRuns = mysqlTable("ca_ingestion_runs", {
 
 export type IngestionRun = typeof ingestionRuns.$inferSelect;
 export type InsertIngestionRun = typeof ingestionRuns.$inferInsert;
+
+/**
+ * CRM Leads table
+ * Stores pre-registrations and contacts from landing pages and forms.
+ */
+export const leads = mysqlTable("ca_leads", {
+  id: int("id").autoincrement().primaryKey(),
+  nombreCompleto: varchar("nombreCompleto", { length: 255 }).notNull(),
+  whatsapp: varchar("whatsapp", { length: 50 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  fuente: varchar("fuente", { length: 100 }).notNull(), // e.g. "cumbre-digital"
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Lead = typeof leads.$inferSelect;
+export type InsertLead = typeof leads.$inferInsert;
