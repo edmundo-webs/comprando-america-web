@@ -407,12 +407,12 @@ export default function CumbreDigital() {
       {/* ═══════════════════════════════════════════
           SECCIÓN 6 — Formulario de registro
       ═══════════════════════════════════════════ */}
-      <section id="registro" className="bg-[#0a1b33] py-24 scroll-mt-20">
+      <section id="registro" className="bg-white py-24 scroll-mt-20">
         <div className="container max-w-xl mx-auto px-4">
           <FadeIn className="text-center mb-10">
             <p className="text-primary text-sm font-semibold uppercase tracking-widest mb-3">Asegura tu lugar</p>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-3">Pre-registro gratuito</h2>
-            <p className="text-slate-400">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-gray-900 mb-3">Pre-registro gratuito</h2>
+            <p className="text-gray-500">
               Si llevas tiempo considerando dar el paso hacia Estados Unidos, esta es tu oportunidad de
               escuchar a quienes ya lo hicieron — sin costo y desde donde estés.
             </p>
@@ -420,14 +420,14 @@ export default function CumbreDigital() {
 
           {submitted ? (
             <FadeIn>
-              <div className="bg-[#0B1F3A] border border-primary/30 rounded-2xl p-10 text-center">
+              <div className="bg-gray-50 border border-primary/20 rounded-2xl p-10 text-center">
                 <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-5">
                   <CheckCircle2 className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-2xl font-bold mb-3">¡Ya estás registrado!</h3>
-                <p className="text-slate-400 mb-2">Te esperamos el sábado 22 de agosto.</p>
-                <p className="text-slate-500 text-sm mb-6">Recibirás el link de transmisión por WhatsApp y correo electrónico.</p>
-                <div className="flex justify-center gap-5 text-sm text-slate-500">
+                <h3 className="font-serif text-2xl font-bold text-gray-900 mb-3">¡Ya estás registrado!</h3>
+                <p className="text-gray-600 mb-2">Te esperamos el sábado 22 de agosto.</p>
+                <p className="text-gray-400 text-sm mb-6">Recibirás el link de transmisión por WhatsApp y correo electrónico.</p>
+                <div className="flex justify-center gap-5 text-sm text-gray-400">
                   <span className="flex items-center gap-1.5"><Youtube className="w-4 h-4 text-red-500" />YouTube</span>
                   <span className="flex items-center gap-1.5"><Facebook className="w-4 h-4 text-blue-400" />Facebook Live</span>
                 </div>
@@ -435,51 +435,51 @@ export default function CumbreDigital() {
             </FadeIn>
           ) : (
             <FadeIn>
-              <div className="bg-[#0B1F3A] border border-white/10 rounded-2xl p-6 md:p-8">
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm">
                 <form onSubmit={handleSubmit} className="space-y-5">
                   {/* Nombre */}
                   <div>
-                    <Label className="text-white/70 text-sm mb-1.5 block">
+                    <Label className="text-gray-700 text-sm mb-1.5 block">
                       Nombre completo <span className="text-primary">*</span>
                     </Label>
                     <Input value={formData.nombreCompleto}
                       onChange={(e) => setFormData({ ...formData, nombreCompleto: e.target.value })}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary h-11"
+                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-primary h-11"
                       placeholder="Tu nombre y apellido" required />
                   </div>
 
                   {/* WhatsApp */}
                   <div>
-                    <Label className="text-white/70 text-sm mb-1.5 block">
+                    <Label className="text-gray-700 text-sm mb-1.5 block">
                       WhatsApp <span className="text-primary">*</span>
                     </Label>
                     <div className="flex gap-2">
                       <div className="relative flex-shrink-0">
                         <select value={formData.countryCode}
                           onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                          className="appearance-none bg-white/5 border border-white/10 text-white text-sm rounded-md px-3 pr-8 h-11 focus:border-primary focus:outline-none cursor-pointer">
+                          className="appearance-none bg-white border border-gray-300 text-gray-900 text-sm rounded-md px-3 pr-8 h-11 focus:border-primary focus:outline-none cursor-pointer">
                           {COUNTRY_CODES.map((c, i) => (
-                            <option key={i} value={c.code} className="bg-[#0B1F3A] text-white">{c.label}</option>
+                            <option key={i} value={c.code}>{c.label}</option>
                           ))}
                         </select>
-                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/40 pointer-events-none" />
+                        <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
                       </div>
                       <Input type="tel" value={formData.whatsapp}
                         onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary h-11 flex-1"
+                        className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-primary h-11 flex-1"
                         placeholder="123 456 7890" required />
                     </div>
-                    <p className="text-white/30 text-xs mt-1.5">Usaremos este número para enviarte el link del evento.</p>
+                    <p className="text-gray-400 text-xs mt-1.5">Usaremos este número para enviarte el link del evento.</p>
                   </div>
 
                   {/* Email */}
                   <div>
-                    <Label className="text-white/70 text-sm mb-1.5 block">
+                    <Label className="text-gray-700 text-sm mb-1.5 block">
                       Correo electrónico <span className="text-primary">*</span>
                     </Label>
                     <Input type="email" value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary h-11"
+                      className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-400 focus:border-primary h-11"
                       placeholder="tu@correo.com" required />
                   </div>
 
@@ -495,7 +495,7 @@ export default function CumbreDigital() {
                     )}
                   </Button>
 
-                  <p className="text-white/30 text-xs text-center">
+                  <p className="text-gray-400 text-xs text-center">
                     Al registrarte aceptas recibir comunicaciones de Comprando América relacionadas con este evento.
                   </p>
                 </form>

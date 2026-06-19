@@ -97,7 +97,7 @@ const NETWORKING = "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBti
 const EDMUNDO_PORTRAIT = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800";
 const PANEL = "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920";
 const AERIAL = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
-const RUTA_PHOTO = "https://lh3.googleusercontent.com/d/1jmPjN24MUpLYCLu2uizThN6ej938xfD3=w1200";
+const RUTA_PHOTO = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_480,g_auto,q_auto,f_auto/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
 const INVEST_WEEK = "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200";
 const MIGRAR_PHOTO = "https://lh3.googleusercontent.com/d/1CqOlO-lELT7-uQhCI26MjP19ibLQu95N=w1200";
 
