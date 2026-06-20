@@ -498,8 +498,15 @@ export async function createLead(data: InsertLead): Promise<Lead | undefined> {
   console.log("[createLead] Params:", [nombreCompleto, whatsapp, email, fuente]);
 
   // Use mysql2 directly — Drizzle adds DEFAULT for auto/defaultNow cols which TiDB rejects
-  const [result] = await _pool.execute(insertSql, [nombreCompleto, whatsapp, email, fuente]);
-  const id = Number((result as any).insertId);
+  let result: any;
+  try {
+    [result] = await _pool.execute(insertSql, [nombreCompleto, whatsapp, email, fuente]);
+    console.log("[createLead] INSERT result:", JSON.stringify(result));
+  } catch (err: any) {
+    console.error("[createLead] ERROR:", err?.message, err?.code, err?.sqlState, err?.sqlMessage);
+    throw err;
+  }
+  const id = Number(result.insertId);
   const db = await getDb();
   const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
   return row.length > 0 ? row[0] : undefined;
