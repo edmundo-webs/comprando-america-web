@@ -5,24 +5,26 @@ import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, N
 import { ENV } from './_core/env';
 
 let _db: any = null;
+let _pool: mysql.Pool | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 // TiDB requires SSL connections.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      const pool = mysql.createPool({
+      _pool = mysql.createPool({
         uri: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: true },
         connectionLimit: 5,
       });
       // Test the connection to ensure it's not silently failing later
-      const conn = await pool.getConnection();
+      const conn = await _pool.getConnection();
       conn.release();
-      _db = drizzle(pool);
+      _db = drizzle(_pool);
     } catch (error) {
       console.error("[Database] Failed to connect:", error);
       _db = null;
+      _pool = null;
     }
   }
   return _db;
@@ -481,16 +483,19 @@ export async function updateSubscriberCategories(
 
 // ═══ CRM LEADS QUERIES ═══
 export async function createLead(data: InsertLead): Promise<Lead | undefined> {
-  const db = await getDb();
-  if (!db) {
+  await getDb(); // ensure _pool is initialized
+  if (!_pool) {
     console.warn("[Database] Cannot create lead: database not available");
     return undefined;
   }
   const { nombreCompleto, whatsapp, email, fuente = 'general' } = data;
-  const result = await db.execute(
-    sql`INSERT INTO ca_leads (nombreCompleto, whatsapp, email, fuente) VALUES (${nombreCompleto}, ${whatsapp}, ${email}, ${fuente})`
+  // Use mysql2 directly — Drizzle adds DEFAULT for auto/defaultNow cols which TiDB rejects
+  const [result] = await _pool.execute(
+    'INSERT INTO ca_leads (nombreCompleto, whatsapp, email, fuente) VALUES (?, ?, ?, ?)',
+    [nombreCompleto, whatsapp, email, fuente]
   );
-  const id = Number((result as any)[0].insertId);
+  const id = Number((result as any).insertId);
+  const db = await getDb();
   const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
   return row.length > 0 ? row[0] : undefined;
 }
