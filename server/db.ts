@@ -482,6 +482,37 @@ export async function updateSubscriberCategories(
 }
 
 // ═══ CRM LEADS QUERIES ═══
+
+let _crmPool: mysql.Pool | null = null;
+
+function getCrmPool(): mysql.Pool | null {
+  if (!_crmPool && process.env.CRM_DATABASE_URL) {
+    _crmPool = mysql.createPool({
+      uri: process.env.CRM_DATABASE_URL,
+      ssl: { rejectUnauthorized: true },
+      connectionLimit: 3,
+    });
+  }
+  return _crmPool;
+}
+
+async function syncToCrm(nombreCompleto: string, email: string, whatsapp: string): Promise<void> {
+  const pool = getCrmPool();
+  if (!pool) return;
+  const parts = nombreCompleto.trim().split(/\s+/);
+  const firstName = parts[0] ?? '';
+  const lastName = parts.slice(1).join(' ') ?? '';
+  try {
+    await pool.execute(
+      "INSERT INTO crm_contacts (first_name, last_name, email, whatsapp, source_id, status, created_by, lead_score_auto) VALUES (?, ?, ?, ?, NULL, 'nuevo', 1, 0)",
+      [firstName, lastName, email, whatsapp]
+    );
+    console.log("[createLead] CRM sync OK");
+  } catch (err: any) {
+    console.error("[createLead] CRM sync ERROR:", err?.message, err?.code);
+  }
+}
+
 export async function createLead(data: InsertLead): Promise<Lead | undefined> {
   await getDb(); // ensure _pool is initialized
   if (!_pool) {
@@ -491,7 +522,7 @@ export async function createLead(data: InsertLead): Promise<Lead | undefined> {
   const { nombreCompleto, whatsapp, email, fuente = 'general' } = data;
 
   const dbUrl = process.env.DATABASE_URL || "(not set)";
-  const maskedUrl = dbUrl.replace(/:([^:@]+)@/, ':****@'); // hide password
+  const maskedUrl = dbUrl.replace(/:([^:@]+)@/, ':****@');
   const insertSql = 'INSERT INTO ca_leads (nombreCompleto, whatsapp, email, fuente) VALUES (?, ?, ?, ?)';
   console.log("[createLead] DATABASE_URL:", maskedUrl);
   console.log("[createLead] SQL:", insertSql);
@@ -509,6 +540,10 @@ export async function createLead(data: InsertLead): Promise<Lead | undefined> {
   const id = Number(result.insertId);
   const db = await getDb();
   const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
+
+  // Mirror to CRM — fire-and-forget, never blocks the main response
+  syncToCrm(nombreCompleto, email, whatsapp).catch(() => {});
+
   return row.length > 0 ? row[0] : undefined;
 }
 
