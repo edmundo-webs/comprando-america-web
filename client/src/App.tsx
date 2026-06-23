@@ -37,6 +37,7 @@ import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
 import DiagnosticoPage from "./pages/DiagnosticoPage";
 import Home2Page from "./pages/Home2Page";
 import CumbreDigital from "./pages/CumbreDigital";
+import CumbreDigital2 from "./pages/CumbreDigital2";
 import Leads from "./pages/admin/Leads";
 
 function Router() {
@@ -71,6 +72,7 @@ function Router() {
       <Route path="/disclaimers" component={Disclaimers} />
       <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path="/cumbre-digital" component={CumbreDigital} />
+      <Route path="/cumbre-digital-2" component={CumbreDigital2} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
