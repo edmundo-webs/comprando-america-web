@@ -49,8 +49,7 @@ const PHOTOS = {
 const CONVERSATIONS = [
   {
     hora: "10:00 AM", num: "01",
-    photo: PHOTOS.edmundo, photoPos: "top center",
-    speakerLabel: "Edmundo Treviño",
+    speakers: [{ photo: PHOTOS.edmundo, name: "Edmundo Treviño" }],
     titulo: "De la Incertidumbre a la Oportunidad",
     sub: "Cómo construir tu próximo movimiento en Estados Unidos",
     desc: "Comprender cómo se crean las oportunidades reales en Estados Unidos.",
@@ -59,8 +58,7 @@ const CONVERSATIONS = [
   },
   {
     hora: "11:00 AM", num: "02",
-    photo: PHOTOS.tomas, photoPos: "top center",
-    speakerLabel: "Tomás Reséndez",
+    speakers: [{ photo: PHOTOS.tomas, name: "Tomás Reséndez" }],
     titulo: "Vivir, Invertir y Expandirte en EE.UU.",
     sub: "Las rutas reales para construir tu futuro",
     desc: "Conocer las rutas reales disponibles para empresarios e inversionistas que buscan construir su futuro en Estados Unidos.",
@@ -69,8 +67,10 @@ const CONVERSATIONS = [
   },
   {
     hora: "12:00 PM", num: "03",
-    photo: PHOTOS.edmundo, photoPos: "top center",
-    speakerLabel: "Edmundo Treviño · Diego",
+    speakers: [
+      { photo: PHOTOS.edmundo, name: "Edmundo Treviño" },
+      { photo: PHOTOS.diego,   name: "Diego Alcalá" },
+    ],
     titulo: "Pensar Como Inversionista",
     sub: "El criterio detrás de las buenas decisiones",
     desc: "Desarrollar el criterio que usan los inversionistas experimentados para evaluar oportunidades antes de comprometer capital.",
@@ -79,8 +79,7 @@ const CONVERSATIONS = [
   },
   {
     hora: "1:00 PM", num: "04",
-    photo: null, photoPos: "center",
-    speakerLabel: "Por confirmar",
+    speakers: [{ photo: null, name: "Por confirmar" }],
     titulo: "El Factor que Acelera Resultados",
     sub: "Lo que los empresarios exitosos hacen diferente",
     desc: "Aprender directamente de alguien que ya tomó las decisiones difíciles y construyó patrimonio en otro país.",
@@ -89,8 +88,10 @@ const CONVERSATIONS = [
   },
   {
     hora: "2:00 PM", num: "05",
-    photo: PHOTOS.diego, photoPos: "top center",
-    speakerLabel: "Diego · Edmundo",
+    speakers: [
+      { photo: PHOTOS.diego,   name: "Diego Alcalá" },
+      { photo: PHOTOS.edmundo, name: "Edmundo Treviño" },
+    ],
     titulo: "Del Interés a la Acción",
     sub: "Casos reales, oportunidades reales y próximos pasos",
     desc: "Analizar oportunidades reales con criterio, separando lo que genera valor de lo que solo suena bien.",
@@ -99,8 +100,10 @@ const CONVERSATIONS = [
   },
   {
     hora: "2:45 PM", num: "06",
-    photo: PHOTOS.edmundo, photoPos: "top center",
-    speakerLabel: "Edmundo · Diego",
+    speakers: [
+      { photo: PHOTOS.edmundo, name: "Edmundo Treviño" },
+      { photo: PHOTOS.diego,   name: "Diego Alcalá" },
+    ],
     titulo: "Tu Próximo Gran Paso",
     sub: "Cómo convertir claridad en acción",
     desc: "Traducir todo lo aprendido en decisiones concretas: qué conversaciones tener, qué preguntas hacerse y cómo avanzar.",
@@ -217,53 +220,74 @@ function GoldRule() {
   );
 }
 
+/* ─── Speaker photo slot (single half or full width) ─── */
+function SpeakerSlot({ spk, half }: { spk: { photo: string | null; name: string }; half: boolean }) {
+  return (
+    <div style={{ position: "relative", flex: half ? "0 0 50%" : "0 0 100%", overflow: "hidden" }}>
+      {spk.photo ? (
+        <img
+          src={spk.photo}
+          alt={spk.name}
+          className="cd-flyer-photo"
+          onError={(e) => {
+            const img = e.target as HTMLImageElement;
+            img.style.display = "none";
+            const ph = img.nextElementSibling as HTMLElement | null;
+            if (ph) ph.style.display = "flex";
+          }}
+        />
+      ) : null}
+      {/* Placeholder */}
+      <div className="cd-flyer-placeholder" style={{ display: spk.photo ? "none" : "flex" }}>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="0.8" opacity="0.4">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      {/* Per-slot gradient */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: `linear-gradient(to bottom,
+          rgba(6,20,40,0.05) 0%,
+          rgba(6,20,40,0.3) 55%,
+          rgba(6,20,40,0.82) 100%)`,
+      }}/>
+      {/* Speaker name at bottom of slot */}
+      <div style={{
+        position: "absolute", bottom: 10, left: 0, right: 0,
+        textAlign: "center", padding: "0 6px",
+      }}>
+        <div style={{
+          fontFamily: FD, fontSize: half ? "0.78rem" : "1.05rem",
+          color: "#fff", fontWeight: 700, lineHeight: 1.2,
+          textShadow: "0 1px 8px rgba(0,0,0,0.7)",
+        }}>
+          {spk.name}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Speaker Flyer Card ─── */
 function FlyerCard({ c }: { c: typeof CONVERSATIONS[0] }) {
+  const dual = c.speakers.length === 2;
   return (
     <div className="cd-flyer" style={{ background: NAVY_DEEP }}>
 
-      {/* Photo / Placeholder area */}
+      {/* Photo area — single or split */}
       <div style={{ position: "relative", overflow: "hidden" }}>
-        {c.photo ? (
-          <img
-            src={c.photo}
-            alt={c.speakerLabel}
-            className="cd-flyer-photo"
-            onError={(e) => {
-              const img = e.target as HTMLImageElement;
-              img.style.display = "none";
-              // show fallback placeholder when image fails
-              const ph = img.nextElementSibling as HTMLElement | null;
-              if (ph) ph.style.display = "flex";
-            }}
-          />
-        ) : null}
-        {/* Placeholder — visible only when photo is null or fails to load */}
-        <div
-          className="cd-flyer-placeholder"
-          style={{ display: c.photo ? "none" : "flex" }}
-        >
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="0.8" opacity="0.4">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
+        <div style={{ display: "flex", gap: dual ? 2 : 0 }}>
+          {c.speakers.map((spk, i) => (
+            <SpeakerSlot key={i} spk={spk} half={dual} />
+          ))}
         </div>
 
-        {/* Color overlay */}
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `linear-gradient(to bottom,
-            rgba(6,20,40,0.15) 0%,
-            rgba(6,20,40,0.25) 40%,
-            rgba(6,20,40,0.75) 80%,
-            ${NAVY_DEEP} 100%)`,
-        }}/>
-
-        {/* Large decorative number — background */}
+        {/* Decorative number overlay — spans full width */}
         <div style={{
           position: "absolute", bottom: -16, right: 12,
           fontFamily: FD, fontSize: "9rem", fontWeight: 900,
-          color: GOLD, opacity: 0.08, lineHeight: 1,
+          color: GOLD, opacity: 0.07, lineHeight: 1,
           userSelect: "none", letterSpacing: "-0.04em",
           pointerEvents: "none",
         }}>
@@ -272,40 +296,26 @@ function FlyerCard({ c }: { c: typeof CONVERSATIONS[0] }) {
 
         {/* Time badge — top left */}
         <div style={{
-          position: "absolute", top: 18, left: 18,
+          position: "absolute", top: 14, left: 14,
           background: GOLD, color: NAVY,
           fontFamily: FB, fontWeight: 700,
           fontSize: "0.62rem", letterSpacing: "0.12em",
           padding: "4px 10px", borderRadius: 2,
           textTransform: "uppercase",
+          zIndex: 2,
         }}>
           {c.hora}
         </div>
 
-        {/* Conversation number — top right */}
+        {/* Conversation counter — top right */}
         <div style={{
-          position: "absolute", top: 18, right: 18,
+          position: "absolute", top: 14, right: 14,
           fontFamily: FB, fontSize: "0.62rem", letterSpacing: "0.2em",
           color: "rgba(255,255,255,0.45)",
           textTransform: "uppercase",
+          zIndex: 2,
         }}>
           {c.num} / 06
-        </div>
-
-        {/* Speaker name — bottom left of photo */}
-        <div style={{ position: "absolute", bottom: 20, left: 20 }}>
-          <div style={{
-            fontFamily: FB, fontSize: "0.62rem", letterSpacing: "0.2em",
-            color: GOLD, textTransform: "uppercase", marginBottom: 5,
-          }}>
-            Conversación {c.num}
-          </div>
-          <div style={{
-            fontFamily: FD, fontSize: "1.05rem", color: "#fff",
-            fontWeight: 700, lineHeight: 1.2, textShadow: "0 1px 8px rgba(0,0,0,0.6)",
-          }}>
-            {c.speakerLabel}
-          </div>
         </div>
       </div>
 
