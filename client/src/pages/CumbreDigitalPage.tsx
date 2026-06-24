@@ -718,29 +718,30 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
           </div>
 
           {/* Flyer grid */}
-          {CONVERSATIONS.map((c) => <FlyerCard key={c.num} c={c} />)}
+          <div className="cd-flyer-grid">
+            {CONVERSATIONS.map((c) => <FlyerCard key={c.num} c={c} />)}
           </div>
 
           {/* CTA debajo del grid */}
           <div style={{ textAlign: "center", marginTop: 56 }}>
-          <button
-            className="cd-btn"
-            onClick={scrollToForm}
-            style={{
-              background: "transparent", color: GOLD,
-              fontFamily: FB, fontWeight: 600,
-              fontSize: "0.88rem", letterSpacing: "0.1em",
-              padding: "14px 36px", borderRadius: 3,
-              border: `1px solid ${GOLD}`,
-              cursor: "pointer", transition: "all 0.2s ease",
-              textTransform: "uppercase",
-            }}
-          >
-            Reservar lugar para las 6 conversaciones →
-          </button>
+            <button
+              className="cd-btn"
+              onClick={scrollToForm}
+              style={{
+                background: "transparent", color: GOLD,
+                fontFamily: FB, fontWeight: 600,
+                fontSize: "0.88rem", letterSpacing: "0.1em",
+                padding: "14px 36px", borderRadius: 3,
+                border: `1px solid ${GOLD}`,
+                cursor: "pointer", transition: "all 0.2s ease",
+                textTransform: "uppercase",
+              }}
+            >
+              Reservar lugar para las 6 conversaciones →
+            </button>
           </div>
 
-        </div>{/* end maxWidth container */}
+        </div>
       </section>
 
       {/* ══════════════════════════════════════════════
