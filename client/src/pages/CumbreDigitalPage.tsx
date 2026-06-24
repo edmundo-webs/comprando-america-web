@@ -223,16 +223,25 @@ function FlyerCard({ c }: { c: typeof CONVERSATIONS[0] }) {
             src={c.photo}
             alt={c.speakerLabel}
             className="cd-flyer-photo"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+            onError={(e) => {
+              const img = e.target as HTMLImageElement;
+              img.style.display = "none";
+              // show fallback placeholder when image fails
+              const ph = img.nextElementSibling as HTMLElement | null;
+              if (ph) ph.style.display = "flex";
+            }}
           />
-        ) : (
-          <div className="cd-flyer-placeholder">
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="0.8" opacity="0.4">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </div>
-        )}
+        ) : null}
+        {/* Placeholder — visible only when photo is null or fails to load */}
+        <div
+          className="cd-flyer-placeholder"
+          style={{ display: c.photo ? "none" : "flex" }}
+        >
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="0.8" opacity="0.4">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
 
         {/* Color overlay */}
         <div style={{
