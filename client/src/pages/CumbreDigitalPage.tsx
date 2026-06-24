@@ -126,11 +126,11 @@ const CSS = `
   .cd-grid5     { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
   .cd-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
 
-  /* Flyer grid — 2 cols desktop */
+  /* Flyer grid — 2 cols desktop, gap intencional */
   .cd-flyer-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2px;
+    gap: 28px;
   }
 
   /* Individual flyer card */
@@ -138,32 +138,36 @@ const CSS = `
     position: relative;
     overflow: hidden;
     cursor: default;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    border: 1px solid rgba(201,168,76,0.12);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
   }
   .cd-flyer:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px ${GOLD}55;
+    transform: translateY(-6px);
+    box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px ${GOLD}66;
+    border-color: ${GOLD}44;
     z-index: 2;
   }
   .cd-flyer-photo {
     width: 100%;
-    height: 260px;
+    height: 300px;
     object-fit: cover;
     object-position: top center;
     display: block;
-    filter: grayscale(15%) brightness(0.72) contrast(1.05);
-    transition: filter 0.4s ease, transform 0.4s ease;
+    filter: grayscale(20%) brightness(0.68) contrast(1.08) saturate(0.85);
+    transition: filter 0.45s ease, transform 0.45s ease;
   }
   .cd-flyer:hover .cd-flyer-photo {
-    filter: grayscale(0%) brightness(0.8) contrast(1.05);
-    transform: scale(1.03);
+    filter: grayscale(0%) brightness(0.78) contrast(1.05) saturate(1.1);
+    transform: scale(1.04);
   }
 
   /* Placeholder for speaker TBD */
   .cd-flyer-placeholder {
     width: 100%;
-    height: 260px;
-    background: radial-gradient(ellipse at 50% 60%, #1a3a5c 0%, ${NAVY_DEEP} 70%);
+    height: 300px;
+    background: radial-gradient(ellipse at 50% 55%, #1c3f66 0%, ${NAVY_DEEP} 68%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,7 +182,8 @@ const CSS = `
   @media (max-width: 767px) {
     .cd-section   { padding: 48px 20px; }
     .cd-grid2, .cd-grid2c, .cd-grid4, .cd-grid5,
-    .cd-checklist, .cd-flyer-grid { grid-template-columns: 1fr !important; gap: 2px; }
+    .cd-checklist { grid-template-columns: 1fr !important; gap: 20px; }
+    .cd-flyer-grid { grid-template-columns: 1fr !important; gap: 20px; }
     .cd-vdivider  { display: none !important; }
     .cd-hero-h1   { font-size: 1.7rem !important; }
     .cd-flyer-photo, .cd-flyer-placeholder { height: 220px; }
@@ -329,10 +334,9 @@ function FlyerCard({ c }: { c: typeof CONVERSATIONS[0] }) {
 
       {/* Content area */}
       <div style={{
-        padding: "22px 24px 28px",
-        borderLeft: `3px solid ${GOLD}`,
-        borderBottom: `1px solid ${DIVIDER}`,
-        borderRight: `1px solid ${DIVIDER}`,
+        padding: "24px 26px 28px",
+        background: NAVY_MID,
+        borderTop: `3px solid ${GOLD}`,
         display: "flex", flexDirection: "column", gap: 0,
       }}>
         {/* Title */}
@@ -692,31 +696,33 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       {/* ══════════════════════════════════════════════
           SECCIÓN DE SPEAKERS — 6 FLYER CARDS
       ══════════════════════════════════════════════ */}
-      <section style={{ background: NAVY_DEEP, padding: "80px 0" }}>
-        <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px", textAlign: "center", marginBottom: 56 }}>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Eyebrow>Lo que vas a escuchar ese día</Eyebrow>
+      <section style={{ background: NAVY, padding: "88px 32px" }}>
+        <div style={{ maxWidth: 1040, margin: "0 auto" }}>
+
+          {/* Section header */}
+          <div style={{ textAlign: "center", marginBottom: 64 }}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Eyebrow>Lo que vas a escuchar ese día</Eyebrow>
+            </div>
+            <h2 style={{
+              fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
+              color: "#fff", marginTop: 4, marginBottom: 16, lineHeight: 1.2,
+            }}>
+              Seis conversaciones estratégicas<br />
+              <span style={{ color: GOLD, fontStyle: "italic" }}>que pueden cambiar cómo decides.</span>
+            </h2>
+            <p style={{ fontSize: "0.9rem", color: SLATE, maxWidth: 460, margin: "0 auto" }}>
+              Empresarios e inversionistas que ya operan en EE.UU. — no teóricos,
+              gente que tomó las decisiones difíciles y aprendió de ellas.
+            </p>
           </div>
-          <h2 style={{
-            fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-            color: "#fff", marginTop: 4, marginBottom: 16, lineHeight: 1.2,
-          }}>
-            Seis conversaciones estratégicas<br />
-            <span style={{ color: GOLD, fontStyle: "italic" }}>que pueden cambiar cómo decides.</span>
-          </h2>
-          <p style={{ fontSize: "0.9rem", color: SLATE, maxWidth: 460, margin: "0 auto" }}>
-            Empresarios e inversionistas que ya operan en EE.UU. — no teóricos,
-            gente que tomó las decisiones difíciles y aprendió de ellas.
-          </p>
-        </div>
 
-        {/* Flyer grid — full width, sin padding lateral */}
-        <div className="cd-flyer-grid" style={{ maxWidth: 960, margin: "0 auto" }}>
+          {/* Flyer grid */}
           {CONVERSATIONS.map((c) => <FlyerCard key={c.num} c={c} />)}
-        </div>
+          </div>
 
-        {/* CTA debajo del grid */}
-        <div style={{ textAlign: "center", marginTop: 48, padding: "0 24px" }}>
+          {/* CTA debajo del grid */}
+          <div style={{ textAlign: "center", marginTop: 56 }}>
           <button
             className="cd-btn"
             onClick={scrollToForm}
@@ -732,7 +738,9 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
           >
             Reservar lugar para las 6 conversaciones →
           </button>
-        </div>
+          </div>
+
+        </div>{/* end maxWidth container */}
       </section>
 
       {/* ══════════════════════════════════════════════
