@@ -180,8 +180,15 @@ const CSS = `
     .cd-grid2, .cd-grid2c, .cd-grid4, .cd-grid5,
     .cd-checklist, .cd-flyer-grid { grid-template-columns: 1fr !important; gap: 2px; }
     .cd-vdivider  { display: none !important; }
-    .cd-hero-h1   { font-size: 2rem !important; }
+    .cd-hero-h1   { font-size: 1.7rem !important; }
     .cd-flyer-photo, .cd-flyer-placeholder { height: 220px; }
+    .cd-hero-grid { grid-template-columns: 1fr !important; }
+    .cd-hero-grid > div:first-child { min-height: 320px !important; }
+    .cd-hero-grid > div:first-child img { object-position: top center !important; }
+    .cd-hero-grid > div:first-child > div:first-of-type {
+      background: linear-gradient(to bottom, transparent 50%, #061428 100%) !important;
+    }
+    .cd-hero-grid > div:last-child { padding: 32px 24px 60px !important; }
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -453,129 +460,130 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       <section style={{
         position: "relative",
         background: NAVY_DEEP,
-        paddingTop: 120, paddingBottom: 80, paddingLeft: 24, paddingRight: 24,
-        textAlign: "center",
         overflow: "hidden",
+        minHeight: 620,
       }}>
         {/* Dot-grid texture */}
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
-          backgroundImage: `radial-gradient(circle, rgba(201,168,76,0.18) 1px, transparent 1px)`,
-          backgroundSize: "36px 36px",
-          opacity: 0.45,
+          backgroundImage: `radial-gradient(circle, rgba(201,168,76,0.15) 1px, transparent 1px)`,
+          backgroundSize: "36px 36px", opacity: 0.4, zIndex: 0,
         }}/>
-        {/* Radial glow */}
+
         <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          background: `radial-gradient(ellipse 80% 60% at 50% 30%, rgba(201,168,76,0.07) 0%, transparent 70%)`,
-        }}/>
+          position: "relative", zIndex: 1,
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          maxWidth: 1100, margin: "0 auto",
+        }} className="cd-hero-grid">
 
-        <div className="cd-wrap" style={{ position: "relative" }}>
-          <Eyebrow>Primera Cumbre Digital · Comprando América</Eyebrow>
-
-          {/* Gold horizontal rule */}
-          <div style={{
-            width: 40, height: 1,
-            background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`,
-            margin: "0 auto 32px",
-          }}/>
-
-          <h1 className="cd-hero-h1" style={{
-            fontFamily: FD,
-            fontSize: "clamp(2rem, 5vw, 3.8rem)",
-            fontWeight: 700, color: "#fff",
-            lineHeight: 1.15, marginTop: 0, marginBottom: 24,
-          }}>
-            Las decisiones que tomes en Estados Unidos<br />
-            durante los próximos años podrían definir<br />
-            <span style={{ color: GOLD }}>tu patrimonio durante las próximas décadas.</span>
-          </h1>
-
-          <p style={{
-            fontFamily: FB, fontSize: "1.1rem", color: OFF_WHITE,
-            lineHeight: 1.75, maxWidth: 580, margin: "0 auto 32px",
-          }}>
-            Una mañana intensiva para empresarios e inversionistas
-            que buscan construir, proteger y expandir su patrimonio
-            en Estados Unidos con mayor criterio, contexto y estrategia.
-          </p>
-
-          {/* Value block */}
-          <div style={{
-            background: "rgba(201,168,76,0.07)",
-            border: `1px solid ${DIVIDER}`,
-            borderLeft: `3px solid ${GOLD}`,
-            borderRadius: 4,
-            padding: "20px 28px",
-            maxWidth: 540, margin: "0 auto 40px",
-            textAlign: "left",
-            fontSize: "0.97rem", color: OFF_WHITE, lineHeight: 1.75,
-          }}>
-            Por primera vez abrimos esta cumbre sin costo y en vivo.<br />
-            El mismo nivel de expertos. El mismo contenido.<br />
-            <span style={{ color: GOLD, fontWeight: 500 }}>Ahora disponible para cualquier empresario serio.</span>
+          {/* ── Left: Edmundo photo ── */}
+          <div style={{ position: "relative", minHeight: 560, overflow: "hidden" }}>
+            <img
+              src={PHOTOS.edmundo}
+              alt="Edmundo Treviño"
+              style={{
+                width: "100%", height: "100%",
+                objectFit: "cover", objectPosition: "top center",
+                display: "block",
+                filter: "grayscale(10%) brightness(0.75) contrast(1.05)",
+              }}
+            />
+            {/* Fade right edge into NAVY_DEEP */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: `linear-gradient(to right, transparent 50%, ${NAVY_DEEP} 100%)`,
+            }}/>
+            {/* Fade bottom */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: `linear-gradient(to bottom, transparent 60%, ${NAVY_DEEP} 100%)`,
+            }}/>
           </div>
 
-          {/* Event data row */}
+          {/* ── Right: copy ── */}
           <div style={{
-            display: "flex", flexWrap: "wrap",
-            justifyContent: "center", gap: "16px 40px", marginBottom: 44,
+            padding: "100px 48px 80px 32px",
+            display: "flex", flexDirection: "column", justifyContent: "center",
           }}>
-            {[
-              {
-                icon: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                ),
-                text: "Sábado 22 de agosto, 2026",
-              },
-              {
-                icon: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.5">
-                    <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
-                  </svg>
-                ),
-                text: "10:00 AM Houston · 9:00 AM México",
-              },
-              {
-                icon: (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.5">
-                    <rect x="2" y="3" width="20" height="14" rx="2"/>
-                    <line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-                  </svg>
-                ),
-                text: "En vivo · YouTube + Facebook",
-              },
-            ].map((item, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "0.88rem", color: SLATE }}>
-                {item.icon}<span>{item.text}</span>
-              </div>
-            ))}
+            <Eyebrow>Primera Cumbre Digital · Comprando América</Eyebrow>
+
+            <h1 className="cd-hero-h1" style={{
+              fontFamily: FD,
+              fontSize: "clamp(1.7rem, 3.2vw, 2.8rem)",
+              fontWeight: 700, color: "#fff",
+              lineHeight: 1.2, marginTop: 0, marginBottom: 20,
+            }}>
+              Las decisiones que tomes en Estados Unidos durante los próximos años podrían definir{" "}
+              <span style={{ color: GOLD }}>tu patrimonio durante las próximas décadas.</span>
+            </h1>
+
+            <p style={{
+              fontFamily: FB, fontSize: "1rem", color: OFF_WHITE,
+              lineHeight: 1.75, marginTop: 0, marginBottom: 28,
+            }}>
+              Una mañana intensiva para empresarios e inversionistas que buscan construir, proteger
+              y expandir su patrimonio en Estados Unidos con mayor criterio, contexto y estrategia.
+            </p>
+
+            {/* Value block */}
+            <div style={{
+              background: "rgba(201,168,76,0.06)",
+              border: `1px solid ${DIVIDER}`,
+              borderLeft: `3px solid ${GOLD}`,
+              borderRadius: 3,
+              padding: "18px 22px",
+              marginBottom: 32,
+              fontSize: "0.92rem", color: OFF_WHITE, lineHeight: 1.8,
+            }}>
+              Por primera vez abrimos nuestra Cumbre de Inversiones al público.<br />
+              <span style={{ color: SLATE }}>El mismo nivel de expertos. El mismo nivel de contenido. La misma calidad.</span><br />
+              <span style={{ color: GOLD, fontWeight: 600 }}>Ahora en vivo y sin costo.</span>
+            </div>
+
+            {/* Event data */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
+              {[
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+                  text: "22 agosto 2026",
+                },
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>,
+                  text: "Houston 11 AM · México 10 AM",
+                },
+                {
+                  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
+                  text: "YouTube + Facebook",
+                },
+              ].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "0.85rem", color: SLATE }}>
+                  {item.icon}<span>{item.text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <div>
+              <button
+                className="cd-btn"
+                onClick={scrollToForm}
+                style={{
+                  background: GOLD, color: NAVY, fontFamily: FB, fontWeight: 700,
+                  fontSize: "0.88rem", letterSpacing: "0.12em",
+                  padding: "16px 40px", borderRadius: 3,
+                  border: "none", cursor: "pointer",
+                  transition: "background 0.2s ease",
+                  textTransform: "uppercase",
+                }}
+              >
+                Reservar mi lugar
+              </button>
+              <p style={{ fontSize: "0.75rem", color: SLATE, marginTop: 12, marginBottom: 0 }}>
+                Cupo ilimitado · Seguimiento exclusivo para registrados
+              </p>
+            </div>
           </div>
-
-          {/* CTA */}
-          <button
-            className="cd-btn"
-            onClick={scrollToForm}
-            style={{
-              background: GOLD, color: NAVY, fontFamily: FB, fontWeight: 700,
-              fontSize: "0.9rem", letterSpacing: "0.1em",
-              padding: "17px 44px", borderRadius: 3,
-              border: "none", cursor: "pointer",
-              transition: "background 0.2s ease",
-              textTransform: "uppercase",
-            }}
-          >
-            Reservar mi lugar sin costo
-          </button>
-
-          {/* Bottom line */}
-          <p style={{ fontSize: "0.78rem", color: SLATE, marginTop: 16, marginBottom: 0 }}>
-            Cupo ilimitado · Seguimiento exclusivo para registrados
-          </p>
         </div>
       </section>
 
