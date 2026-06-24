@@ -461,7 +461,9 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
         position: "relative",
         background: NAVY_DEEP,
         overflow: "hidden",
-        minHeight: 620,
+        height: "calc(100vh - 64px)",
+        minHeight: 520,
+        maxHeight: 820,
       }}>
         {/* Dot-grid texture */}
         <div style={{
@@ -474,53 +476,55 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
           position: "relative", zIndex: 1,
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
+          height: "100%",
           maxWidth: 1100, margin: "0 auto",
         }} className="cd-hero-grid">
 
-          {/* ── Left: Edmundo photo ── */}
-          <div style={{ position: "relative", minHeight: 560, overflow: "hidden" }}>
+          {/* ── Left: Edmundo editorial photo ── */}
+          <div style={{ position: "relative", overflow: "hidden", height: "100%" }}>
             <img
-              src={PHOTOS.edmundo}
+              src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439305/comprando-america/oSCNKGbVTMDrZSPm.jpg"
               alt="Edmundo Treviño"
               style={{
                 width: "100%", height: "100%",
                 objectFit: "cover", objectPosition: "top center",
                 display: "block",
-                filter: "grayscale(10%) brightness(0.75) contrast(1.05)",
+                filter: "grayscale(8%) brightness(0.72) contrast(1.05)",
               }}
             />
-            {/* Fade right edge into NAVY_DEEP */}
+            {/* Fade right */}
             <div style={{
               position: "absolute", inset: 0,
-              background: `linear-gradient(to right, transparent 50%, ${NAVY_DEEP} 100%)`,
+              background: `linear-gradient(to right, transparent 45%, ${NAVY_DEEP} 100%)`,
             }}/>
             {/* Fade bottom */}
             <div style={{
               position: "absolute", inset: 0,
-              background: `linear-gradient(to bottom, transparent 60%, ${NAVY_DEEP} 100%)`,
+              background: `linear-gradient(to bottom, transparent 65%, ${NAVY_DEEP} 100%)`,
             }}/>
           </div>
 
           {/* ── Right: copy ── */}
           <div style={{
-            padding: "100px 48px 80px 32px",
+            padding: "60px 44px 48px 28px",
             display: "flex", flexDirection: "column", justifyContent: "center",
+            overflowY: "auto",
           }}>
             <Eyebrow>Primera Cumbre Digital · Comprando América</Eyebrow>
 
             <h1 className="cd-hero-h1" style={{
               fontFamily: FD,
-              fontSize: "clamp(1.7rem, 3.2vw, 2.8rem)",
+              fontSize: "clamp(1.25rem, 2vw, 2rem)",
               fontWeight: 700, color: "#fff",
-              lineHeight: 1.2, marginTop: 0, marginBottom: 20,
+              lineHeight: 1.25, marginTop: 0, marginBottom: 16,
             }}>
               Las decisiones que tomes en Estados Unidos durante los próximos años podrían definir{" "}
               <span style={{ color: GOLD }}>tu patrimonio durante las próximas décadas.</span>
             </h1>
 
             <p style={{
-              fontFamily: FB, fontSize: "1rem", color: OFF_WHITE,
-              lineHeight: 1.75, marginTop: 0, marginBottom: 28,
+              fontFamily: FB, fontSize: "0.88rem", color: OFF_WHITE,
+              lineHeight: 1.7, marginTop: 0, marginBottom: 20,
             }}>
               Una mañana intensiva para empresarios e inversionistas que buscan construir, proteger
               y expandir su patrimonio en Estados Unidos con mayor criterio, contexto y estrategia.
@@ -532,9 +536,9 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               border: `1px solid ${DIVIDER}`,
               borderLeft: `3px solid ${GOLD}`,
               borderRadius: 3,
-              padding: "18px 22px",
-              marginBottom: 32,
-              fontSize: "0.92rem", color: OFF_WHITE, lineHeight: 1.8,
+              padding: "14px 18px",
+              marginBottom: 20,
+              fontSize: "0.82rem", color: OFF_WHITE, lineHeight: 1.75,
             }}>
               Por primera vez abrimos nuestra Cumbre de Inversiones al público.<br />
               <span style={{ color: SLATE }}>El mismo nivel de expertos. El mismo nivel de contenido. La misma calidad.</span><br />
@@ -542,22 +546,22 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
             </div>
 
             {/* Event data */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 24 }}>
               {[
                 {
-                  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+                  icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
                   text: "22 agosto 2026",
                 },
                 {
-                  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>,
+                  icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>,
                   text: "Houston 11 AM · México 10 AM",
                 },
                 {
-                  icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
+                  icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
                   text: "YouTube + Facebook",
                 },
               ].map((item, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "0.85rem", color: SLATE }}>
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.8rem", color: SLATE }}>
                   {item.icon}<span>{item.text}</span>
                 </div>
               ))}
@@ -570,8 +574,8 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
                 onClick={scrollToForm}
                 style={{
                   background: GOLD, color: NAVY, fontFamily: FB, fontWeight: 700,
-                  fontSize: "0.88rem", letterSpacing: "0.12em",
-                  padding: "16px 40px", borderRadius: 3,
+                  fontSize: "0.82rem", letterSpacing: "0.12em",
+                  padding: "14px 36px", borderRadius: 3,
                   border: "none", cursor: "pointer",
                   transition: "background 0.2s ease",
                   textTransform: "uppercase",
@@ -579,7 +583,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               >
                 Reservar mi lugar
               </button>
-              <p style={{ fontSize: "0.75rem", color: SLATE, marginTop: 12, marginBottom: 0 }}>
+              <p style={{ fontSize: "0.72rem", color: SLATE, marginTop: 10, marginBottom: 0 }}>
                 Cupo ilimitado · Seguimiento exclusivo para registrados
               </p>
             </div>
