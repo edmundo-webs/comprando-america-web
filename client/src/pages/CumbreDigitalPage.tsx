@@ -58,7 +58,7 @@ const CONVERSATIONS = [
   },
   {
     hora: "11:00 AM", num: "02",
-    speakers: [{ photo: PHOTOS.tomas, name: "Tomás Reséndez", photoPos: "center center" }],
+    speakers: [{ photo: PHOTOS.tomas, name: "Tomás Reséndez", photoPos: "top center" }],
     titulo: "Vivir, Invertir y Expandirte en EE.UU.",
     sub: "Las rutas reales para construir tu futuro",
     desc: "Conocer las rutas reales disponibles para empresarios e inversionistas que buscan construir su futuro en Estados Unidos.",
