@@ -20,7 +20,7 @@ const FB = "'Inter', system-ui, sans-serif";
 /* ─── Country codes ─── */
 const COUNTRY_CODES = [
   { code: "+52",  label: "🇲🇽 México (+52)" },
-  { code: "+1",   label: "🇺🇸 EE.UU. (+1)" },
+  { code: "+1",   label: "🇺🇸 Estados Unidos (+1)" },
   { code: "+57",  label: "🇨🇴 Colombia (+57)" },
   { code: "+34",  label: "🇪🇸 España (+34)" },
   { code: "+54",  label: "🇦🇷 Argentina (+54)" },
@@ -59,7 +59,7 @@ const CONVERSATIONS = [
   {
     hora: "11:00 AM", num: "02",
     speakers: [{ photo: PHOTOS.tomas, name: "Tomás Reséndez", photoPos: "top center" }],
-    titulo: "Vivir, Invertir y Expandirte en EE.UU.",
+    titulo: "Vivir, Invertir y Expandirte en Estados Unidos",
     sub: "Las rutas reales para construir tu futuro",
     desc: "Conocer las rutas reales disponibles para empresarios e inversionistas que buscan construir su futuro en Estados Unidos.",
     bullets: ["Comprender rutas disponibles.", "Evaluar opciones según objetivos.", "Relacionar migración y patrimonio."],
@@ -712,7 +712,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               <span style={{ color: GOLD, fontStyle: "italic" }}>que pueden cambiar cómo decides.</span>
             </h2>
             <p style={{ fontSize: "0.9rem", color: SLATE, maxWidth: 460, margin: "0 auto" }}>
-              Empresarios e inversionistas que ya operan en EE.UU. — no teóricos,
+              Empresarios e inversionistas que ya operan en Estados Unidos — no teóricos,
               gente que tomó las decisiones difíciles y aprendió de ellas.
             </p>
           </div>
@@ -809,7 +809,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
                   </svg>
                 ),
                 title: "Experiencia",
-                text: "Nuestros speakers han invertido, migrado y construido en EE.UU. No teorizan desde afuera.",
+                text: "Nuestros speakers han invertido, migrado y construido en Estados Unidos. No teorizan desde afuera.",
               },
               {
                 icon: (
