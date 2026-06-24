@@ -263,7 +263,7 @@ export default function EstructuraEmpresarial() {
                   { icon: Briefcase, title: "Operar un negocio", desc: "Estructura para facturar, contratar y crecer." },
                   { icon: Landmark, title: "Invertir en activos", desc: "Vehículos para bienes raíces y fondos." },
                   { icon: Shield, title: "Estructurar patrimonio", desc: "Protección y planificación sucesoria." },
-                  { icon: Users, title: "Expansión empresarial", desc: "Presencia en EE.UU. para empresas existentes." },
+                  { icon: Users, title: "Expansión empresarial", desc: "Presencia en Estados Unidos para empresas existentes." },
                 ].map((item, i) => (
                   <FadeIn key={i} delay={i * 0.05}>
                     <div className="flex items-start gap-4 bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md transition-all shadow-sm">
@@ -415,7 +415,7 @@ export default function EstructuraEmpresarial() {
               <h2 className="text-3xl md:text-4xl text-white text-center mb-12">Preguntas frecuentes</h2>
               <Accordion type="single" collapsible className="space-y-4">
                 {[
-                  { q: "¿Puedo abrir una LLC sin vivir en Estados Unidos?", a: "Sí. No necesitas residencia, visa ni ciudadanía para abrir una LLC. Miles de empresarios internacionales operan empresas en EE.UU. de forma remota. Solo necesitas la estructura correcta desde el inicio." },
+                  { q: "¿Puedo abrir una LLC sin vivir en Estados Unidos?", a: "Sí. No necesitas residencia, visa ni ciudadanía para abrir una LLC. Miles de empresarios internacionales operan empresas en Estados Unidos de forma remota. Solo necesitas la estructura correcta desde el inicio." },
                   { q: "¿Cuánto tarda el proceso?", a: "El registro de la LLC toma entre 5-15 días hábiles dependiendo del estado. El EIN se gestiona inmediatamente después. El proceso completo (LLC + EIN + documentación) generalmente se completa en 2-3 semanas." },
                   { q: "¿Qué incluye el servicio de $1,499?", a: "Incluye registro de LLC, Registered Agent por un año, solicitud de EIN, introducción bancaria, asistencia para crédito empresarial, Virtual Office opcional y acompañamiento durante todo el proceso. Todo en español." },
                   { q: "¿Texas o Florida? ¿Cuál me conviene?", a: "Depende de tu objetivo. Texas es ideal si buscas operar un negocio con ecosistema empresarial fuerte. Florida es mejor para inversiones, e-commerce y conexión con Latinoamérica. Ambos estados no tienen impuesto estatal sobre la renta. Si no estás seguro, nuestro equipo te asesora." },

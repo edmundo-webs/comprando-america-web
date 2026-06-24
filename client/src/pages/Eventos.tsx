@@ -183,9 +183,9 @@ export default function Eventos() {
 
                   <div className="space-y-3 mb-6">
                     {[
-                      "Visas, migración y caminos legales hacia EE.UU.",
+                      "Visas, migración y caminos legales hacia Estados Unidos",
                       "Bienes raíces e inversión desde Latinoamérica",
-                      "Cómo abrir y estructurar tu empresa en EE.UU.",
+                      "Cómo abrir y estructurar tu empresa en Estados Unidos",
                       "Estrategias reales de quienes ya lo lograron",
                     ].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
@@ -358,7 +358,7 @@ export default function Eventos() {
                   <p className="text-slate-400 text-lg leading-relaxed mb-6">Evento diseñado para empresarios que buscan entender cómo expandirse hacia Estados Unidos con estructura y estrategia.</p>
 
                   <div className="space-y-3 mb-8">
-                    {["Modelos de inversión probados", "Estructura empresarial en EE.UU.", "Oportunidades evaluadas", "Networking de alto nivel"].map((item, i) => (
+                    {["Modelos de inversión probados", "Estructura empresarial en Estados Unidos", "Oportunidades evaluadas", "Networking de alto nivel"].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                         <p className="text-slate-400 text-sm">{item}</p>
