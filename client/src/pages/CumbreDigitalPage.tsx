@@ -58,7 +58,7 @@ const CONVERSATIONS = [
   },
   {
     hora: "11:00 AM", num: "02",
-    speakers: [{ photo: PHOTOS.tomas, name: "Tomás Reséndez" }],
+    speakers: [{ photo: PHOTOS.tomas, name: "Tomás Reséndez", photoPos: "center center" }],
     titulo: "Vivir, Invertir y Expandirte en EE.UU.",
     sub: "Las rutas reales para construir tu futuro",
     desc: "Conocer las rutas reales disponibles para empresarios e inversionistas que buscan construir su futuro en Estados Unidos.",
@@ -221,7 +221,7 @@ function GoldRule() {
 }
 
 /* ─── Speaker photo slot (single half or full width) ─── */
-function SpeakerSlot({ spk, half }: { spk: { photo: string | null; name: string }; half: boolean }) {
+function SpeakerSlot({ spk, half }: { spk: { photo: string | null; name: string; photoPos?: string }; half: boolean }) {
   return (
     <div style={{ position: "relative", flex: half ? "0 0 50%" : "0 0 100%", overflow: "hidden" }}>
       {spk.photo ? (
@@ -229,6 +229,7 @@ function SpeakerSlot({ spk, half }: { spk: { photo: string | null; name: string 
           src={spk.photo}
           alt={spk.name}
           className="cd-flyer-photo"
+          style={spk.photoPos ? { objectPosition: spk.photoPos } : undefined}
           onError={(e) => {
             const img = e.target as HTMLImageElement;
             img.style.display = "none";
