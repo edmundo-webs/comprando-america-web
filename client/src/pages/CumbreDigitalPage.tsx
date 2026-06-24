@@ -53,8 +53,9 @@ const CONVERSATIONS = [
     speakerLabel: "Edmundo Treviño",
     titulo: "De la Incertidumbre a la Oportunidad",
     sub: "Cómo construir tu próximo movimiento en Estados Unidos",
-    desc: "La mayoría entra a Estados Unidos buscando oportunidades sin saber exactamente qué está buscando. Esta sesión abre con la pregunta que pocos se hacen: ¿cómo se crean realmente las oportunidades en el mercado estadounidense?",
-    bullets: ["Tendencias de oportunidad real en el mercado actual", "Cómo piensan quienes ya construyen en EE.UU.", "Marco mental para detectar oportunidades estratégicas"],
+    desc: "Comprender cómo se crean las oportunidades reales en Estados Unidos.",
+    bullets: ["Identificar tendencias.", "Detectar oportunidades estratégicas.", "Pensar con visión de largo plazo."],
+    badges: ["Empresarios", "Inversionistas"],
   },
   {
     hora: "11:00 AM", num: "02",
@@ -62,44 +63,49 @@ const CONVERSATIONS = [
     speakerLabel: "Tomás Reséndez",
     titulo: "Vivir, Invertir y Expandirte en EE.UU.",
     sub: "Las rutas reales para construir tu futuro",
-    desc: "Antes de elegir una ruta migratoria o de inversión, necesitas entender qué existe y para quién es cada opción. Esta sesión decodifica las alternativas disponibles hoy — sin tecnicismos innecesarios.",
-    bullets: ["Rutas migratorias para empresarios e inversionistas", "Cómo relacionar migración con patrimonio", "Evaluar opciones según tus objetivos reales"],
+    desc: "Conocer las rutas reales disponibles para empresarios e inversionistas que buscan construir su futuro en Estados Unidos.",
+    bullets: ["Comprender rutas disponibles.", "Evaluar opciones según objetivos.", "Relacionar migración y patrimonio."],
+    badges: ["Migración", "Patrimonio", "Inversionistas"],
   },
   {
     hora: "12:00 PM", num: "03",
     photo: PHOTOS.edmundo, photoPos: "top center",
-    speakerLabel: "Edmundo Treviño + Diego",
+    speakerLabel: "Edmundo Treviño · Diego",
     titulo: "Pensar Como Inversionista",
     sub: "El criterio detrás de las buenas decisiones",
-    desc: "Las malas inversiones raramente se deben a mala suerte. Se deben a criterios equivocados. Esta sesión expone el proceso mental que usan inversionistas experimentados para evaluar antes de comprometer capital.",
-    bullets: ["Criterios reales para evaluar oportunidades", "Señales de alerta antes de comprometer capital", "Decisiones con mayor confianza y menor riesgo"],
+    desc: "Desarrollar el criterio que usan los inversionistas experimentados para evaluar oportunidades antes de comprometer capital.",
+    bullets: ["Evaluar oportunidades.", "Reducir riesgos.", "Proteger patrimonio."],
+    badges: ["Inversionistas", "Patrimonio"],
   },
   {
     hora: "1:00 PM", num: "04",
     photo: null, photoPos: "center",
-    speakerLabel: "Speaker Invitado",
+    speakerLabel: "Por confirmar",
     titulo: "El Factor que Acelera Resultados",
     sub: "Lo que los empresarios exitosos hacen diferente",
-    desc: "No hay sustituto para la experiencia de alguien que ya tomó las decisiones difíciles y vivió sus consecuencias. Una perspectiva externa sobre lo que nadie te dice en un libro sobre construir patrimonio en otro país.",
-    bullets: ["Errores que otros ya cometieron por ti", "Marcos mentales de empresarios con trayectoria", "Las trampas más comunes del proceso de expansión"],
+    desc: "Aprender directamente de alguien que ya tomó las decisiones difíciles y construyó patrimonio en otro país.",
+    bullets: ["Aprender de experiencias reales.", "Evitar errores costosos.", "Adoptar nuevos marcos mentales."],
+    badges: ["Empresarios"],
   },
   {
     hora: "2:00 PM", num: "05",
     photo: PHOTOS.diego, photoPos: "top center",
-    speakerLabel: "Diego Alcalá + Edmundo",
+    speakerLabel: "Diego · Edmundo",
     titulo: "Del Interés a la Acción",
     sub: "Casos reales, oportunidades reales y próximos pasos",
-    desc: "Hay una gran diferencia entre lo que se promociona y lo que realmente genera valor. Esta sesión analiza oportunidades específicas con criterio real — no como pitch, sino como ejercicio de evaluación.",
-    bullets: ["Casos reales con contexto y detalle suficiente", "Separar oportunidades sólidas de promesas vacías", "Marco para evaluar cualquier oportunidad futura"],
+    desc: "Analizar oportunidades reales con criterio, separando lo que genera valor de lo que solo suena bien.",
+    bullets: ["Analizar oportunidades.", "Separar ruido de valor.", "Comprender casos reales."],
+    badges: ["Inversionistas", "Empresarios"],
   },
   {
     hora: "2:45 PM", num: "06",
     photo: PHOTOS.edmundo, photoPos: "top center",
-    speakerLabel: "Edmundo + Diego",
+    speakerLabel: "Edmundo · Diego",
     titulo: "Tu Próximo Gran Paso",
     sub: "Cómo convertir claridad en acción",
-    desc: "La información por sí sola no genera resultados. Esta sesión de cierre ayuda a cada asistente a traducir lo aprendido en decisiones concretas: qué conversaciones tener, qué preguntas hacerse.",
-    bullets: ["Tus próximos pasos concretos definidos", "Qué tipo de acompañamiento necesitas", "Cómo Comprando América sigue siendo parte del proceso"],
+    desc: "Traducir todo lo aprendido en decisiones concretas: qué conversaciones tener, qué preguntas hacerse y cómo avanzar.",
+    bullets: ["Definir próximos pasos.", "Identificar conversaciones necesarias.", "Construir plan de acción."],
+    badges: ["Empresarios", "Inversionistas", "Patrimonio"],
   },
 ];
 
@@ -309,26 +315,41 @@ function FlyerCard({ c }: { c: typeof CONVERSATIONS[0] }) {
         borderLeft: `3px solid ${GOLD}`,
         borderBottom: `1px solid ${DIVIDER}`,
         borderRight: `1px solid ${DIVIDER}`,
+        display: "flex", flexDirection: "column", gap: 0,
       }}>
+        {/* Title */}
         <h3 style={{
           fontFamily: FD, fontSize: "1.15rem", color: "#fff",
           marginTop: 0, marginBottom: 6, lineHeight: 1.2,
         }}>
           {c.titulo}
         </h3>
+
+        {/* Subtitle */}
         <p style={{
           fontSize: "0.8rem", color: GOLD, fontStyle: "italic",
-          marginTop: 0, marginBottom: 14,
+          marginTop: 0, marginBottom: 12,
         }}>
           {c.sub}
         </p>
+
+        {/* Description */}
         <p style={{
           fontSize: "0.84rem", color: OFF_WHITE, lineHeight: 1.7,
           marginTop: 0, marginBottom: 18,
         }}>
           {c.desc}
         </p>
-        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+
+        {/* Results */}
+        <div style={{
+          fontSize: "0.65rem", letterSpacing: "0.18em",
+          color: SLATE, textTransform: "uppercase",
+          marginBottom: 10, fontFamily: FB,
+        }}>
+          Al finalizar esta sesión:
+        </div>
+        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px" }}>
           {c.bullets.map((b, j) => (
             <li key={j} style={{
               display: "flex", alignItems: "flex-start", gap: 10,
@@ -338,6 +359,30 @@ function FlyerCard({ c }: { c: typeof CONVERSATIONS[0] }) {
             </li>
           ))}
         </ul>
+
+        {/* Ideal para badges */}
+        <div style={{ marginTop: "auto" }}>
+          <div style={{
+            fontSize: "0.62rem", letterSpacing: "0.15em",
+            color: SLATE, textTransform: "uppercase",
+            marginBottom: 8, fontFamily: FB,
+          }}>
+            Ideal para:
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {c.badges.map((badge, j) => (
+              <span key={j} style={{
+                fontFamily: FB, fontSize: "0.65rem",
+                letterSpacing: "0.1em", textTransform: "uppercase",
+                color: GOLD, border: `1px solid ${GOLD}44`,
+                padding: "3px 9px", borderRadius: 2,
+                background: `${GOLD}0D`,
+              }}>
+                {badge}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
