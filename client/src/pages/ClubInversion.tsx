@@ -315,7 +315,7 @@ export default function ClubInversion() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
                 {[
                   { title: "Deal Finding", desc: "Programa educativo de 4 módulos para detectar, evaluar, operar y escalar negocios." },
-                  { title: "Americaniza tu Empresa", desc: "Curso completo de +70 videos grabados para operar en EE.UU." },
+                  { title: "Americaniza tu Empresa", desc: "Curso completo de +70 videos grabados para operar en Estados Unidos" },
                   { title: "Asamblea de Miembros", desc: "Archivo completo de todas las sesiones mensuales." },
                   { title: "Cumbre de Emprendimiento", desc: "Grabaciones de todas las cumbres presenciales." },
                   { title: "Deal Day", desc: "Historial de sesiones de oportunidades de inversión presentadas." },

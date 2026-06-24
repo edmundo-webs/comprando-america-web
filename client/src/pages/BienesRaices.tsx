@@ -40,7 +40,7 @@ const PAGE_SEO = {
   title: "Bienes Ra\u00edces en Estados Unidos | Inversi\u00f3n Inmobiliaria | Comprando Am\u00e9rica",
   description: "Inversi\u00f3n inmobiliaria en Estados Unidos desde $100,000 USD. Oportunidades filtradas con estructura legal y fiscal.",
   path: "/bienes-raices-en-usa",
-  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfPuedo comprar propiedad en EE.UU. siendo extranjero?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. Con una LLC puedes adquirir bienes ra\u00edces sin necesidad de visa o residencia. La estructura protege tu inversi\u00f3n y facilita la operaci\u00f3n."}}, {"@type": "Question", "name": "\u00bfQu\u00e9 impuestos pago por bienes ra\u00edces en USA?", "acceptedAnswer": {"@type": "Answer", "text": "Depende del estado y tipo de propiedad. Incluye property tax anual, impuesto sobre la renta por rentas y posible FIRPTA al vender. Un CPA especializado estructura esto para ti."}}]},
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfPuedo comprar propiedad en Estados Unidos siendo extranjero?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. Con una LLC puedes adquirir bienes ra\u00edces sin necesidad de visa o residencia. La estructura protege tu inversi\u00f3n y facilita la operaci\u00f3n."}}, {"@type": "Question", "name": "\u00bfQu\u00e9 impuestos pago por bienes ra\u00edces en Estados Unidos?", "acceptedAnswer": {"@type": "Answer", "text": "Depende del estado y tipo de propiedad. Incluye property tax anual, impuesto sobre la renta por rentas y posible FIRPTA al vender. Un CPA especializado estructura esto para ti."}}]},
 };
 
 const WA_MSG = "Hola, me interesa invertir en bienes raíces en Estados Unidos.";
@@ -117,7 +117,7 @@ export default function BienesRaices() {
               <div>
                 <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Edmundo Treviño</p>
                 <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
-                  El mercado inmobiliario en EE.UU. sigue siendo una de las mejores formas de proteger y hacer crecer tu capital
+                  El mercado inmobiliario en Estados Unidos sigue siendo una de las mejores formas de proteger y hacer crecer tu capital
                 </h2>
                 <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
                   En este video, Edmundo analiza por qué los inversionistas latinos están volteando a ver a Estados Unidos como destino de inversión y cómo estructurar tu entrada al mercado de forma inteligente.
@@ -146,7 +146,7 @@ export default function BienesRaices() {
         </div>
       </section>
 
-      {/* ═══ 3. POR QUÉ EE.UU. — navy ═══ */}
+      {/* ═══ 3. POR QUÉ Estados Unidos — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <FadeIn>

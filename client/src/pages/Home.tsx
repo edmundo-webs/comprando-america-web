@@ -82,8 +82,8 @@ const PAGE_SEO = {
     "@type": "FAQPage",
     "mainEntity": [
       { "@type": "Question", "name": "¿Cómo invertir en Estados Unidos desde México?", "acceptedAnswer": { "@type": "Answer", "text": "Con Comprando América puedes invertir desde $100,000 USD a través de una LLC en Texas o Florida, con estructura legal, fiscal y acompañamiento para bienes raíces o adquisición de negocios." } },
-      { "@type": "Question", "name": "¿Qué es la visa E-2 de inversionista?", "acceptedAnswer": { "@type": "Answer", "text": "La visa E-2 permite a inversionistas extranjeros vivir y trabajar en EE.UU. operando un negocio real. Requiere inversión sustancial (desde $150,000 USD) y un plan de negocios aprobado por USCIS." } },
-      { "@type": "Question", "name": "¿Necesito vivir en Estados Unidos para invertir?", "acceptedAnswer": { "@type": "Answer", "text": "No. Puedes proteger tu patrimonio invirtiendo en dólares con una LLC y cuenta bancaria en EE.UU. sin necesidad de residir o migrar." } },
+      { "@type": "Question", "name": "¿Qué es la visa E-2 de inversionista?", "acceptedAnswer": { "@type": "Answer", "text": "La visa E-2 permite a inversionistas extranjeros vivir y trabajar en Estados Unidos operando un negocio real. Requiere inversión sustancial (desde $150,000 USD) y un plan de negocios aprobado por USCIS." } },
+      { "@type": "Question", "name": "¿Necesito vivir en Estados Unidos para invertir?", "acceptedAnswer": { "@type": "Answer", "text": "No. Puedes proteger tu patrimonio invirtiendo en dólares con una LLC y cuenta bancaria en Estados Unidos sin necesidad de residir o migrar." } },
       { "@type": "Question", "name": "¿Qué incluye el club de inversión de Comprando América?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías, eventos presenciales VIP, conversaciones exclusivas con inversionistas activos y la Mesa de Dueños — comunidad privada de evaluación." } },
       { "@type": "Question", "name": "¿Es mejor invertir en Texas o Florida?", "acceptedAnswer": { "@type": "Answer", "text": "Depende de tu objetivo. Texas ofrece protección patrimonial fuerte y sin impuesto estatal sobre la renta. Florida tiene ventajas para bienes raíces y clima favorable. Analizamos tu caso específico." } }
     ]
@@ -137,14 +137,14 @@ function EdmundoSection() {
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Edmundo Treviño</h2>
               <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-6">Fundador y CEO · Comprando América</p>
               <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
-                Empresario serial con más de dos décadas de experiencia operando entre México y Estados Unidos. Fundador y CEO de 9 empresas activas en EE.UU.
+                Empresario serial con más de dos décadas de experiencia operando entre México y Estados Unidos. Fundador y CEO de 9 empresas activas en Estados Unidos
               </p>
               <div className="space-y-3 mb-8">
                 {[
                   "MBA en Economía Industrial",
                   "Maestría en Sistema Fiscal en Estados Unidos",
                   "+20 años en comercio internacional",
-                  "Más de 8 empresas operando en EE.UU. y México",
+                  "Más de 8 empresas operando en Estados Unidos y México",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
@@ -207,7 +207,7 @@ function EdmundoSection() {
                         <h4 className="text-[#0B1F3A] font-semibold text-sm">Formación Académica</h4>
                       </div>
                       <div className="space-y-2 pl-7">
-                        {["MBA en Economía Industrial", "Maestría en Sistema Fiscal en EE.UU.", "Formación continua en inversión inmobiliaria y corporativa"].map((item, i) => (
+                        {["MBA en Economía Industrial", "Maestría en Sistema Fiscal en Estados Unidos", "Formación continua en inversión inmobiliaria y corporativa"].map((item, i) => (
                           <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
                         ))}
                       </div>
@@ -219,7 +219,7 @@ function EdmundoSection() {
                         <h4 className="text-[#0B1F3A] font-semibold text-sm">Empresas y Operaciones</h4>
                       </div>
                       <div className="space-y-2 pl-7">
-                        {["9+ empresas activas en EE.UU. y México", "Transporte, servicios financieros, bienes raíces", "Consultoría estratégica para inversionistas latinos", "50+ LLCs estructuradas para miembros de la comunidad"].map((item, i) => (
+                        {["9+ empresas activas en Estados Unidos y México", "Transporte, servicios financieros, bienes raíces", "Consultoría estratégica para inversionistas latinos", "50+ LLCs estructuradas para miembros de la comunidad"].map((item, i) => (
                           <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
                         ))}
                       </div>

@@ -44,7 +44,7 @@ const PAGE_SEO = {
 const episodes = [
   { title: "VISA E-1 de COMERCIANTE | La Visa que NADIE conoce", videoId: "iFx3QusSR90", duration: "40:09" },
   { title: "BRRRR vs. Flipping: ¿Cuál es la mejor estrategia?", videoId: "asOMFCvUZNc", duration: "25:16" },
-  { title: "Brian Tracy: ¿Quieres invertir en EE.UU.?", videoId: "HAZVutSO7cI", duration: "~25:00" },
+  { title: "Brian Tracy: ¿Quieres invertir en Estados Unidos?", videoId: "HAZVutSO7cI", duration: "~25:00" },
   { title: "Deberías COMPRAR un negocio en Estados Unidos", videoId: "VZH2JzhVaCk", duration: "~35:00" },
   { title: "¿Cuánto dinero necesitas para la visa E2?", videoId: "MVweDe87IEA", duration: "35:01" },
   { title: "Impuestos en la era Trump: Nueva reforma del ISR", videoId: "aZwXyxaEWKc", duration: "20:03" },
@@ -345,7 +345,7 @@ export default function Recursos() {
                 {[
                   { title: "Club de Inversión", sub: "Comunidad privada", href: "/membresia" },
                   { title: "Oportunidades", sub: "Acceso filtrado", href: "/oportunidades-de-inversion-en-estados-unidos" },
-                  { title: "Estructura", sub: "LLC en EE.UU.", href: "/estructura-de-inversion-en-usa" },
+                  { title: "Estructura", sub: "LLC en Estados Unidos", href: "/estructura-de-inversion-en-usa" },
                 ].map((card, i) => (
                   <a key={i} href={card.href}>
                     <div className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 text-center">

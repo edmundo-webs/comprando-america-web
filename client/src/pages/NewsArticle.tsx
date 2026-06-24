@@ -13,27 +13,27 @@ import {
 const CTA_CONFIG: Record<string, { title: string; description: string; buttonText: string; link: string; icon: React.ReactNode }> = {
   "visas-migracion": {
     title: "¿Estás considerando migrar a Estados Unidos?",
-    description: "En Comprando América te asesoramos con el proceso de Visa E-2 de inversionista. Nuestro equipo de expertos te guía paso a paso para que logres tu objetivo de vivir y trabajar legalmente en USA.",
+    description: "En Comprando América te asesoramos con el proceso de Visa E-2 de inversionista. Nuestro equipo de expertos te guía paso a paso para que logres tu objetivo de vivir y trabajar legalmente en Estados Unidos.",
     buttonText: "Conoce la Visa E-2",
     link: "/visa-e2-inversionista-usa",
     icon: <Plane className="w-6 h-6" />,
   },
   "economia-finanzas": {
-    title: "¿Quieres proteger tu patrimonio invirtiendo en USA?",
+    title: "¿Quieres proteger tu patrimonio invirtiendo en Estados Unidos?",
     description: "Únete a nuestra comunidad de inversionistas y accede a oportunidades exclusivas de inversión en Estados Unidos. Te ayudamos a diversificar tu portafolio con criterio y estructura.",
     buttonText: "Conoce el Club de Inversión",
     link: "/membresia",
     icon: <TrendingUp className="w-6 h-6" />,
   },
   "bienes-raices": {
-    title: "¿Te interesa invertir en bienes raíces en USA?",
+    title: "¿Te interesa invertir en bienes raíces en Estados Unidos?",
     description: "Accede a oportunidades de inversión inmobiliaria filtradas por nuestros expertos. Desde $100,000 USD, con estructura legal, fiscal y acompañamiento estratégico.",
     buttonText: "Ver Oportunidades",
     link: "/bienes-raices-en-usa",
     icon: <Building2 className="w-6 h-6" />,
   },
   "llc-negocios": {
-    title: "¿Necesitas estructurar tu inversión en USA?",
+    title: "¿Necesitas estructurar tu inversión en Estados Unidos?",
     description: "Te ayudamos a crear tu LLC, abrir cuentas bancarias y estructurar tu inversión de forma correcta desde el primer día. Evita errores costosos con nuestra asesoría.",
     buttonText: "Estructura tu Inversión",
     link: "/estructura-de-inversion-en-usa",
