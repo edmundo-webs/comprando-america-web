@@ -497,6 +497,122 @@ function Screen5({ onDone }: { onDone: () => void }) {
   );
 }
 
+/* ─── SCREEN 6 — Contact form ─── */
+function IconUser({ color = GOLD }: { color?: string }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+function IconPhone({ color = GOLD }: { color?: string }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.86 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+    </svg>
+  );
+}
+function IconMail({ color = GOLD }: { color?: string }) {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" />
+    </svg>
+  );
+}
+
+type ContactData = { nombre: string; whatsapp: string; email: string };
+
+function Screen6Contact({ onNext }: { onNext: (data: ContactData) => void }) {
+  const [form, setForm] = useState<ContactData>({ nombre: "", whatsapp: "", email: "" });
+  const [errors, setErrors] = useState<Partial<ContactData>>({});
+  const [focused, setFocused] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  function validate() {
+    const e: Partial<ContactData> = {};
+    if (!form.nombre.trim()) e.nombre = "Tu nombre es necesario";
+    if (!form.whatsapp.trim() || form.whatsapp.replace(/\D/g, "").length < 7) e.whatsapp = "Ingresa un número válido";
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Ingresa un correo válido";
+    return e;
+  }
+
+  function handleSubmit() {
+    const e = validate();
+    if (Object.keys(e).length > 0) { setErrors(e); return; }
+    setSubmitting(true);
+    // Small delay for perceived processing
+    setTimeout(() => onNext(form), 600);
+  }
+
+  function field(id: keyof ContactData, label: string, placeholder: string, icon: JSX.Element, type = "text") {
+    const isFoc = focused === id;
+    const hasErr = !!errors[id];
+    return (
+      <div style={{ marginBottom: "20px" }}>
+        <label style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: hasErr ? "#E05C5C" : isFoc ? GOLD : "#6A8FAF", textTransform: "uppercase", marginBottom: "8px", transition: "color 0.2s" }}>
+          {icon} {label}
+        </label>
+        <input
+          type={type}
+          value={form[id]}
+          placeholder={placeholder}
+          onFocus={() => { setFocused(id); setErrors(prev => ({ ...prev, [id]: undefined })); }}
+          onBlur={() => setFocused(null)}
+          onChange={e => setForm(prev => ({ ...prev, [id]: e.target.value }))}
+          style={{ width: "100%", padding: "14px 16px", background: NAVY_CARD, border: `1.5px solid ${hasErr ? "#E05C5C" : isFoc ? GOLD : NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "15px", outline: "none", transition: "border-color 0.2s", boxSizing: "border-box" }}
+        />
+        {hasErr && <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#E05C5C", marginTop: "5px", marginLeft: "2px" }}>{errors[id]}</p>}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
+      <div style={{ width: "100%", maxWidth: "520px" }}>
+        {/* Icon */}
+        <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: `${GOLD}18`, border: `1.5px solid ${GOLD}50`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "28px" }}>
+          <IconCompass color={GOLD} />
+        </div>
+
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.2 }}>
+          Tu ruta está lista.<br />
+          <em style={{ color: GOLD_LIGHT, fontStyle: "italic" }}>¿A quién se la enviamos?</em>
+        </h2>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.7 }}>
+          Ingresa tus datos para recibir tu perfil y ruta estratégica personalizada.
+        </p>
+
+        {/* Form */}
+        <div>
+          {field("nombre", "Nombre", "Tu nombre completo", <IconUser />, "text")}
+          {field("whatsapp", "WhatsApp", "+52 55 1234 5678", <IconPhone />, "tel")}
+          {field("email", "Correo electrónico", "tu@correo.com", <IconMail />, "email")}
+        </div>
+
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", marginBottom: "24px", lineHeight: 1.6 }}>
+          Tu información es confidencial. No compartimos datos con terceros.
+        </p>
+
+        <motion.button
+          onClick={handleSubmit}
+          disabled={submitting}
+          animate={{ opacity: submitting ? 0.7 : 1 }}
+          style={{ width: "100%", padding: "16px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "10px", cursor: submitting ? "wait" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+          {submitting ? (
+            <>
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                style={{ width: "16px", height: "16px", borderRadius: "50%", border: `2px solid ${NAVY}40`, borderTopColor: NAVY }} />
+              Procesando...
+            </>
+          ) : (
+            <>Ver mi perfil estratégico <IconRight color={NAVY} /></>
+          )}
+        </motion.button>
+      </div>
+    </div>
+  );
+}
+
 /* ─── METRO LINE ─── */
 const METRO_STATIONS = ["Claridad", "Comunidad", "Estructura", "Vehículos", "Ejecución"];
 function MetroLine() {
@@ -1066,6 +1182,7 @@ export default function NuevoHome() {
   const [screen, setScreen] = useState(1);
   const [showMain, setShowMain] = useState(false);
   const [objetivo, setObjetivo] = useState<string | null>(null);
+  const [contactData, setContactData] = useState<ContactData | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const [activeNav, setActiveNav] = useState("ruta");
 
@@ -1080,9 +1197,10 @@ export default function NuevoHome() {
   function goScreen(n: number) { setScreen(n); window.scrollTo({ top: 0, behavior: "instant" }); }
 
   function handleBack() {
-    // From result (6) skip the loading screen and go back to priorities (4)
-    const prev = screen === 6 ? 4 : screen - 1;
-    // If going back to screen 1, clear the selected objective so the user can choose freely
+    // Screen 7 (result) → 6 (contact form) to fix data if needed
+    // Screen 6 (contact) → 4 (priorities), skipping the loading animation
+    // Screen 5 (loading) → no back (auto-advancing)
+    const prev = screen === 7 ? 6 : screen === 6 ? 4 : screen - 1;
     if (prev === 1) setObjetivo(null);
     goScreen(prev);
   }
@@ -1110,8 +1228,13 @@ export default function NuevoHome() {
               {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={() => goScreen(4)} /></motion.div>}
               {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen4 onNext={() => goScreen(5)} /></motion.div>}
               {screen === 5 && <motion.div key="s5" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5 onDone={() => goScreen(6)} /></motion.div>}
-              {screen === 6 && perfil && (
+              {screen === 6 && (
                 <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
+                  <Screen6Contact onNext={(data) => { setContactData(data); goScreen(7); }} />
+                </motion.div>
+              )}
+              {screen === 7 && perfil && (
+                <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
                   <ResultScreen perfil={perfil} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
                 </motion.div>
               )}
@@ -1132,7 +1255,7 @@ export default function NuevoHome() {
         )}
       </AnimatePresence>
 
-      {(screen >= 2 || showMain) && <WhereAmIButton onClick={() => setPanelOpen(true)} />}
+      {(screen >= 2 && screen !== 6 || showMain) && <WhereAmIButton onClick={() => setPanelOpen(true)} />}
       <WhereAmIPanel open={panelOpen} onClose={() => setPanelOpen(false)} screen={screen} objetivo={objetivo} perfil={perfil} />
     </div>
   );
