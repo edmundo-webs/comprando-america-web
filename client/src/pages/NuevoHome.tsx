@@ -115,6 +115,50 @@ const BIBLIOTECA = [
   { tipo: "guia", titulo: "Las 5 estructuras más usadas por inversionistas latinos", meta: "8 min", cat: "Estructura" },
 ];
 
+/* ─── Vehicle master data + ranking ─── */
+type VehicleEntry = {
+  id: string;
+  nombre: string;
+  frase: string;
+  ticketMin: number; // in thousands USD, 0 = no min / consultar
+  ticketLabel: string;
+  horizonte: string;
+  participacion: string[];
+  objetivos: string[];
+  prioridades: string[];
+};
+
+const VEHICLE_DATA: VehicleEntry[] = [
+  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"] },
+  { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"] },
+  { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"] },
+  { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"] },
+  { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", ticketMin: 150, ticketLabel: "$150k+", horizonte: "Largo plazo", participacion: ["supervisar", "activo"], objetivos: ["patrimonio", "familia", "ingresos"], prioridades: ["apreciacion", "proteccion", "flujo"] },
+  { id: "estructura-llc", nombre: "Estructura LLC", frase: "Entidad legal para operar y proteger activos en USA", ticketMin: 5, ticketLabel: "$5k", horizonte: "Corto plazo", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["empresa", "familia", "patrimonio", "ingresos"], prioridades: ["proteccion", "crecimiento", "migracion"] },
+  { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["activo", "supervisar"], objetivos: ["empresa"], prioridades: ["crecimiento", "acceso", "flujo"] },
+  { id: "adquisiciones", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", ticketMin: 500, ticketLabel: "$500k+", horizonte: "6-12 meses", participacion: ["activo"], objetivos: ["empresa"], prioridades: ["crecimiento", "flujo"] },
+  { id: "plan-migratorio", nombre: "Plan Migratorio", frase: "Residencia con base en estructura de inversión", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["familia"], prioridades: ["migracion", "proteccion"] },
+  { id: "diagnostico-personalizado", nombre: "Diagnóstico Personalizado", frase: "Claridad estratégica antes de decidir", ticketMin: 0, ticketLabel: "Gratuito", horizonte: "Inmediato", participacion: ["nosc", "no-operar", "supervisar", "activo"], objetivos: ["explorar", "patrimonio", "ingresos", "empresa", "familia"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"] },
+];
+
+const CAPITAL_MAP: Record<string, number> = {
+  "menos-50k": 50, "50k-100k": 100, "100k-250k": 250, "250k-500k": 500, "mas-500k": 999,
+};
+
+function rankVehicles(params: { objetivo: string; participacion: string; capital: string; prioridades: string[] }) {
+  const userCapital = CAPITAL_MAP[params.capital] ?? 0;
+  return VEHICLE_DATA.map(v => {
+    let score = 0;
+    if (v.objetivos.includes(params.objetivo)) score += 30;
+    if (v.ticketMin === 0 || userCapital >= v.ticketMin) score += 25;
+    if (v.participacion.includes(params.participacion)) score += 20;
+    const prioMatches = params.prioridades.filter(p => v.prioridades.includes(p)).length;
+    score += prioMatches * 12;
+    const pct = Math.min(99, score);
+    return { ...v, score, pct };
+  }).sort((a, b) => b.score - a.score);
+}
+
 const DIAGNOSTICO_RESPUESTAS: Record<string, string> = {
   patrimonio: "Tu siguiente paso es entender la estructura correcta para tu patrimonio. Recomendamos comenzar con una evaluación de Estructura LLC y Victory Capital.",
   invertir: "Tu siguiente paso es explorar Victory Capital o Section 8, según tu horizonte y nivel de participación deseado.",
@@ -252,7 +296,7 @@ const LOGO_URL = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438699/
 
 /* ─── Flow top bar — logo + back button ─── */
 function FlowTopBar({ screen, onBack }: { screen: number; onBack: () => void }) {
-  const canGoBack = screen >= 2 && screen !== 5;
+  const canGoBack = screen >= 2 && screen !== 6;
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 80, padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: `linear-gradient(to bottom, ${NAVY}E8 0%, ${NAVY}A0 70%, transparent 100%)`, pointerEvents: "none" }}>
       {/* Logo */}
@@ -347,7 +391,7 @@ function Screen2({ onNext }: { onNext: (id: string) => void }) {
   return (
     <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
       <div style={{ width: "100%", maxWidth: "600px" }}>
-        <StepIndicator current={2} total={4} />
+        <StepIndicator current={2} total={5} />
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "12px" }}>Entendido.</p>
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "12px", lineHeight: 1.25 }}>
           ¿Qué tan involucrado deseas estar?
@@ -387,7 +431,7 @@ function Screen3({ onNext }: { onNext: (v: string) => void }) {
   return (
     <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
       <div style={{ width: "100%", maxWidth: "600px" }}>
-        <StepIndicator current={3} total={4} />
+        <StepIndicator current={3} total={5} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "12px" }}>¿Qué horizonte imaginas?</h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "64px" }}>¿En cuánto tiempo esperas ver resultados concretos de tu inversión?</p>
         <div style={{ position: "relative", paddingBottom: "50px" }}>
@@ -417,7 +461,59 @@ function Screen3({ onNext }: { onNext: (v: string) => void }) {
   );
 }
 
-/* ─── SCREEN 4 (updated options) ─── */
+/* ─── SCREEN 4 — Capital disponible ─── */
+const OPCIONES_CAPITAL = [
+  { id: "menos-50k", label: "Menos de $50k USD", sub: "Etapa de exploración y estructura" },
+  { id: "50k-100k", label: "$50k – $100k USD", sub: "Acceso a coinversiones y vehículos de entrada" },
+  { id: "100k-250k", label: "$100k – $250k USD", sub: "Vehículos de flujo y bienes raíces" },
+  { id: "250k-500k", label: "$250k – $500k USD", sub: "Estrategias de alto impacto patrimonial" },
+  { id: "mas-500k", label: "Más de $500k USD", sub: "Adquisiciones, fondos y estructuras avanzadas" },
+];
+function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
+  const [sel, setSel] = useState<string | null>(null);
+  return (
+    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
+      <div style={{ width: "100%", maxWidth: "600px" }}>
+        <StepIndicator current={4} total={5} />
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.25 }}>
+          ¿Cuánto capital tienes disponible?
+        </h2>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.65 }}>
+          Esto nos permite mostrarte solo los vehículos que hoy son accesibles para ti y ordenarlos por compatibilidad.
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "36px" }}>
+          {OPCIONES_CAPITAL.map((op) => {
+            const isSel = sel === op.id;
+            return (
+              <button key={op.id} onClick={() => setSel(op.id)}
+                style={{ background: isSel ? `linear-gradient(135deg,#1A3558,#122644)` : NAVY_CARD, border: `2px solid ${isSel ? GOLD : NAVY_BORDER}`, borderRadius: "12px", padding: "16px 22px", cursor: "pointer", display: "flex", alignItems: "center", gap: "16px", transition: "all 0.2s", textAlign: "left" }}>
+                <div style={{ width: "20px", height: "20px", borderRadius: "50%", border: `2px solid ${isSel ? GOLD : NAVY_BORDER}`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: isSel ? GOLD : "transparent", transition: "all 0.2s" }}>
+                  {isSel && <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: NAVY }} />}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 600, color: isSel ? "#fff" : "#C8D6E8" }}>{op.label}</div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", marginTop: "2px" }}>{op.sub}</div>
+                </div>
+                {isSel && (
+                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: GOLD, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <IconCheck color={NAVY} size={13} />
+                  </div>
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <motion.div animate={{ opacity: sel ? 1 : 0.3 }}>
+          <GoldBtn onClick={() => sel && onNext(sel)} style={{ width: "100%", opacity: sel ? 1 : 0.4, cursor: sel ? "pointer" : "not-allowed" }}>
+            Continuar <IconRight color={NAVY} />
+          </GoldBtn>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── SCREEN 5 (prioridades, was Screen 4) ─── */
 function Screen4({ onNext }: { onNext: (ids: string[]) => void }) {
   const [sel, setSel] = useState<string[]>([]);
   const [shaking, setShaking] = useState(false);
@@ -430,7 +526,7 @@ function Screen4({ onNext }: { onNext: (ids: string[]) => void }) {
   return (
     <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
       <div style={{ width: "100%", maxWidth: "600px" }}>
-        <StepIndicator current={4} total={4} />
+        <StepIndicator current={5} total={5} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>¿Qué pesa más en tu decisión?</h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "32px" }}>Selecciona hasta <strong style={{ color: GOLD }}>2 opciones</strong></p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "10px", marginBottom: "36px" }}>
@@ -640,8 +736,9 @@ function MetroLine() {
 }
 
 /* ─── RESULT SCREEN ─── */
-function ResultScreen({ perfil, contactData, onUnderstandRoute, onCompare }: { perfil: (typeof PERFILES)[string]; contactData: ContactData | null; onUnderstandRoute: () => void; onCompare: () => void }) {
+function ResultScreen({ perfil, contactData, rankedVehicles, onUnderstandRoute, onCompare }: { perfil: (typeof PERFILES)[string]; contactData: ContactData | null; rankedVehicles: (VehicleEntry & { score: number; pct: number })[]; onUnderstandRoute: () => void; onCompare: () => void }) {
   const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
+  const topVehicles = rankedVehicles.slice(0, 5);
 
   function handleAgendarDiagnostico() {
     const nombre = contactData?.nombre ?? "";
@@ -654,7 +751,7 @@ function ResultScreen({ perfil, contactData, onUnderstandRoute, onCompare }: { p
       perfil.descripcion,
       "",
       "Vehículos recomendados:",
-      ...perfil.vehiculos.map((v) => `• ${v}`),
+      ...topVehicles.map((v) => `• ${v.nombre} (${v.pct}% compatibilidad)`),
       "",
       "Mis datos:",
       `• Nombre: ${nombre}`,
@@ -684,14 +781,29 @@ function ResultScreen({ perfil, contactData, onUnderstandRoute, onCompare }: { p
           <MetroLine />
         </div>
         <div style={{ marginBottom: "44px" }}>
-          <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "16px" }}>Vehículos sugeridos</h3>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,195px),1fr))", gap: "10px" }}>
-            {perfil.vehiculos.map((v) => (
-              <div key={v} style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", padding: "14px 16px", display: "flex", alignItems: "center", gap: "10px" }}>
-                <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}60`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <IconCheck color={GOLD} size={12} />
+          <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "6px" }}>Vehículos recomendados</h3>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "18px" }}>Ordenados por compatibilidad con tu perfil y capital disponible</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {topVehicles.map((v, i) => (
+              <div key={v.id} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "16px 18px", display: "flex", alignItems: "center", gap: "14px" }}>
+                <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
                 </div>
-                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 500, color: "#C8D6E8" }}>{v}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "2px" }}>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 600, color: i === 0 ? "#fff" : "#C8D6E8" }}>{v.nombre}</span>
+                    {i === 0 && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "2px 6px", textTransform: "uppercase" }}>Mejor match</span>}
+                  </div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580" }}>{v.frase}</div>
+                  <div style={{ display: "flex", gap: "10px", marginTop: "6px" }}>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.ticketLabel}</span>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.horizonte}</span>
+                  </div>
+                </div>
+                <div style={{ flexShrink: 0, textAlign: "center" }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "17px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580", letterSpacing: "0.05em" }}>compatibilidad</div>
+                </div>
               </div>
             ))}
           </div>
@@ -1165,7 +1277,7 @@ function WhereAmIButton({ onClick }: { onClick: () => void }) {
 }
 
 function WhereAmIPanel({ open, onClose, screen, objetivo, perfil }: { open: boolean; onClose: () => void; screen: number; objetivo: string | null; perfil: (typeof PERFILES)[string] | null }) {
-  const pct = Math.min(100, Math.round(((screen - 1) / 4) * 100));
+  const pct = Math.min(100, Math.round(((screen - 1) / 6) * 100));
   const filled = Math.min(10, Math.max(0, Math.round(pct / 10)));
   return (
     <AnimatePresence>
@@ -1229,6 +1341,10 @@ export default function NuevoHome() {
   const [screen, setScreen] = useState(1);
   const [showMain, setShowMain] = useState(false);
   const [objetivo, setObjetivo] = useState<string | null>(null);
+  const [participacion, setParticipacion] = useState<string | null>(null);
+  const [horizonte, setHorizonte] = useState<string | null>(null);
+  const [capital, setCapital] = useState<string | null>(null);
+  const [prioridades, setPrioridades] = useState<string[]>([]);
   const [contactData, setContactData] = useState<ContactData | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const [activeNav, setActiveNav] = useState("ruta");
@@ -1241,13 +1357,17 @@ export default function NuevoHome() {
 
   const perfil = objetivo ? PERFILES[objetivo] ?? null : null;
 
+  const rankedVehicles = objetivo && capital && participacion
+    ? rankVehicles({ objetivo, participacion, capital, prioridades })
+    : [];
+
   function goScreen(n: number) { setScreen(n); window.scrollTo({ top: 0, behavior: "instant" }); }
 
   function handleBack() {
-    // Screen 7 (result) → 6 (contact form) to fix data if needed
-    // Screen 6 (contact) → 4 (priorities), skipping the loading animation
-    // Screen 5 (loading) → no back (auto-advancing)
-    const prev = screen === 7 ? 6 : screen === 6 ? 4 : screen - 1;
+    // Screen 8 (result) → 7 (contact)
+    // Screen 7 (contact) → 5 (priorities), skipping loading
+    // Screen 6 (loading) → no back (auto-advancing)
+    const prev = screen === 8 ? 7 : screen === 7 ? 5 : screen - 1;
     if (prev === 1) setObjetivo(null);
     goScreen(prev);
   }
@@ -1271,18 +1391,19 @@ export default function NuevoHome() {
           <motion.div key="flow" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
             <AnimatePresence mode="wait">
               {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={(id) => { setObjetivo(id); goScreen(2); }} /></motion.div>}
-              {screen === 2 && <motion.div key="s2" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen2 onNext={() => goScreen(3)} /></motion.div>}
-              {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={() => goScreen(4)} /></motion.div>}
-              {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen4 onNext={() => goScreen(5)} /></motion.div>}
-              {screen === 5 && <motion.div key="s5" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5 onDone={() => goScreen(6)} /></motion.div>}
-              {screen === 6 && (
-                <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
-                  <Screen6Contact onNext={(data) => { setContactData(data); goScreen(7); }} />
+              {screen === 2 && <motion.div key="s2" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen2 onNext={(id) => { setParticipacion(id); goScreen(3); }} /></motion.div>}
+              {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={(v) => { setHorizonte(v); goScreen(4); }} /></motion.div>}
+              {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen4Capital onNext={(id) => { setCapital(id); goScreen(5); }} /></motion.div>}
+              {screen === 5 && <motion.div key="s5" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen4 onNext={(ids) => { setPrioridades(ids); goScreen(6); }} /></motion.div>}
+              {screen === 6 && <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5 onDone={() => goScreen(7)} /></motion.div>}
+              {screen === 7 && (
+                <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
+                  <Screen6Contact onNext={(data) => { setContactData(data); goScreen(8); }} />
                 </motion.div>
               )}
-              {screen === 7 && perfil && (
-                <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
-                  <ResultScreen perfil={perfil} contactData={contactData} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
+              {screen === 8 && perfil && (
+                <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
+                  <ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1302,7 +1423,7 @@ export default function NuevoHome() {
         )}
       </AnimatePresence>
 
-      {(screen >= 2 && screen !== 6 || showMain) && <WhereAmIButton onClick={() => setPanelOpen(true)} />}
+      {(screen >= 2 && screen !== 7 || showMain) && <WhereAmIButton onClick={() => setPanelOpen(true)} />}
       <WhereAmIPanel open={panelOpen} onClose={() => setPanelOpen(false)} screen={screen} objetivo={objetivo} perfil={perfil} />
     </div>
   );
