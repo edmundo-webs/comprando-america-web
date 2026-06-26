@@ -640,10 +640,40 @@ function MetroLine() {
 }
 
 /* ─── RESULT SCREEN ─── */
-function ResultScreen({ perfil, onUnderstandRoute, onCompare }: { perfil: (typeof PERFILES)[string]; onUnderstandRoute: () => void; onCompare: () => void }) {
+function ResultScreen({ perfil, contactData, onUnderstandRoute, onCompare }: { perfil: (typeof PERFILES)[string]; contactData: ContactData | null; onUnderstandRoute: () => void; onCompare: () => void }) {
+  const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
+
+  function handleAgendarDiagnostico() {
+    const nombre = contactData?.nombre ?? "";
+    const whatsapp = contactData?.whatsapp ?? "";
+    const email = contactData?.email ?? "";
+    const msg = [
+      `Hola, soy ${nombre}. Acabo de completar el GPS Estratégico de Comprando América.`,
+      "",
+      `Mi perfil: ${perfil.nombre}`,
+      perfil.descripcion,
+      "",
+      "Vehículos recomendados:",
+      ...perfil.vehiculos.map((v) => `• ${v}`),
+      "",
+      "Mis datos:",
+      `• Nombre: ${nombre}`,
+      `• WhatsApp: ${whatsapp}`,
+      `• Correo: ${email}`,
+      "",
+      "Me gustaría agendar un diagnóstico estratégico.",
+    ].join("\n");
+    window.open(`https://wa.me/523346766178?text=${encodeURIComponent(msg)}`, "_blank");
+  }
+
   return (
     <div style={{ minHeight: "100dvh", background: NAVY, padding: "88px 24px 100px", overflowY: "auto" }}>
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        {firstName && (
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "8px" }}>
+            Hola, <span style={{ color: "#fff", fontWeight: 600 }}>{firstName}</span>. Este es tu perfil estratégico:
+          </p>
+        )}
         <div style={{ marginBottom: "6px" }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>Tu perfil</span>
         </div>
@@ -666,12 +696,29 @@ function ResultScreen({ perfil, onUnderstandRoute, onCompare }: { perfil: (typeo
             ))}
           </div>
         </div>
+        {contactData && (
+          <div style={{ marginBottom: "36px", background: NAVY_CARD, border: `1px solid ${GOLD}40`, borderRadius: "14px", padding: "22px 24px" }}>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "16px" }}>Confirma tus datos</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {[
+                { label: "Nombre", value: contactData.nombre },
+                { label: "WhatsApp", value: contactData.whatsapp },
+                { label: "Correo", value: contactData.email },
+              ].map(({ label, value }) => (
+                <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", minWidth: "72px" }}>{label}</span>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 500, color: "#C8D6E8", textAlign: "right", wordBreak: "break-all" }}>{value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <GoldBtn onClick={onUnderstandRoute} style={{ width: "100%" }}>
             Quiero entender esta ruta <IconRight color={NAVY} />
           </GoldBtn>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            <button onClick={() => window.location.href = "/"} style={{ padding: "13px 18px", background: "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+            <button onClick={handleAgendarDiagnostico} style={{ padding: "13px 18px", background: "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
               <IconCalendar color={GOLD} /> Agendar diagnóstico
             </button>
             <button onClick={onCompare} style={{ padding: "13px 18px", background: "transparent", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer" }}>
@@ -1235,7 +1282,7 @@ export default function NuevoHome() {
               )}
               {screen === 7 && perfil && (
                 <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
-                  <ResultScreen perfil={perfil} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
+                  <ResultScreen perfil={perfil} contactData={contactData} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
                 </motion.div>
               )}
             </AnimatePresence>
