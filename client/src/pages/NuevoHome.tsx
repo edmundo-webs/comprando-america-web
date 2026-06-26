@@ -142,7 +142,7 @@ const VEHICLE_DATA: VehicleEntry[] = [
 ];
 
 const CAPITAL_MAP: Record<string, number> = {
-  "menos-50k": 50, "50k-100k": 100, "100k-250k": 250, "250k-500k": 500, "mas-500k": 999,
+  "100k-250k": 250, "250k-500k": 500, "500k-1m": 750, "mas-1m": 1500,
 };
 
 function rankVehicles(params: { objetivo: string; participacion: string; capital: string; prioridades: string[] }) {
@@ -463,11 +463,10 @@ function Screen3({ onNext }: { onNext: (v: string) => void }) {
 
 /* ─── SCREEN 4 — Capital disponible ─── */
 const OPCIONES_CAPITAL = [
-  { id: "menos-50k", label: "Menos de $50k USD", sub: "Etapa de exploración y estructura" },
-  { id: "50k-100k", label: "$50k – $100k USD", sub: "Acceso a coinversiones y vehículos de entrada" },
-  { id: "100k-250k", label: "$100k – $250k USD", sub: "Vehículos de flujo y bienes raíces" },
+  { id: "100k-250k", label: "$100k – $250k USD", sub: "Vehículos de flujo, coinversiones y bienes raíces" },
   { id: "250k-500k", label: "$250k – $500k USD", sub: "Estrategias de alto impacto patrimonial" },
-  { id: "mas-500k", label: "Más de $500k USD", sub: "Adquisiciones, fondos y estructuras avanzadas" },
+  { id: "500k-1m", label: "$500k – $1M USD", sub: "Adquisiciones, fondos y estructuras avanzadas" },
+  { id: "mas-1m", label: "Más de $1M USD", sub: "Estructuras institucionales y portafolios complejos" },
 ];
 function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
   const [sel, setSel] = useState<string | null>(null);
