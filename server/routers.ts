@@ -385,6 +385,26 @@ export const appRouter = router({
         return { success: true, message: "Te has desuscrito correctamente" };
       }),
   }),
+  // ═══ LEADS / CRM ROUTER ═══
+  leads: router({
+    // Public: register a new lead from a landing page form
+    create: publicProcedure
+      .input(z.object({
+        nombreCompleto: z.string().min(2, "Nombre requerido"),
+        whatsapp: z.string().min(6, "WhatsApp requerido"),
+        email: z.string().email("Email inválido"),
+        fuente: z.string().default("general"),
+      }))
+      .mutation(async ({ input }) => {
+        await db.createLead(input);
+        return { success: true };
+      }),
+    // Protected: list all leads (CMS only)
+    list: protectedProcedure.query(async ({ ctx }) => {
+      requireCmsAccess(ctx.user.role);
+      return await db.getAllLeads();
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

@@ -247,7 +247,7 @@ export default function Home2Page() {
     {
       icon: FileText,
       name: "Formación de LLC",
-      description: "Estructura corporativa para operar en EE.UU.",
+      description: "Estructura corporativa para operar en Estados Unidos",
       price: "Desde $1,499 USD",
     },
     {
@@ -268,7 +268,7 @@ export default function Home2Page() {
     {
       icon: Network,
       name: "Americaniza tu Operación",
-      description: "Ruta para empresas latinas que quieren entrar al mercado de EE.UU.",
+      description: "Ruta para empresas latinas que quieren entrar al mercado de Estados Unidos",
     },
   ];
 

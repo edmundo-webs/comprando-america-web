@@ -44,7 +44,7 @@ const PAGE_SEO = {
   title: "Visa E-2 Inversi\u00f3n en Estados Unidos | Gu\u00eda Estrat\u00e9gica | Comprando Am\u00e9rica",
   description: "La visa E-2 no es un tr\u00e1mite. Es el resultado de una estructura de inversi\u00f3n bien dise\u00f1ada. Entiende c\u00f3mo funciona y si aplica para tu perfil.",
   path: "/visa-e2-inversion-en-estados-unidos",
-  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfCu\u00e1nto dinero necesito para la visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "La inversi\u00f3n m\u00ednima sugerida es de $150,000 USD, aunque depende del tipo de negocio. El capital debe ser sustancial y en riesgo."}}, {"@type": "Question", "name": "\u00bfPuedo llevar a mi familia con visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. El c\u00f3nyuge recibe permiso de trabajo autom\u00e1tico y los hijos menores de 21 a\u00f1os pueden estudiar en EE.UU."}}, {"@type": "Question", "name": "\u00bfCu\u00e1l es la diferencia entre visa E-2 y EB-5?", "acceptedAnswer": {"@type": "Answer", "text": "La E-2 requiere menor inversi\u00f3n (~$150K vs $800K+), es renovable indefinidamente pero no da residencia directa. La EB-5 otorga Green Card pero requiere mayor capital."}}]},
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfCu\u00e1nto dinero necesito para la visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "La inversi\u00f3n m\u00ednima sugerida es de $150,000 USD, aunque depende del tipo de negocio. El capital debe ser sustancial y en riesgo."}}, {"@type": "Question", "name": "\u00bfPuedo llevar a mi familia con visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. El c\u00f3nyuge recibe permiso de trabajo autom\u00e1tico y los hijos menores de 21 a\u00f1os pueden estudiar en Estados Unidos"}}, {"@type": "Question", "name": "\u00bfCu\u00e1l es la diferencia entre visa E-2 y EB-5?", "acceptedAnswer": {"@type": "Answer", "text": "La E-2 requiere menor inversi\u00f3n (~$150K vs $800K+), es renovable indefinidamente pero no da residencia directa. La EB-5 otorga Green Card pero requiere mayor capital."}}]},
 };
 
 /* ─── Photos ─── */
@@ -110,7 +110,7 @@ export default function VisaE2() {
               <div className="space-y-4 mb-10">
                 {[
                   "Tener una inversión real y documentable",
-                  "Estructurar correctamente un negocio en EE.UU.",
+                  "Estructurar correctamente un negocio en Estados Unidos",
                   "Demostrar intención operativa clara",
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -141,7 +141,7 @@ export default function VisaE2() {
 
           <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {[
-              { icon: DollarSign, title: "Inversión real", desc: "Capital comprometido en un negocio activo en EE.UU." },
+              { icon: DollarSign, title: "Inversión real", desc: "Capital comprometido en un negocio activo en Estados Unidos" },
               { icon: Building2, title: "Negocio activo", desc: "Empresa operando o lista para operar con plan claro." },
               { icon: FileCheck, title: "Estructura clara", desc: "Documentación legal y fiscal organizada correctamente." },
             ].map((item, i) => (
@@ -293,7 +293,7 @@ export default function VisaE2() {
               <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full">
                 <h2 className="text-2xl text-white font-semibold mb-6">Este proceso es para personas que:</h2>
                 <div className="space-y-4">
-                  {["Tienen capital disponible para invertir", "Buscan operar o expandirse en EE.UU.", "Entienden que es un proceso estratégico", "Están dispuestas a construir algo real"].map((item, i) => (
+                  {["Tienen capital disponible para invertir", "Buscan operar o expandirse en Estados Unidos", "Entienden que es un proceso estratégico", "Están dispuestas a construir algo real"].map((item, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                       <p className="text-slate-300 text-sm">{item}</p>
@@ -331,7 +331,7 @@ export default function VisaE2() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {[
-              { icon: TrendingUp, title: "Inversión en negocio", desc: "Adquirir o crear un negocio operativo en EE.UU." },
+              { icon: TrendingUp, title: "Inversión en negocio", desc: "Adquirir o crear un negocio operativo en Estados Unidos" },
               { icon: Building2, title: "Adquisición", desc: "Comprar un negocio existente con historial." },
               { icon: Shield, title: "Estructura empresarial", desc: "LLC + operación + base fiscal desde cero." },
               { icon: Users, title: "Comunidad estratégica", desc: "Oportunidades dentro de redes de inversionistas." },
@@ -394,7 +394,7 @@ export default function VisaE2() {
                 {[
                   { q: "¿Cuánto dinero se necesita para una visa E-2?", a: "No existe un monto mínimo oficial. Sin embargo, la inversión debe ser 'sustancial' en relación con el costo total del negocio. En la práctica, inversiones por debajo de $80,000–$100,000 USD suelen ser difíciles de sustentar. Lo importante no es solo el monto — es cómo se estructura y documenta la inversión." },
                   { q: "¿La visa E-2 está garantizada?", a: "No. Ninguna visa está garantizada. La visa E-2 depende de múltiples factores: el tipo de inversión, la estructura del negocio, la documentación presentada y la evaluación del oficial consular. Por eso es fundamental tener una estructura sólida antes de aplicar." },
-                  { q: "¿Necesito vivir en Estados Unidos para aplicar?", a: "No necesitas vivir en EE.UU. para iniciar el proceso. Puedes estructurar la empresa y la inversión de forma remota. Sin embargo, la visa E-2 sí requiere que tengas intención de dirigir y desarrollar el negocio en territorio estadounidense." },
+                  { q: "¿Necesito vivir en Estados Unidos para aplicar?", a: "No necesitas vivir en Estados Unidos para iniciar el proceso. Puedes estructurar la empresa y la inversión de forma remota. Sin embargo, la visa E-2 sí requiere que tengas intención de dirigir y desarrollar el negocio en territorio estadounidense." },
                   { q: "¿Qué tipo de negocio funciona para la visa E-2?", a: "La visa E-2 aplica para diversos tipos de negocios: restaurantes, franquicias, servicios profesionales, e-commerce, bienes raíces operativos, entre otros. Lo fundamental es que sea un negocio real, activo y con potencial de generar empleos e ingresos." },
                 ].map((faq, i) => (
                   <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl px-6">
