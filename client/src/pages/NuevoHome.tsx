@@ -969,8 +969,8 @@ function WhereAmIButton({ onClick }: { onClick: () => void }) {
 }
 
 function WhereAmIPanel({ open, onClose, screen, objetivo, perfil }: { open: boolean; onClose: () => void; screen: number; objetivo: string | null; perfil: (typeof PERFILES)[string] | null }) {
-  const pct = Math.round(((screen - 1) / 4) * 100);
-  const filled = Math.round(pct / 10);
+  const pct = Math.min(100, Math.round(((screen - 1) / 4) * 100));
+  const filled = Math.min(10, Math.max(0, Math.round(pct / 10)));
   return (
     <AnimatePresence>
       {open && (
