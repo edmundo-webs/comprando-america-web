@@ -232,6 +232,14 @@ function IconCalendar({ color = NAVY }: { color?: string }) {
   );
 }
 
+function IconArrowLeft({ color = GOLD }: { color?: string }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+    </svg>
+  );
+}
+
 const ICON_MAP: Record<string, (p?: { color?: string }) => JSX.Element> = {
   shield: (p) => <IconShield {...p} />,
   dollar: (p) => <IconDollar {...p} />,
@@ -239,6 +247,30 @@ const ICON_MAP: Record<string, (p?: { color?: string }) => JSX.Element> = {
   family: (p) => <IconFamily {...p} />,
   compass: (p) => <IconCompass {...p} />,
 };
+
+const LOGO_URL = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438699/comprando-america/logo.png";
+
+/* ─── Flow top bar — logo + back button ─── */
+function FlowTopBar({ screen, onBack }: { screen: number; onBack: () => void }) {
+  const canGoBack = screen >= 2 && screen !== 5;
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 80, padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: `linear-gradient(to bottom, ${NAVY}E8 0%, ${NAVY}A0 70%, transparent 100%)`, pointerEvents: "none" }}>
+      {/* Logo */}
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", pointerEvents: "auto" }}>
+        <img src={LOGO_URL} alt="Comprando América" style={{ height: "38px", width: "38px", borderRadius: "6px", objectFit: "contain" }} />
+        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", color: "#fff" }}>Comprando América</span>
+      </div>
+      {/* Back button */}
+      {canGoBack && (
+        <button onClick={onBack} style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: "6px", background: `${NAVY_CARD}CC`, backdropFilter: "blur(8px)", border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "7px 14px", cursor: "pointer", color: "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, letterSpacing: "0.04em", transition: "all 0.2s" }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = GOLD; (e.currentTarget as HTMLElement).style.borderColor = GOLD; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "#8FA5C0"; (e.currentTarget as HTMLElement).style.borderColor = NAVY_BORDER; }}>
+          <IconArrowLeft color="currentColor" /> Volver
+        </button>
+      )}
+    </div>
+  );
+}
 
 /* ─── Shared sub-components ─── */
 function StepIndicator({ current, total }: { current: number; total: number }) {
@@ -270,11 +302,11 @@ function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
       </video>
       <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg,${NAVY}F5 0%,#0D2545F0 50%,${NAVY}F8 100%)` }} />
       <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "2px", height: "80px", background: `linear-gradient(to bottom,transparent,${GOLD})` }} />
-      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "920px", padding: "60px 24px 80px", textAlign: "center" }}>
-        <div style={{ marginBottom: "36px", display: "flex", justifyContent: "center", alignItems: "center", gap: "12px" }}>
-          <div style={{ width: "48px", height: "2px", background: GOLD }} />
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>Comprando América</span>
-          <div style={{ width: "48px", height: "2px", background: GOLD }} />
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "920px", padding: "96px 24px 80px", textAlign: "center" }}>
+        <div style={{ marginBottom: "36px", display: "flex", justifyContent: "center", alignItems: "center", gap: "14px" }}>
+          <div style={{ width: "40px", height: "1px", background: `${GOLD}80` }} />
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.28em", color: `${GOLD}90`, textTransform: "uppercase" }}>GPS Estratégico</span>
+          <div style={{ width: "40px", height: "1px", background: `${GOLD}80` }} />
         </div>
         <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(26px,4.5vw,52px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "16px" }}>
           ¿Qué estás tratando de construir<br />
@@ -313,7 +345,7 @@ const OPCIONES_2 = [
 function Screen2({ onNext }: { onNext: (id: string) => void }) {
   const [sel, setSel] = useState<string | null>(null);
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
       <div style={{ width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={2} total={4} />
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "12px" }}>Entendido.</p>
@@ -353,7 +385,7 @@ const SLIDER_POINTS = ["1 año", "3 años", "5 años", "10+ años"];
 function Screen3({ onNext }: { onNext: (v: string) => void }) {
   const [sel, setSel] = useState(1);
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
       <div style={{ width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={3} total={4} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "12px" }}>¿Qué horizonte imaginas?</h2>
@@ -390,12 +422,13 @@ function Screen4({ onNext }: { onNext: (ids: string[]) => void }) {
   const [sel, setSel] = useState<string[]>([]);
   const [shaking, setShaking] = useState(false);
   function toggle(id: string) {
+
     if (sel.includes(id)) { setSel(sel.filter(s => s !== id)); return; }
     if (sel.length >= 2) { setShaking(true); setTimeout(() => setShaking(false), 500); return; }
     setSel([...sel, id]);
   }
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px 24px" }}>
+    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
       <div style={{ width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={4} total={4} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>¿Qué pesa más en tu decisión?</h2>
@@ -493,7 +526,7 @@ function MetroLine() {
 /* ─── RESULT SCREEN ─── */
 function ResultScreen({ perfil, onUnderstandRoute, onCompare }: { perfil: (typeof PERFILES)[string]; onUnderstandRoute: () => void; onCompare: () => void }) {
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, padding: "60px 24px 100px", overflowY: "auto" }}>
+    <div style={{ minHeight: "100dvh", background: NAVY, padding: "88px 24px 100px", overflowY: "auto" }}>
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
         <div style={{ marginBottom: "6px" }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>Tu perfil</span>
@@ -1046,6 +1079,14 @@ export default function NuevoHome() {
 
   function goScreen(n: number) { setScreen(n); window.scrollTo({ top: 0, behavior: "instant" }); }
 
+  function handleBack() {
+    // From result (6) skip the loading screen and go back to priorities (4)
+    const prev = screen === 6 ? 4 : screen - 1;
+    // If going back to screen 1, clear the selected objective so the user can choose freely
+    if (prev === 1) setObjetivo(null);
+    goScreen(prev);
+  }
+
   function handleNav(id: string) {
     setActiveNav(id);
     const refs: Record<string, React.RefObject<HTMLDivElement | null>> = { ruta: rutaRef, vehiculos: vehiculosRef, comparar: compararRef, biblioteca: bibliotecaRef, diagnostico: diagnosticoRef };
@@ -1057,6 +1098,9 @@ export default function NuevoHome() {
 
   return (
     <div style={{ background: NAVY, minHeight: "100dvh", position: "relative" }}>
+      {/* Fixed brand header — visible during flow only */}
+      {!showMain && <FlowTopBar screen={screen} onBack={handleBack} />}
+
       <AnimatePresence mode="wait">
         {!showMain && (
           <motion.div key="flow" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
