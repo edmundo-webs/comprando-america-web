@@ -39,12 +39,14 @@ import Home2Page from "./pages/Home2Page";
 import CumbreDigital from "./pages/CumbreDigital";
 import CumbreDigital2 from "./pages/CumbreDigital2";
 import Leads from "./pages/admin/Leads";
+import NuevoHome from "./pages/NuevoHome";
 
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/home2"} component={Home2Page} />
+      <Route path={"/nuevo-home"} component={NuevoHome} />
       <Route path="/membresia" component={Membresia} />
       <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
       <Route path="/blog" component={BlogList} />
