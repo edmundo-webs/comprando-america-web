@@ -818,9 +818,35 @@ function MetroLine() {
 }
 
 /* ─── RESULT SCREEN ─── */
-function ResultScreen({ perfil, contactData, rankedVehicles, onUnderstandRoute, onCompare }: { perfil: (typeof PERFILES)[string]; contactData: ContactData | null; rankedVehicles: (VehicleEntry & { score: number; pct: number })[]; onUnderstandRoute: () => void; onCompare: () => void }) {
+const PARTICIPACION_LABELS: Record<string, string> = {
+  "no-operar": "Delegar", "supervisar": "Supervisar", "activo": "Activo", "nosc": "Por definir",
+};
+const CAPITAL_LABELS: Record<string, string> = {
+  "100k-250k": "$100k–$250k", "250k-500k": "$250k–$500k", "500k-1m": "$500k–$1M", "mas-1m": "+$1M",
+};
+
+function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnderstandRoute, onCompare }: {
+  perfil: (typeof PERFILES)[string];
+  contactData: ContactData | null;
+  rankedVehicles: (VehicleEntry & { score: number; pct: number })[];
+  investorData: { objetivo: string | null; participacion: string | null; horizonte: string | null; capital: string | null; prioridades: string[] };
+  onUnderstandRoute: () => void;
+  onCompare: () => void;
+}) {
   const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
   const topVehicles = rankedVehicles.slice(0, 5);
+
+  const objetivoLabel = OPCIONES_1.find(o => o.id === investorData.objetivo)?.label ?? "";
+  const capitalLabel = CAPITAL_LABELS[investorData.capital ?? ""] ?? "";
+  const participacionLabel = PARTICIPACION_LABELS[investorData.participacion ?? ""] ?? "";
+  const horizonteLabel = investorData.horizonte ?? "";
+
+  const fichaData = [
+    { label: "Objetivo", value: objetivoLabel },
+    { label: "Capital", value: capitalLabel },
+    { label: "Rol", value: participacionLabel },
+    { label: "Horizonte", value: horizonteLabel },
+  ].filter(f => f.value);
 
   function handleAgendarDiagnostico() {
     const nombre = contactData?.nombre ?? "";
@@ -848,49 +874,51 @@ function ResultScreen({ perfil, contactData, rankedVehicles, onUnderstandRoute, 
   return (
     <div style={{ minHeight: "100dvh", background: NAVY, overflowY: "auto" }}>
 
-      {/* Cinematic result hero — Edmundo professional photo as ambient background */}
-      <div style={{ position: "relative", padding: "88px 24px 64px", overflow: "hidden" }}>
-        <img
-          src={PHOTOS.edmundo}
-          aria-hidden="true"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", filter: "grayscale(70%) contrast(110%) brightness(30%)", opacity: 0.18, zIndex: 0 }}
-        />
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: `linear-gradient(180deg, ${NAVY}90 0%, ${NAVY}20 40%, ${NAVY}80 80%, ${NAVY} 100%)` }} />
-        {/* Gold accent line at top */}
-        <div style={{ position: "absolute", top: "88px", left: 0, right: 0, height: "1px", background: `linear-gradient(90deg, transparent 0%, ${GOLD}50 20%, ${GOLD}50 80%, transparent 100%)`, zIndex: 2 }} />
+      {/* ── FICHA DE PERFIL GPS ── */}
+      <div style={{ position: "relative", background: `linear-gradient(180deg, #0A1A30 0%, ${NAVY} 100%)`, padding: "80px 24px 0", overflow: "hidden" }}>
+        {/* Decorative background grid lines */}
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${GOLD}08 1px, transparent 1px), linear-gradient(90deg, ${GOLD}08 1px, transparent 1px)`, backgroundSize: "60px 60px", zIndex: 0 }} />
+        {/* Top gold accent line */}
+        <div style={{ position: "absolute", top: "80px", left: 0, right: 0, height: "1px", background: `linear-gradient(90deg, transparent 0%, ${GOLD}70 20%, ${GOLD}70 80%, transparent 100%)`, zIndex: 1 }} />
 
-        <div style={{ position: "relative", zIndex: 3, maxWidth: "680px", margin: "0 auto" }}>
+        <div style={{ position: "relative", zIndex: 2, maxWidth: "680px", margin: "0 auto" }}>
+          {/* Label row */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
+            <div style={{ width: "28px", height: "1px", background: GOLD }} />
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.35em", color: GOLD, textTransform: "uppercase" }}>GPS · Comprando América</span>
+          </div>
+
+          {/* Profile name — dramatic cinematic heading */}
+          <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(32px,6vw,64px)", fontWeight: 900, color: "#fff", lineHeight: 1.05, marginBottom: "16px", letterSpacing: "-0.01em" }}>
+            {perfil.nombre}
+          </h1>
+
           {firstName && (
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "12px" }}>
-              Hola, <span style={{ color: "#fff", fontWeight: 600 }}>{firstName}</span>. Este es tu perfil estratégico:
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "32px" }}>
+              Hola, <span style={{ color: "#fff", fontWeight: 600 }}>{firstName}</span> — esta es tu ruta estratégica.
             </p>
           )}
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "6px" }}>
-            <div style={{ width: "32px", height: "1px", background: `${GOLD}80` }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.3em", color: GOLD, textTransform: "uppercase" }}>Tu perfil</span>
-          </div>
-          <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(28px,5vw,54px)", fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: "20px", textShadow: "0 4px 32px rgba(0,0,0,0.5)" }}>{perfil.nombre}</h1>
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", lineHeight: 1.75, maxWidth: "520px" }}>{perfil.descripcion}</p>
-        </div>
-      </div>
 
-      {/* Event photos strip — social proof */}
-      <div style={{ overflowX: "auto", scrollbarWidth: "none", display: "flex", gap: "6px", padding: "0 24px 0", margin: "0 0 48px" }}>
-        {PHOTOS.eventos.map((src, i) => (
-          <div key={i} style={{ flexShrink: 0, width: "200px", height: "130px", borderRadius: "8px", overflow: "hidden", border: `1px solid ${NAVY_BORDER}`, position: "relative" }}>
-            <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "grayscale(30%) brightness(80%)" }} />
-            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${NAVY}50, transparent)` }} />
-          </div>
-        ))}
-        <div style={{ flexShrink: 0, width: "200px", height: "130px", borderRadius: "8px", background: `${GOLD}12`, border: `1px solid ${GOLD}30`, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 700, color: GOLD }}>+500</div>
-            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#8FA5C0", marginTop: "4px" }}>inversionistas en la comunidad</div>
-          </div>
+          {/* Ficha data — investor's own answers as summary */}
+          {fichaData.length > 0 && (
+            <div style={{ display: "grid", gridTemplateColumns: `repeat(${fichaData.length}, 1fr)`, gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "0" }}>
+              {fichaData.map(({ label, value }) => (
+                <div key={label} style={{ background: `rgba(10,26,48,0.9)`, padding: "16px 14px" }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: `${GOLD}90`, textTransform: "uppercase", marginBottom: "6px" }}>{label}</div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1", lineHeight: 1.3 }}>{value}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+
+        {/* Bottom fade into main content */}
+        <div style={{ height: "48px", background: `linear-gradient(to bottom, transparent, ${NAVY})`, marginTop: "0" }} />
       </div>
 
       <div style={{ maxWidth: "680px", margin: "0 auto", padding: "0 24px 100px" }}>
+        {/* Description */}
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "48px", maxWidth: "520px" }}>{perfil.descripcion}</p>
         <div style={{ marginBottom: "48px" }}>
           <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "24px" }}>Tu Ruta Recomendada</h3>
           <MetroLine />
@@ -1525,7 +1553,7 @@ export default function NuevoHome() {
               )}
               {screen === 8 && perfil && (
                 <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
-                  <ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
+                  <ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
                 </motion.div>
               )}
             </AnimatePresence>
