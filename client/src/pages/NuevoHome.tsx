@@ -1,7 +1,7 @@
 // NUEVO-HOME STAGING
 // Ruta independiente de staging — no modifica ningún componente del sitio actual
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 /* ─── Brand ─── */
@@ -426,8 +426,12 @@ function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
           ¿Qué estás tratando de construir<br />
           <em style={{ color: GOLD_LIGHT, fontStyle: "italic" }}>en Estados Unidos?</em>
         </h1>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "52px", letterSpacing: "0.01em" }}>
-          Selecciona tu objetivo y te mostraremos la ruta exacta
+        {/* Brand mantra */}
+        <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(15px,2vw,19px)", fontStyle: "italic", color: `${GOLD_LIGHT}BB`, marginBottom: "12px", lineHeight: 1.7, maxWidth: "520px", margin: "0 auto 12px" }}>
+          "No necesitas más oportunidades.<br />Necesitas saber cuál tiene sentido para ti."
+        </p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#5A7090", marginBottom: "44px", letterSpacing: "0.01em" }}>
+          Selecciona tu objetivo y construimos tu ruta exacta
         </p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,220px),1fr))", gap: "12px", textAlign: "left" }}>
@@ -476,7 +480,7 @@ function Screen2({ onNext }: { onNext: (id: string) => void }) {
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "12px", lineHeight: 1.25 }}>
           ¿Qué tan involucrado deseas estar?
         </h2>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px" }}>Tu nivel de participación define el vehículo más adecuado para ti</p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.7 }}>Tu nivel de participación cambia todo. No hay respuesta incorrecta — hay respuestas honestas.</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "36px" }}>
           {OPCIONES_2.map((op) => {
             const isSel = sel === op.id;
@@ -514,7 +518,7 @@ function Screen3({ onNext }: { onNext: (v: string) => void }) {
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={3} total={5} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "12px" }}>¿Qué horizonte imaginas?</h2>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "64px" }}>¿En cuánto tiempo esperas ver resultados concretos de tu inversión?</p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "64px", lineHeight: 1.7 }}>El tiempo cambia completamente la estrategia. ¿En qué momento de tu vida financiera estás hoy?</p>
         <div style={{ position: "relative", paddingBottom: "50px" }}>
           <div style={{ height: "4px", background: NAVY_BORDER, borderRadius: "2px", margin: "0 18px" }}>
             <div style={{ position: "absolute", left: "18px", top: 0, height: "4px", borderRadius: "2px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, width: `${(sel / 3) * 100}%`, transition: "width 0.3s" }} />
@@ -559,8 +563,8 @@ function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.25, position: "relative", zIndex: 1 }}>
           ¿Cuánto capital tienes disponible?
         </h2>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.65 }}>
-          Esto nos permite mostrarte solo los vehículos que hoy son accesibles para ti y ordenarlos por compatibilidad.
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.7 }}>
+          No estamos evaluando tu patrimonio. Estamos mapeando desde dónde empezar para mostrarte solo lo que hoy es posible para ti.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "36px" }}>
           {OPCIONES_CAPITAL.map((op) => {
@@ -610,7 +614,8 @@ function Screen4({ onNext }: { onNext: (ids: string[]) => void }) {
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={5} total={5} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>¿Qué pesa más en tu decisión?</h2>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "32px" }}>Selecciona hasta <strong style={{ color: GOLD }}>2 opciones</strong></p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "8px", lineHeight: 1.7 }}>Cada inversionista tiene una brújula diferente. ¿Qué es lo que más importa en este momento de tu vida?</p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#4A6580", marginBottom: "28px" }}>Selecciona hasta <strong style={{ color: GOLD }}>2 opciones</strong></p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: "10px", marginBottom: "36px" }}>
           {OPCIONES_4.map((op) => {
             const isSel = sel.includes(op.id);
@@ -980,6 +985,18 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
               Comparar otra ruta
             </button>
           </div>
+        </div>
+
+        {/* Institutional phrase */}
+        <div style={{ marginTop: "56px", paddingTop: "32px", borderTop: `1px solid ${NAVY_BORDER}`, textAlign: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
+            <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
+            <img src={LOGO_URL} alt="" style={{ height: "22px", width: "22px", opacity: 0.6, borderRadius: "4px" }} />
+            <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
+          </div>
+          <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "13px", fontStyle: "italic", color: `${GOLD}80`, lineHeight: 1.85, margin: 0 }}>
+            Claridad antes de invertir.<br />Criterio antes de decidir.<br />Comunidad para ejecutar.
+          </p>
         </div>
       </div>
     </div>
@@ -1414,6 +1431,121 @@ function DiagnosticoSection() {
   );
 }
 
+/* ─── AMBIENT AUDIO ─── */
+function useAmbientAudio() {
+  const ctxRef = useRef<AudioContext | null>(null);
+  const gainRef = useRef<GainNode | null>(null);
+  const oscRefs = useRef<OscillatorNode[]>([]);
+  const [playing, setPlaying] = useState(false);
+
+  function start() {
+    if (ctxRef.current) return;
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    ctxRef.current = ctx;
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0.065, ctx.currentTime + 2.5);
+    master.connect(ctx.destination);
+    gainRef.current = master;
+    // D major 7 chord: D3 A3 D4 F#4 A4
+    const freqs = [146.83, 220.0, 293.66, 369.99, 440.0];
+    oscRefs.current = freqs.map((freq, i) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = i % 2 === 0 ? "sine" : "triangle";
+      osc.frequency.value = freq;
+      g.gain.value = 0.14 - i * 0.02;
+      osc.connect(g);
+      g.connect(master);
+      osc.start();
+      return osc;
+    });
+    setPlaying(true);
+  }
+
+  function stop() {
+    if (!gainRef.current || !ctxRef.current) return;
+    const ctx = ctxRef.current;
+    const gain = gainRef.current;
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
+    setTimeout(() => { ctx.close(); ctxRef.current = null; gainRef.current = null; oscRefs.current = []; }, 1700);
+    setPlaying(false);
+  }
+
+  function toggle() { playing ? stop() : start(); }
+
+  useEffect(() => () => { ctxRef.current?.close(); }, []);
+
+  return { playing, toggle };
+}
+
+function IconVolumeOn({ color = GOLD }: { color?: string }) {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+    </svg>
+  );
+}
+function IconVolumeOff({ color = "#4A6580" }: { color?: string }) {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" /><line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
+  );
+}
+
+function MusicToggle({ playing, onToggle }: { playing: boolean; onToggle: () => void }) {
+  return (
+    <motion.button
+      initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.92 }}
+      onClick={onToggle}
+      title={playing ? "Silenciar música" : "Activar música ambiente"}
+      style={{ position: "fixed", bottom: "28px", left: "24px", zIndex: 100, width: "42px", height: "42px", borderRadius: "50%", background: `${NAVY_CARD}EC`, backdropFilter: "blur(14px)", border: `1px solid ${playing ? GOLD + "55" : NAVY_BORDER}`, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: playing ? `0 0 18px ${GOLD}22` : "0 2px 10px rgba(0,0,0,0.35)", transition: "border-color 0.3s, box-shadow 0.3s" }}>
+      {playing ? <IconVolumeOn color={GOLD} /> : <IconVolumeOff />}
+    </motion.button>
+  );
+}
+
+/* ─── JOURNEY BREADCRUMB STRIP ─── */
+const PARTICIPACION_SHORT: Record<string, string> = {
+  "no-operar": "Delegar", "supervisar": "Supervisar", "activo": "Activo", "nosc": "Por definir",
+};
+const CAPITAL_SHORT: Record<string, string> = {
+  "100k-250k": "$100k–250k", "250k-500k": "$250k–500k", "500k-1m": "$500k–1M", "mas-1m": "+$1M",
+};
+
+function JourneyStrip({ screen, objetivo, participacion, horizonte, capital }: {
+  screen: number; objetivo: string | null; participacion: string | null; horizonte: string | null; capital: string | null;
+}) {
+  if (screen < 2 || screen > 7) return null;
+  const crumbs = [
+    objetivo ? OPCIONES_1.find(o => o.id === objetivo)?.label ?? objetivo : null,
+    participacion ? PARTICIPACION_SHORT[participacion] ?? participacion : null,
+    horizonte ?? null,
+    capital ? CAPITAL_SHORT[capital] ?? capital : null,
+  ].filter(Boolean) as string[];
+  if (!crumbs.length) return null;
+  return (
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+      style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 90, pointerEvents: "none" }}>
+      <div style={{ background: `linear-gradient(to top, ${NAVY}FA 0%, ${NAVY}CC 65%, transparent 100%)`, padding: "28px 80px 14px", display: "flex", justifyContent: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", justifyContent: "center" }}>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", color: `${GOLD}70`, textTransform: "uppercase", marginRight: "4px" }}>Tu ruta</span>
+          {crumbs.map((c, i) => (
+            <React.Fragment key={i}>
+              <span style={{ color: `${GOLD}40`, fontSize: "11px" }}>›</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 500, color: "#8FA5C0", background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "3px 10px" }}>{c}</span>
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 /* ─── FLOATING PANEL ─── */
 function WhereAmIButton({ onClick }: { onClick: () => void }) {
   return (
@@ -1486,6 +1618,7 @@ function WhereAmIPanel({ open, onClose, screen, objetivo, perfil }: { open: bool
 /* ─── MAIN EXPORT ─── */
 export default function NuevoHome() {
   usePlayfairFont();
+  const { playing: musicPlaying, toggle: toggleMusic } = useAmbientAudio();
 
   const [screen, setScreen] = useState(1);
   const [showMain, setShowMain] = useState(false);
@@ -1575,6 +1708,8 @@ export default function NuevoHome() {
 
       {(screen >= 2 && screen !== 7 || showMain) && <WhereAmIButton onClick={() => setPanelOpen(true)} />}
       <WhereAmIPanel open={panelOpen} onClose={() => setPanelOpen(false)} screen={screen} objetivo={objetivo} perfil={perfil} />
+      <MusicToggle playing={musicPlaying} onToggle={toggleMusic} />
+      {!showMain && <JourneyStrip screen={screen} objetivo={objetivo} participacion={participacion} horizonte={horizonte} capital={capital} />}
     </div>
   );
 }
