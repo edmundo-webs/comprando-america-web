@@ -109,7 +109,7 @@ export default function Navbar() {
             </div>
           ))}
           <a
-            href="/perfil"
+            href="/tu-ruta"
             className="ml-4 px-5 py-2.5 bg-primary text-white font-semibold text-sm rounded-lg hover:bg-blue-600 transition-colors inline-block shadow-sm shadow-blue-600/20"
           >
             Evaluar Perfil
@@ -192,7 +192,7 @@ export default function Navbar() {
                 </div>
               ))}
               <a
-                href="/perfil"
+                href="/tu-ruta"
                 onClick={() => setIsOpen(false)}
                 className="block mx-4 mt-4 px-5 py-3 bg-primary text-white font-semibold text-sm rounded-lg text-center w-[calc(100%-2rem)] hover:bg-blue-600 transition-colors"
               >
