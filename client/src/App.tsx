@@ -40,6 +40,7 @@ import CumbreDigital from "./pages/CumbreDigital";
 import CumbreDigital2 from "./pages/CumbreDigital2";
 import Leads from "./pages/admin/Leads";
 import NuevoHome from "./pages/NuevoHome";
+import Membresia2 from "./pages/Membresia2";
 
 function Router() {
   return (
@@ -48,6 +49,7 @@ function Router() {
       <Route path={"/home2"} component={Home2Page} />
       <Route path={"/nuevo-home"} component={NuevoHome} />
       <Route path="/membresia" component={Membresia} />
+      <Route path="/membresia-2" component={Membresia2} />
       <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
       <Route path="/blog" component={BlogList} />
       <Route path="/blog/:slug" component={BlogPost} />
