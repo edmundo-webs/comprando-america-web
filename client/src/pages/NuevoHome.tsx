@@ -294,6 +294,53 @@ const ICON_MAP: Record<string, (p?: { color?: string }) => JSX.Element> = {
 
 const LOGO_URL = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438699/comprando-america/logo.png";
 
+/* ─── Cinematic photo catalog ─── */
+const PHOTOS = {
+  hero:      "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438702/comprando-america/hero.webp",
+  business:  "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438705/comprando-america/investmentBusiness.webp",
+  realEstate:"https://res.cloudinary.com/dgruohz6f/image/upload/v1773438708/comprando-america/realEstate.webp",
+  expansion: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438714/comprando-america/expansion.webp",
+  visa:      "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438711/comprando-america/visa.webp",
+  edmundo:   "https://res.cloudinary.com/dofccqypz/image/upload/v1774380282/comprando-america/edmundo-trevino-professional.jpg",
+  eventos: [
+    "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_480,h_320,g_auto,q_auto,f_auto/v1774537558/comprando-america/eventos/xvdkaaxpavgr9lrybk8g.jpg",
+    "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_480,h_320,g_auto,q_auto,f_auto/v1774537561/comprando-america/eventos/fou8skfadwce2lodr5yc.jpg",
+    "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_480,h_320,g_auto,q_auto,f_auto/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg",
+    "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_480,h_320,g_auto,q_auto,f_auto/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg",
+  ],
+};
+
+/* ─── Film grain overlay (global) ─── */
+function FilmGrain() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "fixed", inset: 0, zIndex: 600, pointerEvents: "none",
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E")`,
+        backgroundSize: "320px 320px",
+        opacity: 0.038,
+      }}
+    />
+  );
+}
+
+/* ─── Atmospheric photo background for flow screens ─── */
+function CinematicPhotoBg({ src, intensity = 0.09 }: { src: string; intensity?: number }) {
+  return (
+    <img
+      src={src}
+      aria-hidden="true"
+      style={{
+        position: "absolute", inset: 0, width: "100%", height: "100%",
+        objectFit: "cover", objectPosition: "center",
+        filter: "grayscale(85%) contrast(115%) brightness(35%)",
+        opacity: intensity, zIndex: 0,
+      }}
+    />
+  );
+}
+
 /* ─── Flow top bar — logo + back button ─── */
 function FlowTopBar({ screen, onBack }: { screen: number; onBack: () => void }) {
   const canGoBack = screen >= 2 && screen !== 6;
@@ -341,33 +388,65 @@ function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
   const [hovered, setHovered] = useState<string | null>(null);
   return (
     <div style={{ position: "relative", width: "100%", minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: NAVY }}>
-      <video autoPlay loop muted playsInline preload="none" aria-hidden="true" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.15 }}>
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
-      </video>
-      <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg,${NAVY}F5 0%,#0D2545F0 50%,${NAVY}F8 100%)` }} />
-      <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: "2px", height: "80px", background: `linear-gradient(to bottom,transparent,${GOLD})` }} />
-      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "920px", padding: "96px 24px 80px", textAlign: "center" }}>
-        <div style={{ marginBottom: "36px", display: "flex", justifyContent: "center", alignItems: "center", gap: "14px" }}>
-          <div style={{ width: "40px", height: "1px", background: `${GOLD}80` }} />
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.28em", color: `${GOLD}90`, textTransform: "uppercase" }}>GPS Estratégico</span>
-          <div style={{ width: "40px", height: "1px", background: `${GOLD}80` }} />
+
+      {/* Real CA hero photo */}
+      <img
+        src={PHOTOS.hero}
+        aria-hidden="true"
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", opacity: 0.28, zIndex: 0 }}
+      />
+
+      {/* Multi-layer cinematic overlay */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 1, background: `linear-gradient(180deg, ${NAVY}D0 0%, ${NAVY}80 40%, ${NAVY}A0 70%, ${NAVY}F0 100%)` }} />
+      {/* Vignette */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 2, background: `radial-gradient(ellipse at 50% 50%, transparent 40%, ${NAVY}C0 100%)` }} />
+      {/* Horizontal light leak top */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "180px", zIndex: 2, background: `linear-gradient(to bottom, ${NAVY} 0%, transparent 100%)` }} />
+      {/* Horizontal light leak bottom */}
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "220px", zIndex: 2, background: `linear-gradient(to top, ${NAVY} 0%, transparent 100%)` }} />
+
+      {/* Cinematic letterbox bars */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "52px", background: "#000", zIndex: 3, opacity: 0.55 }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "52px", background: "#000", zIndex: 3, opacity: 0.55 }} />
+
+      {/* Gold top accent line */}
+      <div style={{ position: "absolute", top: "52px", left: 0, right: 0, height: "1px", background: `linear-gradient(90deg, transparent 0%, ${GOLD}60 30%, ${GOLD}60 70%, transparent 100%)`, zIndex: 4 }} />
+      <div style={{ position: "absolute", bottom: "52px", left: 0, right: 0, height: "1px", background: `linear-gradient(90deg, transparent 0%, ${GOLD}40 30%, ${GOLD}40 70%, transparent 100%)`, zIndex: 4 }} />
+
+      {/* Content */}
+      <div style={{ position: "relative", zIndex: 5, width: "100%", maxWidth: "960px", padding: "96px 24px 80px", textAlign: "center" }}>
+        {/* Film title treatment */}
+        <div style={{ marginBottom: "40px", display: "flex", justifyContent: "center", alignItems: "center", gap: "16px" }}>
+          <div style={{ width: "60px", height: "1px", background: `linear-gradient(90deg, transparent, ${GOLD}90)` }} />
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.38em", color: `${GOLD}A0`, textTransform: "uppercase" }}>GPS Estratégico · Comprando América</span>
+          <div style={{ width: "60px", height: "1px", background: `linear-gradient(90deg, ${GOLD}90, transparent)` }} />
         </div>
-        <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(26px,4.5vw,52px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "16px" }}>
+
+        <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(28px,4.8vw,58px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: "18px", textShadow: "0 4px 32px rgba(0,0,0,0.6)" }}>
           ¿Qué estás tratando de construir<br />
           <em style={{ color: GOLD_LIGHT, fontStyle: "italic" }}>en Estados Unidos?</em>
         </h1>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", marginBottom: "52px" }}>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "52px", letterSpacing: "0.01em" }}>
           Selecciona tu objetivo y te mostraremos la ruta exacta
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,220px),1fr))", gap: "14px", textAlign: "left" }}>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,220px),1fr))", gap: "12px", textAlign: "left" }}>
           {OPCIONES_1.map((op) => {
             const isH = hovered === op.id;
             return (
               <button key={op.id} onClick={() => onSelect(op.id)} onMouseEnter={() => setHovered(op.id)} onMouseLeave={() => setHovered(null)}
-                style={{ background: isH ? `linear-gradient(135deg,#122644,#1A3558)` : NAVY_CARD, border: `1px solid ${isH ? GOLD : NAVY_BORDER}`, borderRadius: "12px", padding: "22px 18px", cursor: "pointer", transition: "all 0.25s", transform: isH ? "translateY(-3px)" : "none", boxShadow: isH ? `0 12px 32px rgba(201,168,76,0.15)` : "none", display: "flex", flexDirection: "column", gap: "10px" }}>
-                <div style={{ color: GOLD }}>{(ICON_MAP[op.id] || ICON_MAP.compass)()}</div>
+                style={{
+                  background: isH ? `linear-gradient(135deg,rgba(26,53,88,0.95),rgba(18,38,68,0.98))` : `rgba(17,34,64,0.75)`,
+                  backdropFilter: "blur(16px)",
+                  border: `1px solid ${isH ? GOLD : "rgba(30,58,95,0.8)"}`,
+                  borderRadius: "12px", padding: "22px 18px", cursor: "pointer", transition: "all 0.3s",
+                  transform: isH ? "translateY(-4px)" : "none",
+                  boxShadow: isH ? `0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px ${GOLD}20` : "0 4px 16px rgba(0,0,0,0.3)",
+                  display: "flex", flexDirection: "column", gap: "10px"
+                }}>
+                <div style={{ color: isH ? GOLD_LIGHT : GOLD }}>{(ICON_MAP[op.id] || ICON_MAP.compass)()}</div>
                 <div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 600, color: "#E8ECF1", marginBottom: "4px" }}>{op.label}</div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 600, color: isH ? "#fff" : "#E8ECF1", marginBottom: "4px" }}>{op.label}</div>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", lineHeight: 1.5 }}>{op.sub}</div>
                 </div>
               </button>
@@ -389,8 +468,9 @@ const OPCIONES_2 = [
 function Screen2({ onNext }: { onNext: (id: string) => void }) {
   const [sel, setSel] = useState<string | null>(null);
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
-      <div style={{ width: "100%", maxWidth: "600px" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+      <CinematicPhotoBg src={PHOTOS.business} intensity={0.08} />
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={2} total={5} />
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "12px" }}>Entendido.</p>
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "12px", lineHeight: 1.25 }}>
@@ -429,8 +509,9 @@ const SLIDER_POINTS = ["1 año", "3 años", "5 años", "10+ años"];
 function Screen3({ onNext }: { onNext: (v: string) => void }) {
   const [sel, setSel] = useState(1);
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
-      <div style={{ width: "100%", maxWidth: "600px" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+      <CinematicPhotoBg src={PHOTOS.realEstate} intensity={0.09} />
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={3} total={5} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "12px" }}>¿Qué horizonte imaginas?</h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "64px" }}>¿En cuánto tiempo esperas ver resultados concretos de tu inversión?</p>
@@ -471,10 +552,11 @@ const OPCIONES_CAPITAL = [
 function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
   const [sel, setSel] = useState<string | null>(null);
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
-      <div style={{ width: "100%", maxWidth: "600px" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+      <CinematicPhotoBg src={PHOTOS.expansion} intensity={0.08} />
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={4} total={5} />
-        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.25 }}>
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.25, position: "relative", zIndex: 1 }}>
           ¿Cuánto capital tienes disponible?
         </h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.65 }}>
@@ -523,8 +605,9 @@ function Screen4({ onNext }: { onNext: (ids: string[]) => void }) {
     setSel([...sel, id]);
   }
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
-      <div style={{ width: "100%", maxWidth: "600px" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+      <CinematicPhotoBg src={PHOTOS.visa} intensity={0.08} />
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={5} total={5} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>¿Qué pesa más en tu decisión?</h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "32px" }}>Selecciona hasta <strong style={{ color: GOLD }}>2 opciones</strong></p>
@@ -763,18 +846,51 @@ function ResultScreen({ perfil, contactData, rankedVehicles, onUnderstandRoute, 
   }
 
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, padding: "88px 24px 100px", overflowY: "auto" }}>
-      <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-        {firstName && (
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "8px" }}>
-            Hola, <span style={{ color: "#fff", fontWeight: 600 }}>{firstName}</span>. Este es tu perfil estratégico:
-          </p>
-        )}
-        <div style={{ marginBottom: "6px" }}>
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>Tu perfil</span>
+    <div style={{ minHeight: "100dvh", background: NAVY, overflowY: "auto" }}>
+
+      {/* Cinematic result hero — Edmundo professional photo as ambient background */}
+      <div style={{ position: "relative", padding: "88px 24px 64px", overflow: "hidden" }}>
+        <img
+          src={PHOTOS.edmundo}
+          aria-hidden="true"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", filter: "grayscale(70%) contrast(110%) brightness(30%)", opacity: 0.18, zIndex: 0 }}
+        />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, background: `linear-gradient(180deg, ${NAVY}90 0%, ${NAVY}20 40%, ${NAVY}80 80%, ${NAVY} 100%)` }} />
+        {/* Gold accent line at top */}
+        <div style={{ position: "absolute", top: "88px", left: 0, right: 0, height: "1px", background: `linear-gradient(90deg, transparent 0%, ${GOLD}50 20%, ${GOLD}50 80%, transparent 100%)`, zIndex: 2 }} />
+
+        <div style={{ position: "relative", zIndex: 3, maxWidth: "680px", margin: "0 auto" }}>
+          {firstName && (
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "12px" }}>
+              Hola, <span style={{ color: "#fff", fontWeight: 600 }}>{firstName}</span>. Este es tu perfil estratégico:
+            </p>
+          )}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "6px" }}>
+            <div style={{ width: "32px", height: "1px", background: `${GOLD}80` }} />
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.3em", color: GOLD, textTransform: "uppercase" }}>Tu perfil</span>
+          </div>
+          <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(28px,5vw,54px)", fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: "20px", textShadow: "0 4px 32px rgba(0,0,0,0.5)" }}>{perfil.nombre}</h1>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", lineHeight: 1.75, maxWidth: "520px" }}>{perfil.descripcion}</p>
         </div>
-        <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(26px,5vw,50px)", fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: "20px" }}>{perfil.nombre}</h1>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "52px", maxWidth: "520px" }}>{perfil.descripcion}</p>
+      </div>
+
+      {/* Event photos strip — social proof */}
+      <div style={{ overflowX: "auto", scrollbarWidth: "none", display: "flex", gap: "6px", padding: "0 24px 0", margin: "0 0 48px" }}>
+        {PHOTOS.eventos.map((src, i) => (
+          <div key={i} style={{ flexShrink: 0, width: "200px", height: "130px", borderRadius: "8px", overflow: "hidden", border: `1px solid ${NAVY_BORDER}`, position: "relative" }}>
+            <img src={src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "grayscale(30%) brightness(80%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${NAVY}50, transparent)` }} />
+          </div>
+        ))}
+        <div style={{ flexShrink: 0, width: "200px", height: "130px", borderRadius: "8px", background: `${GOLD}12`, border: `1px solid ${GOLD}30`, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 700, color: GOLD }}>+500</div>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#8FA5C0", marginTop: "4px" }}>inversionistas en la comunidad</div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "0 24px 100px" }}>
         <div style={{ marginBottom: "48px" }}>
           <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "24px" }}>Tu Ruta Recomendada</h3>
           <MetroLine />
@@ -1388,6 +1504,7 @@ export default function NuevoHome() {
 
   return (
     <div style={{ background: NAVY, minHeight: "100dvh", position: "relative" }}>
+      <FilmGrain />
       {/* Fixed brand header — visible during flow only */}
       {!showMain && <FlowTopBar screen={screen} onBack={handleBack} />}
 
