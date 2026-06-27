@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SectionHeading from "@/components/SectionHeading";
+import SEOHead from "@/components/SEOHead";
 import { useInView } from "@/hooks/useInView";
 import { IMAGES } from "@/lib/constants";
 import { motion } from "framer-motion";
@@ -9,6 +10,7 @@ import { Calendar, ArrowRight, Search } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
+import { cldSrcSet, cldUrl } from "@/lib/cloudinary";
 
 // ─── Animated wrapper ───
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -68,6 +70,23 @@ export default function BlogList() {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <SEOHead
+        title="Blog — Análisis de inversión, visa E-2 y bienes raíces en EE.UU."
+        description="Artículos editoriales de Comprando América sobre cómo migrar e invertir en Estados Unidos: visa E-2, estructura LLC en Texas y Florida, bienes raíces y estrategia fiscal."
+        path="/blog"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          name: "Blog de Comprando América",
+          url: "https://comprandoamerica.com/blog",
+          inLanguage: "es-MX",
+          publisher: {
+            "@type": "Organization",
+            name: "Comprando América",
+            url: "https://comprandoamerica.com",
+          },
+        }}
+      />
       <Navbar />
 
       {/* ═══ HERO ═══ */}
@@ -160,8 +179,12 @@ export default function BlogList() {
                             {blog.featuredImage && (
                               <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary/20 to-transparent">
                                 <img
-                                  src={blog.featuredImage}
+                                  src={cldUrl(blog.featuredImage, { width: 640 })}
+                                  srcSet={cldSrcSet(blog.featuredImage, [400, 640, 960])}
+                                  sizes="(max-width: 768px) 100vw, 400px"
                                   alt={blog.title}
+                                  loading="lazy"
+                                  decoding="async"
                                   className="w-full h-full object-contain bg-[oklch(0.08_0.02_250)] group-hover:scale-105 transition-transform duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[oklch(0.10_0.03_250)] to-transparent" />

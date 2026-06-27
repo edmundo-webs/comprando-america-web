@@ -1,9 +1,11 @@
 import { trpc } from "@/lib/trpc";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { IMAGES } from "@/lib/constants";
 import { ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cldSrcSet, cldUrl } from "@/lib/cloudinary";
 import { useParams } from "wouter";
 
 function estimateReadTime(content: string): number {
@@ -19,8 +21,58 @@ export default function BlogPost() {
     { enabled: !!params.slug }
   );
 
+  // ─── SEO: build per-post meta + JSON-LD when post is loaded ──────
+  const seoNode = post && post.status === "published" ? (() => {
+    const url = `https://comprandoamerica.com/blog/${post.slug}`;
+    const img = post.featuredImage?.startsWith("http")
+      ? post.featuredImage
+      : "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png";
+    const desc = (post.excerpt || post.metaDescription || "").slice(0, 200) ||
+      "Blog de Comprando América — análisis profundo de visa E-2, LLC, bienes raíces e inversión en EE.UU.";
+    return (
+      <SEOHead
+        title={post.title}
+        description={desc}
+        path={`/blog/${post.slug}`}
+        image={img}
+        schema={[
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: desc,
+            image: [img],
+            datePublished: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+            dateModified: post.updatedAt ? new Date(post.updatedAt).toISOString() : undefined,
+            author: { "@type": "Organization", name: "Equipo Comprando América" },
+            publisher: {
+              "@type": "Organization",
+              name: "Comprando América",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png",
+              },
+            },
+            mainEntityOfPage: { "@type": "WebPage", "@id": url },
+            inLanguage: post.language === "en" ? "en-US" : "es-MX",
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Inicio", item: "https://comprandoamerica.com/" },
+              { "@type": "ListItem", position: 2, name: "Blog", item: "https://comprandoamerica.com/blog" },
+              { "@type": "ListItem", position: 3, name: post.title, item: url },
+            ],
+          },
+        ]}
+      />
+    );
+  })() : null;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {seoNode}
       <Navbar />
 
       {/* Hero / Header */}
@@ -104,8 +156,12 @@ export default function BlogPost() {
           <div className="max-w-4xl mx-auto">
             <div className="rounded-2xl overflow-hidden border border-[#1E3A5F]">
               <img
-                src={post.featuredImage}
+                src={cldUrl(post.featuredImage, { width: 1200 })}
+                srcSet={cldSrcSet(post.featuredImage, [640, 960, 1200, 1600])}
+                sizes="(max-width: 1024px) 100vw, 1024px"
                 alt={post.title}
+                fetchPriority="high"
+                decoding="async"
                 className="w-full h-auto max-h-[500px] object-contain bg-[#132D50]"
               />
             </div>
