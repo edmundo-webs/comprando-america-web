@@ -69,7 +69,7 @@ const PROPIEDADES: Propiedad[] = [
     ubicacion: "Detroit, Michigan",
     estado: "Michigan",
     tipo: "Fix & Flip",
-    precio: "$45,000",
+    precio: "$98,000",
     renta: "—",
     cap: "Potencial 18–22%",
     descripcion: "Oportunidad de rehabilitación con alto potencial de apreciación. Requiere inversión en remodelación. Ideal para inversionistas activos.",
