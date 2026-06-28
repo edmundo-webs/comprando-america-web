@@ -32,6 +32,15 @@ type Deal = {
   zillow?: string;
 };
 
+const FOTOS: Record<number, string> = {
+  1: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680688/tts-news/lksrhg3srjl3mkneb71a.png",
+  2: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680692/tts-news/iemqw3nbwx4livztfglv.png",
+  3: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680688/tts-news/xmbhlaqnvvv5zya0yrw3.png",
+  4: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680690/tts-news/bkvmnmld5iqyrepzzuoi.png",
+  5: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680689/tts-news/pxg4lqchgcexfbciw5j0.png",
+  6: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680688/tts-news/ntweo18moo6rmnjacsun.png",
+};
+
 const DEALS: Deal[] = [
   {
     id: 1,
@@ -123,17 +132,21 @@ function DealCard({ d }: { d: Deal }) {
       onMouseEnter={e => (e.currentTarget.style.borderColor = `${GOLD}50`)}
       onMouseLeave={e => (e.currentTarget.style.borderColor = NAVY_BORDER)}
     >
-      {/* Top bar */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 18px 0" }}>
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: NAVY, background: GOLD, borderRadius: "5px", padding: "3px 10px", letterSpacing: "0.08em" }}>
-          #{d.id} · {d.tipo}
-        </span>
+      {/* Photo */}
+      <div style={{ position: "relative", height: "180px", overflow: "hidden" }}>
+        <img src={FOTOS[d.id]} alt={`Propiedad #${d.id} ${d.ubicacion}`}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 50%, #11224099 100%)" }} />
         {d.savings && (
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#3ECF8E", background: "#3ECF8E18", border: "1px solid #3ECF8E40", borderRadius: "5px", padding: "3px 10px" }}>
+          <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#0B1F3A", background: "#3ECF8E", borderRadius: "5px", padding: "3px 10px" }}>
             -{usd(d.savings)} ahorro
           </span>
         )}
+        <span style={{ position: "absolute", top: "10px", left: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#0B1F3A", background: GOLD, borderRadius: "5px", padding: "3px 10px", letterSpacing: "0.08em" }}>
+          #{d.id} · {d.tipo}
+        </span>
       </div>
+
 
       {/* Main info */}
       <div style={{ padding: "14px 18px 18px", flex: 1 }}>
