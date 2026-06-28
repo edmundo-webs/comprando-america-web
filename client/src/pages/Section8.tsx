@@ -18,21 +18,26 @@ import {
   Globe,
   Users,
   TrendingUp,
-  CheckCircle2,
   ArrowRight,
   AlertTriangle,
   ChevronRight,
 } from "lucide-react";
 
-/* ─── constants ─── */
-const GOLD = "#C9A84C";
-const DARK = "#0B0B0B";
-const WA_MSG = "Hola, me interesa conocer más sobre las propiedades con Section 8.";
+/* ─── Brand tokens — idénticos al resto del sitio ─── */
+const NAVY      = "#0B1F3A";
+const NAVY_CARD = "#0F2847";
+const NAVY_DARK = "#091A30";
+const BORDER    = "#1E3A5F";
+const GOLD      = "#C9A84C";
+const GOLD_LIGHT = "#E2C06E";
+
+const WA_MSG =
+  "Hola, me interesa conocer más sobre las propiedades con Section 8.";
 
 const HERO_BG =
   "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439251/comprando-america/fUiLqaRcYvhafLZf.webp";
 
-/* ─── FadeIn ─── */
+/* ─── FadeIn — mismo patrón que BienesRaices / ClubInversion ─── */
 function FadeIn({
   children,
   className = "",
@@ -46,23 +51,13 @@ function FadeIn({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.65, delay, ease: "easeOut" }}
+      transition={{ duration: 0.6, delay, ease: "easeOut" }}
       className={className}
     >
       {children}
     </motion.div>
-  );
-}
-
-/* ─── GoldLine ─── */
-function GoldLine() {
-  return (
-    <div
-      className="w-16 h-[2px] mb-8"
-      style={{ backgroundColor: GOLD }}
-    />
   );
 }
 
@@ -82,7 +77,7 @@ const PAGE_SEO = {
         name: "¿Necesito vivir en Estados Unidos para invertir en Section 8?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "No. Puedes adquirir y operar propiedades en Estados Unidos sin necesidad de residir allí.",
+          text: "No. Puedes adquirir y operar propiedades sin necesidad de residir allí.",
         },
       },
       {
@@ -105,7 +100,7 @@ const PAGE_SEO = {
   },
 };
 
-/* ─── Benefit cards ─── */
+/* ─── Beneficios ─── */
 const BENEFITS = [
   {
     icon: DollarSign,
@@ -134,7 +129,7 @@ const BENEFITS = [
   },
 ];
 
-/* ─── Checklist items ─── */
+/* ─── Checklist ─── */
 const CHECKLIST = [
   "Quiero ingresos en dólares.",
   "Quiero diversificar mi patrimonio.",
@@ -146,18 +141,15 @@ const CHECKLIST = [
 
 /* ─── Ficha técnica ─── */
 const FICHA = [
-  { label: "Ticket estimado", value: "Desde USD $100,000" },
-  { label: "Horizonte sugerido", value: "5 años o más" },
-  { label: "Participación", value: "Semi-pasiva" },
-  { label: "Flujo", value: "Mensual" },
-  { label: "Activo", value: "Bienes raíces residenciales" },
-  { label: "Liquidez", value: "Media - Baja" },
-  { label: "Nivel de riesgo", value: "Moderado" },
-  { label: "Administración", value: "Profesional" },
-  {
-    label: "Compatible con estrategia migratoria",
-    value: "Dependerá de cada caso",
-  },
+  { label: "Ticket estimado",                 value: "Desde USD $100,000" },
+  { label: "Horizonte sugerido",              value: "5 años o más" },
+  { label: "Participación",                   value: "Semi-pasiva" },
+  { label: "Flujo",                           value: "Mensual" },
+  { label: "Activo",                          value: "Bienes raíces residenciales" },
+  { label: "Liquidez",                        value: "Media - Baja" },
+  { label: "Nivel de riesgo",                 value: "Moderado" },
+  { label: "Administración",                  value: "Profesional" },
+  { label: "Compatible con estrategia migratoria", value: "Dependerá de cada caso" },
 ];
 
 /* ─── FAQ ─── */
@@ -198,77 +190,62 @@ export default function Section8() {
   }
 
   return (
-    <div
-      className="min-h-screen text-white overflow-x-hidden"
-      style={{ backgroundColor: DARK }}
-    >
+    <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ══ 1. HERO ══ */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 pb-24 overflow-hidden">
+      <section className="relative min-h-[88vh] flex items-center pt-20 pb-24 overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={HERO_BG}
             alt="Propiedad Section 8 en Estados Unidos"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/85 to-black/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/30" />
         </div>
-
-        {/* top gold accent */}
-        <div
-          className="absolute top-0 left-0 right-0 h-[2px]"
-          style={{ backgroundColor: GOLD, opacity: 0.7 }}
-        />
 
         <div className="container relative z-10">
           <FadeIn>
             <div className="max-w-3xl">
-              <p
-                className="text-xs font-semibold tracking-[0.3em] uppercase mb-6 font-mono"
-                style={{ color: GOLD }}
-              >
-                Propiedades administradas bajo el programa Section 8
+              {/* eyebrow igual al resto del sitio */}
+              <p className="text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono"
+                 style={{ color: GOLD }}>
+                Propiedades · Programa Section 8
               </p>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] font-bold mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6 font-bold">
                 Genera ingresos en dólares a través de{" "}
-                <span style={{ color: GOLD }}>
+                <span className="gradient-text-primary">
                   bienes raíces en Estados Unidos.
                 </span>
               </h1>
 
-              <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl">
+              <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl">
                 Una estrategia patrimonial utilizada por inversionistas que
                 buscan flujo, activos tangibles y diversificación internacional.
               </p>
 
-              <div className="flex flex-wrap gap-4 mb-12">
+              <div className="flex flex-wrap gap-4 mb-10">
                 <Button
                   onClick={() => {
-                    const el = document.getElementById("checklist");
-                    el?.scrollIntoView({ behavior: "smooth" });
+                    document.getElementById("checklist")?.scrollIntoView({ behavior: "smooth" });
                   }}
-                  className="text-black font-semibold px-8 py-6 text-base gap-2 rounded-none"
-                  style={{ backgroundColor: GOLD }}
+                  className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25"
                 >
                   Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-white/30 text-white hover:bg-white/10 px-8 py-6 text-base rounded-none"
+                  className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base"
                 >
                   Hablar con un asesor
                 </Button>
               </div>
 
-              <p
-                className="text-sm italic"
-                style={{ color: GOLD, opacity: 0.75 }}
-              >
+              <p className="text-slate-500 text-sm italic">
                 Descubre si esta estrategia tiene sentido para ti.
               </p>
             </div>
@@ -276,53 +253,48 @@ export default function Section8() {
         </div>
       </section>
 
-      {/* ══ 2. EXPLÍCAMELO FÁCIL — BLANCO ══ */}
-      <section className="bg-white py-20 md:py-28 text-black">
+      {/* ══ 2. EXPLÍCAMELO FÁCIL — sección clara (igual que otras páginas) ══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container max-w-4xl">
           <FadeIn>
-            <GoldLine />
-            <h2 className="text-3xl md:text-4xl font-bold mb-10 text-black">
+            {/* acento dorado sutil — marca Section 8 sin romper el sitio */}
+            <div className="w-12 h-[3px] mb-6 rounded-full" style={{ backgroundColor: GOLD }} />
+            <h2 className="text-3xl md:text-4xl font-bold mb-10 text-[#0B1F3A]">
               ¿Qué es una propiedad con Section 8?
             </h2>
           </FadeIn>
 
-          <FadeIn delay={0.1}>
-            <p className="text-lg text-slate-700 leading-relaxed mb-6">
-              Imagina que compras una propiedad en Estados Unidos para rentarla.
-            </p>
-            <p className="text-lg text-slate-700 leading-relaxed mb-6">
-              En muchos casos, el gobierno ayuda a determinadas familias a
-              cubrir una parte o la totalidad de la renta.
-            </p>
-            <p className="text-lg text-slate-700 leading-relaxed mb-6">
-              Esto significa que, siempre que la propiedad cumpla los requisitos
-              del programa y exista un inquilino aprobado, el propietario puede
-              recibir pagos respaldados por el gobierno.
-            </p>
-            <p className="text-lg text-slate-700 leading-relaxed">
-              Por esta razón, muchos inversionistas consideran esta estrategia
-              cuando buscan generar ingresos en dólares mediante bienes raíces.
-            </p>
-          </FadeIn>
+          <div className="space-y-5">
+            {[
+              "Imagina que compras una propiedad en Estados Unidos para rentarla.",
+              "En muchos casos, el gobierno ayuda a determinadas familias a cubrir una parte o la totalidad de la renta.",
+              "Esto significa que, siempre que la propiedad cumpla los requisitos del programa y exista un inquilino aprobado, el propietario puede recibir pagos respaldados por el gobierno.",
+              "Por esta razón, muchos inversionistas consideran esta estrategia cuando buscan generar ingresos en dólares mediante bienes raíces.",
+            ].map((text, i) => (
+              <FadeIn key={i} delay={i * 0.08}>
+                <p className="text-lg text-slate-700 leading-relaxed">{text}</p>
+              </FadeIn>
+            ))}
+          </div>
 
-          {/* Flow animation */}
-          <FadeIn delay={0.2} className="mt-16">
-            <div className="flex flex-wrap items-center justify-center gap-3 md:gap-0">
+          {/* Flujo visual */}
+          <FadeIn delay={0.3} className="mt-16">
+            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-0">
               {[
-                { label: "Propiedad", icon: "🏠" },
-                { label: "Inquilino", icon: "👨‍👩‍👧" },
-                { label: "Gobierno", icon: "🏛️" },
-                { label: "Flujo mensual", icon: "💵" },
+                { emoji: "🏠", label: "Propiedad" },
+                { emoji: "👨‍👩‍👧", label: "Inquilino" },
+                { emoji: "🏛️", label: "Gobierno" },
+                { emoji: "💵", label: "Flujo mensual" },
               ].map((step, i, arr) => (
-                <div key={i} className="flex items-center gap-3">
+                <div key={i} className="flex items-center gap-2">
                   <div className="flex flex-col items-center">
                     <div
-                      className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl border-2"
-                      style={{ borderColor: GOLD, backgroundColor: "#f9f6ef" }}
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center text-2xl md:text-3xl border-2 bg-white shadow-sm"
+                      style={{ borderColor: GOLD }}
                     >
-                      {step.icon}
+                      {step.emoji}
                     </div>
-                    <p className="mt-2 text-xs md:text-sm font-semibold text-slate-700 text-center">
+                    <p className="mt-2 text-xs md:text-sm font-semibold text-slate-600 text-center">
                       {step.label}
                     </p>
                   </div>
@@ -339,50 +311,45 @@ export default function Section8() {
         </div>
       </section>
 
-      {/* ══ 3. ¿POR QUÉ ALGUNOS LO CONSIDERAN? — NEGRO ══ */}
-      <section className="py-20 md:py-28" style={{ backgroundColor: DARK }}>
+      {/* ══ 3. ¿POR QUÉ LO CONSIDERAN? — navy ══ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <GoldLine />
+            <div className="w-12 h-[3px] mb-6 rounded-full" style={{ backgroundColor: GOLD }} />
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
               ¿Por qué algunos inversionistas la consideran?
             </h2>
-            <p className="text-slate-400 mb-14 max-w-xl">
+            <p className="text-slate-400 mb-12 max-w-xl">
               Cinco razones que llevan a los inversionistas a explorar esta estrategia.
             </p>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {BENEFITS.map((b, i) => (
               <FadeIn key={i} delay={i * 0.08}>
                 <div
-                  className="group border p-8 cursor-default transition-all duration-300 hover:-translate-y-1"
+                  className="group p-8 rounded-xl border transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                   style={{
-                    borderColor: "rgba(201,168,76,0.25)",
-                    backgroundColor: "rgba(255,255,255,0.03)",
+                    backgroundColor: NAVY_CARD,
+                    borderColor: BORDER,
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor =
-                      "rgba(201,168,76,0.7)";
-                    (e.currentTarget as HTMLDivElement).style.boxShadow =
-                      `0 0 24px rgba(201,168,76,0.12)`;
+                    (e.currentTarget as HTMLDivElement).style.borderColor = `${GOLD}55`;
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = `0 16px 40px rgba(11,31,58,0.6)`;
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLDivElement).style.borderColor =
-                      "rgba(201,168,76,0.25)";
-                    (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
+                    (e.currentTarget as HTMLDivElement).style.borderColor = BORDER;
+                    (e.currentTarget as HTMLDivElement).style.boxShadow = "";
                   }}
                 >
-                  <b.icon
-                    className="w-7 h-7 mb-5"
-                    style={{ color: GOLD }}
-                  />
-                  <h3 className="text-white font-semibold text-lg mb-2">
-                    {b.title}
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    {b.desc}
-                  </p>
+                  <div
+                    className="w-11 h-11 rounded-lg flex items-center justify-center mb-5"
+                    style={{ backgroundColor: `${GOLD}18` }}
+                  >
+                    <b.icon className="w-5 h-5" style={{ color: GOLD }} />
+                  </div>
+                  <h3 className="text-white font-semibold text-lg mb-2">{b.title}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{b.desc}</p>
                 </div>
               </FadeIn>
             ))}
@@ -390,17 +357,17 @@ export default function Section8() {
         </div>
       </section>
 
-      {/* ══ 4. ¿CÓMO GANA DINERO? — BLANCO ══ */}
-      <section className="bg-white py-20 md:py-28 text-black">
+      {/* ══ 4. CÓMO GANA DINERO — claro ══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container max-w-3xl">
           <FadeIn>
-            <GoldLine />
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-black">
+            <div className="w-12 h-[3px] mb-6 rounded-full" style={{ backgroundColor: GOLD }} />
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-[#0B1F3A]">
               ¿Cómo gana dinero el inversionista?
             </h2>
           </FadeIn>
 
-          <div className="space-y-8">
+          <div className="space-y-10">
             {[
               {
                 num: "01",
@@ -422,9 +389,7 @@ export default function Section8() {
                     {item.num}
                   </span>
                   <div>
-                    <h3 className="text-xl font-semibold text-black mb-2">
-                      {item.title}
-                    </h3>
+                    <h3 className="text-xl font-semibold text-[#0B1F3A] mb-2">{item.title}</h3>
                     <p className="text-slate-600 leading-relaxed">{item.body}</p>
                   </div>
                 </div>
@@ -433,7 +398,10 @@ export default function Section8() {
           </div>
 
           <FadeIn delay={0.25} className="mt-14">
-            <div className="flex items-start gap-3 p-5 border-l-2" style={{ borderColor: GOLD }}>
+            <div
+              className="flex items-start gap-3 p-5 rounded-lg border-l-4 bg-amber-50"
+              style={{ borderColor: GOLD }}
+            >
               <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: GOLD }} />
               <p className="text-sm text-slate-600 leading-relaxed">
                 Ninguna inversión está libre de riesgos.
@@ -443,15 +411,11 @@ export default function Section8() {
         </div>
       </section>
 
-      {/* ══ 5. CHECKLIST — NEGRO ══ */}
-      <section
-        id="checklist"
-        className="py-20 md:py-28"
-        style={{ backgroundColor: DARK }}
-      >
+      {/* ══ 5. CHECKLIST — navy oscuro ══ */}
+      <section id="checklist" className="py-20 md:py-28" style={{ backgroundColor: NAVY_DARK }}>
         <div className="container max-w-2xl">
           <FadeIn>
-            <GoldLine />
+            <div className="w-12 h-[3px] mb-6 rounded-full" style={{ backgroundColor: GOLD }} />
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
               ¿Esta estrategia podría tener sentido para ti?
             </h2>
@@ -460,45 +424,33 @@ export default function Section8() {
             </p>
           </FadeIn>
 
-          <div className="space-y-4">
+          <div className="space-y-3">
             {CHECKLIST.map((item, i) => (
               <FadeIn key={i} delay={i * 0.06}>
                 <button
                   onClick={() => toggleCheck(i)}
-                  className="w-full flex items-center gap-4 p-5 border text-left transition-all duration-200"
+                  className="w-full flex items-center gap-4 p-5 rounded-xl border text-left transition-all duration-200"
                   style={{
-                    borderColor: checked[i]
-                      ? "rgba(201,168,76,0.8)"
-                      : "rgba(255,255,255,0.1)",
-                    backgroundColor: checked[i]
-                      ? "rgba(201,168,76,0.08)"
-                      : "rgba(255,255,255,0.02)",
+                    borderColor: checked[i] ? `${GOLD}99` : BORDER,
+                    backgroundColor: checked[i] ? `${GOLD}10` : NAVY_CARD,
                   }}
                 >
                   <div
-                    className="w-5 h-5 flex-shrink-0 border-2 rounded-sm flex items-center justify-center transition-all"
+                    className="w-5 h-5 flex-shrink-0 border-2 rounded flex items-center justify-center transition-all"
                     style={{
-                      borderColor: checked[i] ? GOLD : "rgba(255,255,255,0.3)",
-                      backgroundColor: checked[i]
-                        ? GOLD
-                        : "transparent",
+                      borderColor: checked[i] ? GOLD : "#1E3A5F",
+                      backgroundColor: checked[i] ? GOLD : "transparent",
                     }}
                   >
                     {checked[i] && (
-                      <svg
-                        viewBox="0 0 10 8"
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="black"
-                        strokeWidth="2"
-                      >
+                      <svg viewBox="0 0 10 8" className="w-3 h-3" fill="none" stroke="#0B1F3A" strokeWidth="2.5">
                         <path d="M1 4l3 3 5-6" />
                       </svg>
                     )}
                   </div>
                   <span
                     className="text-base font-medium transition-colors"
-                    style={{ color: checked[i] ? "#fff" : "rgb(148,163,184)" }}
+                    style={{ color: checked[i] ? "#E8ECF1" : "#94A3B8" }}
                   >
                     {item}
                   </span>
@@ -514,10 +466,10 @@ export default function Section8() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 16 }}
                 transition={{ duration: 0.4 }}
-                className="mt-10 p-6 border"
-                style={{ borderColor: GOLD, backgroundColor: "rgba(201,168,76,0.07)" }}
+                className="mt-8 p-6 rounded-xl border"
+                style={{ borderColor: `${GOLD}55`, backgroundColor: `${GOLD}0D` }}
               >
-                <p className="text-white font-semibold text-lg mb-1" style={{ color: GOLD }}>
+                <p className="font-semibold text-lg mb-1" style={{ color: GOLD_LIGHT }}>
                   Esta estrategia podría valer la pena explorar.
                 </p>
                 <p className="text-slate-400 text-sm">
@@ -529,89 +481,80 @@ export default function Section8() {
         </div>
       </section>
 
-      {/* ══ 6. FICHA TÉCNICA — BLANCO ══ */}
-      <section className="bg-white py-20 md:py-28 text-black">
+      {/* ══ 6. FICHA TÉCNICA — navy ══ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container max-w-3xl">
           <FadeIn>
-            <GoldLine />
-            <h2 className="text-3xl md:text-4xl font-bold mb-10 text-black">
+            <div className="w-12 h-[3px] mb-6 rounded-full" style={{ backgroundColor: GOLD }} />
+            <h2 className="text-3xl md:text-4xl font-bold mb-10 text-white">
               Ficha técnica
             </h2>
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <div className="border" style={{ borderColor: "rgba(201,168,76,0.3)" }}>
+            <div className="rounded-2xl border overflow-hidden" style={{ borderColor: BORDER }}>
               {FICHA.map((row, i) => (
                 <div
                   key={i}
-                  className="flex items-start justify-between p-5 text-sm"
+                  className="flex items-center justify-between px-6 py-4 text-sm"
                   style={{
-                    borderBottom:
-                      i < FICHA.length - 1
-                        ? "1px solid rgba(201,168,76,0.15)"
-                        : "none",
-                    backgroundColor: i % 2 === 0 ? "transparent" : "rgba(201,168,76,0.03)",
+                    borderBottom: i < FICHA.length - 1 ? `1px solid ${BORDER}` : "none",
+                    backgroundColor: i % 2 === 0 ? NAVY_CARD : `${NAVY_CARD}88`,
                   }}
                 >
-                  <span className="text-slate-500 font-medium w-1/2">
-                    {row.label}
-                  </span>
-                  <span className="text-black font-semibold text-right w-1/2">
-                    {row.value}
-                  </span>
+                  <span className="text-slate-400 font-medium">{row.label}</span>
+                  <span className="text-white font-semibold text-right">{row.value}</span>
                 </div>
               ))}
             </div>
 
             <p className="mt-8 text-xs text-slate-500 leading-relaxed border-l-2 pl-4" style={{ borderColor: GOLD }}>
-              Toda inversión implica riesgos y debe evaluarse de acuerdo con los
-              objetivos, horizonte y situación patrimonial de cada inversionista.
+              Toda inversión implica riesgos y debe evaluarse de acuerdo con los objetivos,
+              horizonte y situación patrimonial de cada inversionista.
             </p>
           </FadeIn>
         </div>
       </section>
 
-      {/* ══ CIERRE — NEGRO ══ */}
-      <section className="py-24 md:py-32" style={{ backgroundColor: DARK }}>
+      {/* ══ CIERRE — navy oscuro ══ */}
+      <section className="py-24 md:py-32" style={{ backgroundColor: NAVY_DARK }}>
         <div className="container max-w-3xl text-center">
           <FadeIn>
             <p
-              className="text-xs font-semibold tracking-[0.3em] uppercase mb-6 font-mono"
+              className="text-xs font-semibold tracking-[0.25em] uppercase mb-6 font-mono"
               style={{ color: GOLD }}
             >
               Comprando América · 2026
             </p>
             <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-6">
-              No se trata de comprar una propiedad.
-              <br />
-              <span style={{ color: GOLD }}>
-                Se trata de entender si este tipo de activo tiene sentido para
-                tus objetivos.
+              No se trata de comprar una propiedad.{" "}
+              <span className="gradient-text-primary">
+                Se trata de entender si este tipo de activo tiene sentido para tus objetivos.
               </span>
             </h2>
-            <p className="text-slate-400 text-lg mb-12 max-w-xl mx-auto">
-              En esta sesión evaluaremos si las propiedades administradas bajo el
-              programa Section 8 forman parte de la ruta adecuada para tu
-              patrimonio.
+            <p className="text-slate-400 text-lg mb-12 max-w-xl mx-auto leading-relaxed">
+              En esta sesión evaluaremos si las propiedades administradas bajo el programa
+              Section 8 forman parte de la ruta adecuada para tu patrimonio.
             </p>
 
-            <Button
-              onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-              className="text-black font-semibold px-10 py-7 text-base gap-2 rounded-none mx-auto"
-              style={{ backgroundColor: GOLD }}
-            >
-              Agendar Diagnóstico Estratégico <ArrowRight className="w-4 h-4" />
-            </Button>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button
+                onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
+                className="bg-primary hover:bg-blue-600 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/25"
+              >
+                Agendar Diagnóstico Estratégico <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
           </FadeIn>
         </div>
       </section>
 
-      {/* ══ FAQ — BLANCO ══ */}
-      <section className="bg-white py-20 md:py-28 text-black">
+      {/* ══ FAQ — claro ══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container max-w-2xl">
           <FadeIn>
-            <GoldLine />
-            <h2 className="text-2xl md:text-3xl font-bold mb-10 text-black">
+            <div className="w-12 h-[3px] mb-6 rounded-full" style={{ backgroundColor: GOLD }} />
+            <h2 className="text-2xl md:text-3xl font-bold mb-10 text-[#0B1F3A]">
               Preguntas frecuentes
             </h2>
           </FadeIn>
@@ -622,13 +565,13 @@ export default function Section8() {
                 <AccordionItem
                   key={i}
                   value={`faq-${i}`}
-                  className="border-b"
-                  style={{ borderColor: "rgba(201,168,76,0.2)" }}
+                  className="rounded-xl border px-2"
+                  style={{ borderColor: "#E2E8F0", backgroundColor: "white" }}
                 >
-                  <AccordionTrigger className="text-left text-black font-medium hover:no-underline py-5">
+                  <AccordionTrigger className="text-left text-[#0B1F3A] font-medium hover:no-underline px-4 py-5">
                     {faq.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-slate-600 pb-5 leading-relaxed">
+                  <AccordionContent className="text-slate-600 pb-5 px-4 leading-relaxed">
                     {faq.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -637,14 +580,14 @@ export default function Section8() {
           </FadeIn>
 
           <FadeIn delay={0.2} className="mt-16 text-center">
-            <p
-              className="text-base italic font-medium"
+            <blockquote
+              className="text-base md:text-lg italic font-medium leading-relaxed"
               style={{ color: GOLD }}
             >
               "La mejor inversión no siempre es la que promete más.
               <br />
               Muchas veces es la que mejor se adapta a tu estrategia patrimonial."
-            </p>
+            </blockquote>
           </FadeIn>
         </div>
       </section>
