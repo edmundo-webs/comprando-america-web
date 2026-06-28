@@ -107,7 +107,7 @@ export default function BienesRaices() {
                     src="https://res.cloudinary.com/dgruohz6f/video/upload/v1773439533/comprando-america/GmMnpoMeKYAWvyKd.mp4"
                     controls
                     playsInline
-                    className="w-full max-h-[55vh] object-contain"
+                    className="w-full max-h-[420px] object-contain"
                   />
                 </div>
               </div>
