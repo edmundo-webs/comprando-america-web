@@ -146,7 +146,7 @@ export default function QuienesSomos() {
           <FadeIn>
             <div className="text-center mb-12">
               <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Lo Que Hacemos</p>
-              <h2 className="text-3xl md:text-4xl text-white">Solución integral para inversión en EE.UU.</h2>
+              <h2 className="text-3xl md:text-4xl text-white">Solución integral para inversión en Estados Unidos</h2>
             </div>
           </FadeIn>
 
@@ -239,7 +239,7 @@ export default function QuienesSomos() {
                       "Maestría en Sistema Fiscal en Estados Unidos",
                       "10 años de experiencia en contabilidad y administración",
                       "20 años de experiencia en comercio internacional",
-                      "Más de 8 empresas operando en EE.UU. y México",
+                      "Más de 8 empresas operando en Estados Unidos y México",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />

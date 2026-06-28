@@ -32,7 +32,7 @@ const TESTIMONIALS: Testimonial[] = [
     id: "3",
     name: "Jorge",
     city: "Guadalajara",
-    results: ["Primera inversión en USA", "Acceso a oportunidades"],
+    results: ["Primera inversión en Estados Unidos", "Acceso a oportunidades"],
     quote: "Lo que más valoré fue que aquí no solo analizan oportunidades, las ejecutan. A través de la comunidad conocí un proyecto que ya estaba estructurado y hoy ya soy inversionista.",
     avatar: "J"
   },

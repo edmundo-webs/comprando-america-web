@@ -3,6 +3,7 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 import { Link } from "wouter";
+import { cldSrcSet, cldUrl } from "@/lib/cloudinary";
 
 interface NewsCardProps {
   article: NewsArticle;
@@ -19,8 +20,12 @@ export function NewsCard({ article }: NewsCardProps) {
         {article.imageUrl && (
           <div className="relative h-48 overflow-hidden">
             <img
-              src={article.imageUrl}
+              src={cldUrl(article.imageUrl, { width: 640 })}
+              srcSet={cldSrcSet(article.imageUrl, [400, 640, 960])}
+              sizes="(max-width: 768px) 100vw, 400px"
               alt={article.title}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               onError={(e) => {
                 e.currentTarget.style.display = "none";

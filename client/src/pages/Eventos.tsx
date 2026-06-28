@@ -48,12 +48,13 @@ const photo = (id: string, v: string) => `${CLOUD}/c_fill,w_1200,h_600,g_auto,q_
 
 const PHOTOS = {
   hero: "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920",
-  ruta: "https://lh3.googleusercontent.com/d/1jmPjN24MUpLYCLu2uizThN6ej938xfD3=w1200",
-  investWeek: "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200",
+  ruta: "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_1200,h_800,g_auto,q_auto,f_auto/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg",
+  investWeek: "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_1200,h_800,g_auto,q_auto,f_auto/v1774537561/comprando-america/eventos/fou8skfadwce2lodr5yc.jpg",
   cumbre: photo("fou8skfadwce2lodr5yc", "1774537561"),
+  cumbreDigital: "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_1200,h_800,g_auto,q_auto,f_auto/v1774537558/comprando-america/eventos/xvdkaaxpavgr9lrybk8g.jpg",
   cena: photo("n8lkmvpmlrnco9etkxfb", "1774537526"),
-  panel: "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920",
-  networking: "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1200",
+  panel: photo("xvdkaaxpavgr9lrybk8g", "1774537558"),
+  networking: photo("n8lkmvpmlrnco9etkxfb", "1774537526"),
   audience: photo("xvdkaaxpavgr9lrybk8g", "1774537558"),
 };
 
@@ -157,12 +158,89 @@ export default function Eventos() {
       {/* ═══ 3. PRÓXIMOS EVENTOS ═══ */}
       <div id="proximos-eventos">
 
-        {/* ─── INVESTMENT WEEKEND II — dark navy ─── */}
+        {/* ─── CUMBRE DIGITAL — dark navy ─── */}
         <section className="bg-[#091A30] py-20 md:py-28">
           <div className="container">
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
               <FadeIn>
                 <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#1E3A5F] shadow-2xl">
+                  <img src={PHOTOS.cumbreDigital} alt="Primera Cumbre Digital Comprando América" className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-xs font-semibold uppercase tracking-wider">
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> 22 ago 2026
+                    </span>
+                  </div>
+                </div>
+              </FadeIn>
+
+              <FadeIn delay={0.1}>
+                <div>
+                  <Globe className="w-10 h-10 text-blue-400 mb-4" />
+                  <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase mb-2 font-mono">Evento en línea · Gratuito</p>
+                  <h3 className="text-3xl md:text-4xl text-white mb-3">Primera Cumbre Digital Comprando América</h3>
+                  <p className="text-slate-400 text-lg leading-relaxed mb-6">Un día completo de sesiones en vivo para empresarios latinoamericanos que quieren invertir, estructurarse y vivir en Estados Unidos — sin salir de casa.</p>
+
+                  <div className="space-y-3 mb-6">
+                    {[
+                      "Visas, migración y caminos legales hacia Estados Unidos",
+                      "Bienes raíces e inversión desde Latinoamérica",
+                      "Cómo abrir y estructurar tu empresa en Estados Unidos",
+                      "Estrategias reales de quienes ya lo lograron",
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                        <p className="text-slate-400 text-sm">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap gap-4 text-slate-400 text-sm mb-8">
+                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-blue-400" /> Sábado 22 de agosto, 2026</span>
+                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-blue-400" /> 10 AM–3 PM México · 11 AM–4 PM Houston</span>
+                  </div>
+
+                  <a href="/cumbre-digital">
+                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Pre-registro gratuito <ArrowRight className="w-4 h-4" /></Button>
+                  </a>
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── INVESTMENT WEEKEND II — ☀️ blanco ─── */}
+        <section className="bg-[#F5F7FA] py-20 md:py-28">
+          <div className="container">
+            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              <FadeIn delay={0.1} className="order-2 lg:order-1">
+                <div>
+                  <Globe className="w-10 h-10 text-primary mb-4" />
+                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">Florida Investment Weekend II</h3>
+                  <p className="text-[#4B5563] text-lg leading-relaxed mb-6">Viaje de inspección donde visitamos oportunidades y analizamos proyectos directamente en Estados Unidos.</p>
+
+                  <div className="space-y-3 mb-6">
+                    {["Visitas a propiedades reales en operación", "Analizar inversiones con expertos locales", "Entender estructuras de inversión en sitio", "Tomar decisiones con información directa"].map((item, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                        <p className="text-[#6B7280] text-sm">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap gap-4 text-[#6B7280] text-sm mb-8">
+                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater, Florida</span>
+                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-primary" /> 24–27 julio 2026</span>
+                  </div>
+
+                  <a href="/investment-week">
+                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Ver detalles <ArrowRight className="w-4 h-4" /></Button>
+                  </a>
+                </div>
+              </FadeIn>
+
+              <FadeIn className="order-1 lg:order-2">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
                   <img src={PHOTOS.investWeek} alt="Florida Investment Weekend II" className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   <div className="absolute bottom-4 left-4">
@@ -172,15 +250,32 @@ export default function Eventos() {
                   </div>
                 </div>
               </FadeIn>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── RUTA INMOBILIARIA — navy ─── */}
+        <section className="bg-[#0E2544] py-20 md:py-28">
+          <div className="container">
+            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              <FadeIn>
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#1E3A5F] shadow-2xl">
+                  <img src={PHOTOS.ruta} alt="Ruta Inmobiliaria en Estados Unidos" className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/80 text-xs font-semibold uppercase tracking-wider">Por anunciar</span>
+                  </div>
+                </div>
+              </FadeIn>
 
               <FadeIn delay={0.1}>
                 <div>
-                  <Globe className="w-10 h-10 text-blue-400 mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-white mb-3">Florida Investment Weekend II</h3>
-                  <p className="text-slate-400 text-lg leading-relaxed mb-6">Viaje de inspección donde visitamos oportunidades y analizamos proyectos directamente en Estados Unidos.</p>
+                  <Compass className="w-10 h-10 text-blue-400 mb-4" />
+                  <h3 className="text-3xl md:text-4xl text-white mb-3">Ruta Inmobiliaria en Estados Unidos</h3>
+                  <p className="text-slate-400 text-lg leading-relaxed mb-6">Un evento presencial donde analizamos oportunidades reales en bienes raíces.</p>
 
                   <div className="space-y-3 mb-6">
-                    {["Visitas a propiedades reales en operación", "Analizar inversiones con expertos locales", "Entender estructuras de inversión en sitio", "Tomar decisiones con información directa"].map((item, i) => (
+                    {["Conocer proyectos en operación", "Entender estructuras de inversión", "Conectar con otros inversionistas", "Evaluar oportunidades con contexto real"].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                         <p className="text-slate-400 text-sm">{item}</p>
@@ -188,14 +283,15 @@ export default function Eventos() {
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap gap-4 text-slate-400 text-sm mb-8">
-                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-blue-400" /> Tampa · St. Pete · Clearwater, Florida</span>
-                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-blue-400" /> 24–27 julio 2026</span>
+                  <p className="text-slate-500 text-sm mb-8 italic">Próximas fechas por anunciar</p>
+                  <div className="flex flex-wrap gap-3">
+                    <a href="/ruta-inmobiliaria-en-estados-unidos">
+                      <Button variant="outline" className="border-slate-500 text-white hover:bg-white/10 gap-2">Ver detalles <ArrowRight className="w-4 h-4" /></Button>
+                    </a>
+                    <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)} className="bg-primary hover:bg-blue-600 text-white gap-2">
+                      Lista prioritaria <ArrowRight className="w-4 h-4" />
+                    </Button>
                   </div>
-
-                  <a href="/investment-week">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Ver detalles <ArrowRight className="w-4 h-4" /></Button>
-                  </a>
                 </div>
               </FadeIn>
             </div>
@@ -203,7 +299,7 @@ export default function Eventos() {
         </section>
 
         {/* ─── CENA PRIVADA — ☀️ blanco ─── */}
-        <section className="bg-[#F5F7FA] py-20 md:py-28">
+        <section className="bg-white py-20 md:py-28">
           <div className="container">
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
               <FadeIn delay={0.1} className="order-2 lg:order-1">
@@ -241,8 +337,8 @@ export default function Eventos() {
           </div>
         </section>
 
-        {/* ─── CUMBRE — navy ─── */}
-        <section className="bg-[#0E2544] py-20 md:py-28">
+        {/* ─── CUMBRE DE EMPRENDIMIENTO — navy ─── */}
+        <section className="bg-[#091A30] py-20 md:py-28">
           <div className="container">
             <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
               <FadeIn>
@@ -262,7 +358,7 @@ export default function Eventos() {
                   <p className="text-slate-400 text-lg leading-relaxed mb-6">Evento diseñado para empresarios que buscan entender cómo expandirse hacia Estados Unidos con estructura y estrategia.</p>
 
                   <div className="space-y-3 mb-8">
-                    {["Modelos de inversión probados", "Estructura empresarial en EE.UU.", "Oportunidades evaluadas", "Networking de alto nivel"].map((item, i) => (
+                    {["Modelos de inversión probados", "Estructura empresarial en Estados Unidos", "Oportunidades evaluadas", "Networking de alto nivel"].map((item, i) => (
                       <div key={i} className="flex items-start gap-2">
                         <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                         <p className="text-slate-400 text-sm">{item}</p>
@@ -274,46 +370,6 @@ export default function Eventos() {
                   <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)} className="bg-primary hover:bg-blue-600 text-white gap-2">
                     Lista de espera <ArrowRight className="w-4 h-4" />
                   </Button>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
-
-        {/* ─── RUTA INMOBILIARIA — ☀️ blanco ─── */}
-        <section className="bg-white py-20 md:py-28">
-          <div className="container">
-            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-              <FadeIn delay={0.1} className="order-2 lg:order-1">
-                <div>
-                  <Compass className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">Ruta Inmobiliaria en Estados Unidos</h3>
-                  <p className="text-[#4B5563] text-lg leading-relaxed mb-6">Un evento presencial donde analizamos oportunidades reales en bienes raíces.</p>
-
-                  <div className="space-y-3 mb-6">
-                    {["Conocer proyectos en operación", "Entender estructuras de inversión", "Conectar con otros inversionistas", "Evaluar oportunidades con contexto real"].map((item, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-[#6B7280] text-sm">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <p className="text-[#9CA3AF] text-sm mb-8 italic">Próximas fechas por anunciar</p>
-
-                  <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_LISTA)} className="bg-primary hover:bg-blue-600 text-white gap-2">
-                    Lista prioritaria <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              </FadeIn>
-
-              <FadeIn className="order-1 lg:order-2">
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
-                  <img src={PHOTOS.ruta} alt="Ruta Inmobiliaria en Estados Unidos" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-white/80 text-xs font-semibold uppercase tracking-wider">Por anunciar</span>
-                  </div>
                 </div>
               </FadeIn>
             </div>

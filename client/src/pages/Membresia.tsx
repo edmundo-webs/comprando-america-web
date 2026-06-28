@@ -570,7 +570,7 @@ export default function Membresia() {
                       "Maestría en Sistema Fiscal en Estados Unidos",
                       "10 años de experiencia en contabilidad y administración",
                       "20 años de experiencia en comercio internacional",
-                      "Más de 8 empresas operando en EE.UU. y México",
+                      "Más de 8 empresas operando en Estados Unidos y México",
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-3">
                         <span className="flex-shrink-0 w-5 h-5 rounded-full border border-primary/40 flex items-center justify-center mt-0.5">

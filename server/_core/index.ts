@@ -10,6 +10,8 @@ import { serveStatic, setupVite } from "./vite";
 import { initializeRssScheduler } from "../rss-sync";
 import { startScheduler } from "../cron/scheduler";
 import { adminRouter } from "../routes/admin";
+import { botMetaMiddleware } from "../routes/bot-meta";
+import { seoRouter } from "../routes/seo";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -45,6 +47,18 @@ async function startServer() {
   // Admin REST API for the external editor agent (OpenClaw / Yael).
   // Mounted before the catch-all so it owns /api/admin/*.
   app.use("/api/admin", adminRouter);
+
+  // Dynamic SEO endpoints (sitemap.xml, sitemap_news.xml, rss.xml).
+  // Mounted at root BEFORE express.static so they override any prebuilt
+  // XML in dist/public/ (the old hardcoded sitemap.xml).
+  app.use(seoRouter);
+
+  // Bot-aware meta shim for /news/:slug and /blog/:slug. Intercepts
+  // requests from no-JS crawlers (Facebook, WhatsApp, Twitter, LinkedIn,
+  // Slack, Discord, GPTBot, ClaudeBot, etc.) and serves a static HTML
+  // with per-article meta tags inlined. Real users (and Googlebot, which
+  // executes JS) pass through to the SPA.
+  app.use(botMetaMiddleware);
 
   // ═══ IMAGE UPLOAD ENDPOINT ═══
   app.post("/api/upload", async (req, res) => {

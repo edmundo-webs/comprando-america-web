@@ -1,9 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
 import { useParams, Link } from "wouter";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
+import { cldSrcSet, cldUrl } from "@/lib/cloudinary";
 import {
   ArrowLeft, Calendar, User, ExternalLink, ArrowRight,
   Plane, TrendingUp, Building2, Briefcase, BarChart3, Clock
@@ -13,27 +15,27 @@ import {
 const CTA_CONFIG: Record<string, { title: string; description: string; buttonText: string; link: string; icon: React.ReactNode }> = {
   "visas-migracion": {
     title: "¿Estás considerando migrar a Estados Unidos?",
-    description: "En Comprando América te asesoramos con el proceso de Visa E-2 de inversionista. Nuestro equipo de expertos te guía paso a paso para que logres tu objetivo de vivir y trabajar legalmente en USA.",
+    description: "En Comprando América te asesoramos con el proceso de Visa E-2 de inversionista. Nuestro equipo de expertos te guía paso a paso para que logres tu objetivo de vivir y trabajar legalmente en Estados Unidos.",
     buttonText: "Conoce la Visa E-2",
     link: "/visa-e2-inversionista-usa",
     icon: <Plane className="w-6 h-6" />,
   },
   "economia-finanzas": {
-    title: "¿Quieres proteger tu patrimonio invirtiendo en USA?",
+    title: "¿Quieres proteger tu patrimonio invirtiendo en Estados Unidos?",
     description: "Únete a nuestra comunidad de inversionistas y accede a oportunidades exclusivas de inversión en Estados Unidos. Te ayudamos a diversificar tu portafolio con criterio y estructura.",
     buttonText: "Conoce el Club de Inversión",
     link: "/membresia",
     icon: <TrendingUp className="w-6 h-6" />,
   },
   "bienes-raices": {
-    title: "¿Te interesa invertir en bienes raíces en USA?",
+    title: "¿Te interesa invertir en bienes raíces en Estados Unidos?",
     description: "Accede a oportunidades de inversión inmobiliaria filtradas por nuestros expertos. Desde $100,000 USD, con estructura legal, fiscal y acompañamiento estratégico.",
     buttonText: "Ver Oportunidades",
     link: "/bienes-raices-en-usa",
     icon: <Building2 className="w-6 h-6" />,
   },
   "llc-negocios": {
-    title: "¿Necesitas estructurar tu inversión en USA?",
+    title: "¿Necesitas estructurar tu inversión en Estados Unidos?",
     description: "Te ayudamos a crear tu LLC, abrir cuentas bancarias y estructurar tu inversión de forma correcta desde el primer día. Evita errores costosos con nuestra asesoría.",
     buttonText: "Estructura tu Inversión",
     link: "/estructura-de-inversion-en-usa",
@@ -111,8 +113,59 @@ export default function NewsArticle() {
   const cta = CTA_CONFIG[article.category] || CTA_CONFIG["inversiones"];
   const filteredRelated = relatedArticles?.filter(a => a.slug !== article.slug).slice(0, 3);
 
+  // ─── SEO: build per-article meta + JSON-LD ────────────────────────
+  const articleUrl = `https://comprandoamerica.com/news/${article.slug}`;
+  const articleImage = article.imageUrl?.startsWith("http")
+    ? article.imageUrl
+    : "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png";
+  const articleDesc = (article.description || "").slice(0, 200) ||
+    "Noticias para inversionistas latinos en EE.UU. — Visa E-2, LLC, bienes raíces en Texas y Florida.";
+  const pubDate = (article as any).publishedAtInternal || article.publishedAt;
+  const categoryLabel = CATEGORY_LABELS[article.category] || "Noticias";
+  const seoSchema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      headline: article.title,
+      description: articleDesc,
+      image: [articleImage],
+      datePublished: pubDate ? new Date(pubDate).toISOString() : undefined,
+      dateModified: (article as any).updatedAt
+        ? new Date((article as any).updatedAt).toISOString()
+        : undefined,
+      author: { "@type": "Organization", name: article.author || "Equipo Comprando América" },
+      publisher: {
+        "@type": "Organization",
+        name: "Comprando América",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png",
+        },
+      },
+      mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
+      articleSection: categoryLabel,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: "https://comprandoamerica.com/" },
+        { "@type": "ListItem", position: 2, name: "Noticias", item: "https://comprandoamerica.com/news" },
+        { "@type": "ListItem", position: 3, name: categoryLabel, item: `https://comprandoamerica.com/news?categoria=${article.category}` },
+        { "@type": "ListItem", position: 4, name: article.title, item: articleUrl },
+      ],
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <SEOHead
+        title={article.title}
+        description={articleDesc}
+        path={`/news/${article.slug}`}
+        image={articleImage}
+        schema={seoSchema}
+      />
       <Navbar />
 
       {/* Article Header */}
@@ -167,8 +220,12 @@ export default function NewsArticle() {
         <div className="container">
           <div className="max-w-3xl mx-auto -mt-4 mb-12">
             <img
-              src={article.imageUrl}
+              src={cldUrl(article.imageUrl, { width: 1200 })}
+              srcSet={cldSrcSet(article.imageUrl, [640, 960, 1200, 1600])}
+              sizes="(max-width: 768px) 100vw, 768px"
               alt={article.title}
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-[300px] md:h-[400px] object-cover rounded-xl"
             />
           </div>
@@ -253,8 +310,12 @@ export default function NewsArticle() {
                     <div className="group bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all duration-300 cursor-pointer h-full">
                       {related.imageUrl && (
                         <img
-                          src={related.imageUrl}
+                          src={cldUrl(related.imageUrl, { width: 480 })}
+                          srcSet={cldSrcSet(related.imageUrl, [320, 480, 720])}
+                          sizes="(max-width: 768px) 100vw, 320px"
                           alt={related.title}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       )}

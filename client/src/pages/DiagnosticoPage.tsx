@@ -25,14 +25,14 @@ const PROFILES: Profile[] = [
     key: "explorador",
     emoji: "🌱",
     title: "El Explorador",
-    subtitle: "Tu primera propiedad en EE.UU.",
+    subtitle: "Tu primera propiedad en Estados Unidos",
     range: "$50k – $100k",
     color: "#22c55e",
     colorBorder: "border-green-500",
     colorBg: "bg-green-500/10",
     colorText: "text-green-400",
     enfoque: "Rendimiento (Cash on Cash)",
-    resultado: "Primer Activo en EE.UU.",
+    resultado: "Primer Activo en Estados Unidos",
     bullets: [
       "Decide si necesitas LLC o no (ahorra miles en impuestos)",
       "Mercado seleccionado por análisis: Texas o Florida",
@@ -72,7 +72,7 @@ const PROFILES: Profile[] = [
     enfoque: "Protección y Residencia",
     resultado: "Blindaje Legal y Estatus Migratorio",
     bullets: [
-      "Estructura patrimonial con holding en EE.UU.",
+      "Estructura patrimonial con holding en Estados Unidos",
       "Ruta hacia visa de inversionista EB-5 o E-2",
       "Deal Day: activos de alto valor y cap rate premium",
       "Retorno optimizado + protección de activos",
@@ -690,7 +690,7 @@ export default function DiagnosticoPage() {
               className="transition-all duration-500"
               style={{ color: accentColor }}
             >
-              en bienes raíces EE.UU.
+              en bienes raíces Estados Unidos
             </span>
           </h1>
 

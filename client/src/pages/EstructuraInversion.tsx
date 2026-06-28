@@ -38,7 +38,7 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
-  title: "Estructura de Inversi\u00f3n en USA | Comprando Am\u00e9rica",
+  title: "Estructura de Inversi\u00f3n en Estados Unidos | Comprando Am\u00e9rica",
   description: "Estructura tu veh\u00edculo de inversi\u00f3n en Estados Unidos con claridad y estrategia. LLC, C-Corp, S-Corp seg\u00fan tu caso.",
   path: "/estructura-de-inversion-en-usa",
 };
@@ -100,7 +100,7 @@ export default function EstructuraInversion() {
           <FadeIn>
             <div className="text-center mb-12">
               <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Errores Comunes</p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">Por qué muchos fallan al crear una empresa en EE.UU.</h2>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">Por qué muchos fallan al crear una empresa en Estados Unidos</h2>
               <p className="text-[#4B5563] text-lg mt-4 max-w-2xl mx-auto">El problema no es registrar una entidad. El problema es hacerlo sin estrategia.</p>
             </div>
           </FadeIn>

@@ -1,28 +1,30 @@
-import { eq, desc, and, like, inArray, lt } from "drizzle-orm";
+import { eq, desc, and, like, inArray, lt, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
-import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed, newsSubscribers, NewsSubscriber, InsertNewsSubscriber } from "../drizzle/schema";
+import { InsertUser, users, blogPosts, BlogPost, InsertBlogPost, newsArticles, NewsArticle, InsertNewsArticle, newsFeeds, NewsFeed, InsertNewsFeed, newsSubscribers, NewsSubscriber, InsertNewsSubscriber, leads, Lead, InsertLead } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: any = null;
+let _pool: mysql.Pool | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 // TiDB requires SSL connections.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      const pool = mysql.createPool({
+      _pool = mysql.createPool({
         uri: process.env.DATABASE_URL,
         ssl: { rejectUnauthorized: true },
         connectionLimit: 5,
       });
       // Test the connection to ensure it's not silently failing later
-      const conn = await pool.getConnection();
+      const conn = await _pool.getConnection();
       conn.release();
-      _db = drizzle(pool);
+      _db = drizzle(_pool);
     } catch (error) {
       console.error("[Database] Failed to connect:", error);
       _db = null;
+      _pool = null;
     }
   }
   return _db;
@@ -477,6 +479,81 @@ export async function updateSubscriberCategories(
     .update(newsSubscribers)
     .set({ categories: JSON.stringify(categories) })
     .where(eq(newsSubscribers.email, email));
+}
+
+// ═══ CRM LEADS QUERIES ═══
+
+let _crmPool: mysql.Pool | null = null;
+
+function getCrmPool(): mysql.Pool | null {
+  if (!_crmPool && process.env.CRM_DATABASE_URL) {
+    _crmPool = mysql.createPool({
+      uri: process.env.CRM_DATABASE_URL,
+      ssl: { rejectUnauthorized: true },
+      connectionLimit: 3,
+    });
+  }
+  return _crmPool;
+}
+
+async function syncToCrm(nombreCompleto: string, email: string, whatsapp: string): Promise<void> {
+  const pool = getCrmPool();
+  if (!pool) return;
+  const parts = nombreCompleto.trim().split(/\s+/);
+  const firstName = parts[0] ?? '';
+  const lastName = parts.slice(1).join(' ') ?? '';
+  try {
+    await pool.execute(
+      "INSERT INTO crm_contacts (first_name, last_name, email, whatsapp, source_id, status, created_by, lead_score_auto) VALUES (?, ?, ?, ?, NULL, 'nuevo', 1, 0)",
+      [firstName, lastName, email, whatsapp]
+    );
+    console.log("[createLead] CRM sync OK");
+  } catch (err: any) {
+    console.error("[createLead] CRM sync ERROR:", err?.message, err?.code);
+  }
+}
+
+export async function createLead(data: InsertLead): Promise<Lead | undefined> {
+  await getDb(); // ensure _pool is initialized
+  if (!_pool) {
+    console.warn("[Database] Cannot create lead: database not available");
+    return undefined;
+  }
+  const { nombreCompleto, whatsapp, email, fuente = 'general' } = data;
+
+  const dbUrl = process.env.DATABASE_URL || "(not set)";
+  const maskedUrl = dbUrl.replace(/:([^:@]+)@/, ':****@');
+  const insertSql = 'INSERT INTO ca_leads (nombreCompleto, whatsapp, email, fuente) VALUES (?, ?, ?, ?)';
+  console.log("[createLead] DATABASE_URL:", maskedUrl);
+  console.log("[createLead] SQL:", insertSql);
+  console.log("[createLead] Params:", [nombreCompleto, whatsapp, email, fuente]);
+
+  // Use mysql2 directly — Drizzle adds DEFAULT for auto/defaultNow cols which TiDB rejects
+  let result: any;
+  try {
+    [result] = await _pool.execute(insertSql, [nombreCompleto, whatsapp, email, fuente]);
+    console.log("[createLead] INSERT result:", JSON.stringify(result));
+  } catch (err: any) {
+    console.error("[createLead] ERROR:", err?.message, err?.code, err?.sqlState, err?.sqlMessage);
+    throw err;
+  }
+  const id = Number(result.insertId);
+  const db = await getDb();
+  const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
+
+  // Mirror to CRM — fire-and-forget, never blocks the main response
+  syncToCrm(nombreCompleto, email, whatsapp).catch(() => {});
+
+  return row.length > 0 ? row[0] : undefined;
+}
+
+export async function getAllLeads(): Promise<Lead[]> {
+  const db = await getDb();
+  if (!db) {
+    console.warn("[Database] Cannot get leads: database not available");
+    return [];
+  }
+  return await db.select().from(leads).orderBy(desc(leads.createdAt));
 }
 
 export async function unsubscribeNewsSubscriber(token: string) {

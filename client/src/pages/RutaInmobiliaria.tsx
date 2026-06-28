@@ -157,7 +157,7 @@ export default function RutaInmobiliaria() {
               </h2>
               <p className="text-slate-400 text-lg leading-relaxed mb-8">Aquí no vienes a escuchar teoría. Vienes a:</p>
               <div className="space-y-4">
-                {["Entender cómo funciona la inversión inmobiliaria en EE.UU.", "Ver oportunidades reales con estructura y análisis", "Conocer a quienes ya están invirtiendo"].map((item, i) => (
+                {["Entender cómo funciona la inversión inmobiliaria en Estados Unidos", "Ver oportunidades reales con estructura y análisis", "Conocer a quienes ya están invirtiendo"].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                     <p className="text-slate-300 text-lg">{item}</p>
