@@ -204,45 +204,45 @@ export default function Section8() {
       <Navbar />
 
       {/* ══ BLOQUE 1 — HERO ══ */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 pb-24 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
         <div className="absolute inset-0">
           <img src={HERO_BG} alt="Propiedades Section 8 en Estados Unidos" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#0B1F3A]/30" />
         </div>
 
-        <div className="container relative z-10">
+        <div className="container relative z-10 py-12">
           <FadeIn>
-            <div className="max-w-3xl">
-              <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-6 font-mono" style={{ color: GOLD }}>
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-4 font-mono" style={{ color: GOLD }}>
                 Propiedades · Programa Section 8
               </p>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white font-bold leading-tight mb-6">
+              <h1 className="text-3xl md:text-4xl text-white font-bold leading-tight mb-4">
                 Construye patrimonio en Estados Unidos a través de{" "}
                 <span className="gradient-text-primary">
                   propiedades administradas profesionalmente.
                 </span>
               </h1>
 
-              <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-3 max-w-2xl">
+              <p className="text-slate-300 text-base leading-relaxed mb-1 max-w-xl">
                 Genera ingresos en dólares mediante bienes raíces respaldados por una necesidad básica: vivienda.
               </p>
-              <p className="text-slate-400 text-base leading-relaxed mb-10 max-w-2xl">
+              <p className="text-slate-400 text-sm leading-relaxed mb-7 max-w-xl">
                 Sin necesidad de vivir en Estados Unidos ni administrar personalmente la propiedad.
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-3">
                 <Button
                   onClick={() => document.getElementById("checklist")?.scrollIntoView({ behavior: "smooth" })}
-                  className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25"
+                  className="bg-primary hover:bg-blue-600 text-white px-6 py-5 text-sm gap-2 shadow-lg shadow-blue-600/25"
                 >
                   Descubrir si esta estrategia tiene sentido para mí <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base"
+                  className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm"
                 >
                   Hablar con un asesor
                 </Button>
