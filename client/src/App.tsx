@@ -43,6 +43,7 @@ import NuevoHome from "./pages/NuevoHome";
 import Membresia2 from "./pages/Membresia2";
 import Section8 from "./pages/Section8";
 import Propiedades from "./pages/Propiedades";
+import FondoVictoryCapital from "./pages/FondoVictoryCapital";
 
 function Router() {
   return (
@@ -81,6 +82,7 @@ function Router() {
       <Route path="/cumbre-digital-2" component={CumbreDigital2} />
       <Route path="/vc-8" component={Section8} />
       <Route path="/propiedades" component={Propiedades} />
+      <Route path="/fondo" component={FondoVictoryCapital} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
