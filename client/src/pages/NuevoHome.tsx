@@ -72,25 +72,25 @@ const VEHICULOS_CATEGORIAS = [
   {
     titulo: "Generar Flujo Pasivo",
     items: [
-      { nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+" },
-      { nombre: "Section 8", frase: "Renta garantizada con subsidio federal", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+" },
-      { nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+" },
+      { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/fondo" },
+      { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/vc-8" },
+      { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos" },
     ],
   },
   {
     titulo: "Construir Patrimonio",
     items: [
-      { nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+" },
-      { nombre: "Fondos", frase: "Diversificación en activos americanos", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+" },
-      { nombre: "Negocios", frase: "Adquiere o construye un negocio americano", participacion: "Activa", horizonte: "3-5 años", ticket: "200k+" },
+      { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+", href: "/propiedades" },
+      { id: "estructura-llc", nombre: "Fondos & Estructuras", frase: "Diversificación en activos americanos con protección legal", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+", href: "/estructura-de-inversion-en-usa" },
+      { id: "adquisiciones", nombre: "Negocios", frase: "Adquiere o construye un negocio americano", participacion: "Activa", horizonte: "3-5 años", ticket: "200k+", href: "" },
     ],
   },
   {
     titulo: "Expandir Empresa",
     items: [
-      { nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", participacion: "Activa", horizonte: "1-3 años", ticket: "Consultar" },
-      { nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", participacion: "Activa", horizonte: "6-12 meses", ticket: "500k+" },
-      { nombre: "Expansión", frase: "Abre operaciones en Estados Unidos", participacion: "Activa", horizonte: "1-2 años", ticket: "100k+" },
+      { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", participacion: "Activa", horizonte: "1-3 años", ticket: "Consultar", href: "/expansion-internacional-empresas" },
+      { id: "adquisiciones-emp", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", participacion: "Activa", horizonte: "6-12 meses", ticket: "500k+", href: "" },
+      { id: "plan-migratorio", nombre: "Visa E-2", frase: "Expansión con opción a residencia vía inversión", participacion: "Activa", horizonte: "1-2 años", ticket: "100k+", href: "/visa-e2-inversionista-usa" },
     ],
   },
 ];
@@ -126,18 +126,19 @@ type VehicleEntry = {
   participacion: string[];
   objetivos: string[];
   prioridades: string[];
+  href?: string;
 };
 
 const VEHICLE_DATA: VehicleEntry[] = [
-  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"] },
-  { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"] },
-  { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"] },
-  { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"] },
-  { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", ticketMin: 150, ticketLabel: "$150k+", horizonte: "Largo plazo", participacion: ["supervisar", "activo"], objetivos: ["patrimonio", "familia", "ingresos"], prioridades: ["apreciacion", "proteccion", "flujo"] },
-  { id: "estructura-llc", nombre: "Estructura LLC", frase: "Entidad legal para operar y proteger activos en USA", ticketMin: 5, ticketLabel: "$5k", horizonte: "Corto plazo", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["empresa", "familia", "patrimonio", "ingresos"], prioridades: ["proteccion", "crecimiento", "migracion"] },
-  { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["activo", "supervisar"], objetivos: ["empresa"], prioridades: ["crecimiento", "acceso", "flujo"] },
+  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/membresia-2" },
+  { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"], href: "/fondo" },
+  { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"], href: "/vc-8" },
+  { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"], href: "/club-de-inversion-en-estados-unidos" },
+  { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", ticketMin: 150, ticketLabel: "$150k+", horizonte: "Largo plazo", participacion: ["supervisar", "activo"], objetivos: ["patrimonio", "familia", "ingresos"], prioridades: ["apreciacion", "proteccion", "flujo"], href: "/propiedades" },
+  { id: "estructura-llc", nombre: "Estructura LLC", frase: "Entidad legal para operar y proteger activos en USA", ticketMin: 5, ticketLabel: "$5k", horizonte: "Corto plazo", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["empresa", "familia", "patrimonio", "ingresos"], prioridades: ["proteccion", "crecimiento", "migracion"], href: "/estructura-de-inversion-en-usa" },
+  { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["activo", "supervisar"], objetivos: ["empresa"], prioridades: ["crecimiento", "acceso", "flujo"], href: "/expansion-internacional-empresas" },
   { id: "adquisiciones", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", ticketMin: 500, ticketLabel: "$500k+", horizonte: "6-12 meses", participacion: ["activo"], objetivos: ["empresa"], prioridades: ["crecimiento", "flujo"] },
-  { id: "plan-migratorio", nombre: "Plan Migratorio", frase: "Residencia con base en estructura de inversión", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["familia"], prioridades: ["migracion", "proteccion"] },
+  { id: "plan-migratorio", nombre: "Plan Migratorio", frase: "Residencia con base en estructura de inversión", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["familia"], prioridades: ["migracion", "proteccion"], href: "/visa-e2-inversionista-usa" },
 ];
 
 const CAPITAL_MAP: Record<string, number> = {
@@ -932,7 +933,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "18px" }}>Ordenados por compatibilidad con tu perfil y capital disponible</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {topVehicles.map((v, i) => (
-              <div key={v.id} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "16px 18px", display: "flex", alignItems: "center", gap: "14px" }}>
+              <a key={v.id} href={v.href ?? "#"} onClick={!v.href ? (e) => e.preventDefault() : undefined} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "16px 18px", display: "flex", alignItems: "center", gap: "14px", textDecoration: "none", cursor: v.href ? "pointer" : "default" }}>
                 <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
                 </div>
@@ -951,10 +952,49 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "17px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580", letterSpacing: "0.05em" }}>compatibilidad</div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
+        {/* ── Círculo Cercano de Edmundo Treviño ── */}
+        <div style={{ marginBottom: "44px" }}>
+          <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "18px" }}>Próximo Paso Recomendado</h3>
+          <div style={{ background: `linear-gradient(135deg, #0D1F3C 0%, #112240 100%)`, border: `1px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", position: "relative", overflow: "hidden" }}>
+            {/* Gold accent line */}
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+            {/* Premium badge */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <img src={LOGO_URL} alt="" style={{ height: "28px", width: "28px", borderRadius: "6px", opacity: 0.9 }} />
+                <div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: `${GOLD}90`, textTransform: "uppercase" }}>Comprando América</div>
+                  <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Círculo Cercano de Edmundo Treviño</div>
+                </div>
+              </div>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "3px 8px", textTransform: "uppercase", flexShrink: 0 }}>Exclusivo</span>
+            </div>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "20px" }}>
+              Antes de invertir, lo más valioso es tener claridad. En el Círculo exploramos tus opciones, desarrollamos criterio, definimos el momento correcto y estructuramos una ruta para Estados Unidos — con opción a visa, según tu capital y caso particular.
+            </p>
+            {/* Ficha del diagnóstico */}
+            {fichaData.length > 0 && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "20px" }}>
+                {fichaData.map(({ label, value }) => (
+                  <div key={label} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "6px 12px" }}>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: `${GOLD}80`, textTransform: "uppercase", letterSpacing: "0.12em" }}>{label}: </span>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <a href="/membresia-2" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "9px", cursor: "pointer", textDecoration: "none" }}>
+                Explorar Círculo Cercano <IconRight color={NAVY} />
+              </a>
+            </div>
+          </div>
+        </div>
+
         {contactData && (
           <div style={{ marginBottom: "36px", background: NAVY_CARD, border: `1px solid ${GOLD}40`, borderRadius: "14px", padding: "22px 24px" }}>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "16px" }}>Confirma tus datos</p>
@@ -1183,11 +1223,19 @@ function MiRutaSection({ objetivo }: { objetivo: string | null }) {
 }
 
 /* ─── EXPLORAR VEHÍCULOS ─── */
-function VehiculoCard({ v }: { v: typeof VEHICULOS_CATEGORIAS[0]["items"][0] }) {
+function VehiculoCard({ v, recommended }: { v: typeof VEHICULOS_CATEGORIAS[0]["items"][0]; recommended?: boolean }) {
   return (
-    <div style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "14px", padding: "24px", minWidth: "240px", maxWidth: "260px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-      <div style={{ height: "3px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, borderRadius: "2px", marginBottom: "4px" }} />
-      <h4 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "18px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{v.nombre}</h4>
+    <div style={{ background: NAVY_CARD, border: `1px solid ${recommended ? GOLD + "70" : NAVY_BORDER}`, borderRadius: "14px", padding: "24px", minWidth: "240px", maxWidth: "260px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "12px", position: "relative", overflow: "hidden" }}>
+      {recommended && (
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` }} />
+      )}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div style={{ height: "3px", background: recommended ? `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` : NAVY_BORDER, borderRadius: "2px", marginBottom: "4px", width: recommended ? "40px" : "24px" }} />
+        {recommended && (
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase" }}>Tu perfil</span>
+        )}
+      </div>
+      <h4 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "18px", fontWeight: 700, color: recommended ? "#fff" : "#C8D6E8", lineHeight: 1.2 }}>{v.nombre}</h4>
       <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF", lineHeight: 1.6, flex: 1 }}>{v.frase}</p>
       <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, paddingTop: "12px", display: "flex", flexDirection: "column", gap: "6px" }}>
         {[["Participación", v.participacion], ["Horizonte", v.horizonte], ["Ticket mínimo", v.ticket]].map(([k, val]) => (
@@ -1197,18 +1245,33 @@ function VehiculoCard({ v }: { v: typeof VEHICULOS_CATEGORIAS[0]["items"][0] }) 
           </div>
         ))}
       </div>
-      <button style={{ width: "100%", padding: "10px", background: "transparent", border: `1px solid ${GOLD}`, color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: "8px", cursor: "pointer" }}>
-        Explorar
-      </button>
+      {v.href ? (
+        <a href={v.href} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "10px", background: recommended ? `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` : "transparent", border: recommended ? "none" : `1px solid ${GOLD}`, color: recommended ? NAVY : GOLD, fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: "8px", cursor: "pointer", textDecoration: "none" }}>
+          Explorar
+        </a>
+      ) : (
+        <button style={{ width: "100%", padding: "10px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, color: "#4A6580", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: "8px", cursor: "default" }}>
+          Próximamente
+        </button>
+      )}
     </div>
   );
 }
 
-function ExplorarVehiculosSection() {
+function ExplorarVehiculosSection({ rankedIds }: { rankedIds?: string[] }) {
+  const top4 = new Set((rankedIds ?? []).slice(0, 4));
   return (
     <div style={{ padding: "80px 0", background: `${NAVY_CARD}40`, borderTop: `1px solid ${NAVY_BORDER}`, borderBottom: `1px solid ${NAVY_BORDER}` }}>
       <div style={{ padding: "0 24px", maxWidth: "1100px", margin: "0 auto" }}>
-        <SectionHeader label="Vehículos Estratégicos" title="Explora tus instrumentos" sub="Cada vehículo está diseñado para un tipo específico de inversionista. Encuentra el que se alinea con tu perfil." />
+        <SectionHeader label="Vehículos Estratégicos" title="Explora tus instrumentos" sub="Cada vehículo está diseñado para un tipo específico de inversionista. Los marcados como 'Tu perfil' son los más compatibles con tus respuestas." />
+        {rankedIds && rankedIds.length > 0 && (
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "32px", padding: "12px 16px", background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "10px" }}>
+            <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: GOLD, flexShrink: 0 }} />
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: `${GOLD}CC`, margin: 0 }}>
+              Las tarjetas con <strong style={{ color: GOLD }}>Tu perfil</strong> fueron seleccionadas según tus respuestas del GPS Estratégico.
+            </p>
+          </div>
+        )}
       </div>
       {VEHICULOS_CATEGORIAS.map((cat) => (
         <div key={cat.titulo} style={{ marginBottom: "48px" }}>
@@ -1216,7 +1279,7 @@ function ExplorarVehiculosSection() {
             <h3 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 700, color: "#fff" }}>{cat.titulo}</h3>
           </div>
           <div style={{ display: "flex", gap: "14px", overflowX: "auto", padding: "4px 24px 16px", scrollbarWidth: "none" }}>
-            {cat.items.map((v) => <VehiculoCard key={v.nombre} v={v} />)}
+            {cat.items.map((v) => <VehiculoCard key={v.id} v={v} recommended={top4.has(v.id)} />)}
           </div>
         </div>
       ))}
@@ -1430,52 +1493,39 @@ function DiagnosticoSection() {
   );
 }
 
-/* ─── AMBIENT AUDIO ─── */
-function useAmbientAudio() {
+/* ─── TRANSITION SOUND ─── */
+function useTransitionSound() {
   const ctxRef = useRef<AudioContext | null>(null);
-  const gainRef = useRef<GainNode | null>(null);
-  const oscRefs = useRef<OscillatorNode[]>([]);
-  const [playing, setPlaying] = useState(false);
+  const [enabled, setEnabled] = useState(false);
 
-  function start() {
-    if (ctxRef.current) return;
-    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    ctxRef.current = ctx;
-    const master = ctx.createGain();
-    master.gain.setValueAtTime(0, ctx.currentTime);
-    master.gain.linearRampToValueAtTime(0.065, ctx.currentTime + 2.5);
-    master.connect(ctx.destination);
-    gainRef.current = master;
-    // D major 7 chord: D3 A3 D4 F#4 A4
-    const freqs = [146.83, 220.0, 293.66, 369.99, 440.0];
-    oscRefs.current = freqs.map((freq, i) => {
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = i % 2 === 0 ? "sine" : "triangle";
-      osc.frequency.value = freq;
-      g.gain.value = 0.14 - i * 0.02;
-      osc.connect(g);
-      g.connect(master);
-      osc.start();
-      return osc;
-    });
-    setPlaying(true);
+  function getCtx() {
+    if (!ctxRef.current || ctxRef.current.state === 'closed') {
+      ctxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    return ctxRef.current;
   }
 
-  function stop() {
-    if (!gainRef.current || !ctxRef.current) return;
-    const ctx = ctxRef.current;
-    const gain = gainRef.current;
-    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
-    setTimeout(() => { ctx.close(); ctxRef.current = null; gainRef.current = null; oscRefs.current = []; }, 1700);
-    setPlaying(false);
+  function beep(freq: number, dur: number, vol = 0.09, delay = 0) {
+    const ctx = getCtx();
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0, ctx.currentTime + delay);
+    g.gain.linearRampToValueAtTime(vol, ctx.currentTime + delay + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + dur);
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.start(ctx.currentTime + delay);
+    osc.stop(ctx.currentTime + delay + dur + 0.01);
   }
 
-  function toggle() { playing ? stop() : start(); }
+  function playForward() { if (!enabled) return; beep(880, 0.055, 0.09); beep(1100, 0.045, 0.07, 0.058); }
+  function playBack()    { if (!enabled) return; beep(660, 0.055, 0.08); beep(550, 0.045, 0.06, 0.058); }
 
   useEffect(() => () => { ctxRef.current?.close(); }, []);
 
-  return { playing, toggle };
+  return { enabled, setEnabled, playForward, playBack };
 }
 
 function IconVolumeOn({ color = GOLD }: { color?: string }) {
@@ -1495,15 +1545,15 @@ function IconVolumeOff({ color = "#4A6580" }: { color?: string }) {
   );
 }
 
-function MusicToggle({ playing, onToggle }: { playing: boolean; onToggle: () => void }) {
+function SoundToggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
   return (
     <motion.button
       initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
       whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.92 }}
       onClick={onToggle}
-      title={playing ? "Silenciar música" : "Activar música ambiente"}
-      style={{ position: "fixed", bottom: "28px", left: "24px", zIndex: 100, width: "42px", height: "42px", borderRadius: "50%", background: `${NAVY_CARD}EC`, backdropFilter: "blur(14px)", border: `1px solid ${playing ? GOLD + "55" : NAVY_BORDER}`, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: playing ? `0 0 18px ${GOLD}22` : "0 2px 10px rgba(0,0,0,0.35)", transition: "border-color 0.3s, box-shadow 0.3s" }}>
-      {playing ? <IconVolumeOn color={GOLD} /> : <IconVolumeOff />}
+      title={enabled ? "Silenciar efectos" : "Activar sonidos de transición"}
+      style={{ position: "fixed", bottom: "28px", left: "24px", zIndex: 100, width: "42px", height: "42px", borderRadius: "50%", background: `${NAVY_CARD}EC`, backdropFilter: "blur(14px)", border: `1px solid ${enabled ? GOLD + "55" : NAVY_BORDER}`, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: enabled ? `0 0 18px ${GOLD}22` : "0 2px 10px rgba(0,0,0,0.35)", transition: "border-color 0.3s, box-shadow 0.3s" }}>
+      {enabled ? <IconVolumeOn color={GOLD} /> : <IconVolumeOff />}
     </motion.button>
   );
 }
@@ -1617,7 +1667,7 @@ function WhereAmIPanel({ open, onClose, screen, objetivo, perfil }: { open: bool
 /* ─── MAIN EXPORT ─── */
 export default function NuevoHome() {
   usePlayfairFont();
-  const { playing: musicPlaying, toggle: toggleMusic } = useAmbientAudio();
+  const { enabled: soundEnabled, setEnabled: setSoundEnabled, playForward, playBack } = useTransitionSound();
 
   const [screen, setScreen] = useState(1);
   const [showMain, setShowMain] = useState(false);
@@ -1642,7 +1692,11 @@ export default function NuevoHome() {
     ? rankVehicles({ objetivo, participacion, capital, prioridades })
     : [];
 
-  function goScreen(n: number) { setScreen(n); window.scrollTo({ top: 0, behavior: "instant" }); }
+  function goScreen(n: number) {
+    if (soundEnabled) { n > screen ? playForward() : playBack(); }
+    setScreen(n);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
 
   function handleBack() {
     // Screen 8 (result) → 7 (contact)
@@ -1696,7 +1750,7 @@ export default function NuevoHome() {
           <motion.div key="main" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
             <StickyNav active={activeNav} onNav={handleNav} />
             <div ref={rutaRef}><MiRutaSection objetivo={objetivo} /></div>
-            <div ref={vehiculosRef}><ExplorarVehiculosSection /></div>
+            <div ref={vehiculosRef}><ExplorarVehiculosSection rankedIds={rankedVehicles.map(v => v.id)} /></div>
             <div ref={compararRef}><CompararSection /></div>
             <div ref={bibliotecaRef}><BibliotecaSection objetivo={objetivo} /></div>
             <NoSomosSection />
@@ -1707,7 +1761,7 @@ export default function NuevoHome() {
 
       {(screen >= 2 && screen !== 7 || showMain) && <WhereAmIButton onClick={() => setPanelOpen(true)} />}
       <WhereAmIPanel open={panelOpen} onClose={() => setPanelOpen(false)} screen={screen} objetivo={objetivo} perfil={perfil} />
-      <MusicToggle playing={musicPlaying} onToggle={toggleMusic} />
+      <SoundToggle enabled={soundEnabled} onToggle={() => setSoundEnabled(e => !e)} />
       {!showMain && <JourneyStrip screen={screen} objetivo={objetivo} participacion={participacion} horizonte={horizonte} capital={capital} />}
     </div>
   );
