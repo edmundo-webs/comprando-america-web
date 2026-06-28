@@ -41,6 +41,7 @@ import CumbreDigital2 from "./pages/CumbreDigital2";
 import Leads from "./pages/admin/Leads";
 import NuevoHome from "./pages/NuevoHome";
 import Membresia2 from "./pages/Membresia2";
+import Section8 from "./pages/Section8";
 
 function Router() {
   return (
@@ -77,6 +78,7 @@ function Router() {
       <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path="/cumbre-digital" component={CumbreDigital} />
       <Route path="/cumbre-digital-2" component={CumbreDigital2} />
+      <Route path="/vc-8" component={Section8} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
