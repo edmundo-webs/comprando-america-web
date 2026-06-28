@@ -40,9 +40,11 @@ const COUNTRY_CODES = [
 
 /* ─── Speaker data ─── */
 const PHOTOS = {
-  edmundo: "/team/edmundo.jpg",
-  tomas: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439328/comprando-america/ukgTQSSvdQDxOgaS.jpg",
-  diego: "https://res.cloudinary.com/dgruohz6f/image/upload/v1781894896/tts-news/wjjnswgxf6mv7kml8j8m.jpg",
+  edmundo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675101/tts-news/n1gic0tylj2r8b4gscrf.jpg",
+  tomas:   "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675101/tts-news/yh1xr8s1syprrlhblcbo.jpg",
+  edmundoDiego03: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675100/tts-news/xpto1gompkv2f4lwqon4.jpg",
+  edmundoDiego05: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675101/tts-news/kvqowamn1xqniqa0b6to.jpg",
+  edmundoDiego06: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675101/tts-news/kfoeo1dlbkugilwhidl3.jpg",
 };
 
 /* ─── Conversations data ─── */
@@ -67,10 +69,7 @@ const CONVERSATIONS = [
   },
   {
     hora: "12:00 PM", num: "03",
-    speakers: [
-      { photo: PHOTOS.edmundo, name: "Edmundo Treviño" },
-      { photo: PHOTOS.diego,   name: "Diego Alcalá" },
-    ],
+    speakers: [{ photo: PHOTOS.edmundoDiego03, name: "Edmundo Treviño · Diego Alcalá" }],
     titulo: "Pensar Como Inversionista",
     sub: "El criterio detrás de las buenas decisiones",
     desc: "Desarrollar el criterio que usan los inversionistas experimentados para evaluar oportunidades antes de comprometer capital.",
@@ -88,10 +87,7 @@ const CONVERSATIONS = [
   },
   {
     hora: "2:00 PM", num: "05",
-    speakers: [
-      { photo: PHOTOS.diego,   name: "Diego Alcalá" },
-      { photo: PHOTOS.edmundo, name: "Edmundo Treviño" },
-    ],
+    speakers: [{ photo: PHOTOS.edmundoDiego05, name: "Diego Alcalá · Edmundo Treviño" }],
     titulo: "Del Interés a la Acción",
     sub: "Casos reales, oportunidades reales y próximos pasos",
     desc: "Analizar oportunidades reales con criterio, separando lo que genera valor de lo que solo suena bien.",
@@ -100,10 +96,7 @@ const CONVERSATIONS = [
   },
   {
     hora: "2:45 PM", num: "06",
-    speakers: [
-      { photo: PHOTOS.edmundo, name: "Edmundo Treviño" },
-      { photo: PHOTOS.diego,   name: "Diego Alcalá" },
-    ],
+    speakers: [{ photo: PHOTOS.edmundoDiego06, name: "Edmundo Treviño · Diego Alcalá" }],
     titulo: "Tu Próximo Gran Paso",
     sub: "Cómo convertir claridad en acción",
     desc: "Traducir todo lo aprendido en decisiones concretas: qué conversaciones tener, qué preguntas hacerse y cómo avanzar.",
@@ -465,9 +458,10 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
         position: "relative",
         background: NAVY_DEEP,
         overflow: "hidden",
-        height: "calc(100vh - 64px)",
-        minHeight: 520,
-        maxHeight: 820,
+        height: "100vh",
+        minHeight: 580,
+        maxHeight: 900,
+        paddingTop: 64,
       }}>
         {/* Dot-grid texture */}
         <div style={{
@@ -487,7 +481,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
           {/* ── Left: Edmundo editorial photo ── */}
           <div style={{ position: "relative", overflow: "hidden", height: "100%" }}>
             <img
-              src="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439305/comprando-america/oSCNKGbVTMDrZSPm.jpg"
+              src="https://res.cloudinary.com/dgruohz6f/image/upload/v1782675102/tts-news/qsqtimcq0kinkp5j6gcs.jpg"
               alt="Edmundo Treviño"
               style={{
                 width: "100%", height: "100%",
