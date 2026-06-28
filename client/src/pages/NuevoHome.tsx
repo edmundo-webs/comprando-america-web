@@ -138,7 +138,6 @@ const VEHICLE_DATA: VehicleEntry[] = [
   { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["activo", "supervisar"], objetivos: ["empresa"], prioridades: ["crecimiento", "acceso", "flujo"] },
   { id: "adquisiciones", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", ticketMin: 500, ticketLabel: "$500k+", horizonte: "6-12 meses", participacion: ["activo"], objetivos: ["empresa"], prioridades: ["crecimiento", "flujo"] },
   { id: "plan-migratorio", nombre: "Plan Migratorio", frase: "Residencia con base en estructura de inversión", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["familia"], prioridades: ["migracion", "proteccion"] },
-  { id: "diagnostico-personalizado", nombre: "Diagnóstico Personalizado", frase: "Claridad estratégica antes de decidir", ticketMin: 0, ticketLabel: "Gratuito", horizonte: "Inmediato", participacion: ["nosc", "no-operar", "supervisar", "activo"], objetivos: ["explorar", "patrimonio", "ingresos", "empresa", "familia"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"] },
 ];
 
 const CAPITAL_MAP: Record<string, number> = {
