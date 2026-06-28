@@ -80,6 +80,66 @@ const PROPIEDADES: Propiedad[] = [
 
 const FILTROS = ["Todos", "Section 8", "Multifamiliar", "Fix & Flip"];
 
+type PropiedadExclusiva = {
+  id: string;
+  tipo: string;
+  ubicacion: string;
+  precio: string;
+  renta: string;
+  cap: string;
+  noi: string;
+  beds: string;
+  sqft: string;
+  ano: string;
+  hoa: string;
+  detalles: string[];
+};
+
+const EXCLUSIVAS: PropiedadExclusiva[] = [
+  {
+    id: "e1",
+    tipo: "Casa Unifamiliar",
+    ubicacion: "Saint Petersburg, FL 33711",
+    precio: "$350,000",
+    renta: "$3,200/mes",
+    cap: "7%",
+    noi: "$24,500/año",
+    beds: "3 rec. / 2 baños",
+    sqft: "1,888 sqft",
+    ano: "1957",
+    hoa: "Sin HOA",
+    detalles: [
+      "Terreno 8,453 sqft",
+      "Garaje adjunto",
+      "A/C central + calefacción eléctrica",
+      "Deck, patio y porch exterior",
+      "Ingreso bruto anual: $38,400",
+      "Gastos operativos: $13,900",
+    ],
+  },
+  {
+    id: "e2",
+    tipo: "Casa Unifamiliar",
+    ubicacion: "Saint Petersburg, FL 33705",
+    precio: "$325,000",
+    renta: "$2,600/mes",
+    cap: "6%",
+    noi: "$24,660/año",
+    beds: "3 rec. / 2 baños",
+    sqft: "1,428 sqft",
+    ano: "1956",
+    hoa: "Sin HOA",
+    detalles: [
+      "Terreno 10,824 sqft (~1,000 m²)",
+      "Precio de lista original: $425,000",
+      "Ahorro inmediato: $100,000",
+      "Valuación Zillow: $405,000",
+      "Ingreso bruto anual: $31,200",
+      "Gastos operativos: $11,500",
+    ],
+  },
+];
+
 function PropertyCard({ p }: { p: Propiedad }) {
   function handleConsultar() {
     const msg = encodeURIComponent(
@@ -215,6 +275,82 @@ export default function Propiedades() {
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#4A6580" }}>No hay propiedades disponibles en esta categoría por el momento.</p>
           </div>
         )}
+
+        {/* ── Sección Exclusiva Miembros ── */}
+        <div style={{ marginTop: "72px" }}>
+          {/* Header sección */}
+          <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "28px" }}>
+            <div style={{ flex: 1, height: "1px", background: `${GOLD}25` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 20px", background: `${GOLD}10`, border: `1px solid ${GOLD}40`, borderRadius: "30px" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill={GOLD} stroke="none"><path d="M12 1L15.09 8.26L23 9.27L17.5 14.64L18.18 22.6L12 19.24L5.82 22.6L6.5 14.64L1 9.27L8.91 8.26L12 1Z"/></svg>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase" }}>Exclusivo para Miembros</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill={GOLD} stroke="none"><path d="M12 1L15.09 8.26L23 9.27L17.5 14.64L18.18 22.6L12 19.24L5.82 22.6L6.5 14.64L1 9.27L8.91 8.26L12 1Z"/></svg>
+            </div>
+            <div style={{ flex: 1, height: "1px", background: `${GOLD}25` }} />
+          </div>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF", textAlign: "center", marginBottom: "28px" }}>
+            Las mejores ofertas se comparten solo dentro del club. Estas son las propiedades secretas de este mes.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))", gap: "20px" }}>
+            {EXCLUSIVAS.map(e => (
+              <div key={e.id} style={{ background: `linear-gradient(145deg, #0D1E35 0%, #0A1828 100%)`, border: `1px solid ${GOLD}35`, borderRadius: "16px", overflow: "hidden", position: "relative" }}>
+                {/* Gold top line */}
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+
+                {/* Badges */}
+                <div style={{ padding: "18px 20px 0", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: NAVY, background: GOLD, borderRadius: "5px", padding: "3px 10px", letterSpacing: "0.08em" }}>{e.tipo}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "5px", background: `${GOLD}15`, border: `1px solid ${GOLD}30`, borderRadius: "5px", padding: "3px 10px" }}>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: GOLD, letterSpacing: "0.1em" }}>CONFIDENCIAL</span>
+                  </div>
+                </div>
+
+                <div style={{ padding: "0 20px 20px" }}>
+                  {/* Ubicación */}
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#5A7A9A", marginBottom: "16px", display: "flex", alignItems: "center", gap: "5px" }}>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5A7A9A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    {e.ubicacion}
+                  </p>
+
+                  {/* Métricas principales */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginBottom: "16px" }}>
+                    {[["Precio", e.precio], ["Renta", e.renta], ["Cap Rate", e.cap]].map(([k, v]) => (
+                      <div key={k} style={{ background: `${NAVY}80`, borderRadius: "8px", padding: "10px 6px", textAlign: "center" }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580", marginBottom: "3px", letterSpacing: "0.06em", textTransform: "uppercase" }}>{k}</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: GOLD }}>{v}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Specs */}
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "14px" }}>
+                    {[e.beds, e.sqft, `Construida ${e.ano}`, e.hoa].map(s => (
+                      <span key={s} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#6A8FAF", background: `${NAVY_BORDER}50`, borderRadius: "6px", padding: "4px 10px" }}>{s}</span>
+                    ))}
+                  </div>
+
+                  {/* NOI */}
+                  <div style={{ background: `${GOLD}08`, border: `1px solid ${GOLD}20`, borderRadius: "8px", padding: "10px 14px", marginBottom: "14px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#5A7A9A" }}>NOI anual</span>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: GOLD_LIGHT }}>{e.noi}</span>
+                  </div>
+
+                  {/* Detalles */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    {e.detalles.map(d => (
+                      <div key={d} style={{ display: "flex", alignItems: "flex-start", gap: "8px" }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}><polyline points="20 6 9 17 4 12"/></svg>
+                        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#7A95B0", lineHeight: 1.5 }}>{d}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* CTA Footer */}
         <div style={{ marginTop: "64px", background: NAVY_CARD, border: `1px solid ${GOLD}30`, borderRadius: "20px", padding: "48px 32px", textAlign: "center", position: "relative", overflow: "hidden" }}>
