@@ -34,11 +34,20 @@ type Deal = {
 
 const FOTO_POS: Record<number, string> = {
   1: "center center",
-  2: "center top",
+  2: "center center",
   3: "center center",
   4: "center center",
   5: "center top",
   6: "center center",
+};
+
+const FOTO_FIT: Record<number, "cover" | "contain"> = {
+  1: "cover",
+  2: "contain",
+  3: "cover",
+  4: "cover",
+  5: "cover",
+  6: "cover",
 };
 
 const FOTOS: Record<number, string> = {
@@ -142,9 +151,9 @@ function DealCard({ d }: { d: Deal }) {
       onMouseLeave={e => (e.currentTarget.style.borderColor = NAVY_BORDER)}
     >
       {/* Photo */}
-      <div style={{ position: "relative", height: "220px", overflow: "hidden" }}>
+      <div style={{ position: "relative", height: "220px", overflow: "hidden", background: "#0A1828" }}>
         <img src={FOTOS[d.id]} alt={`Propiedad #${d.id} ${d.ubicacion}`}
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: FOTO_POS[d.id], display: "block" }} />
+          style={{ width: "100%", height: "100%", objectFit: FOTO_FIT[d.id], objectPosition: FOTO_POS[d.id], display: "block" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 50%, #11224099 100%)" }} />
         {d.savings && (
           <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#0B1F3A", background: "#3ECF8E", borderRadius: "5px", padding: "3px 10px" }}>
