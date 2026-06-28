@@ -100,8 +100,7 @@ export default function FondoVictoryCapital() {
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 pb-24 overflow-hidden">
-        {/* Background gradient mesh */}
+      <section className="relative min-h-screen flex items-center pt-20 pb-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0E2544] to-[#091A30]" />
         <div className="absolute inset-0 opacity-20"
           style={{
@@ -109,63 +108,65 @@ export default function FondoVictoryCapital() {
               "radial-gradient(circle at 20% 50%, #2563EB 0%, transparent 50%), radial-gradient(circle at 80% 20%, #1D4ED8 0%, transparent 40%)",
           }}
         />
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0B1F3A] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0B1F3A] to-transparent" />
 
         <div className="container relative z-10">
           <FadeIn>
             <div className="max-w-3xl">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+              {/* Label */}
+              <p className="text-blue-400 text-xs font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Fondo de Inversión · Victory Capital
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
+
+              {/* Headline */}
+              <h1 className="text-3xl md:text-5xl text-white leading-tight mb-3">
                 Invierte en tierra estratégica en{" "}
-                <span className="gradient-text-primary">
-                  Estados Unidos
-                </span>{" "}
+                <span className="gradient-text-primary">Estados Unidos</span>{" "}
                 sin tener que operar.
               </h1>
-              <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
-                Victory Capital reúne capital de inversionistas para adquirir, mejorar y
-                administrar parques de casas móviles en Estados Unidos, con el objetivo
-                de generar flujo, apreciación y valor patrimonial a largo plazo.
+
+              {/* Subhead — 1 línea */}
+              <p className="text-slate-400 text-base md:text-lg mb-6 max-w-xl">
+                Parques de casas móviles. Flujo potencial, apreciación y operación
+                profesional. Tú solo aportas el capital.
               </p>
 
-              {/* Key stats */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10 max-w-2xl">
+              {/* Stats en una sola fila horizontal */}
+              <div className="flex flex-wrap gap-2 mb-7">
                 {[
-                  { label: "Ticket mínimo", value: "USD $100,000+" },
-                  { label: "Horizonte estimado", value: "5 – 7 años" },
-                  { label: "Rol del inversionista", value: "Pasivo" },
-                  { label: "Activo base", value: "Tierra estratégica" },
+                  { label: "Ticket mínimo", value: "USD $100k+" },
+                  { label: "Horizonte", value: "5 – 7 años" },
+                  { label: "Rol", value: "Pasivo" },
+                  { label: "Activo", value: "Tierra estratégica" },
                 ].map((stat, i) => (
                   <div
                     key={i}
-                    className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4"
+                    className="bg-blue-500/10 border border-blue-500/20 rounded-lg px-4 py-2 flex items-center gap-2"
                   >
-                    <p className="text-blue-300 text-xs font-mono uppercase tracking-wider mb-1">
-                      {stat.label}
-                    </p>
-                    <p className="text-white font-semibold text-sm leading-snug">
+                    <span className="text-blue-300 text-xs font-mono uppercase tracking-wide">
+                      {stat.label}:
+                    </span>
+                    <span className="text-white font-semibold text-xs">
                       {stat.value}
-                    </p>
+                    </span>
                   </div>
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-4">
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-3">
                 <Button
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25"
+                  className="bg-primary hover:bg-blue-600 text-white px-6 py-5 text-sm gap-2 shadow-lg shadow-blue-600/25"
                 >
-                  Evaluar si esta ruta tiene sentido para mí{" "}
-                  <ArrowRight className="w-4 h-4" />
+                  Evaluar si tiene sentido para mí <ArrowRight className="w-4 h-4" />
                 </Button>
                 <a href="#como-funciona">
                   <Button
                     variant="outline"
-                    className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base"
+                    className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm"
                   >
-                    Entender cómo funciona
+                    Cómo funciona
                   </Button>
                 </a>
               </div>
