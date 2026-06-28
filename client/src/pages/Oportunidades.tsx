@@ -23,7 +23,13 @@ import {
   Calendar,
   Eye,
   MessageSquare,
+  MapPin,
+  BedDouble,
+  Bath,
+  Ruler,
+  ExternalLink,
 } from "lucide-react";
+import { DEALS } from "@/lib/deals";
 
 /* ─── FadeIn ─── */
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -250,49 +256,111 @@ export default function Oportunidades() {
             <div className="text-center mb-12">
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Oportunidades</p>
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">Oportunidades activas actualmente</h2>
+              <p className="text-[#4B5563] text-lg mt-4 max-w-2xl mx-auto">
+                Propiedades filtradas y evaluadas con retorno documentado. Acceso exclusivo para miembros.
+              </p>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Card 1 — Active */}
-            <FadeIn>
-              <div className="relative bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full group hover:border-primary/40 transition-all">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
-                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" /> Activa
-                </div>
-                <Building2 className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-2xl text-white font-semibold mb-4">Fondo de bienes raíces en Estados Unidos</h3>
-                <div className="space-y-3 mb-8">
-                  {["Inversión desde $100,000 USD", "Estructura profesional completa", "Enfoque patrimonial a largo plazo"].map((item, i) => (
-                    <div key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-slate-400 text-sm">{item}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {DEALS.map((deal, i) => (
+              <FadeIn key={deal.id} delay={i * 0.08}>
+                <div className="relative bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl overflow-hidden h-full flex flex-col group hover:border-primary/40 transition-all">
+                  {/* Header */}
+                  <div className="p-6 pb-4 border-b border-[#1E3A5F]">
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 text-primary text-xs font-semibold uppercase tracking-wider">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" /> #{deal.id}
+                      </div>
+                      {deal.savings && (
+                        <div className="inline-flex items-center px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold">
+                          -{new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(deal.savings)} ahorro
+                        </div>
+                      )}
                     </div>
-                  ))}
-                </div>
-                <a href="/bienes-raices-en-usa">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full">Ver detalles <ArrowRight className="w-4 h-4" /></Button>
-                </a>
-              </div>
-            </FadeIn>
+                    <div className="flex items-start gap-2 mb-1">
+                      <MapPin className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <p className="text-white font-semibold text-sm leading-snug">{deal.address}</p>
+                        <p className="text-slate-500 text-xs">{deal.city}, {deal.state} {deal.zip}</p>
+                      </div>
+                    </div>
+                  </div>
 
-            {/* Card 2 — Inversión + Ruta migratoria */}
-            <FadeIn delay={0.1}>
-              <div className="relative bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full group hover:border-primary/40 transition-all">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
-                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" /> Activa
+                  {/* Price + specs */}
+                  <div className="p-6 pb-4">
+                    <div className="mb-4">
+                      {deal.listPrice && (
+                        <p className="text-slate-500 text-xs line-through mb-0.5">
+                          {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(deal.listPrice)} precio de lista
+                        </p>
+                      )}
+                      <p className="text-primary text-2xl font-bold">
+                        {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(deal.investorPrice)}
+                      </p>
+                      <p className="text-slate-500 text-xs">Precio para inversionista</p>
+                    </div>
+
+                    {/* Specs row */}
+                    <div className="flex items-center gap-4 text-slate-400 text-xs mb-5">
+                      <span className="flex items-center gap-1"><BedDouble className="w-3.5 h-3.5" />{deal.bedrooms} rec.</span>
+                      <span className="flex items-center gap-1"><Bath className="w-3.5 h-3.5" />{deal.bathrooms} baño{deal.bathrooms !== 1 ? "s" : ""}</span>
+                      <span className="flex items-center gap-1"><Ruler className="w-3.5 h-3.5" />{deal.sqft.toLocaleString()} sqft</span>
+                    </div>
+
+                    {/* ROI metrics */}
+                    <div className="grid grid-cols-2 gap-3 mb-5">
+                      <div className="bg-[#0F2847] rounded-lg p-3">
+                        <p className="text-slate-500 text-xs mb-0.5">Renta mensual</p>
+                        <p className="text-white font-semibold text-sm">${deal.monthlyRent.toLocaleString()}</p>
+                      </div>
+                      <div className="bg-[#0F2847] rounded-lg p-3">
+                        <p className="text-slate-500 text-xs mb-0.5">NOI anual</p>
+                        <p className="text-white font-semibold text-sm">${deal.noi.toLocaleString()}</p>
+                      </div>
+                      <div className="bg-[#0F2847] rounded-lg p-3">
+                        <p className="text-slate-500 text-xs mb-0.5">Gastos op.</p>
+                        <p className="text-white font-semibold text-sm">${deal.operatingExpenses.toLocaleString()}</p>
+                      </div>
+                      <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
+                        <p className="text-blue-400 text-xs mb-0.5">Cap Rate</p>
+                        <p className="text-primary font-bold text-sm">{deal.capRate}%</p>
+                      </div>
+                    </div>
+
+                    {/* Property type + HOA */}
+                    <p className="text-slate-500 text-xs mb-1">{deal.propertyType} · Construida en {deal.builtYear}{deal.lotSqft ? ` · Terreno: ${deal.lotSqft.toLocaleString()} sqft` : ""}</p>
+                    {deal.hoa ? (
+                      <p className="text-slate-500 text-xs">HOA: ${deal.hoa.toLocaleString()}/año</p>
+                    ) : (
+                      <p className="text-emerald-500 text-xs">Sin HOA</p>
+                    )}
+                  </div>
+
+                  {/* CTA */}
+                  <div className="mt-auto p-6 pt-0 flex flex-col gap-2">
+                    <Button
+                      onClick={() => openWhatsApp(WHATSAPP_PHONE, `Hola, me interesa la oportunidad #${deal.id}: ${deal.address}, ${deal.city}, ${deal.state}.`)}
+                      className="bg-primary hover:bg-blue-600 text-white gap-2 w-full text-sm"
+                    >
+                      Consultar esta propiedad <ArrowRight className="w-4 h-4" />
+                    </Button>
+                    {deal.zillowUrl && (
+                      <a href={deal.zillowUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 text-slate-500 hover:text-slate-300 text-xs transition-colors py-1">
+                        <ExternalLink className="w-3 h-3" /> Ver en Zillow
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <TrendingUp className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-2xl text-white font-semibold mb-4">Inversión + Ruta migratoria</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                  Tienes $300,000 dólares y quieres migrar a Estados Unidos.
-                </p>
-                <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el modelo de Inversión + Ruta migratoria.")} className="bg-primary hover:bg-blue-600 text-white gap-2 w-full">
-                  Evaluar si este modelo encaja contigo <ArrowRight className="w-4 h-4" />
-                </Button>
-              </div>
-            </FadeIn>
+              </FadeIn>
+            ))}
           </div>
+
+          <FadeIn>
+            <div className="mt-12 text-center">
+              <p className="text-slate-500 text-sm italic">El acceso detallado a cada deal es exclusivo para miembros activos de la comunidad.</p>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
