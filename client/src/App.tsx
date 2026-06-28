@@ -30,6 +30,7 @@ import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Disclaimers from "./pages/Disclaimers";
 import Oportunidades from "./pages/Oportunidades";
+import Propiedades from "./pages/Propiedades";
 import Eventos from "./pages/Eventos";
 import InvestmentWeek from "./pages/InvestmentWeek";
 import Recursos from "./pages/Recursos";
@@ -64,6 +65,7 @@ function Router() {
       <Route path="/news/:slug" component={NewsArticle} />
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
       <Route path="/oportunidades-de-inversion-en-estados-unidos" component={Oportunidades} />
+      <Route path="/propiedades" component={Propiedades} />
       <Route path="/eventos" component={Eventos} />
       <Route path="/investment-week" component={InvestmentWeek} />
       <Route path="/recursos" component={Recursos} />
