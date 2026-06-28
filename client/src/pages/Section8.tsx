@@ -404,25 +404,10 @@ export default function Section8() {
                   La propiedad genera renta. Después de gastos operativos y administración, el inversionista recibe el flujo neto correspondiente.
                 </p>
 
-                {/* Ejemplo real */}
-                <div className="rounded-xl border p-6" style={{ borderColor: `${GOLD}33`, backgroundColor: `${GOLD}08` }}>
-                  <p className="text-xs font-semibold tracking-widest uppercase mb-5" style={{ color: GOLD }}>
-                    Ejemplo ilustrativo
-                  </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center p-4 rounded-lg bg-white/5">
-                      <p className="text-slate-400 text-xs mb-1">Ingreso anual bruto</p>
-                      <p className="text-2xl font-bold text-white">$30,000</p>
-                      <p className="text-slate-500 text-xs">USD</p>
-                    </div>
-                    <div className="text-center p-4 rounded-lg" style={{ backgroundColor: `${GOLD}15` }}>
-                      <p className="text-xs mb-1" style={{ color: GOLD }}>Ingreso operativo neto (NOI)</p>
-                      <p className="text-2xl font-bold text-white">$18,800</p>
-                      <p className="text-slate-400 text-xs">USD anuales</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-slate-500 mt-4 leading-relaxed">
-                    * Los números son ilustrativos. Los resultados reales varían según la propiedad, mercado y condiciones operativas.
+                <div className="flex items-start gap-4 p-5 rounded-xl border-l-4" style={{ borderColor: GOLD, backgroundColor: `${GOLD}08` }}>
+                  <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: GOLD }} />
+                  <p className="text-sm text-slate-300 leading-relaxed">
+                    El flujo neto depende de cada propiedad, mercado, nivel de ocupación y gastos operativos específicos. Estos números se analizan caso por caso durante el diagnóstico.
                   </p>
                 </div>
               </div>
@@ -435,16 +420,9 @@ export default function Section8() {
                   <span className="text-3xl font-bold" style={{ color: GOLD }}>02</span>
                   <h3 className="text-xl font-semibold text-white">Crecimiento patrimonial</h3>
                 </div>
-                <p className="text-slate-400 leading-relaxed mb-6">
-                  Con el tiempo la propiedad puede aumentar su valor.
+                <p className="text-slate-400 leading-relaxed">
+                  Con el tiempo la propiedad puede aumentar su valor. Sin embargo, la apreciación nunca está garantizada y depende del mercado, la zona y las condiciones económicas de cada momento.
                 </p>
-                <div className="flex items-start gap-4 p-5 rounded-xl border-l-4" style={{ borderColor: GOLD, backgroundColor: `${GOLD}08` }}>
-                  <TrendingUp className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: GOLD }} />
-                  <p className="text-sm text-slate-300 leading-relaxed">
-                    Algunas propiedades en Niagara Falls han mostrado crecimientos superiores al{" "}
-                    <span className="font-bold text-white">47%</span> durante los últimos diez años.
-                  </p>
-                </div>
               </div>
             </FadeIn>
           </div>
