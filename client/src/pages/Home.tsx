@@ -530,35 +530,6 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <FadeIn>
-              <div className="bg-[#0F2847] border border-blue-500/30 rounded-xl overflow-hidden h-full">
-                <img src={AERIAL} alt="Inspección inmobiliaria" className="w-full h-48 object-cover" />
-                <div className="p-8">
-                  <span className="inline-block bg-blue-500/15 text-blue-400 text-xs font-semibold px-3 py-1 rounded-full mb-4">Abierta ahora</span>
-                  <h3 className="text-xl font-bold text-white mb-3">Fondo de Bienes Raíces</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6">Exposición inmobiliaria patrimonial con estructura y acompañamiento.</p>
-                  <a href="/bienes-raices-en-usa">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver detalles <ArrowRight className="w-3 h-3" /></Button>
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden h-full">
-                <img src={MIGRAR_PHOTO} alt="Inversión y ruta migratoria" className="w-full h-48 object-cover" />
-                <div className="p-8">
-                  <span className="inline-block bg-blue-500/10 text-primary text-xs font-semibold px-3 py-1 rounded-full mb-4">Activa</span>
-                  <h3 className="text-xl font-bold text-white mb-3">Inversión + Ruta migratoria</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-6">Tienes $300,000 dólares y quieres migrar a Estados Unidos.</p>
-                  <Button onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el modelo de Inversión + Ruta migratoria.")} className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">
-                    Evaluar si encaja contigo <ArrowRight className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
         </div>
       </section>
 
