@@ -179,7 +179,7 @@ export default function ClubInversion() {
               No es una carrera. Es un proceso con acompañamiento real.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a href="/perfil">
+              <a href="/tu-ruta">
                 <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                   Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -561,7 +561,7 @@ export default function ClubInversion() {
                     ))}
                   </ul>
 
-                  <a href="/perfil">
+                  <a href="/tu-ruta">
                     <Button className={`w-full py-3 font-semibold gap-2 text-sm ${
                       plan.popular
                         ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-600/20"
@@ -589,7 +589,7 @@ export default function ClubInversion() {
                 No es pagar. Es validar si perteneces al grupo.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi Perfil <ArrowRight className="w-5 h-5" />
                   </Button>

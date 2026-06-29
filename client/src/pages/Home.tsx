@@ -415,7 +415,7 @@ export default function Home() {
 
           <FadeIn>
             <div className="text-center mt-10">
-              <a href="/perfil" className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors">
+              <a href="/tu-ruta" className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors">
                 ¿No estás seguro? Evalúa tu perfil y te orientamos <ArrowRight className="w-4 h-4" />
               </a>
             </div>
@@ -777,7 +777,7 @@ export default function Home() {
                 Empieza por evaluar tu perfil. Te decimos con claridad si este camino hace sentido para ti.
               </p>
               <div className="flex flex-wrap justify-center gap-4 mb-6">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                   </Button>

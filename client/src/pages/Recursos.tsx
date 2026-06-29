@@ -317,7 +317,7 @@ export default function Recursos() {
                 El contenido es solo el primer paso. La verdadera diferencia está en cómo aplicas esta información.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -368,7 +368,7 @@ export default function Recursos() {
               <h2 className="text-3xl md:text-4xl text-white mb-6">Empieza a tomar decisiones con más claridad</h2>
               <p className="text-slate-500 text-sm mb-10">Antes de invertir o expandirte… necesitas criterio.</p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                   </Button>
