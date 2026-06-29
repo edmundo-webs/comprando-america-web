@@ -265,25 +265,6 @@ export default function Home() {
       <SEOHead {...PAGE_SEO} />
       <Navbar />
 
-      {/* ═══ BANNER PROMOCIONAL — Florida Investment Weekend II ═══ */}
-      <a
-        href="/investment-week"
-        className="block w-full bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#1D4ED8] hover:from-[#1E40AF] hover:to-[#1E40AF] transition-colors duration-300 group"
-      >
-        <div className="container flex items-center justify-center gap-3 py-3 px-4 text-center">
-          <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
-            Próximo evento
-          </span>
-          <p className="text-white text-sm font-medium">
-            <span className="font-bold">Florida Investment Weekend II</span>
-            {" — "}Terreno real. Propiedades reales. Números reales.
-          </p>
-          <span className="hidden sm:inline-flex items-center gap-1 text-white font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
-            Ver detalles <ArrowRight className="w-3.5 h-3.5" />
-          </span>
-        </div>
-      </a>
-
       {/* ═══ 1. HERO — Edmundo rooftop ═══ */}
       <section className="relative min-h-screen flex items-center">
         <div className="absolute inset-0">
@@ -310,6 +291,25 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ═══ BANNER PROMOCIONAL — Florida Investment Weekend II ═══ */}
+      <a
+        href="/investment-week"
+        className="block w-full bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#1D4ED8] hover:from-[#1E40AF] hover:to-[#1E40AF] transition-colors duration-300 group"
+      >
+        <div className="container flex items-center justify-center gap-3 py-3 px-4 text-center">
+          <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
+            Próximo evento
+          </span>
+          <p className="text-white text-sm font-medium">
+            <span className="font-bold">Florida Investment Weekend II</span>
+            {" — "}Terreno real. Propiedades reales. Números reales.
+          </p>
+          <span className="hidden sm:inline-flex items-center gap-1 text-white font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
+            Ver detalles <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+      </a>
 
       {/* ═══ 2. PERFILAMIENTO — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
