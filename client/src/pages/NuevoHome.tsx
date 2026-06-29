@@ -838,6 +838,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
   onUnderstandRoute: () => void;
   onCompare: () => void;
 }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const confirmRef = useRef<HTMLDivElement>(null);
+
   const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
   const topVehicles = rankedVehicles.slice(0, 5);
 
@@ -853,23 +856,31 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
     { label: "Horizonte", value: horizonteLabel },
   ].filter(f => f.value);
 
-  function handleAgendarDiagnostico() {
+  function openConfirm() {
+    setShowConfirm(true);
+    setTimeout(() => confirmRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
+  }
+
+  function sendWhatsApp() {
     const nombre = contactData?.nombre ?? "";
     const whatsapp = contactData?.whatsapp ?? "";
     const email = contactData?.email ?? "";
     const msg = [
       `Hola, soy ${nombre}. Acabo de completar el GPS Estratégico de Comprando América.`,
       "",
-      `Mi perfil: ${perfil.nombre}`,
+      "── FICHA DE PERFIL ──",
+      `Perfil: ${perfil.nombre}`,
+      fichaData.map(f => `${f.label}: ${f.value}`).join(" · "),
+      "",
       perfil.descripcion,
       "",
-      "Vehículos recomendados:",
-      ...topVehicles.map((v) => `• ${v.nombre} (${v.pct}% compatibilidad)`),
+      "── VEHÍCULOS COMPATIBLES ──",
+      ...topVehicles.slice(0, 3).map((v) => `• ${v.nombre} — ${v.pct}% compatibilidad`),
       "",
-      "Mis datos:",
-      `• Nombre: ${nombre}`,
-      `• WhatsApp: ${whatsapp}`,
-      `• Correo: ${email}`,
+      "── MIS DATOS DE CONTACTO ──",
+      `Nombre: ${nombre}`,
+      `WhatsApp: ${whatsapp}`,
+      `Correo: ${email}`,
       "",
       "Me gustaría agendar un diagnóstico estratégico.",
     ].join("\n");
@@ -995,36 +1006,91 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
           </div>
         </div>
 
-        {contactData && (
-          <div style={{ marginBottom: "36px", background: NAVY_CARD, border: `1px solid ${GOLD}40`, borderRadius: "14px", padding: "22px 24px" }}>
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "16px" }}>Confirma tus datos</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {[
-                { label: "Nombre", value: contactData.nombre },
-                { label: "WhatsApp", value: contactData.whatsapp },
-                { label: "Correo", value: contactData.email },
-              ].map(({ label, value }) => (
-                <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px" }}>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", minWidth: "72px" }}>{label}</span>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 500, color: "#C8D6E8", textAlign: "right", wordBreak: "break-all" }}>{value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        {/* ── CTA principal ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
           <GoldBtn onClick={onUnderstandRoute} style={{ width: "100%" }}>
             Quiero entender esta ruta <IconRight color={NAVY} />
           </GoldBtn>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            <button onClick={handleAgendarDiagnostico} style={{ padding: "13px 18px", background: "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+            <button onClick={openConfirm}
+              style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", transition: "background 0.2s" }}>
               <IconCalendar color={GOLD} /> Agendar diagnóstico
             </button>
-            <button onClick={onCompare} style={{ padding: "13px 18px", background: "transparent", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer" }}>
+            <button onClick={onCompare}
+              style={{ padding: "13px 18px", background: "transparent", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer" }}>
               Comparar otra ruta
             </button>
           </div>
         </div>
+
+        {/* ── Tarjeta de confirmación ── */}
+        <AnimatePresence>
+          {showConfirm && contactData && (
+            <motion.div ref={confirmRef}
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
+              transition={{ duration: 0.3 }}
+              style={{ background: `linear-gradient(135deg, #091830 0%, #0D1F3C 100%)`, border: `1.5px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", marginBottom: "16px", position: "relative", overflow: "hidden" }}>
+              {/* Top gold bar */}
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "22px" }}>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase", margin: 0 }}>Confirma tu solicitud</p>
+                <button onClick={() => setShowConfirm(false)}
+                  style={{ background: "transparent", border: "none", cursor: "pointer", color: "#4A6580", padding: "2px", lineHeight: 1 }}>
+                  <IconX color="#4A6580" />
+                </button>
+              </div>
+
+              {/* Perfil GPS */}
+              <div style={{ marginBottom: "18px" }}>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}80`, textTransform: "uppercase", marginBottom: "8px" }}>Tu perfil GPS</p>
+                <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "16px", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>{perfil.nombre}</p>
+                {fichaData.length > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                    {fichaData.map(({ label, value }) => (
+                      <span key={label} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "4px 10px", color: "#8FA5C0" }}>
+                        <span style={{ color: `${GOLD}90` }}>{label}:</span> <strong style={{ color: "#C8D6E8" }}>{value}</strong>
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Separador */}
+              <div style={{ height: "1px", background: `${NAVY_BORDER}80`, marginBottom: "18px" }} />
+
+              {/* Datos de contacto */}
+              <div style={{ marginBottom: "22px" }}>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}80`, textTransform: "uppercase", marginBottom: "12px" }}>Datos de contacto</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {[
+                    { label: "Nombre", value: contactData.nombre, icon: "👤" },
+                    { label: "WhatsApp", value: contactData.whatsapp, icon: "📱" },
+                    { label: "Correo", value: contactData.email, icon: "✉️" },
+                  ].map(({ label, value, icon }) => (
+                    <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>
+                      <span style={{ fontSize: "14px", flexShrink: 0 }}>{icon}</span>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1", wordBreak: "break-all" }}>{value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Confirm CTA */}
+              <button onClick={sendWhatsApp}
+                style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill={NAVY}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Confirmar y agendar por WhatsApp
+              </button>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center", marginTop: "10px" }}>
+                Esta información se enviará directamente a nuestro equipo.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Institutional phrase */}
         <div style={{ marginTop: "56px", paddingTop: "32px", borderTop: `1px solid ${NAVY_BORDER}`, textAlign: "center" }}>
