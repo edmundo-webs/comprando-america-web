@@ -552,9 +552,6 @@ export default function Section8() {
         <div className="container max-w-3xl">
           <FadeIn>
             <GoldAccent />
-            <p className="text-xs font-semibold tracking-widest uppercase mb-4 font-mono text-slate-500">
-              Caso hipotético
-            </p>
             <h2 className="text-3xl md:text-4xl font-bold mb-10 text-[#0B1F3A]">
               Juan, empresario en Monterrey.
             </h2>
