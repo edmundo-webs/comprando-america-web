@@ -697,58 +697,75 @@ export default function Home() {
             <FadeIn>
               <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
                 <div>
-                  <span className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase font-mono block mb-3">Contenido</span>
-                  <h2 className="text-3xl md:text-4xl text-white leading-tight">Recursos para tomar<br className="hidden md:block" /> mejores decisiones</h2>
+                  <span className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase font-mono block mb-3">Aprende · Analiza · Decide</span>
+                  <h2 className="text-3xl md:text-4xl text-white leading-tight">Explora las rutas para<br className="hidden md:block" /> nutrirse de información</h2>
                 </div>
-                <p className="text-slate-400 text-base max-w-xs leading-relaxed">Claridad antes de ejecutar. Sin ruido.</p>
+                <p className="text-slate-400 text-base max-w-xs leading-relaxed">Contenido real para inversionistas que quieren claridad antes de ejecutar.</p>
               </div>
             </FadeIn>
 
-            <div className="grid md:grid-cols-3 gap-5">
+            <div className="grid md:grid-cols-3 gap-6">
               {[
                 {
-                  icon: Mic,
-                  label: "Audio",
-                  title: "Podcast",
-                  desc: "Conversaciones con expertos, casos reales y análisis del mercado.",
+                  label: "Podcast",
+                  tag: "Audio · Episodios nuevos cada semana",
+                  title: "Conversaciones que mueven el criterio",
+                  desc: "Casos reales, expertos en activo y análisis del mercado americano. Escucha mientras construyes tu próxima decisión.",
                   cta: "Escuchar episodios",
                   href: "/podcast",
-                  accent: "from-blue-600/20 to-blue-500/5",
-                  border: "border-blue-500/20 hover:border-blue-400/40",
+                  image: "https://img.youtube.com/vi/iFx3QusSR90/maxresdefault.jpg",
+                  playIcon: true,
                 },
                 {
-                  icon: Newspaper,
-                  label: "Noticias",
-                  title: "News",
-                  desc: "Qué está pasando en el mercado y cómo impacta tu inversión.",
+                  label: "News",
+                  tag: "Noticias · Actualización continua",
+                  title: "Lo que está pasando y cómo te afecta",
+                  desc: "Noticias del mercado inmobiliario, migración y economía en EE.UU. filtradas para inversionistas latinos.",
                   cta: "Leer noticias",
                   href: "/news",
-                  accent: "from-indigo-600/20 to-indigo-500/5",
-                  border: "border-indigo-500/20 hover:border-indigo-400/40",
+                  image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=450&fit=crop",
+                  playIcon: false,
                 },
                 {
-                  icon: BookOpen,
-                  label: "Artículos",
-                  title: "Blog",
-                  desc: "Guías prácticas y análisis escritos por el equipo de Comprando América.",
+                  label: "Blog",
+                  tag: "Artículos · Guías prácticas",
+                  title: "Análisis y guías para tomar mejores decisiones",
+                  desc: "Artículos escritos por el equipo de Comprando América sobre inversión, estructura legal y patrimonio en EE.UU.",
                   cta: "Leer artículos",
                   href: "/blog",
-                  accent: "from-sky-600/20 to-sky-500/5",
-                  border: "border-sky-500/20 hover:border-sky-400/40",
+                  image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=450&fit=crop",
+                  playIcon: false,
                 },
               ].map((r, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
                   <a href={r.href} className="block h-full group">
-                    <div className={`relative h-full rounded-2xl border bg-gradient-to-b ${r.accent} ${r.border} transition-all duration-300 overflow-hidden`}>
-                      <div className="p-8 flex flex-col h-full">
-                        <div className="mb-6">
-                          <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">{r.label}</span>
-                        </div>
-                        <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6">
-                          <r.icon className="w-5 h-5 text-blue-300" />
-                        </div>
-                        <h3 className="text-2xl font-bold text-white mb-3">{r.title}</h3>
-                        <p className="text-slate-400 text-sm leading-relaxed flex-1 mb-8">{r.desc}</p>
+                    <div className="h-full rounded-2xl border border-[#1E3A5F] hover:border-blue-500/40 bg-[#0F2542] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-900/20 flex flex-col">
+                      {/* Image */}
+                      <div className="relative overflow-hidden h-48 shrink-0">
+                        <img
+                          src={r.image}
+                          alt={r.label}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0F2542] via-transparent to-transparent" />
+                        {r.playIcon && (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                              <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                              </svg>
+                            </div>
+                          </div>
+                        )}
+                        <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
+                          {r.label}
+                        </span>
+                      </div>
+                      {/* Content */}
+                      <div className="p-6 flex flex-col flex-1">
+                        <p className="text-blue-400/70 text-xs font-mono uppercase tracking-widest mb-3">{r.tag}</p>
+                        <h3 className="text-lg font-bold text-white mb-2 leading-snug">{r.title}</h3>
+                        <p className="text-slate-400 text-sm leading-relaxed flex-1 mb-5">{r.desc}</p>
                         <span className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 group-hover:text-blue-300 transition-colors">
                           {r.cta} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </span>
