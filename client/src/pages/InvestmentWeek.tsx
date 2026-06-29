@@ -543,31 +543,73 @@ export default function InvestmentWeek() {
         </div>
       </section>
 
-      {/* ═══ 8. CONEXIÓN FONDO — ☀️ BLANCO ═══ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
+      {/* ═══ 8. CONEXIÓN OPORTUNIDADES ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-24">
         <div className="container">
           <FadeIn>
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
-                Esta experiencia conecta directamente con oportunidades reales
+            <div className="text-center mb-10">
+              <p className="text-primary text-xs font-semibold tracking-[0.25em] uppercase mb-3 font-mono">Lo que analizas en el viaje</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] font-bold max-w-2xl mx-auto">
+                Dos oportunidades reales sobre la mesa
               </h2>
-              <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
-                Durante el viaje analizas activos en operación, entiendes la estructura del fondo y evalúas tu participación con información directa y completa.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a href="/fondo">
-                  <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white px-8 py-6 text-base gap-2">
-                    Conoce el Fondo <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-                <a href="/vc-8">
-                  <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 px-8 py-6 text-base">
-                    Sección 8
-                  </Button>
-                </a>
-              </div>
             </div>
           </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+            {/* Tarjeta 1: Fondo */}
+            <FadeIn delay={0.05}>
+              <a href="/fondo" className="group block">
+                <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+                    <Shield className="w-5 h-5 text-primary" />
+                  </div>
+                  <p className="text-[11px] font-semibold text-primary tracking-[0.2em] uppercase mb-2 font-mono">Fondo de Inversión</p>
+                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-3 leading-snug">
+                    Invierte en parques de casas móviles junto con el fondo
+                  </h3>
+                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">
+                    Participa como co-inversionista en activos adquiridos y operados por el equipo. Sin gestión directa, con retornos distribuidos y estructura fiscal optimizada.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {["Parques de casas móviles", "Fondo estructurado", "Sin gestión activa"].map((tag, i) => (
+                      <span key={i} className="text-[11px] bg-[#F5F7FA] border border-gray-200 text-[#6B7280] px-2.5 py-1 rounded-full">{tag}</span>
+                    ))}
+                  </div>
+                  <span className="flex items-center gap-2 text-primary text-sm font-semibold group-hover:gap-3 transition-all">
+                    Ver el Fondo <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </a>
+            </FadeIn>
+
+            {/* Tarjeta 2: Programa Section 8 */}
+            <FadeIn delay={0.1}>
+              <a href="/vc-8" className="group block">
+                <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:border-blue-500/40 transition-all duration-300">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center mb-5">
+                    <Hotel className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <p className="text-[11px] font-semibold text-blue-400 tracking-[0.2em] uppercase mb-2 font-mono">Programa Section 8</p>
+                  <h3 className="text-xl font-bold text-white mb-3 leading-snug">
+                    Casas unifamiliares con renta garantizada por el gobierno federal
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-6">
+                    El programa HUD Section 8 paga directamente al propietario. Flujo constante, inquilinos certificados y propiedades en zonas de alta demanda en Florida.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {["Renta garantizada HUD", "Casas unifamiliares", "Florida"].map((tag, i) => (
+                      <span key={i} className="text-[11px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{tag}</span>
+                    ))}
+                  </div>
+                  <span className="flex items-center gap-2 text-blue-400 text-sm font-semibold group-hover:gap-3 transition-all">
+                    Ver el Programa <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </a>
+            </FadeIn>
+
+          </div>
         </div>
       </section>
 
