@@ -138,7 +138,7 @@ const EXPERTS = [
   {
     name: "Sebastián Jara",
     role: "Consultor de Marketing Digital",
-    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439309/comprando-america/qrZqfOUTzqKwJcYP.avif",
     bio: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
   },
   {
