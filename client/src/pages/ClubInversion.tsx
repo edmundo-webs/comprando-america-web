@@ -377,9 +377,9 @@ export default function ClubInversion() {
           {/* Stats */}
           <FadeIn>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mb-16">
-              <StatCounter value={38} suffix="+" label="Miembros activos" />
-              <StatCounter value={50} suffix="+" label="LLCs estructuradas" />
-              <StatCounter value={11} suffix="+" label="Visas tramitadas" />
+              <StatCounter value={40} suffix="+" label="Miembros activos" />
+              <StatCounter value={53} suffix="+" label="LLCs estructuradas" />
+              <StatCounter value={14} suffix="+" label="Visas tramitadas" />
               <StatCounter value={6} suffix="" label="Viajes de inspección" />
             </div>
           </FadeIn>
@@ -402,14 +402,7 @@ export default function ClubInversion() {
             ))}
           </div>
 
-          <FadeIn>
-            <div className="text-center">
-              <a href="/quienes-somos">
-                <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2">
-                  Conocer al equipo completo <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
-            </div>
+          <div>
           </FadeIn>
         </div>
       </section>

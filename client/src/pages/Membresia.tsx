@@ -100,11 +100,11 @@ const diferenciadores = [
 ];
 
 const stats = [
-  { value: 38, suffix: "+", label: "Miembros activos" },
-  { value: 50, suffix: "+", label: "LLCs estructuradas" },
+  { value: 40, suffix: "+", label: "Miembros activos" },
+  { value: 53, suffix: "+", label: "LLCs estructuradas" },
   { value: 6, suffix: "", label: "Viajes de inspección" },
   { value: 7, suffix: "", label: "Eventos presenciales" },
-  { value: 11, suffix: "+", label: "Visas tramitadas" },
+  { value: 14, suffix: "+", label: "Visas tramitadas" },
   { value: 7, suffix: "", label: "Visas en proceso" },
 ];
 
