@@ -241,13 +241,6 @@ function EdmundoSection() {
                   </div>
                 </div>
 
-                <div className="mt-10 pt-8 border-t border-gray-100 text-center">
-                  <a href="/quienes-somos">
-                    <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white gap-2">
-                      Conoce al equipo completo <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </a>
-                </div>
               </div>
             </motion.div>
           )}
