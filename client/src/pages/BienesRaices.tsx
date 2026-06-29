@@ -76,7 +76,7 @@ export default function BienesRaices() {
               </p>
 
               <div className="flex flex-wrap gap-4 mb-10">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -135,7 +135,7 @@ export default function BienesRaices() {
                     </div>
                   ))}
                 </div>
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white gap-2">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -367,7 +367,7 @@ export default function BienesRaices() {
               <p className="text-slate-400 mb-2">Inversión inmobiliaria en Estados Unidos desde $100,000 USD.</p>
               <p className="text-slate-500 text-sm mb-10">Estructura legal, fiscal y acompañamiento profesional incluido.</p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>

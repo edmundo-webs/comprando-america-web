@@ -80,7 +80,7 @@ export default function VisaE2() {
               </p>
 
               <div className="flex flex-wrap gap-4 mb-10">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -417,7 +417,7 @@ export default function VisaE2() {
               <p className="text-slate-400 mb-2">La visa E-2 no es para todos.</p>
               <p className="text-slate-500 text-sm mb-10">Pero cuando existe la estructura correcta, puede ser una opción viable.</p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>

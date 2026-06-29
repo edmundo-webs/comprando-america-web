@@ -418,7 +418,7 @@ export default function Eventos() {
               <h2 className="text-3xl md:text-4xl text-white mb-6">Accede a experiencias donde se toman decisiones reales</h2>
               <p className="text-slate-500 text-sm mb-10">Los mejores espacios no se publican. Se comparten.</p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/perfil">
+                <a href="/tu-ruta">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                   </Button>
