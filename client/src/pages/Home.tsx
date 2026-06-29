@@ -217,15 +217,6 @@ function ExpertsSection() {
           })}
         </div>
 
-        <FadeIn>
-          <div className="text-center">
-            <a href="/membresia">
-              <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2">
-                Conocer al equipo completo <ArrowRight className="w-4 h-4" />
-              </Button>
-            </a>
-          </div>
-        </FadeIn>
       </div>
     </section>
   );
