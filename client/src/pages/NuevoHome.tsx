@@ -944,26 +944,36 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "18px" }}>Ordenados por compatibilidad con tu perfil y capital disponible</p>
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {topVehicles.map((v, i) => (
-              <a key={v.id} href={v.href ?? "#"} onClick={!v.href ? (e) => e.preventDefault() : undefined} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "16px 18px", display: "flex", alignItems: "center", gap: "14px", textDecoration: "none", cursor: v.href ? "pointer" : "default" }}>
-                <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "2px" }}>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 600, color: i === 0 ? "#fff" : "#C8D6E8" }}>{v.nombre}</span>
-                    {i === 0 && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "2px 6px", textTransform: "uppercase" }}>Mejor match</span>}
+              <div key={v.id} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "12px" }}>
+                {/* Top row: rank + info + pct */}
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
                   </div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580" }}>{v.frase}</div>
-                  <div style={{ display: "flex", gap: "10px", marginTop: "6px" }}>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.ticketLabel}</span>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.horizonte}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "2px", flexWrap: "wrap" }}>
+                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 600, color: i === 0 ? "#fff" : "#C8D6E8" }}>{v.nombre}</span>
+                      {i === 0 && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "2px 6px", textTransform: "uppercase" }}>Mejor match</span>}
+                    </div>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580" }}>{v.frase}</div>
+                    <div style={{ display: "flex", gap: "8px", marginTop: "6px", flexWrap: "wrap" }}>
+                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.ticketLabel}</span>
+                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.horizonte}</span>
+                    </div>
+                  </div>
+                  <div style={{ flexShrink: 0, textAlign: "center" }}>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "17px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580", letterSpacing: "0.05em" }}>compatibilidad</div>
                   </div>
                 </div>
-                <div style={{ flexShrink: 0, textAlign: "center" }}>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "17px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580", letterSpacing: "0.05em" }}>compatibilidad</div>
-                </div>
-              </a>
+                {/* Explorar link */}
+                {v.href && (
+                  <a href={v.href}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "9px 0", background: i === 0 ? `${GOLD}15` : `${NAVY_BORDER}40`, border: `1px solid ${i === 0 ? GOLD + "50" : NAVY_BORDER}`, borderRadius: "8px", color: i === 0 ? GOLD : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", textDecoration: "none", transition: "background 0.2s" }}>
+                    Conocer más <IconRight color={i === 0 ? GOLD : "#6A8FAF"} />
+                  </a>
+                )}
+              </div>
             ))}
           </div>
         </div>
