@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import CirculoCercano from "./pages/CirculoCercano";
 import Membresia from "./pages/Membresia";
 import ClubInversion from "./pages/ClubInversion";
 import BlogList from "./pages/BlogList";
@@ -83,6 +84,7 @@ function Router() {
       <Route path="/vc-8" component={Section8} />
       <Route path="/propiedades" component={Propiedades} />
       <Route path="/fondo" component={FondoVictoryCapital} />
+      <Route path="/circulo-cercano" component={CirculoCercano} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
