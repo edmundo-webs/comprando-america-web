@@ -523,10 +523,10 @@ export default function Home() {
         <div className="container">
           <FadeIn>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-              <StatCounter value={38} suffix="+" label="Miembros activos" />
-              <StatCounter value={50} suffix="+" label="LLCs estructuradas" />
+              <StatCounter value={40} suffix="+" label="Miembros activos" />
+              <StatCounter value={53} suffix="+" label="LLCs estructuradas" />
               <StatCounter value={6} suffix="" label="Viajes de inspección" />
-              <StatCounter value={11} suffix="+" label="Visas tramitadas" />
+              <StatCounter value={14} suffix="+" label="Visas tramitadas" />
             </div>
           </FadeIn>
         </div>
