@@ -691,34 +691,73 @@ export default function Home() {
       </section>
 
       {/* ═══ 9. RECURSOS — navy ═══ */}
-      <section className="bg-[#0E2544] py-20 md:py-28">
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Recursos para tomar mejores decisiones</h2>
-              <p className="text-slate-400 text-lg">Contenido para empresarios e inversionistas que quieren claridad antes de ejecutar.</p>
-            </div>
-          </FadeIn>
+          <div className="max-w-6xl mx-auto">
+            <FadeIn>
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+                <div>
+                  <span className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase font-mono block mb-3">Contenido</span>
+                  <h2 className="text-3xl md:text-4xl text-white leading-tight">Recursos para tomar<br className="hidden md:block" /> mejores decisiones</h2>
+                </div>
+                <p className="text-slate-400 text-base max-w-xs leading-relaxed">Claridad antes de ejecutar. Sin ruido.</p>
+              </div>
+            </FadeIn>
 
-          <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {[
-              { icon: Mic, title: "Podcast", desc: "Conversaciones con expertos, casos y análisis.", cta: "Escuchar", href: "/podcast" },
-              { icon: Newspaper, title: "News", desc: "Qué está pasando y cómo impacta tu inversión.", cta: "Leer noticias", href: "/news" },
-              { icon: BookOpen, title: "Blog", desc: "Artículos y guías prácticas por el equipo.", cta: "Leer artículos", href: "/blog" },
-            ].map((r, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <a href={r.href} className="block h-full">
-                  <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all group">
-                    <r.icon className="w-8 h-8 text-blue-400 mb-4" />
-                    <h3 className="text-lg font-bold text-white mb-2">{r.title}</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed mb-4">{r.desc}</p>
-                    <span className="text-blue-400 text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
-                      {r.cta} <ArrowRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                </a>
-              </FadeIn>
-            ))}
+            <div className="grid md:grid-cols-3 gap-5">
+              {[
+                {
+                  icon: Mic,
+                  label: "Audio",
+                  title: "Podcast",
+                  desc: "Conversaciones con expertos, casos reales y análisis del mercado.",
+                  cta: "Escuchar episodios",
+                  href: "/podcast",
+                  accent: "from-blue-600/20 to-blue-500/5",
+                  border: "border-blue-500/20 hover:border-blue-400/40",
+                },
+                {
+                  icon: Newspaper,
+                  label: "Noticias",
+                  title: "News",
+                  desc: "Qué está pasando en el mercado y cómo impacta tu inversión.",
+                  cta: "Leer noticias",
+                  href: "/news",
+                  accent: "from-indigo-600/20 to-indigo-500/5",
+                  border: "border-indigo-500/20 hover:border-indigo-400/40",
+                },
+                {
+                  icon: BookOpen,
+                  label: "Artículos",
+                  title: "Blog",
+                  desc: "Guías prácticas y análisis escritos por el equipo de Comprando América.",
+                  cta: "Leer artículos",
+                  href: "/blog",
+                  accent: "from-sky-600/20 to-sky-500/5",
+                  border: "border-sky-500/20 hover:border-sky-400/40",
+                },
+              ].map((r, i) => (
+                <FadeIn key={i} delay={i * 0.1}>
+                  <a href={r.href} className="block h-full group">
+                    <div className={`relative h-full rounded-2xl border bg-gradient-to-b ${r.accent} ${r.border} transition-all duration-300 overflow-hidden`}>
+                      <div className="p-8 flex flex-col h-full">
+                        <div className="mb-6">
+                          <span className="text-xs font-semibold text-slate-500 uppercase tracking-widest">{r.label}</span>
+                        </div>
+                        <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-6">
+                          <r.icon className="w-5 h-5 text-blue-300" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-white mb-3">{r.title}</h3>
+                        <p className="text-slate-400 text-sm leading-relaxed flex-1 mb-8">{r.desc}</p>
+                        <span className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 group-hover:text-blue-300 transition-colors">
+                          {r.cta} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                </FadeIn>
+              ))}
+            </div>
           </div>
         </div>
       </section>
