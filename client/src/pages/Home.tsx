@@ -259,7 +259,26 @@ function EdmundoSection() {
 
 /* ═══════════════════════════════════════════════════════ */
 
+const SITUACIONES = [
+  { id: 1, text: "Tengo capital pero no sé por dónde empezar." },
+  { id: 2, text: "Quiero invertir pero no sé en quién confiar." },
+  { id: 3, text: "Quiero construir patrimonio en Estados Unidos." },
+  { id: 4, text: "Quiero explorar opciones para mi familia." },
+  { id: 5, text: "Ya invierto, pero quiero contrastar ideas." },
+  { id: 6, text: "Quiero evitar errores costosos." },
+];
+
 export default function Home() {
+  const [selectedCards, setSelectedCards] = useState<Set<number>>(new Set());
+
+  function toggleCard(id: number) {
+    setSelectedCards((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <SEOHead {...PAGE_SEO} />
@@ -506,8 +525,8 @@ export default function Home() {
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Oportunidades activas</h2>
-              <p className="text-slate-400 text-lg">Mostramos oportunidades solo cuando tienen estructura y sentido.</p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">Si estás explorando Estados Unidos para invertir, proteger patrimonio o construir opciones para tu familia, el verdadero reto no es encontrar oportunidades.</h2>
+              <p className="text-slate-400 text-lg">Es saber en quién confiar y qué camino tiene sentido para ti.</p>
             </div>
           </FadeIn>
 
@@ -602,6 +621,87 @@ export default function Home() {
               </div>
             </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* ═══ MICRODIAGNÓSTICO ═══ */}
+      <section className="bg-[#091A30] py-24 md:py-32 px-4">
+        <div className="max-w-4xl mx-auto">
+          <FadeIn>
+            <div className="text-center mb-16">
+              <span className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase font-mono">
+                Microdiagnóstico
+              </span>
+              <h2 className="text-3xl md:text-4xl text-white mt-4 mb-4 leading-tight">
+                ¿Te identificas con alguna de estas situaciones?
+              </h2>
+              <p className="text-slate-400 max-w-xl mx-auto text-base">
+                Selecciona las que apliquen para ti.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {SITUACIONES.map((s, i) => {
+              const selected = selectedCards.has(s.id);
+              return (
+                <FadeIn key={s.id} delay={i * 0.07}>
+                  <motion.button
+                    onClick={() => toggleCard(s.id)}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className={`w-full text-left rounded-xl p-6 border transition-all duration-200 group ${
+                      selected
+                        ? "bg-primary/10 border-primary/60 shadow-lg shadow-blue-600/10"
+                        : "bg-[#0F2542] border-[#1E3A5F] hover:border-blue-500/30"
+                    }`}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`w-5 h-5 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center transition-all ${
+                          selected ? "border-primary bg-primary" : "border-slate-600 group-hover:border-blue-500/50"
+                        }`}
+                      >
+                        {selected && (
+                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 12 12">
+                            <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        )}
+                      </div>
+                      <p className={`text-sm leading-relaxed transition-colors ${selected ? "text-white" : "text-slate-300"}`}>
+                        {s.text}
+                      </p>
+                    </div>
+                  </motion.button>
+                </FadeIn>
+              );
+            })}
+          </div>
+
+          <AnimatePresence>
+            {selectedCards.size >= 2 && (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.4 }}
+                className="mt-10 bg-primary/10 border border-primary/30 rounded-xl p-8 text-center"
+              >
+                <p className="text-white font-semibold text-lg mb-2">
+                  Probablemente este círculo puede ayudarte.
+                </p>
+                <p className="text-slate-400 text-sm mb-6 max-w-lg mx-auto">
+                  Te identificas con {selectedCards.size} situaciones. El primer paso es una conversación honesta.
+                </p>
+                <Button
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me identifico con varias situaciones y quiero una sesión de diagnóstico.")}
+                  className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-5 gap-2 shadow-lg shadow-blue-600/25"
+                >
+                  Solicitar sesión de diagnóstico <ArrowRight className="w-4 h-4" />
+                </Button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 
