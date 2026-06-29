@@ -311,6 +311,25 @@ export default function Home() {
         </div>
       </a>
 
+      {/* ═══ BANNER PROMOCIONAL — Cumbre Digital ═══ */}
+      <a
+        href="/cumbre-digital"
+        className="block w-full bg-gradient-to-r from-[#0B1F3A] via-[#132D52] to-[#0B1F3A] hover:from-[#061428] hover:to-[#061428] transition-colors duration-300 group border-t border-white/10"
+      >
+        <div className="container flex items-center justify-center gap-3 py-3 px-4 text-center">
+          <span className="inline-flex items-center gap-1.5 bg-yellow-400/20 text-yellow-300 text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
+            Evento online
+          </span>
+          <p className="text-white text-sm font-medium">
+            <span className="font-bold">Cumbre Digital</span>
+            {" — "}Una mañana intensiva para construir y proteger tu patrimonio en EE.UU.
+          </p>
+          <span className="hidden sm:inline-flex items-center gap-1 text-yellow-300 font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
+            Ver detalles <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+      </a>
+
       {/* ═══ 2. PERFILAMIENTO — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
