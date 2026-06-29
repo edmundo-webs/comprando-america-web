@@ -27,10 +27,10 @@ const EDMUNDO_PORTRAIT = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF
 const WORKSHOP_IMAGE = "https://lh3.googleusercontent.com/d/1mQWgGjGOCgTU8BsOl3Rgdh5mGR3eObRd=w1200";
 
 const stats = [
-  { value: 38, suffix: "+", label: "Miembros activos" },
-  { value: 50, suffix: "+", label: "LLCs estructuradas" },
+  { value: 40, suffix: "+", label: "Miembros activos" },
+  { value: 53, suffix: "+", label: "LLCs estructuradas" },
   { value: 6, suffix: "", label: "Viajes de inspección" },
-  { value: 11, suffix: "+", label: "Visas tramitadas" },
+  { value: 14, suffix: "+", label: "Visas tramitadas" },
 ];
 
 function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
