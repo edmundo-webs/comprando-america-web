@@ -68,21 +68,8 @@ export default function InvestmentWeek() {
       <SEOHead {...PAGE_SEO} />
       <Navbar />
 
-      {/* ═══ BANNER ACCESO RESTRINGIDO ═══ */}
-      <div className="bg-amber-500/10 border-b border-amber-400/30 pt-20">
-        <div className="container py-3">
-          <div className="flex items-center justify-center gap-2.5 text-center">
-            <Lock className="w-4 h-4 text-amber-400 flex-shrink-0" />
-            <p className="text-sm">
-              <span className="text-amber-300 font-bold">Exclusivo por invitación.</span>{" "}
-              <span className="text-slate-300">Solo para inversionistas que ya tuvieron entrevista sobre el fondo y cumplen con el perfil.</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* ═══ 1. HERO ═══ */}
-      <section className="relative bg-[#0B1F3A] overflow-hidden" style={{ minHeight: "calc(100svh - 120px)" }}>
+      <section className="relative bg-[#0B1F3A] overflow-hidden pt-20" style={{ minHeight: "calc(100svh - 70px)" }}>
         {/* dot grid bg */}
         <div className="absolute inset-0 opacity-[0.035] pointer-events-none"
           style={{ backgroundImage: "radial-gradient(circle at 1px 1px,rgba(255,255,255,.8) 1px,transparent 0)", backgroundSize: "32px 32px" }} />
@@ -218,6 +205,19 @@ export default function InvestmentWeek() {
           </div>
         </div>
       </section>
+
+      {/* ═══ ALERTA ACCESO RESTRINGIDO ═══ */}
+      <div className="bg-amber-400 border-y border-amber-300">
+        <div className="container py-3">
+          <div className="flex items-center justify-center gap-2.5 text-center">
+            <Lock className="w-4 h-4 text-amber-900 flex-shrink-0" />
+            <p className="text-sm text-amber-900">
+              <span className="font-bold">Nota importante:</span>{" "}
+              Exclusivo por invitación. Solo para inversionistas que ya tuvieron entrevista sobre el fondo y cumplen con el perfil.
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* ═══ 2. QUÉ ES — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
