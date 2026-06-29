@@ -239,10 +239,18 @@ export default function Section8() {
                 >
                   Descubrir si esta estrategia tiene sentido para mí <ArrowRight className="w-4 h-4" />
                 </Button>
+                <a href="/propiedades">
+                  <Button
+                    variant="outline"
+                    className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm gap-2"
+                  >
+                    <Building2 className="w-4 h-4" /> Ver propiedades disponibles
+                  </Button>
+                </a>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)}
-                  className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm"
+                  className="text-slate-400 hover:text-white hover:bg-white/10 px-6 py-5 text-sm"
                 >
                   Hablar con un asesor
                 </Button>
@@ -251,6 +259,33 @@ export default function Section8() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ══ BANNER — VIAJE A TAMPA ══ */}
+      <a href="/investment-week" className="block group">
+        <div
+          className="relative overflow-hidden"
+          style={{ backgroundColor: GOLD }}
+        >
+          <div className="container py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">✈️</span>
+              <div>
+                <p className="font-bold text-[#0B1F3A] text-sm leading-tight">
+                  Viaja a Tampa y conoce las propiedades en persona.
+                </p>
+                <p className="text-[#0B1F3A]/70 text-xs">
+                  Investment Week · St. Petersburg, Florida
+                </p>
+              </div>
+            </div>
+            <span
+              className="flex-shrink-0 flex items-center gap-2 bg-[#0B1F3A] text-white text-xs font-semibold px-4 py-2 rounded-full group-hover:bg-[#091A30] transition-colors"
+            >
+              Ver detalles <ArrowRight className="w-3 h-3" />
+            </span>
+          </div>
+        </div>
+      </a>
 
       {/* ══ BLOQUE 2 — ¿QUÉ ES SECTION 8? ══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
