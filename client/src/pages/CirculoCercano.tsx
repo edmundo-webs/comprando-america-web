@@ -212,14 +212,48 @@ const ramas = [
 
 /* ── expert network ── */
 const expertos = [
-  { label: "Abogados especializados", icon: "⚖️", desc: "Migración, negocios y litigios." },
-  { label: "Contadores y fiscalistas", icon: "📊", desc: "Estructuras eficientes EE.UU.–México." },
-  { label: "Especialistas migratorios", icon: "🛂", desc: "Visas E-2, EB-5 y residencia." },
-  { label: "Bancos y financieras", icon: "🏦", desc: "Relaciones bancarias reales." },
-  { label: "Inversionistas activos", icon: "💼", desc: "Capital y co-inversión." },
-  { label: "Operadores de negocios", icon: "🔧", desc: "Empresas funcionando en EE.UU." },
-  { label: "Aliados estratégicos", icon: "🤝", desc: "Red construida con resultados." },
-  { label: "Asesores patrimoniales", icon: "🏛️", desc: "Protección y planeación." },
+  {
+    name: "Joe Faraci",
+    role: "Inversionista en Bienes Raíces",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
+    bio: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
+  },
+  {
+    name: "Tomás Resendez",
+    role: "Abogado de Inmigración",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674490/tts-news/eyuxiu9xuevkwulfcf2j.jpg",
+    bio: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés–español), garantiza asesoramiento legal claro y preciso.",
+  },
+  {
+    name: "Daniel Palacios",
+    role: "Contador CPA y Fiscalista",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png",
+    bio: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
+  },
+  {
+    name: "Aubrey Dwyer",
+    role: "Abogada Corporativa",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439190/comprando-america/TehgUNVHXbrssxsK.jpg",
+    bio: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
+  },
+  {
+    name: "Destiny Bounds",
+    role: "Abogada Corporativa y PI",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439307/comprando-america/pdCooMLqOfvqVFar.avif",
+    bio: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
+  },
+  {
+    name: "Sebastián Jara",
+    role: "Consultor de Marketing Digital",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439309/comprando-america/qrZqfOUTzqKwJcYP.avif",
+    bio: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
+  },
+  {
+    name: "John McKee",
+    role: "Consultor Comercial",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png",
+    bio: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
+  },
 ];
 
 /* ── member profiles ── */
@@ -274,6 +308,7 @@ export default function CirculoCercano() {
   const [activeRama, setActiveRama] = useState<string | null>(null);
   const [openLibro, setOpenLibro] = useState<number | null>(null);
   const [openTestimonio, setOpenTestimonio] = useState<number | null>(null);
+  const [openExperto, setOpenExperto] = useState<number | null>(null);
   const heroRef = useRef<HTMLElement>(null);
 
   function toggleCard(id: number) {
@@ -717,21 +752,62 @@ export default function CirculoCercano() {
             </div>
           </FadeIn>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {expertos.map((e, i) => (
-              <FadeIn key={i} delay={i * 0.06}>
-                <motion.div
-                  whileHover={{ scale: 1.03, y: -2 }}
-                  className="bg-[#0F2542] border border-[#1E3A5F] hover:border-blue-500/30 rounded-xl p-5 text-center transition-all group cursor-default"
-                >
-                  <div className="text-3xl mb-3">{e.icon}</div>
-                  <h3 className="text-white font-semibold text-sm mb-1 group-hover:text-blue-300 transition-colors">
-                    {e.label}
-                  </h3>
-                  <p className="text-slate-500 text-xs leading-relaxed">{e.desc}</p>
-                </motion.div>
-              </FadeIn>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {expertos.map((e, i) => {
+              const isOpen = openExperto === i;
+              return (
+                <FadeIn key={i} delay={i * 0.07}>
+                  <motion.div
+                    whileHover={{ y: -3 }}
+                    className="bg-[#0F2542] border border-[#1E3A5F] hover:border-blue-500/30 rounded-2xl overflow-hidden transition-all group"
+                  >
+                    {/* Photo */}
+                    <div className="relative h-52 overflow-hidden bg-[#091A30]">
+                      <img
+                        src={e.photo}
+                        alt={e.name}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F2542] via-transparent to-transparent" />
+                    </div>
+
+                    {/* Info */}
+                    <div className="p-5">
+                      <h3 className="text-white font-semibold text-base mb-0.5">{e.name}</h3>
+                      <p className="text-blue-400 text-xs font-medium mb-3">{e.role}</p>
+
+                      <button
+                        onClick={() => setOpenExperto(isOpen ? null : i)}
+                        className="flex items-center gap-1.5 text-slate-500 hover:text-slate-300 text-xs transition-colors"
+                      >
+                        <span>{isOpen ? "Ocultar" : "Ver reseña"}</span>
+                        <motion.span
+                          animate={{ rotate: isOpen ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="inline-block"
+                        >
+                          <ChevronDown className="w-3.5 h-3.5" />
+                        </motion.span>
+                      </button>
+
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.p
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="overflow-hidden text-slate-400 text-xs leading-relaxed mt-3"
+                          >
+                            {e.bio}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </motion.div>
+                </FadeIn>
+              );
+            })}
           </div>
 
           <FadeIn delay={0.5}>
