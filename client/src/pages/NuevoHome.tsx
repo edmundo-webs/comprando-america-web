@@ -472,7 +472,7 @@ const OPCIONES_2 = [
 function Screen2({ onNext }: { onNext: (id: string) => void }) {
   const [sel, setSel] = useState<string | null>(null);
   return (
-    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 120px", overflow: "hidden" }}>
       <CinematicPhotoBg src={PHOTOS.business} intensity={0.08} />
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={2} total={5} />
@@ -513,7 +513,7 @@ const SLIDER_POINTS = ["1 año", "3 años", "5 años", "10+ años"];
 function Screen3({ onNext }: { onNext: (v: string) => void }) {
   const [sel, setSel] = useState(1);
   return (
-    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 120px", overflow: "hidden" }}>
       <CinematicPhotoBg src={PHOTOS.realEstate} intensity={0.09} />
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={3} total={5} />
@@ -556,7 +556,7 @@ const OPCIONES_CAPITAL = [
 function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
   const [sel, setSel] = useState<string | null>(null);
   return (
-    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 120px", overflow: "hidden" }}>
       <CinematicPhotoBg src={PHOTOS.expansion} intensity={0.08} />
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={4} total={5} />
@@ -609,7 +609,7 @@ function Screen4({ onNext }: { onNext: (ids: string[]) => void }) {
     setSel([...sel, id]);
   }
   return (
-    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px", overflow: "hidden" }}>
+    <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 120px", overflow: "hidden" }}>
       <CinematicPhotoBg src={PHOTOS.visa} intensity={0.08} />
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={5} total={5} />
@@ -750,7 +750,7 @@ function Screen6Contact({ onNext }: { onNext: (data: ContactData) => void }) {
   }
 
   return (
-    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 40px" }}>
+    <div style={{ minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 120px" }}>
       <div style={{ width: "100%", maxWidth: "520px" }}>
         {/* Icon */}
         <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: `${GOLD}18`, border: `1.5px solid ${GOLD}50`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "28px" }}>
