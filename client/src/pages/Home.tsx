@@ -26,6 +26,7 @@ import {
   Briefcase,
   GraduationCap,
   Building,
+  Monitor,
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
@@ -99,6 +100,7 @@ const PANEL = "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z
 const AERIAL = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
 const RUTA_PHOTO = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_480,g_auto,q_auto,f_auto/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
 const INVEST_WEEK = "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200";
+const CUMBRE_DIGITAL_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675102/tts-news/qsqtimcq0kinkp5j6gcs.jpg";
 const MIGRAR_PHOTO = "https://lh3.googleusercontent.com/d/1CqOlO-lELT7-uQhCI26MjP19ibLQu95N=w1200";
 
 /* ─── Experts ─── */
@@ -519,7 +521,7 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <FadeIn>
               <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
                 <img src={RUTA_PHOTO} alt="Ruta Inmobiliaria" className="w-full h-48 object-cover" />
@@ -543,6 +545,20 @@ export default function Home() {
                   <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Terreno real. Propiedades reales. Números reales. Acceso por invitación.</p>
                   <a href="/investment-week">
                     <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Investment Weekend II <ArrowRight className="w-3 h-3" /></Button>
+                  </a>
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.2}>
+              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
+                <img src={CUMBRE_DIGITAL_PHOTO} alt="Cumbre Digital" className="w-full h-48 object-cover object-top" />
+                <div className="p-8">
+                  <Monitor className="w-8 h-8 text-primary mb-4" />
+                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Cumbre Digital</h3>
+                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Una mañana intensiva para construir, proteger y expandir tu patrimonio en Estados Unidos con criterio y estrategia.</p>
+                  <a href="/cumbre-digital">
+                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Cumbre Digital <ArrowRight className="w-3 h-3" /></Button>
                   </a>
                 </div>
               </div>
