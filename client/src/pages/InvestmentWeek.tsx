@@ -46,8 +46,9 @@ const PAGE_SEO = {
 
 /* ─── Photos ─── */
 const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
-const AUDIENCE_IMAGE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
+const AUDIENCE_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_1600,h_600,g_auto,q_auto,f_auto/v1774537558/comprando-america/eventos/xvdkaaxpavgr9lrybk8g.jpg";
 const PROPERTY_BG = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
+const INVEST_WEEK_IMG = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_900,h_1100,g_auto,q_auto,f_auto/v1774537561/comprando-america/eventos/fou8skfadwce2lodr5yc.jpg";
 
 const TEAM = [
   { name: "Diego", role: "Operaciones", photo: "/team/diego.jpg" },
@@ -80,81 +81,159 @@ export default function InvestmentWeek() {
         </div>
       </div>
 
-      {/* ═══ 1. HERO — team + property bg ═══ */}
-      <section className="relative min-h-[90vh] flex items-center py-20 overflow-hidden">
-        {/* Background: property photo with heavy overlay */}
-        <div className="absolute inset-0">
-          <img src={PROPERTY_BG} alt="" className="w-full h-full object-cover scale-110 blur-sm" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1F3A]/95 via-[#0B1F3A]/90 to-[#0B1F3A]" />
-        </div>
+      {/* ═══ 1. HERO — scannable, fits in 1 screen ═══ */}
+      <section
+        className="relative flex items-center overflow-hidden"
+        style={{ minHeight: "calc(100svh - 130px)" }}
+      >
+        {/* BG */}
+        <div className="absolute inset-0 bg-[#0B1F3A]" />
+        <div
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        {/* Right side glow */}
+        <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-blue-600/5 to-transparent pointer-events-none" />
 
-        <div className="container relative z-10">
-          <FadeIn>
-            <div className="text-center max-w-4xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
-                <Shield className="w-3.5 h-3.5" /> Experiencia por invitación
+        <div className="container relative z-10 py-6 md:py-8">
+          <div className="grid lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_480px] gap-6 xl:gap-12 items-center">
+
+            {/* ── LEFT COLUMN ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+            >
+              {/* 1 — Meta row: fecha · lugar · acceso (lo primero que se escanea) */}
+              <div className="flex flex-wrap items-center gap-2 mb-4">
+                <span className="flex items-center gap-1.5 bg-blue-500/15 border border-blue-500/25 text-blue-300 text-[11px] font-semibold px-2.5 py-1 rounded-full">
+                  <CalendarDays className="w-3 h-3" /> 24–27 jul 2026
+                </span>
+                <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-slate-400 text-[11px] px-2.5 py-1 rounded-full">
+                  <MapPin className="w-3 h-3 text-primary" /> Tampa · St. Pete · Clearwater
+                </span>
+                <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-slate-400 text-[11px] px-2.5 py-1 rounded-full">
+                  <Lock className="w-3 h-3 text-amber-400" /> Solo por invitación
+                </span>
               </div>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
-                Florida Investment Weekend II
+              {/* 2 — Título: corto, impacto */}
+              <h1 className="text-[2.6rem] md:text-5xl lg:text-[3.1rem] font-bold text-white leading-[1.08] mb-3">
+                Florida Investment<br />
+                <span className="text-primary">Weekend II</span>
               </h1>
-              <p className="text-xl md:text-2xl text-slate-400 mb-4">
-                Dos tipos de activo: Casas Unifamiliares y Parques de Casas Móviles
-              </p>
-              <p className="text-lg text-slate-500 mb-12">
-                Terreno real. Propiedades reales. Números reales.
+
+              {/* 3 — Subtítulo: una línea, qué verán */}
+              <p className="text-base md:text-lg text-slate-400 leading-snug mb-5 max-w-md">
+                Visita en terreno: <span className="text-white font-medium">Casas Unifamiliares</span> y{" "}
+                <span className="text-white font-medium">Parques de Casas Móviles</span> en operación.
               </p>
 
-              {/* Team portraits */}
-              <div className="flex justify-center items-end gap-6 md:gap-10 mb-12">
-                {TEAM.map((member, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 + i * 0.15, ease: "easeOut" }}
-                    className="text-center"
-                  >
-                    <div className={`relative mx-auto mb-3 ${i === 1 ? "w-28 h-28 md:w-36 md:h-36" : "w-22 h-22 md:w-28 md:h-28"}`}>
-                      <img
-                        src={member.photo}
-                        alt={member.name}
-                        className="w-full h-full rounded-full object-cover border-2 border-blue-500/30 shadow-lg shadow-blue-900/40"
-                      />
-                      {i === 1 && (
-                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                          <CheckCircle2 className="w-4 h-4 text-white" />
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-white font-semibold text-sm md:text-base">{member.name}</p>
-                    <p className="text-blue-400 text-xs">{member.role}</p>
-                  </motion.div>
+              {/* 4 — Stats: 3 números clave de un vistazo */}
+              <div className="flex items-center gap-4 mb-6">
+                {[
+                  { n: "4", label: "días" },
+                  { n: "3", label: "ciudades" },
+                  { n: "2", label: "activos" },
+                ].map((s, i) => (
+                  <div key={i} className="text-center px-4 py-2 rounded-xl bg-white/5 border border-white/10 min-w-[64px]">
+                    <p className="text-2xl font-bold text-white leading-none">{s.n}</p>
+                    <p className="text-slate-500 text-[11px] mt-0.5">{s.label}</p>
+                  </div>
                 ))}
-              </div>
-
-              <div className="flex flex-wrap justify-center gap-3 text-slate-400 text-sm mb-8">
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater
-                </span>
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <CalendarDays className="w-4 h-4 text-primary" /> 24–27 julio 2026
-                </span>
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <Users className="w-4 h-4 text-primary" /> Cupo limitado
+                <div className="h-8 w-px bg-white/10 mx-1 hidden md:block" />
+                <span className="hidden md:flex items-center gap-1.5 text-slate-500 text-xs">
+                  <Users className="w-3.5 h-3.5 text-primary" /> Cupo limitado
                 </span>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button onClick={scrollToApply} className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
+              {/* 5 — CTAs */}
+              <div className="flex flex-wrap gap-3 mb-5">
+                <Button
+                  onClick={scrollToApply}
+                  className="bg-primary hover:bg-blue-600 text-white px-6 py-5 text-sm font-semibold gap-2 shadow-lg shadow-blue-600/30"
+                >
                   Aplicar al viaje <ArrowRight className="w-4 h-4" />
                 </Button>
-                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
+                  className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm"
+                >
                   Confirmar interés
                 </Button>
               </div>
-            </div>
-          </FadeIn>
+
+              {/* 6 — Equipo: avatares + nombres en fila */}
+              <div className="flex items-center gap-1">
+                <div className="flex -space-x-2.5 mr-3">
+                  {TEAM.map((member, i) => (
+                    <div
+                      key={i}
+                      className="relative w-9 h-9 rounded-full border-2 border-[#0B1F3A] overflow-hidden"
+                      style={{ zIndex: TEAM.length - i }}
+                    >
+                      <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <p className="text-white text-xs font-semibold leading-tight">
+                    {TEAM.map(m => m.name.split(" ")[0]).join(", ")}
+                  </p>
+                  <p className="text-slate-500 text-[11px]">Team Comprando América</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* ── RIGHT COLUMN — foto + info card ── */}
+            <motion.div
+              className="hidden lg:flex flex-col gap-3"
+              initial={{ opacity: 0, x: 32 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+            >
+              {/* Foto principal */}
+              <div
+                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 flex-1"
+                style={{ aspectRatio: "4/5" }}
+              >
+                <img
+                  src={INVEST_WEEK_IMG}
+                  alt="Florida Investment Weekend"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/75 via-transparent to-transparent" />
+
+                {/* Chip flotante: tipo de evento */}
+                <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1.5">
+                  <Eye className="w-3.5 h-3.5 text-blue-300" />
+                  <span className="text-white text-[11px] font-semibold">Viaje de inspección</span>
+                </div>
+
+                {/* Bottom info strip */}
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <div className="bg-[#0B1F3A]/80 backdrop-blur-sm rounded-xl border border-white/10 p-3">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-white text-xs font-semibold">Florida, Estados Unidos</p>
+                        <p className="text-slate-400 text-[11px]">Tampa · St. Pete · Clearwater</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-primary text-xs font-bold">Jul 24–27</p>
+                        <p className="text-slate-500 text-[11px]">2026</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
