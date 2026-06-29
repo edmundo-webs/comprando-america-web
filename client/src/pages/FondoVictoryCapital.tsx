@@ -175,6 +175,24 @@ export default function FondoVictoryCapital() {
         </div>
       </section>
 
+      {/* ═══ BANNER INVESTMENT WEEK ═══ */}
+      <a href="/investment-week" className="block">
+        <div className="bg-[#C9A84C] px-6 py-4 flex items-center justify-between gap-4 hover:brightness-105 transition-all">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">✈️</span>
+            <div>
+              <p className="text-[#0B1F3A] font-bold text-base leading-tight">
+                Viaja a Tampa y conoce las propiedades en persona.
+              </p>
+              <p className="text-[#0B1F3A]/70 text-sm">Investment Week · St. Petersburg, Florida</p>
+            </div>
+          </div>
+          <div className="flex-shrink-0 bg-[#0B1F3A] text-white text-sm font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 whitespace-nowrap">
+            Ver detalles <ArrowRight className="w-4 h-4" />
+          </div>
+        </div>
+      </a>
+
       {/* ═══ 2. EXPLICACIÓN SENCILLA — ☀️ BLANCO ═══ */}
       <section id="como-funciona" className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
