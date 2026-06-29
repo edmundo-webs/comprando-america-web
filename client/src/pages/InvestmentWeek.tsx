@@ -46,8 +46,9 @@ const PAGE_SEO = {
 
 /* ─── Photos ─── */
 const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
-const AUDIENCE_IMAGE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
+const AUDIENCE_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_1600,h_600,g_auto,q_auto,f_auto/v1774537558/comprando-america/eventos/xvdkaaxpavgr9lrybk8g.jpg";
 const PROPERTY_BG = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
+const INVEST_WEEK_IMG = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_900,h_1100,g_auto,q_auto,f_auto/v1774537561/comprando-america/eventos/fou8skfadwce2lodr5yc.jpg";
 
 const TEAM = [
   { name: "Diego", role: "Operaciones", photo: "/team/diego.jpg" },
@@ -80,81 +81,125 @@ export default function InvestmentWeek() {
         </div>
       </div>
 
-      {/* ═══ 1. HERO — team + property bg ═══ */}
-      <section className="relative min-h-[90vh] flex items-center py-20 overflow-hidden">
-        {/* Background: property photo with heavy overlay */}
-        <div className="absolute inset-0">
-          <img src={PROPERTY_BG} alt="" className="w-full h-full object-cover scale-110 blur-sm" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1F3A]/95 via-[#0B1F3A]/90 to-[#0B1F3A]" />
-        </div>
+      {/* ═══ 1. HERO — split layout, fits in viewport ═══ */}
+      <section className="relative flex items-center overflow-hidden" style={{ minHeight: "calc(100svh - 130px)" }}>
+        {/* Background gradient — visible on mobile & left side desktop */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0D2245] to-[#091A30]" />
+        {/* Subtle grid texture */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v1H0zm0 39h40v1H0zM0 0v40h1V0zm39 0v40h1V0z' fill='%23fff'/%3E%3C/svg%3E\")" }} />
 
-        <div className="container relative z-10">
-          <FadeIn>
-            <div className="text-center max-w-4xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-primary text-xs font-semibold tracking-wider uppercase mb-8">
-                <Shield className="w-3.5 h-3.5" /> Experiencia por invitación
+        <div className="container relative z-10 py-8 md:py-10">
+          <div className="grid lg:grid-cols-[1fr_400px] xl:grid-cols-[1fr_460px] gap-8 xl:gap-14 items-center">
+
+            {/* ── Left: text content ── */}
+            <FadeIn>
+              <div className="max-w-xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-primary text-xs font-semibold tracking-wider uppercase mb-5">
+                  <Shield className="w-3 h-3" /> Experiencia por invitación
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.5rem] text-white leading-[1.1] font-bold mb-3">
+                  Florida Investment<br />Weekend II
+                </h1>
+                <p className="text-lg md:text-xl text-slate-400 mb-2 leading-snug">
+                  Casas Unifamiliares y Parques de Casas Móviles
+                </p>
+                <p className="text-base text-slate-500 mb-6">
+                  Terreno real. Propiedades reales. Números reales.
+                </p>
+
+                {/* Event meta pills */}
+                <div className="flex flex-wrap gap-2 text-slate-400 text-sm mb-6">
+                  <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 text-xs">
+                    <MapPin className="w-3.5 h-3.5 text-primary flex-shrink-0" /> Tampa · St. Pete · Clearwater
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 text-xs">
+                    <CalendarDays className="w-3.5 h-3.5 text-primary flex-shrink-0" /> 24–27 julio 2026
+                  </span>
+                  <span className="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 text-xs">
+                    <Users className="w-3.5 h-3.5 text-primary flex-shrink-0" /> Cupo limitado
+                  </span>
+                </div>
+
+                {/* CTAs */}
+                <div className="flex flex-wrap gap-3 mb-8">
+                  <Button onClick={scrollToApply} className="bg-primary hover:bg-blue-600 text-white px-7 py-5 text-base gap-2 shadow-lg shadow-blue-600/30">
+                    Aplicar al viaje <ArrowRight className="w-4 h-4" />
+                  </Button>
+                  <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)} className="border-slate-600 text-white hover:bg-white/10 px-7 py-5 text-base">
+                    Confirmar interés
+                  </Button>
+                </div>
+
+                {/* Team row */}
+                <div className="flex items-center gap-5">
+                  {TEAM.map((member, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 + i * 0.12, ease: "easeOut" }}
+                      className="flex items-center gap-2.5"
+                    >
+                      <div className={`relative flex-shrink-0 ${i === 1 ? "w-12 h-12" : "w-10 h-10"}`}>
+                        <img
+                          src={member.photo}
+                          alt={member.name}
+                          className="w-full h-full rounded-full object-cover border-2 border-blue-500/40 shadow-md"
+                        />
+                        {i === 1 && (
+                          <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                            <CheckCircle2 className="w-2.5 h-2.5 text-white" />
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-white font-semibold text-xs leading-tight">{member.name}</p>
+                        <p className="text-blue-400 text-[11px] leading-tight">{member.role}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
+            </FadeIn>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-4">
-                Florida Investment Weekend II
-              </h1>
-              <p className="text-xl md:text-2xl text-slate-400 mb-4">
-                Dos tipos de activo: Casas Unifamiliares y Parques de Casas Móviles
-              </p>
-              <p className="text-lg text-slate-500 mb-12">
-                Terreno real. Propiedades reales. Números reales.
-              </p>
+            {/* ── Right: event photo card ── */}
+            <FadeIn delay={0.15}>
+              <div className="hidden lg:block relative">
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/50" style={{ aspectRatio: "3/4" }}>
+                  <img
+                    src={INVEST_WEEK_IMG}
+                    alt="Florida Investment Weekend"
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/90 via-transparent to-transparent" />
 
-              {/* Team portraits */}
-              <div className="flex justify-center items-end gap-6 md:gap-10 mb-12">
-                {TEAM.map((member, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 + i * 0.15, ease: "easeOut" }}
-                    className="text-center"
-                  >
-                    <div className={`relative mx-auto mb-3 ${i === 1 ? "w-28 h-28 md:w-36 md:h-36" : "w-22 h-22 md:w-28 md:h-28"}`}>
-                      <img
-                        src={member.photo}
-                        alt={member.name}
-                        className="w-full h-full rounded-full object-cover border-2 border-blue-500/30 shadow-lg shadow-blue-900/40"
-                      />
-                      {i === 1 && (
-                        <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                          <CheckCircle2 className="w-4 h-4 text-white" />
+                  {/* Bottom overlay: stats */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { label: "Días", value: "4" },
+                        { label: "Ciudades", value: "3" },
+                        { label: "Activos", value: "2" },
+                      ].map((s, i) => (
+                        <div key={i} className="bg-white/10 backdrop-blur-sm rounded-xl px-3 py-2.5 text-center border border-white/10">
+                          <p className="text-white font-bold text-xl leading-none">{s.value}</p>
+                          <p className="text-slate-400 text-xs mt-0.5">{s.label}</p>
                         </div>
-                      )}
+                      ))}
                     </div>
-                    <p className="text-white font-semibold text-sm md:text-base">{member.name}</p>
-                    <p className="text-blue-400 text-xs">{member.role}</p>
-                  </motion.div>
-                ))}
-              </div>
+                  </div>
+                </div>
 
-              <div className="flex flex-wrap justify-center gap-3 text-slate-400 text-sm mb-8">
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater
-                </span>
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <CalendarDays className="w-4 h-4 text-primary" /> 24–27 julio 2026
-                </span>
-                <span className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <Users className="w-4 h-4 text-primary" /> Cupo limitado
-                </span>
+                {/* Floating accent */}
+                <div className="absolute -top-3 -right-3 w-16 h-16 rounded-2xl bg-primary/20 border border-primary/30 backdrop-blur-sm flex items-center justify-center">
+                  <MapPin className="w-7 h-7 text-primary" />
+                </div>
               </div>
+            </FadeIn>
 
-              <div className="flex flex-wrap justify-center gap-4">
-                <Button onClick={scrollToApply} className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                  Aplicar al viaje <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
-                  Confirmar interés
-                </Button>
-              </div>
-            </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 
