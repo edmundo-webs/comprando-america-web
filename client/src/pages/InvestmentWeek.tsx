@@ -555,14 +555,14 @@ export default function InvestmentWeek() {
                 Durante el viaje analizas activos en operación, entiendes la estructura del fondo y evalúas tu participación con información directa y completa.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/oportunidades-de-inversion-en-estados-unidos">
+                <a href="/fondo">
                   <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white px-8 py-6 text-base gap-2">
-                    Ver oportunidades <ArrowRight className="w-4 h-4" />
+                    Conoce el Fondo <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <a href="/membresia">
+                <a href="/vc-8">
                   <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 px-8 py-6 text-base">
-                    Conoce el Club de Inversión
+                    Sección 8
                   </Button>
                 </a>
               </div>
