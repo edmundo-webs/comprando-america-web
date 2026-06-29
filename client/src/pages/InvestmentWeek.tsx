@@ -133,20 +133,13 @@ export default function InvestmentWeek() {
                 <span className="text-white font-medium">Parques de Casas Móviles</span> en operación.
               </p>
 
-              {/* 4 — Stats: 3 números clave de un vistazo */}
+              {/* 4 — Stat: duración + cupo */}
               <div className="flex items-center gap-4 mb-6">
-                {[
-                  { n: "4", label: "días" },
-                  { n: "3", label: "ciudades" },
-                  { n: "2", label: "activos" },
-                ].map((s, i) => (
-                  <div key={i} className="text-center px-4 py-2 rounded-xl bg-white/5 border border-white/10 min-w-[64px]">
-                    <p className="text-2xl font-bold text-white leading-none">{s.n}</p>
-                    <p className="text-slate-500 text-[11px] mt-0.5">{s.label}</p>
-                  </div>
-                ))}
-                <div className="h-8 w-px bg-white/10 mx-1 hidden md:block" />
-                <span className="hidden md:flex items-center gap-1.5 text-slate-500 text-xs">
+                <div className="text-center px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 min-w-[72px]">
+                  <p className="text-2xl font-bold text-white leading-none">4</p>
+                  <p className="text-slate-500 text-[11px] mt-0.5">días</p>
+                </div>
+                <span className="flex items-center gap-1.5 text-slate-500 text-xs">
                   <Users className="w-3.5 h-3.5 text-primary" /> Cupo limitado
                 </span>
               </div>
@@ -192,15 +185,15 @@ export default function InvestmentWeek() {
 
             {/* ── RIGHT COLUMN — foto + info card ── */}
             <motion.div
-              className="hidden lg:flex flex-col gap-3"
+              className="hidden lg:flex flex-col"
               initial={{ opacity: 0, x: 32 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
             >
-              {/* Foto principal */}
+              {/* Foto principal: altura limitada al espacio disponible en viewport */}
               <div
-                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 flex-1"
-                style={{ aspectRatio: "4/5" }}
+                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60"
+                style={{ height: "min(520px, calc(100svh - 230px))" }}
               >
                 <img
                   src={INVEST_WEEK_IMG}
