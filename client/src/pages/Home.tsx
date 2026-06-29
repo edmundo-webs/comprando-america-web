@@ -105,12 +105,48 @@ const MIGRAR_PHOTO = "https://lh3.googleusercontent.com/d/1CqOlO-lELT7-uQhCI26Mj
 
 /* ─── Experts ─── */
 const EXPERTS = [
-  { name: "Joe Faraci", role: "Bienes Raíces", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png" },
-  { name: "Tomás Resendez", role: "Inmigración", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439162/comprando-america/QGuNYwiuoAkxjDwj.png" },
-  { name: "Daniel Palacios", role: "CPA & Fiscal", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439036/comprando-america/CPGtnnreqZlWVzgL.png" },
-  { name: "Aubrey Dwyer", role: "Derecho Corporativo", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439166/comprando-america/QZAlYTAoaVokeCSo.jpg" },
-  { name: "Destiny Bounds", role: "Corporativo & PI", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif" },
-  { name: "John McKee", role: "Estrategia Comercial", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439314/comprando-america/sZacCQEqvoOyeOMO.avif" },
+  {
+    name: "Joe Faraci",
+    role: "Inversionista en Bienes Raíces",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
+    bio: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
+  },
+  {
+    name: "Tomás Resendez",
+    role: "Abogado de Inmigración",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439162/comprando-america/QGuNYwiuoAkxjDwj.png",
+    bio: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
+  },
+  {
+    name: "Daniel Palacios",
+    role: "Contador CPA y Fiscalista",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439036/comprando-america/CPGtnnreqZlWVzgL.png",
+    bio: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
+  },
+  {
+    name: "Aubrey Dwyer",
+    role: "Abogada Corporativa",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439166/comprando-america/QZAlYTAoaVokeCSo.jpg",
+    bio: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
+  },
+  {
+    name: "Destiny Bounds",
+    role: "Abogada Corporativa y PI",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif",
+    bio: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
+  },
+  {
+    name: "Sebastián Jara",
+    role: "Consultor de Marketing Digital",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif",
+    bio: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
+  },
+  {
+    name: "John McKee",
+    role: "Consultor Comercial",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439314/comprando-america/sZacCQEqvoOyeOMO.avif",
+    bio: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
+  },
 ];
 
 /* ─── Testimonials ─── */
@@ -119,6 +155,81 @@ const TESTIMONIALS = [
   { name: "Alejandro", city: "Ciudad de México", quote: "Lo que más valoré fue el acompañamiento del equipo multidisciplinario. No es teoría, es ejecución.", initials: "A" },
   { name: "Ricardo", city: "Monterrey", quote: "Después de asistir a la Cumbre entendí el valor del networking con empresarios que ya están invirtiendo.", initials: "R" },
 ];
+
+/* ─── Experts Section ─── */
+function ExpertsSection() {
+  const [activeExpert, setActiveExpert] = useState<number | null>(null);
+
+  return (
+    <section className="bg-[#0E2544] py-20 md:py-28">
+      <div className="container">
+        <FadeIn>
+          <div className="text-center mb-14">
+            <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Equipo Multidisciplinario</p>
+            <h2 className="text-3xl md:text-4xl text-white mb-4">Respaldado por expertos en cada área</h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">Abogados, CPAs, inversionistas y estrategas que acompañan a cada miembro en su proceso.</p>
+          </div>
+        </FadeIn>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 max-w-5xl mx-auto mb-6">
+          {EXPERTS.map((expert, i) => {
+            const isActive = activeExpert === i;
+            return (
+              <FadeIn key={i} delay={i * 0.05}>
+                <motion.button
+                  onClick={() => setActiveExpert(isActive ? null : i)}
+                  whileHover={{ y: -4 }}
+                  whileTap={{ scale: 0.97 }}
+                  className={`w-full text-left rounded-2xl p-5 border transition-all duration-300 ${
+                    isActive
+                      ? "bg-primary/10 border-primary/50 shadow-lg shadow-blue-600/10"
+                      : "bg-[#0F2542] border-[#1E3A5F] hover:border-blue-500/30"
+                  }`}
+                >
+                  <div className="flex flex-col items-center text-center gap-3">
+                    <div className={`w-20 h-20 rounded-full overflow-hidden border-2 transition-all ${isActive ? "border-primary" : "border-[#1E3A5F]"}`}>
+                      <img src={expert.img} alt={expert.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <p className="text-white text-sm font-bold leading-tight">{expert.name}</p>
+                      <p className="text-blue-400 text-xs mt-0.5">{expert.role}</p>
+                    </div>
+                  </div>
+
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-slate-300 text-xs leading-relaxed mt-4 pt-4 border-t border-white/10 text-left">
+                          {expert.bio}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
+              </FadeIn>
+            );
+          })}
+        </div>
+
+        <FadeIn>
+          <div className="text-center">
+            <a href="/membresia">
+              <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2">
+                Conocer al equipo completo <ArrowRight className="w-4 h-4" />
+              </Button>
+            </a>
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
 
 /* ─── Edmundo Expandable Section ─── */
 function EdmundoSection() {
@@ -440,41 +551,7 @@ export default function Home() {
       <EdmundoSection />
 
       {/* ═══ 5. EXPERTOS — navy ═══ */}
-      <section className="bg-[#0E2544] py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Equipo Multidisciplinario</p>
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Respaldado por expertos en cada área</h2>
-              <p className="text-slate-400 text-lg max-w-2xl mx-auto">Abogados, CPAs, inversionistas y estrategas que acompañan a cada miembro en su proceso.</p>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-6 max-w-4xl mx-auto mb-10">
-            {EXPERTS.map((expert, i) => (
-              <FadeIn key={i} delay={i * 0.05}>
-                <div className="text-center group">
-                  <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full overflow-hidden border-2 border-[#1E3A5F] group-hover:border-primary/50 transition-all mb-3">
-                    <img src={expert.img} alt={expert.name} className="w-full h-full object-cover" />
-                  </div>
-                  <p className="text-white text-xs font-semibold">{expert.name}</p>
-                  <p className="text-slate-500 text-[10px]">{expert.role}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-
-          <FadeIn>
-            <div className="text-center">
-              <a href="/membresia">
-                <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2">
-                  Conocer al equipo completo <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      <ExpertsSection />
 
       {/* ═══ 6. TESTIMONIOS VIDEO — ☀️ BLANCO ═══ */}
       <section className="bg-white py-20 md:py-28">
