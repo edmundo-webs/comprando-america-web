@@ -69,13 +69,13 @@ export default function InvestmentWeek() {
       <Navbar />
 
       {/* ═══ BANNER ACCESO RESTRINGIDO ═══ */}
-      <div className="bg-[#132D50] border-b border-blue-500/20 pt-20">
-        <div className="container py-4">
-          <div className="flex items-center justify-center gap-3 text-center">
-            <Lock className="w-4 h-4 text-primary flex-shrink-0" />
-            <p className="text-slate-400 text-sm">
-              <span className="text-primary font-semibold">Exclusivo por invitación.</span>{" "}
-              Solo para inversionistas que ya tuvieron entrevista sobre el fondo y cumplen con el perfil.
+      <div className="bg-amber-500/10 border-b border-amber-400/30 pt-20">
+        <div className="container py-3">
+          <div className="flex items-center justify-center gap-2.5 text-center">
+            <Lock className="w-4 h-4 text-amber-400 flex-shrink-0" />
+            <p className="text-sm">
+              <span className="text-amber-300 font-bold">Exclusivo por invitación.</span>{" "}
+              <span className="text-slate-300">Solo para inversionistas que ya tuvieron entrevista sobre el fondo y cumplen con el perfil.</span>
             </p>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function InvestmentWeek() {
       {/* ═══ 1. HERO — scannable, fits in 1 screen ═══ */}
       <section
         className="relative flex items-center overflow-hidden"
-        style={{ minHeight: "calc(100svh - 130px)" }}
+        style={{ height: "calc(100svh - 120px)" }}
       >
         {/* BG */}
         <div className="absolute inset-0 bg-[#0B1F3A]" />
@@ -99,11 +99,12 @@ export default function InvestmentWeek() {
         {/* Right side glow */}
         <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-blue-600/5 to-transparent pointer-events-none" />
 
-        <div className="container relative z-10 py-6 md:py-8">
-          <div className="grid lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_480px] gap-6 xl:gap-12 items-center">
+        <div className="container relative z-10 py-4 md:py-6 h-full flex flex-col justify-center">
+          <div className="grid lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_480px] gap-6 xl:gap-10 items-stretch h-full" style={{ maxHeight: "calc(100svh - 180px)" }}>
 
             {/* ── LEFT COLUMN ── */}
             <motion.div
+              className="flex flex-col justify-center"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: "easeOut" }}
@@ -190,10 +191,10 @@ export default function InvestmentWeek() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
             >
-              {/* Foto principal: altura limitada al espacio disponible en viewport */}
+              {/* Foto: h-full para ocupar exactamente el espacio del grid */}
               <div
-                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60"
-                style={{ height: "min(520px, calc(100svh - 230px))" }}
+                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 h-full"
+                style={{ minHeight: "280px" }}
               >
                 <img
                   src={INVEST_WEEK_IMG}
