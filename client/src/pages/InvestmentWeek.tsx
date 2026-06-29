@@ -81,36 +81,23 @@ export default function InvestmentWeek() {
         </div>
       </div>
 
-      {/* ═══ 1. HERO — scannable, fits in 1 screen ═══ */}
-      <section
-        className="relative flex items-center overflow-hidden"
-        style={{ height: "calc(100svh - 120px)" }}
-      >
-        {/* BG */}
-        <div className="absolute inset-0 bg-[#0B1F3A]" />
-        <div
-          className="absolute inset-0 opacity-[0.035]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.8) 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
-        />
-        {/* Right side glow */}
-        <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-blue-600/5 to-transparent pointer-events-none" />
+      {/* ═══ 1. HERO ═══ */}
+      <section className="relative bg-[#0B1F3A] overflow-hidden" style={{ minHeight: "calc(100svh - 120px)" }}>
+        {/* dot grid bg */}
+        <div className="absolute inset-0 opacity-[0.035] pointer-events-none"
+          style={{ backgroundImage: "radial-gradient(circle at 1px 1px,rgba(255,255,255,.8) 1px,transparent 0)", backgroundSize: "32px 32px" }} />
 
-        <div className="container relative z-10 py-4 md:py-6 h-full flex flex-col justify-center">
-          <div className="grid lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_480px] gap-6 xl:gap-10 items-stretch h-full" style={{ maxHeight: "calc(100svh - 180px)" }}>
+        <div className="container relative z-10 py-10 md:py-14">
+          <div className="grid lg:grid-cols-[1fr_420px] xl:grid-cols-[1fr_460px] gap-8 xl:gap-12 items-center">
 
-            {/* ── LEFT COLUMN ── */}
+            {/* ── LEFT ── */}
             <motion.div
-              className="flex flex-col justify-center"
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: "easeOut" }}
             >
-              {/* 1 — Meta row: fecha · lugar · acceso (lo primero que se escanea) */}
-              <div className="flex flex-wrap items-center gap-2 mb-4">
+              {/* Meta pills: fecha · lugar · acceso */}
+              <div className="flex flex-wrap items-center gap-2 mb-5">
                 <span className="flex items-center gap-1.5 bg-blue-500/15 border border-blue-500/25 text-blue-300 text-[11px] font-semibold px-2.5 py-1 rounded-full">
                   <CalendarDays className="w-3 h-3" /> 24–27 jul 2026
                 </span>
@@ -122,53 +109,57 @@ export default function InvestmentWeek() {
                 </span>
               </div>
 
-              {/* 2 — Título: corto, impacto */}
-              <h1 className="text-[2.6rem] md:text-5xl lg:text-[3.1rem] font-bold text-white leading-[1.08] mb-3">
+              {/* Título */}
+              <h1 className="text-[2.5rem] md:text-5xl lg:text-[3rem] font-bold text-white leading-[1.08] mb-3">
                 Florida Investment<br />
                 <span className="text-primary">Weekend II</span>
               </h1>
 
-              {/* 3 — Subtítulo: una línea, qué verán */}
-              <p className="text-base md:text-lg text-slate-400 leading-snug mb-5 max-w-md">
-                Visita en terreno: <span className="text-white font-medium">Casas Unifamiliares</span> y{" "}
+              {/* Subtítulo */}
+              <p className="text-base md:text-lg text-slate-400 leading-snug mb-5 max-w-lg">
+                Visita en terreno:{" "}
+                <span className="text-white font-medium">Casas Unifamiliares</span> y{" "}
                 <span className="text-white font-medium">Parques de Casas Móviles</span> en operación.
               </p>
 
-              {/* 4 — Stat: duración + cupo */}
+              {/* Duración + cupo */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="text-center px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 min-w-[72px]">
-                  <p className="text-2xl font-bold text-white leading-none">4</p>
-                  <p className="text-slate-500 text-[11px] mt-0.5">días</p>
+                <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5">
+                  <div className="text-center">
+                    <p className="text-2xl font-bold text-white leading-none">4</p>
+                    <p className="text-slate-500 text-[10px] mt-0.5">días</p>
+                  </div>
+                  <div className="w-px h-8 bg-white/10" />
+                  <span className="flex items-center gap-1.5 text-slate-400 text-xs">
+                    <Users className="w-3.5 h-3.5 text-primary" /> Cupo limitado
+                  </span>
                 </div>
-                <span className="flex items-center gap-1.5 text-slate-500 text-xs">
-                  <Users className="w-3.5 h-3.5 text-primary" /> Cupo limitado
-                </span>
               </div>
 
-              {/* 5 — CTAs */}
-              <div className="flex flex-wrap gap-3 mb-5">
+              {/* CTAs */}
+              <div className="flex flex-wrap gap-3 mb-7">
                 <Button
                   onClick={scrollToApply}
-                  className="bg-primary hover:bg-blue-600 text-white px-6 py-5 text-sm font-semibold gap-2 shadow-lg shadow-blue-600/30"
+                  className="bg-primary hover:bg-blue-600 text-white px-7 py-5 text-sm font-semibold gap-2 shadow-lg shadow-blue-600/30"
                 >
                   Aplicar al viaje <ArrowRight className="w-4 h-4" />
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_APPLY)}
-                  className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm"
+                  className="border-slate-600 text-white hover:bg-white/10 px-7 py-5 text-sm"
                 >
                   Confirmar interés
                 </Button>
               </div>
 
-              {/* 6 — Equipo: avatares + nombres en fila */}
-              <div className="flex items-center gap-1">
-                <div className="flex -space-x-2.5 mr-3">
+              {/* Equipo */}
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
                   {TEAM.map((member, i) => (
                     <div
                       key={i}
-                      className="relative w-9 h-9 rounded-full border-2 border-[#0B1F3A] overflow-hidden"
+                      className="w-9 h-9 rounded-full border-2 border-[#0B1F3A] overflow-hidden flex-shrink-0"
                       style={{ zIndex: TEAM.length - i }}
                     >
                       <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
@@ -184,43 +175,40 @@ export default function InvestmentWeek() {
               </div>
             </motion.div>
 
-            {/* ── RIGHT COLUMN — foto + info card ── */}
+            {/* ── RIGHT: foto ── */}
             <motion.div
-              className="hidden lg:flex flex-col"
-              initial={{ opacity: 0, x: 32 }}
+              className="hidden lg:block"
+              initial={{ opacity: 0, x: 28 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
             >
-              {/* Foto: h-full para ocupar exactamente el espacio del grid */}
               <div
-                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 h-full"
-                style={{ minHeight: "280px" }}
+                className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60"
+                style={{ height: "min(560px, calc(100svh - 240px))" }}
               >
                 <img
                   src={INVEST_WEEK_IMG}
                   alt="Florida Investment Weekend"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/75 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/70 via-transparent to-transparent" />
 
-                {/* Chip flotante: tipo de evento */}
-                <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1.5">
+                {/* Chip */}
+                <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-black/45 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1.5">
                   <Eye className="w-3.5 h-3.5 text-blue-300" />
                   <span className="text-white text-[11px] font-semibold">Viaje de inspección</span>
                 </div>
 
-                {/* Bottom info strip */}
+                {/* Strip inferior */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <div className="bg-[#0B1F3A]/80 backdrop-blur-sm rounded-xl border border-white/10 p-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-white text-xs font-semibold">Florida, Estados Unidos</p>
-                        <p className="text-slate-400 text-[11px]">Tampa · St. Pete · Clearwater</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-primary text-xs font-bold">Jul 24–27</p>
-                        <p className="text-slate-500 text-[11px]">2026</p>
-                      </div>
+                  <div className="bg-[#0B1F3A]/80 backdrop-blur-sm rounded-xl border border-white/10 px-4 py-3 flex items-center justify-between">
+                    <div>
+                      <p className="text-white text-xs font-semibold">Florida, Estados Unidos</p>
+                      <p className="text-slate-400 text-[11px]">Tampa · St. Pete · Clearwater</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-primary text-xs font-bold">Jul 24–27</p>
+                      <p className="text-slate-500 text-[11px]">2026</p>
                     </div>
                   </div>
                 </div>
