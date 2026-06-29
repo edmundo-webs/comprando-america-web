@@ -595,20 +595,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ PUENTE COPY ═══ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-24 px-4">
-        <FadeIn>
-          <div className="max-w-3xl mx-auto text-center">
-            <p className="text-2xl md:text-3xl text-white leading-snug mb-4">
-              Si estás explorando Estados Unidos para invertir, proteger patrimonio o construir opciones para tu familia, el verdadero reto no es encontrar oportunidades.
-            </p>
-            <p className="text-xl md:text-2xl text-blue-400 font-semibold">
-              Es saber en quién confiar y qué camino tiene sentido para ti.
-            </p>
-          </div>
-        </FadeIn>
-      </section>
-
       {/* ═══ MICRODIAGNÓSTICO ═══ */}
       <section className="bg-[#091A30] py-24 md:py-32 px-4">
         <div className="max-w-4xl mx-auto">
