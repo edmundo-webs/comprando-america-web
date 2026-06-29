@@ -48,7 +48,7 @@ const PAGE_SEO = {
 const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
 const AUDIENCE_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_1600,h_600,g_auto,q_auto,f_auto/v1774537558/comprando-america/eventos/xvdkaaxpavgr9lrybk8g.jpg";
 const PROPERTY_BG = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
-const INVEST_WEEK_IMG = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_900,h_1100,g_auto,q_auto,f_auto/v1774537561/comprando-america/eventos/fou8skfadwce2lodr5yc.jpg";
+const INVEST_WEEK_IMG = "https://res.cloudinary.com/dgruohz6f/image/upload/c_fill,w_900,h_1100,g_auto,q_auto,f_auto/v1782675101/tts-news/kvqowamn1xqniqa0b6to.jpg";
 
 const TEAM = [
   { name: "Diego", role: "Operaciones", photo: "/team/diego.jpg" },
