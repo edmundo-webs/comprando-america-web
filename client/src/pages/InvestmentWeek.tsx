@@ -92,7 +92,7 @@ export default function InvestmentWeek() {
                   <MapPin className="w-3 h-3 text-primary" /> Tampa · St. Pete · Clearwater
                 </span>
                 <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-slate-400 text-[11px] px-2.5 py-1 rounded-full">
-                  <Lock className="w-3 h-3 text-amber-400" /> Solo por invitación
+                  <Lock className="w-3 h-3 text-blue-400" /> Solo por invitación
                 </span>
               </div>
 
@@ -207,7 +207,7 @@ export default function InvestmentWeek() {
       </section>
 
       {/* ═══ ALERTA ACCESO RESTRINGIDO ═══ */}
-      <div className="bg-amber-400 border-y border-amber-300">
+      <div className="bg-blue-400 border-y border-blue-300">
         <div className="container py-3">
           <div className="flex items-center justify-center gap-2.5 text-center">
             <Lock className="w-4 h-4 text-amber-900 flex-shrink-0" />

@@ -47,9 +47,9 @@ const PROFILES: Profile[] = [
     subtitle: "Escala tu portafolio sistemáticamente",
     range: "$100k – $500k",
     color: "#f59e0b",
-    colorBorder: "border-amber-400",
-    colorBg: "bg-amber-400/10",
-    colorText: "text-amber-400",
+    colorBorder: "border-blue-400",
+    colorBg: "bg-blue-400/10",
+    colorText: "text-blue-400",
     enfoque: "Escalamiento",
     resultado: "Portafolio Diversificado",
     bullets: [

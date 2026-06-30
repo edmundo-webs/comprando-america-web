@@ -219,7 +219,7 @@ export default function VisaE2() {
           <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
             <FadeIn>
               <div>
-                <AlertTriangle className="w-8 h-8 text-amber-500 mb-4" />
+                <AlertTriangle className="w-8 h-8 text-blue-500 mb-4" />
                 <h2 className="text-2xl text-[#0B1F3A] font-semibold mb-6">Por qué muchas personas fallan</h2>
                 <div className="space-y-4">
                   {[

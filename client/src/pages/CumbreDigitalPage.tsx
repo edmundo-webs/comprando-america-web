@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const NAVY      = "#0B1F3A";
 const NAVY_DEEP = "#061428";
 const NAVY_MID  = "#132D52";
-const GOLD      = "#C9A84C";
+const GOLD      = "#2563EB";
 const GOLD_LIGHT = "#E8C97A";
 const OFF_WHITE = "#F4F6F9";
 const SLATE     = "#8EA3BF";
