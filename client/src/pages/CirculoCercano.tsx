@@ -398,9 +398,9 @@ export default function CirculoCercano() {
       </section>
 
       {/* ══ RED DE EXPERTOS ════════════════════════════════════ */}
-      <section className="bg-[#091A30] py-28 px-4">
+      <section className="bg-[#091A30] py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <FadeIn className="text-center mb-14">
+          <FadeIn className="text-center mb-10">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-0.5 bg-primary/50" />
               <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Lo que llevamos en el morral</span>
@@ -413,36 +413,35 @@ export default function CirculoCercano() {
             <p className="text-slate-400 max-w-xl mx-auto">Nuestros miembros pueden acceder a esta red o trabajar con sus propios asesores.</p>
           </FadeIn>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {/* Compact expert grid — all 7 visible at a glance */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {expertos.map((e, i) => {
               const open = openExperto === i;
               return (
-                <FadeIn key={i} delay={i * 0.06}>
-                  <motion.div whileHover={{ y: -5 }} transition={{ duration: 0.2 }}
-                    className="bg-[#0B1F3A] border border-[#1E3A5F] hover:border-primary/40 rounded-2xl overflow-hidden group transition-colors">
-                    <div className="relative h-52 bg-[#091A30] overflow-hidden">
-                      <img src={e.photo} alt={e.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-[#0B1F3A]/20 to-transparent" />
-                    </div>
-                    <div className="p-5">
-                      <h3 className="text-white font-bold text-base mb-0.5">{e.name}</h3>
-                      <p className="text-blue-400 text-xs font-semibold mb-3 tracking-wide">{e.role}</p>
-                      <button onClick={() => setOpenExperto(open ? null : i)} className="flex items-center gap-1.5 text-slate-500 hover:text-slate-300 text-xs transition-colors">
-                        <span>{open ? "Ocultar" : "Ver reseña"}</span>
-                        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="inline-block">
-                          <ChevronDown className="w-3.5 h-3.5" />
-                        </motion.span>
-                      </button>
-                      <AnimatePresence>
-                        {open && (
-                          <motion.p initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}
-                            className="overflow-hidden text-slate-400 text-xs leading-relaxed mt-3 border-t border-[#1E3A5F] pt-3">
-                            {e.bio}
-                          </motion.p>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  </motion.div>
+                <FadeIn key={i} delay={i * 0.05}>
+                  <div className={`rounded-2xl border transition-all ${open ? "bg-[#0F2542] border-primary/40" : "bg-[#0B1F3A] border-[#1E3A5F] hover:border-primary/30"}`}>
+                    <button onClick={() => setOpenExperto(open ? null : i)} className="w-full flex items-center gap-3 p-3 text-left group">
+                      <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 bg-[#091A30]">
+                        <img src={e.photo} alt={e.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-bold text-sm leading-tight truncate">{e.name}</p>
+                        <p className="text-blue-400 text-[11px] font-medium leading-snug mt-0.5 line-clamp-2">{e.role}</p>
+                      </div>
+                      <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }} className="shrink-0">
+                        <ChevronDown className="w-3.5 h-3.5 text-slate-600" />
+                      </motion.div>
+                    </button>
+                    <AnimatePresence>
+                      {open && (
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
+                          <div className="px-3 pb-4 border-t border-[#1E3A5F] pt-3">
+                            <p className="text-slate-400 text-xs leading-relaxed">{e.bio}</p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </FadeIn>
               );
             })}
