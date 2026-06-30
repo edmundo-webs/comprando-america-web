@@ -405,11 +405,6 @@ export default function ClubInversion() {
         </div>
       </section>
 
-      {/* ── Photo break ── */}
-      <section className="relative h-56 md:h-72 overflow-hidden">
-        <img src={PANEL} alt="Panel de expertos" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0E2544]" />
-      </section>
 
       {/* ═══ 6. TESTIMONIOS VIDEO — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">

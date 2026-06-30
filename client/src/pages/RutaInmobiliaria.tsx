@@ -221,11 +221,6 @@ export default function RutaInmobiliaria() {
         </div>
       </section>
 
-      {/* ── Photo break — workshop ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={WORKSHOP} alt="Taller de inversión" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0B1F3A]/60" />
-      </section>
 
       {/* ═══ 6. EDMUNDO — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
@@ -341,11 +336,6 @@ export default function RutaInmobiliaria() {
         </div>
       </section>
 
-      {/* ── Photo break — audience ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={AUDIENCE} alt="Comunidad de inversionistas" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#091A30] via-transparent to-white/80" />
-      </section>
 
       {/* ═══ 9. CTA FINAL — deep navy ═══ */}
       <section className="bg-[#091A30] py-24 md:py-32">
