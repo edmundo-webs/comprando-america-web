@@ -84,6 +84,8 @@ export default function CirculoCercano() {
   const [openExperto, setOpenExperto] = useState<number | null>(null);
   const [showPlanes, setShowPlanes] = useState(false);
   const [showBio, setShowBio] = useState(false);
+  const [showEnfoque, setShowEnfoque] = useState(false);
+  const [showMetodologia, setShowMetodologia] = useState(false);
 
   function toggle(id: number) {
     setSelected(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
@@ -673,6 +675,45 @@ export default function CirculoCercano() {
         </div>
       </section>
 
+      {/* ══ ENFOQUE & METODOLOGÍA ════════════════════════════ */}
+      <section className="bg-[#091A30] py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <FadeIn className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-0.5 bg-primary/50" />
+              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Cómo trabajamos</span>
+              <div className="w-8 h-0.5 bg-primary/50" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Estructura detrás del círculo.</h2>
+            <p className="text-slate-400 text-sm">Explora nuestro enfoque y la metodología que aplicamos con cada miembro.</p>
+          </FadeIn>
+          <FadeIn delay={0.1} className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button onClick={() => setShowEnfoque(true)}
+              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
+              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
+                <Globe className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold">Nuestro Enfoque</p>
+                <p className="text-slate-500 text-xs font-normal">5 áreas de acción en EE.UU.</p>
+              </div>
+              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
+            </button>
+            <button onClick={() => setShowMetodologia(true)}
+              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
+              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
+                <Shield className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold">Metodología</p>
+                <p className="text-slate-500 text-xs font-normal">6 pilares del sistema</p>
+              </div>
+              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
+            </button>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ══ FILTRO + INVERSIÓN ═════════════════════════════════ */}
       <section className="bg-[#091A30] py-28 px-4">
         <div className="max-w-4xl mx-auto">
@@ -913,6 +954,107 @@ export default function CirculoCercano() {
       </section>
 
       <Footer />
+
+      {/* ══ MODAL NUESTRO ENFOQUE ════════════════════════════ */}
+      <AnimatePresence>
+        {showEnfoque && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+            onClick={() => setShowEnfoque(false)}>
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            <motion.div initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.98 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}>
+              <button onClick={() => setShowEnfoque(false)} className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors p-1.5 rounded-lg hover:bg-slate-100 z-10">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="p-8 md:p-10">
+                <p className="text-blue-600 text-xs font-mono font-semibold tracking-[0.25em] uppercase mb-2">Nuestro Enfoque</p>
+                <h2 className="text-slate-900 text-2xl font-bold mb-2">Enfoque integral en Estados Unidos</h2>
+                <p className="text-slate-500 text-sm mb-8">Cinco áreas donde el Círculo Cercano actúa con estructura y criterio.</p>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[
+                    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" /></svg>, title: "Bienes Raíces Estratégicos", desc: "Single family homes y tierra estratégica con análisis real de entrada." },
+                    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" /></svg>, title: "Migración con estructura", desc: "Visa E-1, E-2 o expansión empresarial alineada a inversión sostenible." },
+                    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z" /></svg>, title: "Estructuración LLC", desc: "Diseño correcto desde el inicio para proteger patrimonio." },
+                    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60 60 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 3.741-1.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" /></svg>, title: "Educación Ejecutiva", desc: "Deal Days, mentorías y análisis práctico." },
+                    { icon: <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>, title: "Red de Expertos", desc: "Abogados, contadores, brokers y consultores con experiencia real." },
+                  ].map(item => (
+                    <div key={item.title} className="bg-slate-50 border border-slate-100 rounded-xl p-5">
+                      <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center mb-3">{item.icon}</div>
+                      <h3 className="text-slate-800 font-semibold text-sm mb-1.5">{item.title}</h3>
+                      <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ══ MODAL METODOLOGÍA ════════════════════════════════ */}
+      <AnimatePresence>
+        {showMetodologia && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+            onClick={() => setShowMetodologia(false)}>
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            <motion.div initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.98 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}>
+              <button onClick={() => setShowMetodologia(false)} className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors p-1.5 rounded-lg hover:bg-slate-100 z-10">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+              <div className="p-8 md:p-10">
+                <p className="text-blue-600 text-xs font-mono font-semibold tracking-[0.25em] uppercase mb-2">Metodología</p>
+                <h2 className="text-slate-900 text-2xl font-bold mb-1">El sistema detrás del Círculo Cercano</h2>
+                <p className="text-slate-500 text-sm mb-8">6 pilares que transforman barreras en ventajas estratégicas</p>
+                <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                  {[
+                    { n: 1, title: "Criterio de Inversión", desc: "Decidimos con proceso, no con emoción." },
+                    { n: 2, title: "Curación Estratégica", desc: "Descartamos la mayoría. Protegemos capital." },
+                    { n: 3, title: "Acompañamiento Integral", desc: "Legal, fiscal, bancaria y migratoria desde el inicio." },
+                    { n: 4, title: "Comunidad Ejecutora", desc: "Empresarios tomando acción comparten experiencia." },
+                    { n: 5, title: "Velocidad de Activación", desc: "Inversión en 60–90 días cuando hay encaje." },
+                    { n: 6, title: "Transferencia Patrimonial", desc: "Diversificación con visión de largo plazo." },
+                  ].map(p => (
+                    <div key={p.n} className="flex items-start gap-4 bg-slate-50 border border-slate-100 rounded-xl p-4">
+                      <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 text-sm font-bold">{p.n}</div>
+                      <div>
+                        <h4 className="text-slate-800 font-semibold text-sm mb-0.5">{p.title}</h4>
+                        <p className="text-slate-500 text-xs leading-relaxed">{p.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="border-t border-slate-100 pt-6">
+                  <p className="text-blue-600 text-xs font-mono font-semibold tracking-[0.25em] uppercase mb-4">¿Por qué es diferente?</p>
+                  <h3 className="text-slate-900 font-bold text-lg mb-4">Somos sistema de inversión</h3>
+                  <ul className="space-y-3 mb-6">
+                    {[
+                      "No vivimos de comisiones por vender activos.",
+                      "No promovemos cualquier oportunidad.",
+                      "No mezclamos migración con improvisación.",
+                      "No dejamos que inviertas sin estructura bancaria y fiscal clara.",
+                      "Solo el 20% de las oportunidades evaluadas son presentadas.",
+                    ].map((d, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                        <span className="text-slate-600 text-sm">{d}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="bg-blue-50 border border-blue-100 rounded-xl p-5">
+                    <p className="text-slate-800 font-semibold text-sm mb-0.5">Somos sistema de inversión.</p>
+                    <p className="text-slate-500 text-xs">No marketing de proyectos.</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ══ MODAL BIOGRAFÍA ═══════════════════════════════════ */}
       <AnimatePresence>
