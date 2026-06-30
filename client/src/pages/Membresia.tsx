@@ -1,5 +1,12 @@
 import { useState } from "react";
+import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/Navbar";
+
+const PAGE_SEO = {
+  title: "Círculo Cercano de Edmundo Treviño | Comprando América",
+  description: "Accede al Círculo Cercano de Edmundo Treviño: la comunidad privada de empresarios latinos que invierten en Estados Unidos con estructura, criterio y acompañamiento experto.",
+  path: "/membresia",
+};
 import Footer from "@/components/Footer";
 import AlliesSection from "@/components/AlliesSection";
 import MemberTestimonialSlider from "@/components/MemberTestimonialSlider";
@@ -194,6 +201,7 @@ export default function Membresia() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ═══ HERO — foto real de evento ═══ */}

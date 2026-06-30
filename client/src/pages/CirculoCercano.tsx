@@ -1,6 +1,13 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/Navbar";
+
+const PAGE_SEO = {
+  title: "Círculo Cercano de Edmundo Treviño | Comunidad Privada | Comprando América",
+  description: "El Círculo Cercano es la comunidad privada de Edmundo Treviño para empresarios latinos que quieren invertir, estructurar y crecer en Estados Unidos con criterio y acompañamiento real.",
+  path: "/circulo-cercano",
+};
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
 import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
@@ -328,6 +335,7 @@ export default function CirculoCercano() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
+      <SEOHead {...PAGE_SEO} />
       <Navbar />
 
       {/* ══════════════════════════════════════
