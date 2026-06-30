@@ -899,6 +899,49 @@ export default function CirculoCercano() {
         </div>
       </section>
 
+      {/* ══ HISTORIAS REALES ══════════════════════════════════ */}
+      <section className="bg-[#091A30] py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <FadeIn className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-0.5 bg-primary/50" />
+              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Comunidad</span>
+              <div className="w-8 h-0.5 bg-primary/50" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+              Historias reales de miembros.
+            </h2>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { name: "Arturo Orozco", videoId: "WYNwoTzG8Ss", title: "Testimonial de Arturo Orozco" },
+              { name: "Gerardo Bejarano", videoId: "6J6IIPFsTD0", title: "Testimonial de Gerardo Bejarano" },
+            ].map((t, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[#0B1F3A] border border-[#1E3A5F] hover:border-primary/40 rounded-2xl overflow-hidden transition-all shadow-xl shadow-black/30">
+                  <div className="relative w-full aspect-video overflow-hidden bg-[#091A30]">
+                    <iframe
+                      width="100%" height="100%"
+                      src={`https://www.youtube.com/embed/${t.videoId}?rel=0&modestbranding=1`}
+                      title={t.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-white font-bold text-base mb-0.5">{t.name}</h3>
+                    <p className="text-slate-500 text-sm">{t.title}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ══ CTA FINAL ══════════════════════════════════════════ */}
       <section className="relative bg-[#0B1F3A] py-36 px-4 overflow-hidden">
         {/* Full bleed bg portrait */}
