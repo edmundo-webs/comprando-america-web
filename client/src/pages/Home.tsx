@@ -86,7 +86,7 @@ const PAGE_SEO = {
       { "@type": "Question", "name": "¿Cómo invertir en Estados Unidos desde México?", "acceptedAnswer": { "@type": "Answer", "text": "Con Comprando América puedes invertir desde $100,000 USD a través de una LLC en Texas o Florida, con estructura legal, fiscal y acompañamiento para bienes raíces o adquisición de negocios." } },
       { "@type": "Question", "name": "¿Qué es la visa E-2 de inversionista?", "acceptedAnswer": { "@type": "Answer", "text": "La visa E-2 permite a inversionistas extranjeros vivir y trabajar en Estados Unidos operando un negocio real. Requiere inversión sustancial (desde $150,000 USD) y un plan de negocios aprobado por USCIS." } },
       { "@type": "Question", "name": "¿Necesito vivir en Estados Unidos para invertir?", "acceptedAnswer": { "@type": "Answer", "text": "No. Puedes proteger tu patrimonio invirtiendo en dólares con una LLC y cuenta bancaria en Estados Unidos sin necesidad de residir o migrar." } },
-      { "@type": "Question", "name": "¿Qué incluye el club de inversión de Comprando América?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías, eventos presenciales VIP, conversaciones exclusivas con inversionistas activos y la Mesa de Dueños — comunidad privada de evaluación." } },
+      { "@type": "Question", "name": "¿Qué incluye el Círculo Cercano de Comprando América?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías, eventos presenciales VIP, conversaciones exclusivas con inversionistas activos y la Mesa de Dueños — comunidad privada de evaluación." } },
       { "@type": "Question", "name": "¿Es mejor invertir en Texas o Florida?", "acceptedAnswer": { "@type": "Answer", "text": "Depende de tu objetivo. Texas ofrece protección patrimonial fuerte y sin impuesto estatal sobre la renta. Florida tiene ventajas para bienes raíces y clima favorable. Analizamos tu caso específico." } }
     ]
   }
@@ -872,7 +872,7 @@ export default function Home() {
                 </a>
                 <a href="/membresia">
                   <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
-                    Conocer el Club de Inversión
+                    Conocer el Círculo Cercano de Edmundo Treviño
                   </Button>
                 </a>
               </div>
