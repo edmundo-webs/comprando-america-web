@@ -594,6 +594,35 @@ export default function CirculoCercano() {
         </div>
       </section>
 
+      {/* ══ NÚMEROS REALES ════════════════════════════════════ */}
+      <section className="bg-[#0B1F3A] py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <FadeIn className="text-center mb-12">
+            <p className="text-slate-400 text-sm mb-2">Con apoyo de Comprando América hemos realizado</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Números reales. Equipo real.</h2>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              {[
+                { n: "40+", label: "Miembros activos" },
+                { n: "53+", label: "LLCs estructuradas" },
+                { n: "14+", label: "Visas tramitadas" },
+                { n: "6", label: "Viajes de inspección" },
+              ].map(({ n, label }) => (
+                <div key={label}>
+                  <p className="text-blue-400 text-4xl md:text-5xl font-extrabold mb-1">{n}</p>
+                  <p className="text-slate-400 text-xs font-semibold tracking-widest uppercase">{label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 bg-primary/10 border border-primary/25 rounded-2xl py-6 px-8 text-center">
+              <p className="text-slate-400 text-sm mb-1">Los miembros han invertido</p>
+              <p className="text-white text-3xl md:text-4xl font-extrabold tracking-tight">$3,710,086 <span className="text-blue-400 text-xl font-bold">USD</span></p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ══ BIBLIOTECA ═════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-28 px-4">
         <div className="max-w-4xl mx-auto">
