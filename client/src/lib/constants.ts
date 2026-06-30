@@ -30,11 +30,6 @@ export const NAV_ITEMS = [
     { label: "Migrar con inversión", href: "/visa-e2-inversion-en-estados-unidos" },
     { label: "Estructura empresarial", href: "/estructura-de-inversion-en-usa" },
   ]},
-  { label: "Recursos", href: "/recursos", children: [
-    { label: "Podcast", href: "/podcast" },
-    { label: "Noticias", href: "/news" },
-    { label: "Blog", href: "/blog" },
-  ]},
   { label: "Quiénes Somos", href: "/quienes-somos" },
 ];
 
