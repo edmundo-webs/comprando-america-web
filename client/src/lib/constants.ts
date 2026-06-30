@@ -24,7 +24,7 @@ export const EXTERNAL_LINKS = {
 };
 
 export const NAV_ITEMS = [
-  { label: "Círculo Cercano", href: "/club-de-inversion-en-estados-unidos" },
+  { label: "Círculo Cercano", href: "/circulo-cercano" },
   { label: "Quiénes Somos", href: "/quienes-somos" },
 ];
 
