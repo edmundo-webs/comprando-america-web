@@ -176,7 +176,7 @@ export default function CirculoCercano() {
       </section>
 
       {/* ══ VIDEO — MENSAJE DE EDMUNDO ═════════════════════════ */}
-      <section className="bg-[#091A30] py-20 px-4">
+      <section className="bg-[#091A30] py-24 px-4">
         <div className="max-w-4xl mx-auto">
           <FadeIn className="text-center mb-8">
             <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Un mensaje personal</span>
@@ -403,7 +403,7 @@ export default function CirculoCercano() {
       </section>
 
       {/* ══ RED DE EXPERTOS ════════════════════════════════════ */}
-      <section className="bg-[#091A30] py-20 px-4">
+      <section className="bg-[#091A30] py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <FadeIn className="text-center mb-10">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -600,80 +600,71 @@ export default function CirculoCercano() {
       </section>
 
       {/* ══ NÚMEROS REALES ════════════════════════════════════ */}
-      <section className="bg-[#0B1F3A] py-20 px-4">
+      <section className="bg-[#0B1F3A] py-24 px-4">
         <div className="max-w-5xl mx-auto">
-          <FadeIn className="text-center mb-12">
-            <p className="text-slate-400 text-sm mb-2">Con apoyo de Comprando América hemos realizado</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">Números reales. Equipo real.</h2>
+          <FadeIn className="text-center mb-14">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-0.5 bg-primary/50" />
+              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Resultados</span>
+              <div className="w-8 h-0.5 bg-primary/50" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Números reales. Equipo real.</h2>
+            <p className="text-slate-500 text-sm">Con apoyo de Comprando América hemos realizado</p>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {[
-                { n: "40+", label: "Miembros activos" },
-                { n: "53+", label: "LLCs estructuradas" },
-                { n: "14+", label: "Visas tramitadas" },
-                { n: "6", label: "Viajes de inspección" },
-              ].map(({ n, label }) => (
-                <div key={label}>
-                  <p className="text-blue-400 text-4xl md:text-5xl font-extrabold mb-1">{n}</p>
-                  <p className="text-slate-400 text-xs font-semibold tracking-widest uppercase">{label}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-10 bg-primary/10 border border-primary/25 rounded-2xl py-6 px-8 text-center">
-              <p className="text-slate-400 text-sm mb-1">Los miembros han invertido</p>
-              <p className="text-white text-3xl md:text-4xl font-extrabold tracking-tight">$3,710,086 <span className="text-blue-400 text-xl font-bold">USD</span></p>
+            <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-2xl p-8 md:p-10">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center mb-8 pb-8 border-b border-[#1E3A5F]">
+                {[
+                  { n: "40+", label: "Miembros activos" },
+                  { n: "53+", label: "LLCs estructuradas" },
+                  { n: "14+", label: "Visas tramitadas" },
+                  { n: "6", label: "Viajes de inspección" },
+                ].map(({ n, label }) => (
+                  <div key={label}>
+                    <p className="text-blue-400 text-4xl md:text-5xl font-extrabold mb-1.5">{n}</p>
+                    <p className="text-slate-400 text-xs font-semibold tracking-widest uppercase leading-tight">{label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center">
+                <p className="text-slate-500 text-xs uppercase tracking-widest mb-2">Los miembros han invertido</p>
+                <p className="text-white text-4xl md:text-5xl font-extrabold tracking-tight">$3,710,086 <span className="text-blue-400 text-2xl font-bold">USD</span></p>
+              </div>
             </div>
           </FadeIn>
         </div>
       </section>
 
       {/* ══ ENFOQUE & METODOLOGÍA ════════════════════════════ */}
-      <section className="bg-[#091A30] py-20 px-4">
+      <section className="bg-[#091A30] py-24 px-4">
         <div className="max-w-4xl mx-auto">
-          <FadeIn className="text-center mb-10">
+          <FadeIn className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
               <div className="w-8 h-0.5 bg-primary/50" />
               <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Cómo trabajamos</span>
               <div className="w-8 h-0.5 bg-primary/50" />
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Estructura detrás del círculo.</h2>
-            <p className="text-slate-400 text-sm">Explora nuestro enfoque y la metodología que aplicamos con cada miembro.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Estructura detrás del círculo.</h2>
+            <p className="text-slate-500 text-sm max-w-md mx-auto">Explora nuestro enfoque y la metodología que aplicamos con cada miembro.</p>
           </FadeIn>
-          <FadeIn delay={0.1} className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-            <button onClick={() => setShowEnfoque(true)}
-              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
-              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Globe className="w-5 h-5 text-blue-400" />
-              </div>
-              <div className="text-left">
-                <p className="font-bold">Nuestro Enfoque</p>
-                <p className="text-slate-500 text-xs font-normal">5 áreas de acción en EE.UU.</p>
-              </div>
-              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
-            </button>
-            <button onClick={() => setShowMetodologia(true)}
-              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
-              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Shield className="w-5 h-5 text-blue-400" />
-              </div>
-              <div className="text-left">
-                <p className="font-bold">Metodología</p>
-                <p className="text-slate-500 text-xs font-normal">6 pilares del sistema</p>
-              </div>
-              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
-            </button>
-            <button onClick={() => setShowEstructura(true)}
-              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
-              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Users className="w-5 h-5 text-blue-400" />
-              </div>
-              <div className="text-left">
-                <p className="font-bold">Estructura de la comunidad</p>
-                <p className="text-slate-500 text-xs font-normal">Plataforma digital · Club</p>
-              </div>
-              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
-            </button>
+          <FadeIn delay={0.1} className="grid sm:grid-cols-3 gap-4">
+            {[
+              { label: "Nuestro Enfoque", sub: "5 áreas de acción en EE.UU.", icon: <Globe className="w-5 h-5 text-blue-400" />, action: () => setShowEnfoque(true) },
+              { label: "Metodología", sub: "6 pilares del sistema", icon: <Shield className="w-5 h-5 text-blue-400" />, action: () => setShowMetodologia(true) },
+              { label: "Estructura de la comunidad", sub: "Plataforma digital · Club", icon: <Users className="w-5 h-5 text-blue-400" />, action: () => setShowEstructura(true) },
+            ].map(btn => (
+              <button key={btn.label} onClick={btn.action}
+                className="flex flex-col items-center gap-4 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/40 text-white rounded-2xl p-7 text-center transition-all group">
+                <div className="w-12 h-12 rounded-2xl bg-primary/15 group-hover:bg-primary/25 flex items-center justify-center transition-colors">
+                  {btn.icon}
+                </div>
+                <div>
+                  <p className="font-bold text-sm mb-1">{btn.label}</p>
+                  <p className="text-slate-500 text-xs font-normal">{btn.sub}</p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-slate-600 group-hover:text-blue-400 transition-colors" />
+              </button>
+            ))}
           </FadeIn>
         </div>
       </section>
@@ -729,7 +720,7 @@ export default function CirculoCercano() {
       </section>
 
       {/* ══ ¿POR QUÉ ENTIENDO EL JUEGO? ══════════════════════ */}
-      <section className="bg-[#0B1F3A] py-24 px-4">
+      <section className="bg-[#091A30] py-24 px-4">
         <div className="max-w-4xl mx-auto">
           <FadeIn className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
@@ -835,7 +826,7 @@ export default function CirculoCercano() {
                             "Conversaciones honestas sobre negocios, patrimonio e inversión.",
                             "Un lugar donde contrastar ideas antes de tomar decisiones importantes.",
                           ].map((b, i) => (
-                            <div key={i} className="flex items-start gap-3 bg-[#0B1F3A] border border-[#1E3A5F] rounded-xl p-4 hover:border-blue-500/20 transition-all">
+                            <div key={i} className="flex items-start gap-3 bg-[#0B1F3A]/60 border border-[#1E3A5F] rounded-xl p-4 hover:border-blue-500/30 transition-all">
                               <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                               <p className="text-slate-300 text-sm leading-relaxed">{b}</p>
                             </div>
@@ -1037,7 +1028,7 @@ export default function CirculoCercano() {
       </section>
 
       {/* ══ HISTORIAS REALES ══════════════════════════════════ */}
-      <section className="bg-[#091A30] py-20 px-4">
+      <section className="bg-[#091A30] py-24 px-4">
         <div className="max-w-4xl mx-auto">
           <FadeIn className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
