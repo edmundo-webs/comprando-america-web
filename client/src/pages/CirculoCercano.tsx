@@ -625,6 +625,45 @@ export default function CirculoCercano() {
         </div>
       </section>
 
+      {/* ══ ENFOQUE & METODOLOGÍA ════════════════════════════ */}
+      <section className="bg-[#091A30] py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <FadeIn className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-0.5 bg-primary/50" />
+              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Cómo trabajamos</span>
+              <div className="w-8 h-0.5 bg-primary/50" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Estructura detrás del círculo.</h2>
+            <p className="text-slate-400 text-sm">Explora nuestro enfoque y la metodología que aplicamos con cada miembro.</p>
+          </FadeIn>
+          <FadeIn delay={0.1} className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button onClick={() => setShowEnfoque(true)}
+              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
+              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
+                <Globe className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold">Nuestro Enfoque</p>
+                <p className="text-slate-500 text-xs font-normal">5 áreas de acción en EE.UU.</p>
+              </div>
+              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
+            </button>
+            <button onClick={() => setShowMetodologia(true)}
+              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
+              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
+                <Shield className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold">Metodología</p>
+                <p className="text-slate-500 text-xs font-normal">6 pilares del sistema</p>
+              </div>
+              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
+            </button>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ══ BIBLIOTECA ═════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-28 px-4">
         <div className="max-w-4xl mx-auto">
@@ -672,45 +711,6 @@ export default function CirculoCercano() {
               );
             })}
           </div>
-        </div>
-      </section>
-
-      {/* ══ ENFOQUE & METODOLOGÍA ════════════════════════════ */}
-      <section className="bg-[#091A30] py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <FadeIn className="text-center mb-10">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-8 h-0.5 bg-primary/50" />
-              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Cómo trabajamos</span>
-              <div className="w-8 h-0.5 bg-primary/50" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Estructura detrás del círculo.</h2>
-            <p className="text-slate-400 text-sm">Explora nuestro enfoque y la metodología que aplicamos con cada miembro.</p>
-          </FadeIn>
-          <FadeIn delay={0.1} className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => setShowEnfoque(true)}
-              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
-              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Globe className="w-5 h-5 text-blue-400" />
-              </div>
-              <div className="text-left">
-                <p className="font-bold">Nuestro Enfoque</p>
-                <p className="text-slate-500 text-xs font-normal">5 áreas de acción en EE.UU.</p>
-              </div>
-              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
-            </button>
-            <button onClick={() => setShowMetodologia(true)}
-              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
-              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Shield className="w-5 h-5 text-blue-400" />
-              </div>
-              <div className="text-left">
-                <p className="font-bold">Metodología</p>
-                <p className="text-slate-500 text-xs font-normal">6 pilares del sistema</p>
-              </div>
-              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
-            </button>
-          </FadeIn>
         </div>
       </section>
 
