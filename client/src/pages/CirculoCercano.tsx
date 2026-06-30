@@ -406,22 +406,52 @@ export default function CirculoCercano() {
                 className="group relative w-full h-full block"
                 aria-label="Reproducir video de Edmundo Treviño"
               >
-                <img
-                  src={DINNER_IMAGE}
-                  alt="Edmundo Treviño — Círculo Cercano"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                {/* Background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0d2a4a] to-[#091A30]" />
+
+                {/* Decorative rings */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-64 h-64 rounded-full border border-blue-500/10" />
+                  <div className="absolute w-48 h-48 rounded-full border border-blue-500/15" />
+                  <div className="absolute w-32 h-32 rounded-full border border-blue-500/20" />
+                </div>
+
+                {/* Edmundo portrait — right side */}
+                <div className="absolute right-0 bottom-0 h-full flex items-end justify-end overflow-hidden">
+                  <img
+                    src={EDMUNDO_PORTRAIT}
+                    alt="Edmundo Treviño"
+                    className="h-full object-cover object-top opacity-60 group-hover:opacity-70 transition-opacity duration-500"
+                    style={{ maxWidth: "55%" }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A] via-[#0B1F3A]/60 to-transparent" />
+                </div>
+
+                {/* Text + play — left side */}
+                <div className="absolute inset-0 flex flex-col items-start justify-center px-10 gap-6">
+                  <div>
+                    <p className="text-blue-400 text-xs font-semibold tracking-[0.25em] uppercase font-mono mb-3">
+                      Círculo Cercano · 2026
+                    </p>
+                    <h3 className="text-white text-2xl md:text-3xl font-light leading-snug max-w-xs">
+                      Edmundo te habla
+                      <br />
+                      <span className="font-bold">directamente.</span>
+                    </h3>
+                  </div>
+
                   <motion.div
-                    className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center shadow-2xl shadow-blue-600/40"
-                    whileHover={{ scale: 1.1 }}
+                    className="flex items-center gap-4"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <Play className="w-8 h-8 text-white ml-1" />
+                    <div className="w-16 h-16 rounded-full bg-primary group-hover:bg-blue-500 transition-colors flex items-center justify-center shadow-2xl shadow-blue-600/50">
+                      <Play className="w-6 h-6 text-white ml-1" />
+                    </div>
+                    <span className="text-white/70 text-sm font-medium group-hover:text-white transition-colors">
+                      Ver mensaje
+                    </span>
                   </motion.div>
-                  <p className="text-white/80 text-sm font-medium tracking-wide">
-                    Edmundo te habla directamente
-                  </p>
                 </div>
               </button>
             ) : (
