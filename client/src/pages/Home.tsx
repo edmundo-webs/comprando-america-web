@@ -184,7 +184,7 @@ function ExpertsSection() {
                   className={`w-full text-left rounded-2xl p-5 border transition-all duration-300 ${
                     isActive
                       ? "bg-primary/10 border-primary/50 shadow-lg shadow-blue-600/10"
-                      : "bg-[#0F2542] border-[#1E3A5F] hover:border-blue-500/30"
+                      : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
                   }`}
                 >
                   <div className="flex flex-col items-center text-center gap-3">
@@ -702,7 +702,7 @@ export default function Home() {
                     className={`w-full text-left rounded-xl p-6 border transition-all duration-200 group ${
                       selected
                         ? "bg-primary/10 border-primary/60 shadow-lg shadow-blue-600/10"
-                        : "bg-[#0F2542] border-[#1E3A5F] hover:border-blue-500/30"
+                        : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
                     }`}
                   >
                     <div className="flex items-start gap-4">
@@ -803,7 +803,7 @@ export default function Home() {
               ].map((r, i) => (
                 <FadeIn key={i} delay={i * 0.1}>
                   <a href={r.href} className="block h-full group">
-                    <div className="h-full rounded-2xl border border-[#1E3A5F] hover:border-blue-500/40 bg-[#0F2542] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-900/20 flex flex-col">
+                    <div className="h-full rounded-2xl border border-[#1E3A5F] hover:border-blue-500/40 bg-[#0F2847] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-900/20 flex flex-col">
                       {/* Image */}
                       <div className="relative overflow-hidden h-48 shrink-0">
                         <img
@@ -811,7 +811,7 @@ export default function Home() {
                           alt={r.label}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0F2542] via-transparent to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0F2847] via-transparent to-transparent" />
                         {r.playIcon && (
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center group-hover:scale-110 transition-transform">

@@ -165,7 +165,7 @@ export default function EstructuraEmpresarial() {
               { icon: Shield, title: "Cómo preparar tu operación", desc: "Base legal sólida para proteger tu patrimonio." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
                   <item.icon className="w-8 h-8 text-blue-400 mb-4" />
                   <h3 className="text-lg text-white font-semibold mb-2">{item.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
@@ -208,7 +208,7 @@ export default function EstructuraEmpresarial() {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeIn>
-              <div className="bg-[#132D50] border border-blue-500/20 rounded-2xl p-8 h-full">
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 h-full">
                 <h3 className="text-2xl text-white font-bold mb-6">Texas</h3>
                 <div className="space-y-3 mb-8">
                   {["Fuerte ecosistema empresarial", "Ideal para operaciones comerciales", "Comunidad empresarial latina sólida", "Sin impuesto estatal sobre la renta"].map((item, i) => (
@@ -225,7 +225,7 @@ export default function EstructuraEmpresarial() {
             </FadeIn>
 
             <FadeIn delay={0.1}>
-              <div className="bg-[#132D50] border border-blue-500/20 rounded-2xl p-8 h-full">
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 h-full">
                 <h3 className="text-2xl text-white font-bold mb-6">Florida</h3>
                 <div className="space-y-3 mb-8">
                   {["Entorno fiscal atractivo para inversionistas", "Ideal para negocios digitales y e-commerce", "Conexión internacional fuerte (LATAM)", "Sin impuesto estatal sobre la renta"].map((item, i) => (
@@ -349,7 +349,7 @@ export default function EstructuraEmpresarial() {
             <div className="max-w-2xl mx-auto text-center">
               <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Inversión</p>
               <h2 className="text-3xl md:text-4xl text-white mb-6">Costo del servicio</h2>
-              <div className="inline-block bg-[#132D50] border border-blue-500/30 rounded-2xl p-10 mb-10">
+              <div className="inline-block bg-[#0F2847] border border-blue-500/30 rounded-2xl p-10 mb-10">
                 <p className="text-5xl md:text-6xl text-white font-bold mb-2">
                   $1,499 <span className="text-slate-500 text-2xl font-normal">USD</span>
                 </p>

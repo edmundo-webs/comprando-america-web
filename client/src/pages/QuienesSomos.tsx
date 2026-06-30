@@ -158,7 +158,7 @@ export default function QuienesSomos() {
               { icon: Users, title: "Red de co-inversión", desc: "Comunidad activa de empresarios para colaborar y compartir conocimiento." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all h-full">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all h-full">
                   <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center mb-4">
                     <item.icon className="w-5 h-5" />
                   </div>

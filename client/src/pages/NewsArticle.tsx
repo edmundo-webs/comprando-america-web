@@ -307,7 +307,7 @@ export default function NewsArticle() {
               <div className="grid md:grid-cols-3 gap-6">
                 {filteredRelated.map((related) => (
                   <Link key={related.id} href={`/news/${related.slug}`}>
-                    <div className="group bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all duration-300 cursor-pointer h-full">
+                    <div className="group bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all duration-300 cursor-pointer h-full">
                       {related.imageUrl && (
                         <img
                           src={cldUrl(related.imageUrl, { width: 480 })}

@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 const NAVY = "#0B1F3A";
 const GOLD = "#C9A84C";
 const GOLD_LIGHT = "#E2C06E";
-const NAVY_CARD = "#112240";
+const NAVY_CARD = "#0F2847";
 const NAVY_DARK = "#0A1828";
 const NAVY_BORDER = "#1E3A5F";
 
@@ -154,7 +154,7 @@ function DealCard({ d }: { d: Deal }) {
       <div style={{ position: "relative", height: "220px", overflow: "hidden", background: "#0A1828" }}>
         <img src={FOTOS[d.id]} alt={`Propiedad #${d.id} ${d.ubicacion}`}
           style={{ width: "100%", height: "100%", objectFit: FOTO_FIT[d.id], objectPosition: FOTO_POS[d.id], display: "block" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 50%, #11224099 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 50%, #0F284799 100%)" }} />
         {d.savings && (
           <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#0B1F3A", background: "#3ECF8E", borderRadius: "5px", padding: "3px 10px" }}>
             -{usd(d.savings)} ahorro

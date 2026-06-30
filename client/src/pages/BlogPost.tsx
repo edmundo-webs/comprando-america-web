@@ -162,7 +162,7 @@ export default function BlogPost() {
                 alt={post.title}
                 fetchPriority="high"
                 decoding="async"
-                className="w-full h-auto max-h-[500px] object-contain bg-[#132D50]"
+                className="w-full h-auto max-h-[500px] object-contain bg-[#0F2847]"
               />
             </div>
           </div>

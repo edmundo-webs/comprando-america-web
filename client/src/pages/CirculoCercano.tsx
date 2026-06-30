@@ -345,7 +345,7 @@ export default function CirculoCercano() {
         ref={heroRef}
         className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-20 px-4"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#132D50_0%,_#0B1F3A_65%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#0F2847_0%,_#0B1F3A_65%)] pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {[...Array(6)].map((_, i) => (
             <motion.div
@@ -484,7 +484,7 @@ export default function CirculoCercano() {
                     className={`w-full text-left rounded-xl p-6 border transition-all duration-200 group ${
                       selected
                         ? "bg-primary/10 border-primary/60 shadow-lg shadow-blue-600/10"
-                        : "bg-[#0F2542] border-[#1E3A5F] hover:border-blue-500/30"
+                        : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
                     }`}
                   >
                     <div className="flex items-start gap-4">
@@ -588,7 +588,7 @@ export default function CirculoCercano() {
                         <div
                           className={`rounded-xl border transition-all duration-200 ${
                             isOpen
-                              ? "bg-[#0F2542] border-blue-500/40"
+                              ? "bg-[#0F2847] border-blue-500/40"
                               : "bg-[#091A30] border-[#1E3A5F] hover:border-blue-500/30"
                           }`}
                         >
@@ -679,12 +679,12 @@ export default function CirculoCercano() {
                     className={`w-full rounded-2xl border p-5 flex flex-col items-center gap-3 transition-all duration-200 text-center ${
                       isActive
                         ? `bg-gradient-to-br ${rama.color} ${rama.borderColor} shadow-lg`
-                        : "bg-[#0F2542] border-[#1E3A5F] hover:border-blue-500/30"
+                        : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
                     }`}
                   >
                     <div
                       className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                        isActive ? "bg-white/10" : "bg-[#132D50]"
+                        isActive ? "bg-white/10" : "bg-[#0F2847]"
                       }`}
                     >
                       {rama.icon}
@@ -767,7 +767,7 @@ export default function CirculoCercano() {
                 <FadeIn key={i} delay={i * 0.07}>
                   <motion.div
                     whileHover={{ y: -3 }}
-                    className="bg-[#0F2542] border border-[#1E3A5F] hover:border-blue-500/30 rounded-2xl overflow-hidden transition-all group"
+                    className="bg-[#0F2847] border border-[#1E3A5F] hover:border-blue-500/30 rounded-2xl overflow-hidden transition-all group"
                   >
                     {/* Photo */}
                     <div className="relative h-52 overflow-hidden bg-[#091A30]">
@@ -776,7 +776,7 @@ export default function CirculoCercano() {
                         alt={e.name}
                         className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F2542] via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0F2847] via-transparent to-transparent" />
                     </div>
 
                     {/* Info */}
@@ -892,7 +892,7 @@ export default function CirculoCercano() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                   >
-                    <div className="w-20 h-20 rounded-xl bg-[#0F2542] border border-[#1E3A5F] hover:border-blue-500/40 transition-all flex flex-col items-center justify-center gap-1 cursor-default">
+                    <div className="w-20 h-20 rounded-xl bg-[#0F2847] border border-[#1E3A5F] hover:border-blue-500/40 transition-all flex flex-col items-center justify-center gap-1 cursor-default">
                       <span className="text-xl">{p.icon}</span>
                       <span className="text-white text-xs font-semibold text-center leading-tight px-1">
                         {p.type}
@@ -915,7 +915,7 @@ export default function CirculoCercano() {
                 { n: "20+", label: "Años de experiencia" },
                 { n: "100K+", label: "USD mínimo para actuar" },
               ].map((s, i) => (
-                <div key={i} className="bg-[#0F2542] border border-[#1E3A5F] rounded-xl p-5 text-center">
+                <div key={i} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-5 text-center">
                   <p className="text-white text-2xl md:text-3xl font-bold mb-1">{s.n}</p>
                   <p className="text-slate-500 text-xs">{s.label}</p>
                 </div>
@@ -965,14 +965,14 @@ export default function CirculoCercano() {
                 <FadeIn key={i} delay={i * 0.1}>
                   <div
                     className={`rounded-xl border transition-all ${
-                      isOpen ? "bg-[#0F2542] border-blue-500/30" : "bg-[#091A30] border-[#1E3A5F]"
+                      isOpen ? "bg-[#0F2847] border-blue-500/30" : "bg-[#091A30] border-[#1E3A5F]"
                     }`}
                   >
                     <button
                       onClick={() => setOpenTestimonio(isOpen ? null : i)}
                       className="w-full flex items-center gap-4 p-5 text-left"
                     >
-                      <div className="w-10 h-10 rounded-full bg-[#132D50] border border-[#1E3A5F] flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-[#0F2847] border border-[#1E3A5F] flex items-center justify-center shrink-0">
                         <Users className="w-4 h-4 text-blue-400" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -1033,14 +1033,14 @@ export default function CirculoCercano() {
                 <FadeIn key={i} delay={i * 0.08}>
                   <div
                     className={`rounded-xl border transition-all ${
-                      isOpen ? "bg-[#0F2542] border-blue-500/30" : "bg-[#0B1F3A] border-[#1E3A5F] hover:border-blue-500/20"
+                      isOpen ? "bg-[#0F2847] border-blue-500/30" : "bg-[#0B1F3A] border-[#1E3A5F] hover:border-blue-500/20"
                     }`}
                   >
                     <button
                       onClick={() => setOpenLibro(isOpen ? null : i)}
                       className="w-full flex items-center gap-4 p-5 text-left"
                     >
-                      <div className="w-10 h-10 rounded-lg bg-[#132D50] flex items-center justify-center shrink-0">
+                      <div className="w-10 h-10 rounded-lg bg-[#0F2847] flex items-center justify-center shrink-0">
                         <BookOpen className="w-5 h-5 text-blue-400" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -1214,7 +1214,7 @@ export default function CirculoCercano() {
 
           <FadeIn delay={0.15}>
             <div className="border-t border-[#1E3A5F] pt-14">
-              <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-xl p-7 mb-10">
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-7 mb-10">
                 <p className="text-white font-semibold text-lg mb-2">
                   Solicita una sesión de diagnóstico estratégico.
                 </p>

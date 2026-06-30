@@ -320,7 +320,7 @@ export default function ClubInversion() {
                   { title: "Cumbre de Emprendimiento", desc: "Grabaciones de todas las cumbres presenciales." },
                   { title: "Deal Day", desc: "Historial de sesiones de oportunidades de inversión presentadas." },
                 ].map((prog, i) => (
-                  <div key={i} className="bg-[#132D50] border border-[#1E3A5F] rounded-lg p-4">
+                  <div key={i} className="bg-[#0F2847] border border-[#1E3A5F] rounded-lg p-4">
                     <p className="text-white text-sm font-semibold mb-1">{prog.title}</p>
                     <p className="text-slate-500 text-xs leading-relaxed">{prog.desc}</p>
                   </div>

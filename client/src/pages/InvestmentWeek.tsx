@@ -274,7 +274,7 @@ export default function InvestmentWeek() {
                   </div>
                 ))}
               </div>
-              <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-8">
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-xl p-8">
                 <p className="text-white text-lg">
                   Si no has tenido entrevista con el equipo, <span className="text-primary font-semibold">el primer paso es agendar una.</span>
                 </p>
@@ -433,7 +433,7 @@ export default function InvestmentWeek() {
               { title: "Sesiones 1 a 1", desc: "Espacio para analizar tu caso particular con los expertos." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
                   <CheckCircle2 className="w-6 h-6 text-blue-400 mb-3" />
                   <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>

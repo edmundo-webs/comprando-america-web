@@ -260,14 +260,14 @@ export default function RutaInmobiliaria() {
 
               <div className="grid sm:grid-cols-3 gap-6 mb-12">
                 {["Capital disponible", "Interés en oportunidades reales", "Búsqueda de decisiones informadas"].map((item, i) => (
-                  <div key={i} className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6">
+                  <div key={i} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6">
                     <CheckCircle2 className="w-6 h-6 text-blue-400 mx-auto mb-3" />
                     <p className="text-slate-300">{item}</p>
                   </div>
                 ))}
               </div>
 
-              <div className="bg-[#132D50] border border-blue-500/20 rounded-2xl p-8 inline-block">
+              <div className="bg-[#0F2847] border border-blue-500/20 rounded-2xl p-8 inline-block">
                 <Users className="w-8 h-8 text-primary mx-auto mb-4" />
                 <p className="text-white text-lg font-semibold">La sala está limitada a 25 asistentes</p>
                 <p className="text-slate-500 text-sm mt-2">Para cuidar la calidad de la experiencia y el nivel de conversación.</p>

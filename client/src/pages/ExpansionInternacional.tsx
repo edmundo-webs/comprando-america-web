@@ -95,7 +95,7 @@ export default function ExpansionInternacional() {
               { icon: <Shield className="w-6 h-6" />, title: "Acceso a Recursos", desc: "Talento, tecnología y condiciones fiscales favorables" },
             ].map((item, i) => (
               <FadeIn key={item.title} delay={i * 0.1}>
-                <div className="group relative bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all duration-500 h-full">
+                <div className="group relative bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all duration-500 h-full">
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
                   <div className="relative">
                     <div className="w-12 h-12 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center mb-4 group-hover:bg-blue-500/15 transition-colors">
@@ -127,7 +127,7 @@ export default function ExpansionInternacional() {
               { num: "04", title: "Estructura Legal", desc: "Alianzas y estructuras legales en el nuevo país" },
             ].map((item, i) => (
               <FadeIn key={item.num} delay={i * 0.1}>
-                <div className="relative bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8 hover:border-blue-500/30 transition-all duration-500 group">
+                <div className="relative bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8 hover:border-blue-500/30 transition-all duration-500 group">
                   <span className="stat-number text-5xl text-white/5 absolute top-4 right-4 group-hover:text-primary/10 transition-colors">{item.num}</span>
                   <div className="w-12 h-12 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center mb-4">
                     <Briefcase className="w-6 h-6" />

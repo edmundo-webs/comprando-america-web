@@ -97,7 +97,7 @@ export default function Membresia2() {
       ══════════════════════════════════════ */}
       <section className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-20 px-4">
         {/* Subtle radial glow */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#132D50_0%,_#0B1F3A_65%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#0F2847_0%,_#0B1F3A_65%)] pointer-events-none" />
 
         <div className="relative z-10 w-full max-w-4xl mx-auto text-center">
           <motion.div
@@ -198,7 +198,7 @@ export default function Membresia2() {
           <div className="grid md:grid-cols-2 gap-5">
             {hitos.map((h, i) => (
               <FadeIn key={h.n} delay={i * 0.08}>
-                <div className="flex items-start gap-5 bg-[#0F2542] border border-[#1E3A5F] hover:border-blue-500/30 rounded-xl p-6 transition-all group">
+                <div className="flex items-start gap-5 bg-[#0F2847] border border-[#1E3A5F] hover:border-blue-500/30 rounded-xl p-6 transition-all group">
                   <span className="text-blue-400 font-bold text-2xl font-mono shrink-0 group-hover:text-blue-300 transition-colors">
                     {h.n}
                   </span>
@@ -251,7 +251,7 @@ export default function Membresia2() {
                     className={`w-full text-left rounded-xl p-6 border transition-all duration-200 group ${
                       selected
                         ? "bg-primary/10 border-primary/60 shadow-lg shadow-blue-600/10"
-                        : "bg-[#0F2542] border-[#1E3A5F] hover:border-blue-500/30"
+                        : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
                     }`}
                   >
                     <div className="flex items-start gap-4">
@@ -406,7 +406,7 @@ export default function Membresia2() {
           <div className="grid md:grid-cols-2 gap-4 mb-14">
             {beneficios.map((b, i) => (
               <FadeIn key={i} delay={i * 0.06}>
-                <div className="flex items-start gap-4 bg-[#0F2542] border border-[#1E3A5F] rounded-xl p-5 hover:border-blue-500/20 transition-all">
+                <div className="flex items-start gap-4 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-5 hover:border-blue-500/20 transition-all">
                   <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                   <p className="text-slate-300 text-sm leading-relaxed">{b}</p>
                 </div>
@@ -485,7 +485,7 @@ export default function Membresia2() {
                 Bienvenido al Círculo Cercano de Edmundo Treviño.
               </p>
 
-              <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-xl p-7 mb-10 max-w-2xl">
+              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-7 mb-10 max-w-2xl">
                 <p className="text-slate-400 text-sm leading-relaxed">
                   El primer paso es una{" "}
                   <span className="text-white font-semibold">sesión de diagnóstico estratégico</span>.{" "}

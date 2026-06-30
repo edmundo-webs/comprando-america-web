@@ -357,7 +357,7 @@ export default function Membresia() {
                   ))}
                 </div>
 
-                <div className="bg-[#132D50] border border-blue-500/20 rounded-xl p-6">
+                <div className="bg-[#0F2847] border border-blue-500/20 rounded-xl p-6">
                   <p className="text-white font-semibold mb-1">Somos sistema de inversión.</p>
                   <p className="text-slate-400 text-sm">No marketing de proyectos.</p>
                 </div>
@@ -524,7 +524,7 @@ export default function Membresia() {
               { num: "03", title: "Cenas Privadas", desc: "Reuniones exclusivas donde se cierran negocios y se construyen relaciones.", image: DINNER_IMAGE },
             ].map((e, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden h-full hover:border-blue-500/30 transition-all">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden h-full hover:border-blue-500/30 transition-all">
                   {'image' in e && (e as any).image && (
                     <img src={(e as any).image} alt={e.title} className="w-full h-32 object-cover" />
                   )}

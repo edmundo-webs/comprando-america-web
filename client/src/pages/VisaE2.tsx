@@ -146,7 +146,7 @@ export default function VisaE2() {
               { icon: FileCheck, title: "Estructura clara", desc: "Documentación legal y fiscal organizada correctamente." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/30 transition-all">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/30 transition-all">
                   <item.icon className="w-8 h-8 text-blue-400 mx-auto mb-4" />
                   <h3 className="text-white text-lg font-semibold mb-2">{item.title}</h3>
                   <p className="text-slate-400 text-sm">{item.desc}</p>
@@ -201,7 +201,7 @@ export default function VisaE2() {
               { step: "4", icon: FileCheck, title: "Proceso migratorio", desc: "La visa como resultado natural del proceso." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="relative bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/30 transition-all">
+                <div className="relative bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/30 transition-all">
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-primary text-white text-sm font-bold flex items-center justify-center">{item.step}</div>
                   <item.icon className="w-8 h-8 text-blue-400 mx-auto mb-3 mt-4" />
                   <h3 className="text-white text-base font-semibold mb-2">{item.title}</h3>
@@ -332,7 +332,7 @@ export default function VisaE2() {
               { icon: Users, title: "Comunidad estratégica", desc: "Oportunidades dentro de redes de inversionistas." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/30 transition-all">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 text-center h-full hover:border-blue-500/30 transition-all">
                   <item.icon className="w-8 h-8 text-blue-400 mx-auto mb-3" />
                   <h3 className="text-white text-base font-semibold mb-2">{item.title}</h3>
                   <p className="text-slate-400 text-sm">{item.desc}</p>
