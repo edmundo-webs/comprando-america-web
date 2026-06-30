@@ -133,7 +133,7 @@ type VehicleEntry = {
 };
 
 const VEHICLE_DATA: VehicleEntry[] = [
-  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/membresia-2" },
+  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/circulo-cercano" },
   { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"], href: "/fondo" },
   { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"], href: "/vc-8" },
   { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"], href: "/club-de-inversion-en-estados-unidos" },
@@ -1012,7 +1012,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
               </div>
             )}
             <div style={{ display: "flex", gap: "10px" }}>
-              <a href="/membresia-2" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "9px", cursor: "pointer", textDecoration: "none" }}>
+              <a href="/circulo-cercano" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "9px", cursor: "pointer", textDecoration: "none" }}>
                 Explorar Círculo Cercano <IconRight color={NAVY} />
               </a>
             </div>

@@ -54,6 +54,7 @@ function Router() {
       <Route path={"/tu-ruta"} component={NuevoHome} />
       <Route path="/membresia" component={Membresia} />
       <Route path="/membresia-2" component={Membresia2} />
+      <Route path="/circulo-cercano" component={Membresia2} />
       <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
       <Route path="/blog" component={BlogList} />
       <Route path="/blog/:slug" component={BlogPost} />
