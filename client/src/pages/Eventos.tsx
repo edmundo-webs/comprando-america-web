@@ -391,12 +391,12 @@ export default function Eventos() {
               <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Ecosistema</p>
               <h2 className="text-3xl md:text-4xl text-white mb-6">Los eventos son solo una parte del ecosistema</h2>
               <p className="text-slate-400 text-lg leading-relaxed mb-10">
-                Muchos de los participantes continúan su proceso a través del club de inversión, accediendo a oportunidades y estructurando su empresa en Estados Unidos.
+                Muchos de los participantes continúan su proceso a través del Círculo Cercano, accediendo a oportunidades y estructurando su empresa en Estados Unidos.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="/membresia">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                    Conocer el Club de Inversión <ArrowRight className="w-4 h-4" />
+                    Conocer el Círculo Cercano de Edmundo Treviño <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/oportunidades-de-inversion-en-estados-unidos">

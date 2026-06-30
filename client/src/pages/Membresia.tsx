@@ -212,7 +212,7 @@ export default function Membresia() {
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
               <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Club de Inversión
+                Círculo Cercano de Edmundo Treviño
               </span>
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
                 Club Privado de Inversionistas en{" "}
@@ -259,7 +259,7 @@ export default function Membresia() {
               <div className="relative rounded-2xl overflow-hidden border border-[#1E3A5F] bg-black aspect-video">
                 {!showVideo ? (
                   <button onClick={() => setShowVideo(true)} className="group relative w-full h-full">
-                    <img src={VIDEO_POSTER} alt="Conoce el club de inversión" className="w-full h-full object-cover" />
+                    <img src={VIDEO_POSTER} alt="Conoce el Círculo Cercano" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-20 h-20 rounded-full bg-primary/90 group-hover:bg-primary group-hover:scale-110 transition-all flex items-center justify-center shadow-2xl">
@@ -313,7 +313,7 @@ export default function Membresia() {
             <FadeIn>
               <div>
                 <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Metodología</p>
-                <h2 className="text-3xl text-white mb-3">El sistema detrás de el club de inversión</h2>
+                <h2 className="text-3xl text-white mb-3">El sistema detrás de el Círculo Cercano</h2>
                 <p className="text-slate-500 text-sm mb-8">6 pilares que transforman barreras en ventajas estratégicas</p>
 
                 <div className="space-y-4">
