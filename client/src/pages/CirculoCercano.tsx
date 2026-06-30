@@ -86,6 +86,7 @@ export default function CirculoCercano() {
   const [showBio, setShowBio] = useState(false);
   const [showEnfoque, setShowEnfoque] = useState(false);
   const [showMetodologia, setShowMetodologia] = useState(false);
+  const [showEstructura, setShowEstructura] = useState(false);
 
   function toggle(id: number) {
     setSelected(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
@@ -637,7 +638,7 @@ export default function CirculoCercano() {
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Estructura detrás del círculo.</h2>
             <p className="text-slate-400 text-sm">Explora nuestro enfoque y la metodología que aplicamos con cada miembro.</p>
           </FadeIn>
-          <FadeIn delay={0.1} className="flex flex-col sm:flex-row gap-4 justify-center">
+          <FadeIn delay={0.1} className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
             <button onClick={() => setShowEnfoque(true)}
               className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
               <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
@@ -657,6 +658,17 @@ export default function CirculoCercano() {
               <div className="text-left">
                 <p className="font-bold">Metodología</p>
                 <p className="text-slate-500 text-xs font-normal">6 pilares del sistema</p>
+              </div>
+              <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
+            </button>
+            <button onClick={() => setShowEstructura(true)}
+              className="inline-flex items-center justify-center gap-3 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-white font-bold px-8 py-5 rounded-2xl text-sm transition-all group">
+              <div className="w-9 h-9 rounded-xl bg-primary/20 group-hover:bg-primary/30 flex items-center justify-center transition-colors">
+                <Users className="w-5 h-5 text-blue-400" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold">Estructura de la comunidad</p>
+                <p className="text-slate-500 text-xs font-normal">Plataforma digital · Club</p>
               </div>
               <ChevronDown className="w-4 h-4 text-slate-500 ml-auto -rotate-90" />
             </button>
@@ -997,6 +1009,69 @@ export default function CirculoCercano() {
       </section>
 
       <Footer />
+
+      {/* ══ MODAL ESTRUCTURA DE LA COMUNIDAD ════════════════ */}
+      <AnimatePresence>
+        {showEstructura && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+            onClick={() => setShowEstructura(false)}>
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+            <motion.div initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12, scale: 0.98 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}>
+              <button onClick={() => setShowEstructura(false)} className="absolute top-5 right-5 text-slate-400 hover:text-slate-600 transition-colors p-1.5 rounded-lg hover:bg-slate-100 z-10">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+
+              <div className="p-8 md:p-10">
+                <p className="text-blue-600 text-xs font-mono font-semibold tracking-[0.25em] uppercase mb-2">Estructura del Club</p>
+                <h2 className="text-slate-900 text-2xl font-bold mb-1">¿Qué incluye tu membresía?</h2>
+                <p className="text-slate-500 text-sm mb-8">Una estructura integral diseñada para avanzar con claridad, estrategia y seguimiento real.</p>
+
+                {/* 6 pilares */}
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                  {[
+                    { icon: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" /></svg>, title: "Deal Day", desc: "Analizamos en vivo oportunidades de inversión en EE.UU. filtradas con soporte legal y financiero." },
+                    { icon: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" /></svg>, title: "Sesiones con Expertos", desc: "Asambleas mensuales para resolver dudas sobre inversión, estructuras legales, estrategias fiscales y proyectos." },
+                    { icon: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" /></svg>, title: "Eventos Presenciales", desc: "Reunimos inversionistas, abogados, banqueros y especialistas para fortalecer relaciones y acelerar decisiones." },
+                    { icon: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" /></svg>, title: "Mentorías en Tiempo Real", desc: "Aprende de inversionistas que ya operan en EE.UU. Sesiones privadas presenciales y digitales." },
+                    { icon: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" /></svg>, title: "Conversaciones Exclusivas", desc: "Empresarios, compradores de franquicias y expertos comparten estrategias y resultados reales." },
+                    { icon: <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" /></svg>, title: "Mesa de Dueños", desc: "Grupo privado donde miembros con experiencia evalúan y mejoran negociaciones con criterio operativo y financiero." },
+                  ].map(item => (
+                    <div key={item.title} className="bg-slate-50 border border-slate-100 rounded-xl p-5">
+                      <div className="text-blue-600 mb-3">{item.icon}</div>
+                      <h3 className="text-slate-800 font-bold text-sm mb-1.5">{item.title}</h3>
+                      <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Plataforma digital */}
+                <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6">
+                  <p className="text-blue-600 text-xs font-mono font-semibold tracking-[0.2em] uppercase mb-1">Plataforma Digital</p>
+                  <h3 className="text-slate-900 font-bold text-lg mb-1">Todo queda grabado. Aprende a tu ritmo.</h3>
+                  <p className="text-slate-500 text-sm mb-5">Si no puedes asistir, lo ves cuando puedas. Toda la experiencia en un solo lugar.</p>
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {[
+                      { title: "Deal Finding", desc: "Programa educativo de 4 módulos para detectar, evaluar, operar y escalar negocios." },
+                      { title: "Americaniza tu Empresa", desc: "Curso completo de +70 videos grabados para operar en Estados Unidos." },
+                      { title: "Asamblea de Miembros", desc: "Archivo completo de todas las sesiones mensuales." },
+                      { title: "Cumbre de Emprendimiento", desc: "Grabaciones de todas las cumbres presenciales." },
+                      { title: "Deal Day", desc: "Historial de sesiones de oportunidades de inversión presentadas." },
+                    ].map((prog, i) => (
+                      <div key={i} className="bg-white border border-blue-100 rounded-xl p-4">
+                        <p className="text-slate-800 text-sm font-semibold mb-1">{prog.title}</p>
+                        <p className="text-slate-500 text-xs leading-relaxed">{prog.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ══ MODAL NUESTRO ENFOQUE ════════════════════════════ */}
       <AnimatePresence>
