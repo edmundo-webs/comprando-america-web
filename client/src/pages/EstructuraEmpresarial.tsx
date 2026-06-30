@@ -196,11 +196,6 @@ export default function EstructuraEmpresarial() {
         </div>
       </section>
 
-      {/* ── Photo break — tax slide ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={TAX_SLIDE} alt="Presentación sobre estructura fiscal" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0E2544] via-transparent to-white/80" />
-      </section>
 
       {/* ═══ 5. TEXAS VS FLORIDA — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
@@ -373,11 +368,6 @@ export default function EstructuraEmpresarial() {
         </div>
       </section>
 
-      {/* ── Photo break — audience ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={AUDIENCE} alt="Comunidad de empresarios" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0E2544]" />
-      </section>
 
       {/* ═══ 10. TESTIMONIOS — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">

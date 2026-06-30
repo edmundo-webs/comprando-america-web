@@ -215,11 +215,6 @@ export default function BienesRaices() {
         </div>
       </section>
 
-      {/* ── Photo break — aerial inspection ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={INSPECTION} alt="Vista aérea viaje de inspección inmobiliaria" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0E2544] via-transparent to-white/80" />
-      </section>
 
       {/* ═══ 5. ERRORES COMUNES — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
@@ -322,11 +317,6 @@ export default function BienesRaices() {
         </div>
       </section>
 
-      {/* ── Photo break — audience ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={AUDIENCE} alt="Comunidad de inversionistas" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0B1F3A]/60" />
-      </section>
 
       {/* ═══ 8. CONEXIONES — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">

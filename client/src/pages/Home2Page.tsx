@@ -494,20 +494,6 @@ export default function Home2Page() {
         </div>
       </section>
 
-      {/* ── Photo break ── */}
-      <section className="relative h-56 md:h-72 overflow-hidden">
-        <img
-          src={NETWORKING_IMG}
-          alt="Networking Comprando América"
-          className="w-full h-full object-cover"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to bottom, ${BG} 0%, transparent 25%, transparent 75%, ${BG2} 100%)`,
-          }}
-        />
-      </section>
 
       {/* ══════════════════════════════════════════════
           S4 — SERVICIOS DEL ECOSISTEMA
@@ -659,20 +645,6 @@ export default function Home2Page() {
         </div>
       </section>
 
-      {/* ── Photo break ── */}
-      <section className="relative h-56 md:h-72 overflow-hidden">
-        <img
-          src={PANEL_IMG}
-          alt="Panel de expertos Comprando América"
-          className="w-full h-full object-cover"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(to bottom, ${BG} 0%, transparent 25%, transparent 75%, ${BG3} 100%)`,
-          }}
-        />
-      </section>
 
       {/* ══════════════════════════════════════════════
           S6 — ROADMAP DEL INVERSIONISTA

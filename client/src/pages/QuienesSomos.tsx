@@ -171,11 +171,6 @@ export default function QuienesSomos() {
         </div>
       </section>
 
-      {/* ── Photo break — equipo rooftop ── */}
-      <section className="relative h-64 md:h-96 overflow-hidden">
-        <img src={TEAM_IMAGE} alt="Equipo Comprando América" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0E2544]" />
-      </section>
 
       {/* ═══ DIFERENCIAL — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
@@ -270,11 +265,6 @@ export default function QuienesSomos() {
       {/* ═══ ALIADOS — component (navy) ═══ */}
       <AlliesSection />
 
-      {/* ── Photo break — audiencia ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={AUDIENCE_IMAGE} alt="Comunidad de inversionistas" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0B1F3A]/60" />
-      </section>
 
       {/* ═══ COMUNIDAD — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">

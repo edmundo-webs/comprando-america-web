@@ -421,24 +421,6 @@ export default function Oportunidades() {
         </div>
       </section>
 
-      {/* ── Photo break ── */}
-      <section className="relative h-72 md:h-96 overflow-hidden">
-        <img
-          src={VOTING_IMAGE}
-          alt="Miembros analizando oportunidades en sesión privada"
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-[#0B1F3A]/30 to-[#0E2544]/80" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <FadeIn>
-            <blockquote className="text-center px-6 max-w-2xl">
-              <p className="text-white text-xl md:text-2xl font-semibold italic leading-relaxed drop-shadow-lg">
-                "Solo el 20% de lo que evaluamos llega a ser presentado a la comunidad."
-              </p>
-            </blockquote>
-          </FadeIn>
-        </div>
-      </section>
 
       {/* ═══════════════════════════════════════════════
           5. DEAL DAY
@@ -859,15 +841,6 @@ export default function Oportunidades() {
         </div>
       </section>
 
-      {/* ── Photo break ── */}
-      <section className="relative h-72 md:h-96 overflow-hidden">
-        <img
-          src={PANEL_IMAGE}
-          alt="Panel de expertos Comprando América"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0E2544]/70" />
-      </section>
 
       {/* ═══════════════════════════════════════════════
           9. MEMBRESÍA

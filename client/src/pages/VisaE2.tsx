@@ -183,11 +183,6 @@ export default function VisaE2() {
         </div>
       </section>
 
-      {/* ── Photo break — E-2 slide ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={E2_SLIDE} alt="Presentación sobre requisitos de visa E-2" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0E2544] via-transparent to-white/80" />
-      </section>
 
       {/* ═══ 5. CÓMO SE CONSTRUYE — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
@@ -348,11 +343,6 @@ export default function VisaE2() {
         </div>
       </section>
 
-      {/* ── Photo break — audience ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={AUDIENCE} alt="Comunidad de inversionistas" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0E2544]" />
-      </section>
 
       {/* ═══ 10. CONEXIONES — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">

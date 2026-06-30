@@ -559,11 +559,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Photo break — sala llena ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={AUDIENCE} alt="Sala llena de inversionistas" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#091A30]" />
-      </section>
 
       {/* ═══ 4. EDMUNDO CEO — ☀️ BLANCO ═══ */}
       <EdmundoSection />
@@ -621,11 +616,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Photo break — panel de expertos ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={PANEL} alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F5F7FA] via-transparent to-[#0B1F3A]" />
-      </section>
 
       {/* ═══ 8. EVENTOS — ☀️ BLANCO ═══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">

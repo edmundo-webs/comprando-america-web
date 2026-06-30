@@ -377,11 +377,6 @@ export default function Eventos() {
         </section>
       </div>
 
-      {/* ── Photo break — panel completo ── */}
-      <section className="relative h-64 md:h-80 overflow-hidden">
-        <img src={PHOTOS.panel} alt="Panel de expertos Comprando América" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-[#F5F7FA]/50" />
-      </section>
 
       {/* ═══ ECOSISTEMA — navy ═══ */}
       <section className="bg-[#0B1F3A] py-20 md:py-28">
