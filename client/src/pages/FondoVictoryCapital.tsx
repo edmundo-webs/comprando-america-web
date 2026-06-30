@@ -319,7 +319,7 @@ export default function FondoVictoryCapital() {
             <div className="grid md:grid-cols-2 gap-8">
               <FadeIn>
                 <div className="space-y-6">
-                  <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6">
+                  <div className="flex items-start gap-4 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6">
                     <MapPin className="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <h3 className="text-white font-semibold mb-2">
@@ -331,7 +331,7 @@ export default function FondoVictoryCapital() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6">
+                  <div className="flex items-start gap-4 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6">
                     <Shield className="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" />
                     <div>
                       <h3 className="text-white font-semibold mb-2">
@@ -455,7 +455,7 @@ export default function FondoVictoryCapital() {
             <FadeIn delay={0.1}>
               <div className="bg-[#0E2544] border border-[#1E3A5F] rounded-2xl p-8 mb-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-                  <div className="flex-1 text-center bg-[#132D50] rounded-xl p-5">
+                  <div className="flex-1 text-center bg-[#0F2847] rounded-xl p-5">
                     <p className="text-slate-400 text-xs font-mono uppercase tracking-wider mb-2">
                       Compra
                     </p>
@@ -594,7 +594,7 @@ export default function FondoVictoryCapital() {
             <div className="space-y-3">
               {RISKS.map((risk, i) => (
                 <FadeIn key={i} delay={i * 0.05}>
-                  <div className="flex items-start gap-4 bg-[#132D50] border border-amber-500/20 rounded-xl p-5">
+                  <div className="flex items-start gap-4 bg-[#0F2847] border border-amber-500/20 rounded-xl p-5">
                     <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
                     <p className="text-slate-300 text-sm leading-relaxed">{risk}</p>
                   </div>

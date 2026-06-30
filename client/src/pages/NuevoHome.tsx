@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const NAVY = "#0B1F3A";
 const GOLD = "#C9A84C";
 const GOLD_LIGHT = "#E2C06E";
-const NAVY_CARD = "#112240";
+const NAVY_CARD = "#0F2847";
 const NAVY_BORDER = "#1E3A5F";
 
 function usePlayfairFont() {
@@ -624,7 +624,7 @@ function Screen4({ onNext }: { onNext: (ids: string[]) => void }) {
               <motion.button key={op.id} onClick={() => toggle(op.id)}
                 animate={isOther && shaking ? { x: [0, -5, 5, -4, 4, 0] } : { x: 0 }}
                 transition={{ duration: 0.4 }}
-                style={{ background: isSel ? `linear-gradient(135deg,#1A3558,#112240)` : NAVY_CARD, border: `2px solid ${isSel ? GOLD : NAVY_BORDER}`, borderRadius: "12px", padding: "18px 14px", cursor: "pointer", textAlign: "left", opacity: isOther ? 0.45 : 1, transition: "border-color 0.2s,background 0.2s" }}>
+                style={{ background: isSel ? `linear-gradient(135deg,#1A3558,#0F2847)` : NAVY_CARD, border: `2px solid ${isSel ? GOLD : NAVY_BORDER}`, borderRadius: "12px", padding: "18px 14px", cursor: "pointer", textAlign: "left", opacity: isOther ? 0.45 : 1, transition: "border-color 0.2s,background 0.2s" }}>
                 {isSel && (
                   <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "6px" }}>
                     <div style={{ width: "18px", height: "18px", borderRadius: "50%", background: GOLD, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -980,7 +980,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
         {/* ── Círculo Cercano de Edmundo Treviño ── */}
         <div style={{ marginBottom: "44px" }}>
           <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "18px" }}>Próximo Paso Recomendado</h3>
-          <div style={{ background: `linear-gradient(135deg, #0D1F3C 0%, #112240 100%)`, border: `1px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", position: "relative", overflow: "hidden" }}>
+          <div style={{ background: `linear-gradient(135deg, #0D1F3C 0%, #0F2847 100%)`, border: `1px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", position: "relative", overflow: "hidden" }}>
             {/* Gold accent line */}
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
             {/* Premium badge */}
@@ -1269,7 +1269,7 @@ function MiRutaSection({ objetivo }: { objetivo: string | null }) {
                   const isSel = estructuraSel === c.id;
                   return (
                     <button key={c.id} onClick={() => { setEstructuraSel(isSel ? null : c.id); setActiveStation(Math.max(activeStation, 4)); }}
-                      style={{ background: isSel ? `linear-gradient(135deg,#1A3558,#112240)` : `${NAVY}80`, border: `1px solid ${isSel ? GOLD : NAVY_BORDER}`, borderRadius: "10px", padding: "14px 18px", cursor: "pointer", textAlign: "left", transition: "all 0.2s", minWidth: "140px" }}>
+                      style={{ background: isSel ? `linear-gradient(135deg,#1A3558,#0F2847)` : `${NAVY}80`, border: `1px solid ${isSel ? GOLD : NAVY_BORDER}`, borderRadius: "10px", padding: "14px 18px", cursor: "pointer", textAlign: "left", transition: "all 0.2s", minWidth: "140px" }}>
                       <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: isSel ? GOLD : "#C8D6E8", marginBottom: "4px" }}>{c.label}</div>
                       <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580" }}>{c.desc}</div>
                     </button>

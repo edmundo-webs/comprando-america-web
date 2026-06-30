@@ -26,7 +26,7 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 // ─── Module Card ───
 function ModuleCard({ number, title, topics }: { number: string; title: string; topics: string[] }) {
   return (
-    <div className="group relative bg-[#132D50] border border-[#1E3A5F] rounded-xl p-8 hover:border-blue-500/30 transition-all duration-500 h-full">
+    <div className="group relative bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-8 hover:border-blue-500/30 transition-all duration-500 h-full">
       <div className="absolute inset-0 bg-gradient-to-br from-emerald/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl" />
       <div className="relative">
         <div className="w-14 h-14 rounded-lg bg-blue-500/10 text-primary flex items-center justify-center mb-6 group-hover:bg-blue-500/15 transition-colors">
@@ -214,7 +214,7 @@ export default function Formacion() {
               }
             ].map((benefit, i) => (
               <FadeIn key={benefit.title} delay={i * 0.05}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all duration-500">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all duration-500">
                   <h3 className="text-lg font-serif text-white mb-3">{benefit.title}</h3>
                   <p className="text-white/60 text-sm leading-relaxed">{benefit.description}</p>
                 </div>

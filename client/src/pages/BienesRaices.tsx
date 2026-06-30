@@ -166,7 +166,7 @@ export default function BienesRaices() {
               { icon: Users, title: "Accesibilidad para extranjeros", desc: "En Estados Unidos los extranjeros pueden adquirir propiedades sin restricciones complejas." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.08}>
-                <div className="bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 h-full hover:border-blue-500/30 transition-all">
                   <div className="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4">
                     <item.icon className="w-5 h-5" />
                   </div>
@@ -234,7 +234,7 @@ export default function BienesRaices() {
               { title: "Invertir sin due diligence", desc: "Falta de análisis profesional y acompañamiento experto en decisiones críticas de inversión." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#132D50] border border-red-500/20 rounded-xl p-6 hover:border-red-500/30 transition-all">
+                <div className="bg-[#0F2847] border border-red-500/20 rounded-xl p-6 hover:border-red-500/30 transition-all">
                   <div className="flex items-start gap-4">
                     <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
                     <div>

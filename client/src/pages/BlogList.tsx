@@ -129,7 +129,7 @@ export default function BlogList() {
                   placeholder="Buscar artículos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#132D50] border border-[#1E3A5F] rounded-lg pl-12 pr-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-primary/50 transition-colors"
+                  className="w-full bg-[#0F2847] border border-[#1E3A5F] rounded-lg pl-12 pr-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-primary/50 transition-colors"
                 />
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function BlogList() {
                     <FadeIn key={blog.id} delay={i * 0.05}>
                       <Link href={`/blog/${blog.slug}`}>
                         <a className="group h-full block">
-                          <div className="relative bg-[#132D50] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all duration-500 h-full flex flex-col">
+                          <div className="relative bg-[#0F2847] border border-[#1E3A5F] rounded-xl overflow-hidden hover:border-blue-500/30 transition-all duration-500 h-full flex flex-col">
                             {/* Image */}
                             {blog.featuredImage && (
                               <div className="relative h-56 overflow-hidden bg-gradient-to-br from-primary/20 to-transparent">

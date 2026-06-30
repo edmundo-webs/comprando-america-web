@@ -150,7 +150,7 @@ export default function EstructuraInversion() {
               { icon: Shield, text: "Estrategia migratoria (si aplica) evaluada con aliados legales, sin promesas ni atajos." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all">
+                <div className="flex items-start gap-4 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all">
                   <item.icon className="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" />
                   <p className="text-slate-300 leading-relaxed">{item.text}</p>
                 </div>

@@ -176,7 +176,7 @@ export default function LLC() {
                   className={`p-6 rounded-xl border-2 transition-all ${
                     selectedObjective === option.id
                       ? "border-primary bg-blue-500/10"
-                      : "border-[#1E3A5F] bg-[#132D50] hover:border-primary/50"
+                      : "border-[#1E3A5F] bg-[#0F2847] hover:border-primary/50"
                   }`}
                 >
                   <div className="text-3xl mb-3">{option.icon}</div>
@@ -228,7 +228,7 @@ export default function LLC() {
       </section>
 
       {/* ═══ PRUEBA SOCIAL DINÁMICA ═══ */}
-      <section className="py-16 bg-[#132D50]">
+      <section className="py-16 bg-[#0F2847]">
         <div className="container">
           <motion.div
             initial={{ opacity: 0 }}
@@ -306,7 +306,7 @@ export default function LLC() {
                       setCalculatorLocation(option);
                       setCalculatorStep(2);
                     }}
-                    className="w-full p-4 bg-[#132D50] border border-[#1E3A5F] rounded-lg text-white hover:border-primary/50 transition-all text-left"
+                    className="w-full p-4 bg-[#0F2847] border border-[#1E3A5F] rounded-lg text-white hover:border-primary/50 transition-all text-left"
                   >
                     {option}
                   </button>
@@ -324,7 +324,7 @@ export default function LLC() {
                       setCalculatorActivity(option);
                       setCalculatorStep(3);
                     }}
-                    className="w-full p-4 bg-[#132D50] border border-[#1E3A5F] rounded-lg text-white hover:border-primary/50 transition-all text-left"
+                    className="w-full p-4 bg-[#0F2847] border border-[#1E3A5F] rounded-lg text-white hover:border-primary/50 transition-all text-left"
                   >
                     {option}
                   </button>
@@ -386,7 +386,7 @@ export default function LLC() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   viewport={{ once: true }}
-                  className="flex items-start gap-4 bg-[#132D50] border border-[#1E3A5F] rounded-xl p-6"
+                  className="flex items-start gap-4 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6"
                 >
                   <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-1" />
                   <span className="text-white/80">{item}</span>
