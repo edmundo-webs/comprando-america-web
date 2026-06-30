@@ -402,8 +402,6 @@ export default function ClubInversion() {
             ))}
           </div>
 
-          <div>
-          </FadeIn>
         </div>
       </section>
 
