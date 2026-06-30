@@ -728,6 +728,129 @@ export default function CirculoCercano() {
         </div>
       </section>
 
+      {/* ══ ¿POR QUÉ ENTIENDO EL JUEGO? ══════════════════════ */}
+      <section className="bg-[#0B1F3A] py-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <FadeIn className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-0.5 bg-primary/50" />
+              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Contexto</span>
+              <div className="w-8 h-0.5 bg-primary/50" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+              ¿Por qué entiendo el juego?
+            </h2>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <div className="space-y-3">
+              {/* Sub-section 1 */}
+              <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-2xl overflow-hidden">
+                <button
+                  onClick={() => setShowEntendemosJuego1(prev => !prev)}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-[#0F2847] transition-colors group"
+                >
+                  <span className="text-white font-semibold text-base group-hover:text-blue-300 transition-colors">
+                    ¿Cómo puedo ayudarte?
+                  </span>
+                  <motion.span animate={{ rotate: showEntendemosJuego1 ? 180 : 0 }} transition={{ duration: 0.25 }} className="shrink-0 ml-4">
+                    <ChevronDown className="w-5 h-5 text-blue-400" />
+                  </motion.span>
+                </button>
+                <AnimatePresence>
+                  {showEntendemosJuego1 && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.35, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-8 border-t border-[#1E3A5F]">
+                        <h3 className="text-white text-xl font-semibold mt-6 mb-6 leading-snug">
+                          Porque entiendo el juego.
+                          <br />
+                          <span className="font-light">Y quiero que tú también lo entiendas.</span>
+                        </h3>
+                        <div className="space-y-5 mb-8">
+                          {[
+                            { title: "No basta con tener capital.", desc: "Necesitas entender dónde y cómo desplegarlo." },
+                            { title: "No basta con encontrar oportunidades.", desc: "Necesitas criterio para evaluarlas." },
+                            { title: "No basta con abrir una empresa.", desc: "Necesitas estructura legal, fiscal y estratégica." },
+                            { title: "Necesitas hacer las preguntas correctas.", desc: "Las que evitan los errores más costosos." },
+                          ].map((item, i) => (
+                            <div key={i} className="flex items-start gap-4">
+                              <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2.5 shrink-0" />
+                              <div>
+                                <p className="text-white font-semibold text-sm">{item.title}</p>
+                                <p className="text-slate-400 text-sm mt-0.5 leading-relaxed">{item.desc}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-slate-300 text-sm leading-relaxed border-l-2 border-blue-500/40 pl-4">
+                          Por eso decidí abrir mi{" "}
+                          <span className="text-white font-semibold">Círculo Cercano.</span>
+                          {" "}Un espacio privado para empresarios e inversionistas que desean construir patrimonio en Estados Unidos con mayor claridad y menos errores.
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Sub-section 2 */}
+              <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-2xl overflow-hidden">
+                <button
+                  onClick={() => setShowEntendemosJuego2(prev => !prev)}
+                  className="w-full flex items-center justify-between p-6 text-left hover:bg-[#0F2847] transition-colors group"
+                >
+                  <span className="text-white font-semibold text-base group-hover:text-blue-300 transition-colors">
+                    ¿Qué encontrarás dentro?
+                  </span>
+                  <motion.span animate={{ rotate: showEntendemosJuego2 ? 180 : 0 }} transition={{ duration: 0.25 }} className="shrink-0 ml-4">
+                    <ChevronDown className="w-5 h-5 text-blue-400" />
+                  </motion.span>
+                </button>
+                <AnimatePresence>
+                  {showEntendemosJuego2 && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.35, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-8 border-t border-[#1E3A5F]">
+                        <p className="text-slate-400 text-sm mt-6 mb-6 italic">
+                          No es un curso. No es una membresía genérica. Es acceso a criterio.
+                        </p>
+                        <div className="grid md:grid-cols-2 gap-3">
+                          {[
+                            "Mi experiencia personal como empresario e inversionista.",
+                            "Acceso a empresarios e inversionistas serios.",
+                            "Oportunidades curadas. No todo llega aquí.",
+                            "Reuniones privadas y seguimiento real.",
+                            "Especialistas que han trabajado conmigo durante años.",
+                            "Conversaciones honestas sobre negocios, patrimonio e inversión.",
+                            "Un lugar donde contrastar ideas antes de tomar decisiones importantes.",
+                          ].map((b, i) => (
+                            <div key={i} className="flex items-start gap-3 bg-[#0B1F3A] border border-[#1E3A5F] rounded-xl p-4 hover:border-blue-500/20 transition-all">
+                              <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                              <p className="text-slate-300 text-sm leading-relaxed">{b}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ══ FILTRO + INVERSIÓN ═════════════════════════════════ */}
       <section className="bg-[#091A30] py-28 px-4">
         <div className="max-w-4xl mx-auto">
@@ -909,129 +1032,6 @@ export default function CirculoCercano() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ══ ¿POR QUÉ ENTIENDO EL JUEGO? ══════════════════════ */}
-      <section className="bg-[#0B1F3A] py-24 px-4">
-        <div className="max-w-4xl mx-auto">
-          <FadeIn className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-8 h-0.5 bg-primary/50" />
-              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Contexto</span>
-              <div className="w-8 h-0.5 bg-primary/50" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
-              ¿Por qué entiendo el juego?
-            </h2>
-          </FadeIn>
-
-          <FadeIn delay={0.1}>
-            <div className="space-y-3">
-              {/* Sub-section 1 */}
-              <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-2xl overflow-hidden">
-                <button
-                  onClick={() => setShowEntendemosJuego1(prev => !prev)}
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-[#0F2847] transition-colors group"
-                >
-                  <span className="text-white font-semibold text-base group-hover:text-blue-300 transition-colors">
-                    ¿Cómo puedo ayudarte?
-                  </span>
-                  <motion.span animate={{ rotate: showEntendemosJuego1 ? 180 : 0 }} transition={{ duration: 0.25 }} className="shrink-0 ml-4">
-                    <ChevronDown className="w-5 h-5 text-blue-400" />
-                  </motion.span>
-                </button>
-                <AnimatePresence>
-                  {showEntendemosJuego1 && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.35, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-8 border-t border-[#1E3A5F]">
-                        <h3 className="text-white text-xl font-semibold mt-6 mb-6 leading-snug">
-                          Porque entiendo el juego.
-                          <br />
-                          <span className="font-light">Y quiero que tú también lo entiendas.</span>
-                        </h3>
-                        <div className="space-y-5 mb-8">
-                          {[
-                            { title: "No basta con tener capital.", desc: "Necesitas entender dónde y cómo desplegarlo." },
-                            { title: "No basta con encontrar oportunidades.", desc: "Necesitas criterio para evaluarlas." },
-                            { title: "No basta con abrir una empresa.", desc: "Necesitas estructura legal, fiscal y estratégica." },
-                            { title: "Necesitas hacer las preguntas correctas.", desc: "Las que evitan los errores más costosos." },
-                          ].map((item, i) => (
-                            <div key={i} className="flex items-start gap-4">
-                              <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-2.5 shrink-0" />
-                              <div>
-                                <p className="text-white font-semibold text-sm">{item.title}</p>
-                                <p className="text-slate-400 text-sm mt-0.5 leading-relaxed">{item.desc}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        <p className="text-slate-300 text-sm leading-relaxed border-l-2 border-blue-500/40 pl-4">
-                          Por eso decidí abrir mi{" "}
-                          <span className="text-white font-semibold">Círculo Cercano.</span>
-                          {" "}Un espacio privado para empresarios e inversionistas que desean construir patrimonio en Estados Unidos con mayor claridad y menos errores.
-                        </p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Sub-section 2 */}
-              <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-2xl overflow-hidden">
-                <button
-                  onClick={() => setShowEntendemosJuego2(prev => !prev)}
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-[#0F2847] transition-colors group"
-                >
-                  <span className="text-white font-semibold text-base group-hover:text-blue-300 transition-colors">
-                    ¿Qué encontrarás dentro?
-                  </span>
-                  <motion.span animate={{ rotate: showEntendemosJuego2 ? 180 : 0 }} transition={{ duration: 0.25 }} className="shrink-0 ml-4">
-                    <ChevronDown className="w-5 h-5 text-blue-400" />
-                  </motion.span>
-                </button>
-                <AnimatePresence>
-                  {showEntendemosJuego2 && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.35, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-8 border-t border-[#1E3A5F]">
-                        <p className="text-slate-400 text-sm mt-6 mb-6 italic">
-                          No es un curso. No es una membresía genérica. Es acceso a criterio.
-                        </p>
-                        <div className="grid md:grid-cols-2 gap-3">
-                          {[
-                            "Mi experiencia personal como empresario e inversionista.",
-                            "Acceso a empresarios e inversionistas serios.",
-                            "Oportunidades curadas. No todo llega aquí.",
-                            "Reuniones privadas y seguimiento real.",
-                            "Especialistas que han trabajado conmigo durante años.",
-                            "Conversaciones honestas sobre negocios, patrimonio e inversión.",
-                            "Un lugar donde contrastar ideas antes de tomar decisiones importantes.",
-                          ].map((b, i) => (
-                            <div key={i} className="flex items-start gap-3 bg-[#0B1F3A] border border-[#1E3A5F] rounded-xl p-4 hover:border-blue-500/20 transition-all">
-                              <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-                              <p className="text-slate-300 text-sm leading-relaxed">{b}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
           </FadeIn>
         </div>
       </section>
