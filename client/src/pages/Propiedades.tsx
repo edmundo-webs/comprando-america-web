@@ -3,8 +3,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const NAVY = "#0B1F3A";
-const GOLD = "#C9A84C";
-const GOLD_LIGHT = "#E2C06E";
+const GOLD = "#2563EB";
+const GOLD_LIGHT = "#3B82F6";
 const NAVY_CARD = "#0F2847";
 const NAVY_DARK = "#0A1828";
 const NAVY_BORDER = "#1E3A5F";

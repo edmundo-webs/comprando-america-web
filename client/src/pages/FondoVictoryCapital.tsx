@@ -196,7 +196,7 @@ export default function FondoVictoryCapital() {
 
       {/* ═══ BANNER INVESTMENT WEEK ═══ */}
       <a href="/investment-week" className="block">
-        <div className="bg-[#C9A84C] px-6 py-4 flex items-center justify-between gap-4 hover:brightness-105 transition-all">
+        <div className="bg-[#2563EB] px-6 py-4 flex items-center justify-between gap-4 hover:brightness-105 transition-all">
           <div className="flex items-center gap-3">
             <span className="text-2xl">✈️</span>
             <div>
@@ -426,7 +426,7 @@ export default function FondoVictoryCapital() {
                     {item.body}
                   </p>
                   {item.note && (
-                    <div className="mt-4 pt-4 border-t border-amber-200 bg-amber-50 rounded-lg p-3">
+                    <div className="mt-4 pt-4 border-t border-blue-200 bg-blue-50 rounded-lg p-3">
                       <p className="text-amber-700 text-xs font-semibold">
                         Importante: {item.note}
                       </p>
@@ -482,7 +482,7 @@ export default function FondoVictoryCapital() {
                 </p>
                 <div className="border-t border-[#1E3A5F] pt-4">
                   <p className="text-slate-500 text-xs">
-                    <span className="text-amber-400 font-semibold">Nota:</span> Esto no
+                    <span className="text-blue-400 font-semibold">Nota:</span> Esto no
                     es una promesa. Es la lógica económica del modelo.
                   </p>
                 </div>
@@ -490,8 +490,8 @@ export default function FondoVictoryCapital() {
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <div className="flex items-start gap-4 bg-amber-500/10 border border-amber-500/30 rounded-xl p-5">
-                <Clock className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-4 bg-blue-500/10 border border-blue-500/30 rounded-xl p-5">
+                <Clock className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-white font-semibold mb-1">
                     Esta no es una inversión de corto plazo
@@ -577,7 +577,7 @@ export default function FondoVictoryCapital() {
           <div className="max-w-3xl mx-auto">
             <FadeIn>
               <div className="mb-10">
-                <p className="text-amber-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
+                <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">
                   Transparencia
                 </p>
                 <h2 className="text-3xl md:text-4xl text-white mb-4">
@@ -594,8 +594,8 @@ export default function FondoVictoryCapital() {
             <div className="space-y-3">
               {RISKS.map((risk, i) => (
                 <FadeIn key={i} delay={i * 0.05}>
-                  <div className="flex items-start gap-4 bg-[#0F2847] border border-amber-500/20 rounded-xl p-5">
-                    <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4 bg-[#0F2847] border border-blue-500/20 rounded-xl p-5">
+                    <AlertTriangle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                     <p className="text-slate-300 text-sm leading-relaxed">{risk}</p>
                   </div>
                 </FadeIn>

@@ -66,7 +66,7 @@ const testimonials: Testimonial[] = [
     city: "Monterrey",
     quote: "La diferencia es que aquí los proyectos ya vienen filtrados y estructurados.",
     initials: "F",
-    bgGradient: "from-amber-500 to-orange-500",
+    bgGradient: "from-blue-500 to-orange-500",
   },
   {
     id: 8,
@@ -226,7 +226,7 @@ const testimonials: Testimonial[] = [
     city: "Guadalajara",
     quote: "Los eventos presenciales ayudan mucho a entender cómo están invirtiendo otros empresarios.",
     initials: "E",
-    bgGradient: "from-amber-600 to-amber-500",
+    bgGradient: "from-blue-600 to-blue-500",
   },
   {
     id: 28,
@@ -306,7 +306,7 @@ const testimonials: Testimonial[] = [
     city: "Guadalajara",
     quote: "Aquí encontré la combinación perfecta de educación, oportunidades y networking.",
     initials: "G",
-    bgGradient: "from-amber-700 to-amber-600",
+    bgGradient: "from-amber-700 to-blue-600",
   },
   {
     id: 38,

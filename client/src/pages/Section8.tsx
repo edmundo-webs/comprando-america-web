@@ -31,8 +31,8 @@ const NAVY      = "#0B1F3A";
 const NAVY_CARD = "#0F2847";
 const NAVY_DARK = "#091A30";
 const BORDER    = "#1E3A5F";
-const GOLD      = "#C9A84C";
-const GOLD_LIGHT = "#E2C06E";
+const GOLD      = "#2563EB";
+const GOLD_LIGHT = "#3B82F6";
 
 const WA_MSG =
   "Hola, me interesa conocer más sobre las propiedades con Section 8 en Estados Unidos.";
