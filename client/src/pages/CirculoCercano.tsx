@@ -773,7 +773,7 @@ export default function CirculoCercano() {
             <div className="relative bg-[#0F2542] border-2 border-primary/50 rounded-2xl p-8 md:p-10 shadow-xl shadow-blue-600/15">
               <div className="absolute -top-4 left-8">
                 <span className="bg-primary text-white text-xs font-bold px-5 py-2 rounded-full tracking-wide shadow-lg shadow-blue-600/30">
-                  Recomendado
+                  Punto de entrada
                 </span>
               </div>
 
@@ -790,7 +790,7 @@ export default function CirculoCercano() {
                 <div className="md:border-l md:border-[#1E3A5F] md:pl-8">
                   <p className="text-slate-500 text-xs uppercase tracking-widest mb-4">El acceso incluye</p>
                   <ul className="space-y-3">
-                    {["Sesión de diagnóstico estratégico", "Acceso a la red de expertos", "Reuniones privadas con Edmundo", "Comunidad de 40+ miembros activos", "Oportunidades curadas y evaluadas"].map((item, i) => (
+                    {["1 sesión de diagnóstico con Edmundo", "Acceso a la red de expertos", "Reuniones grupales para revisar proyectos", "Comunidad de 40+ miembros activos", "Oportunidades curadas y evaluadas"].map((item, i) => (
                       <li key={i} className="flex items-center gap-3">
                         <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
                         <span className="text-slate-300 text-sm">{item}</span>
@@ -845,7 +845,7 @@ export default function CirculoCercano() {
                       {/* Growth */}
                       <div className="relative bg-[#0F2542] border-2 border-primary rounded-2xl p-6 flex flex-col shadow-xl shadow-blue-600/20">
                         <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                          <span className="bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap shadow-lg">Más Popular</span>
+                          <span className="bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap shadow-lg">Mayor acceso</span>
                         </div>
                         <p className="text-blue-400 text-xs font-mono mb-1 mt-1">Investor</p>
                         <p className="text-white text-xl font-extrabold mb-0.5">Growth</p>
