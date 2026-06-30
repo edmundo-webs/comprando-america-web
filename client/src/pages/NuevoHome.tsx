@@ -346,11 +346,11 @@ function FlowTopBar({ screen, onBack }: { screen: number; onBack: () => void }) 
   const canGoBack = screen >= 2 && screen !== 6;
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 80, padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: `linear-gradient(to bottom, ${NAVY}E8 0%, ${NAVY}A0 70%, transparent 100%)`, pointerEvents: "none" }}>
-      {/* Logo */}
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", pointerEvents: "auto" }}>
+      {/* Logo — home link */}
+      <a href="https://www.comprandoamerica.com" style={{ display: "flex", alignItems: "center", gap: "10px", pointerEvents: "auto", textDecoration: "none" }}>
         <img src={LOGO_URL} alt="Comprando América" style={{ height: "38px", width: "38px", borderRadius: "6px", objectFit: "contain" }} />
         <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", color: "#fff" }}>Comprando América</span>
-      </div>
+      </a>
       {/* Back button */}
       {canGoBack && (
         <button onClick={onBack} style={{ pointerEvents: "auto", display: "flex", alignItems: "center", gap: "6px", background: `${NAVY_CARD}CC`, backdropFilter: "blur(8px)", border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "7px 14px", cursor: "pointer", color: "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, letterSpacing: "0.04em", transition: "all 0.2s" }}
