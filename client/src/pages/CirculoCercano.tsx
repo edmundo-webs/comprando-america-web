@@ -391,10 +391,14 @@ export default function CirculoCercano() {
           <FadeIn delay={0.4} className="mt-8">
             <div className="flex items-center gap-5 bg-[#0F2542] border border-[#1E3A5F] rounded-2xl p-6">
               <img src={EDMUNDO} alt="Edmundo Treviño" className="w-14 h-14 rounded-full object-cover object-top border-2 border-primary/40 shrink-0" />
-              <div>
+              <div className="flex-1">
                 <p className="text-white font-bold">Edmundo Treviño</p>
                 <p className="text-slate-400 text-sm mt-0.5">El centro del círculo — 20+ años de experiencia en negocios, inversiones y patrimonio en Estados Unidos.</p>
               </div>
+              <button onClick={() => setShowBio(true)}
+                className="shrink-0 inline-flex items-center gap-2 bg-[#0B1F3A] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-slate-300 hover:text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition-all">
+                Biografía <ChevronDown className="w-3.5 h-3.5 -rotate-90" />
+              </button>
             </div>
           </FadeIn>
         </div>
