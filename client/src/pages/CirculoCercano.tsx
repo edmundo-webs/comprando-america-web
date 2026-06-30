@@ -738,7 +738,7 @@ export default function CirculoCercano() {
               <div className="w-8 h-0.5 bg-primary/50" />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight">
-              ¿Por qué entiendo el juego?
+              Círculo Cercano
             </h2>
           </FadeIn>
 
