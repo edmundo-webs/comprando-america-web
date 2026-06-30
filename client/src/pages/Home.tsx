@@ -26,6 +26,7 @@ import {
   Briefcase,
   GraduationCap,
   Building,
+  Building2,
   Monitor,
 } from "lucide-react";
 
@@ -502,6 +503,32 @@ export default function Home() {
                 <a href="/visa-e2-inversion-en-estados-unidos">
                   <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full py-6 text-base shadow-lg shadow-blue-600/15">
                     Ver ruta migratoria <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
+
+            {/* Card 3 — Estructura empresarial */}
+            <FadeIn delay={0.2}>
+              <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
+                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
+                  <Building2 className="w-7 h-7 text-primary" />
+                </div>
+                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">Estructura empresarial</h3>
+                <p className="text-[#4B5563] leading-relaxed mb-6">
+                  Quiero constituir mi empresa en Estados Unidos con la estructura legal y fiscal correcta para operar, proteger activos y optimizar impuestos.
+                </p>
+                <div className="space-y-2 mb-8">
+                  {["LLC o corporación en USA", "Estructura fiscal optimizada", "Apertura de cuenta bancaria", "Cumplimiento legal y contable"].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                      <span className="text-[#6B7280] text-sm">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <a href="https://comprandoamerica.com/estructura-de-inversion-en-usa">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full py-6 text-base shadow-lg shadow-blue-600/15">
+                    Ver estructura empresarial <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
               </div>

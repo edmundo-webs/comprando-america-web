@@ -25,11 +25,6 @@ export const EXTERNAL_LINKS = {
 
 export const NAV_ITEMS = [
   { label: "Comunidad", href: "/club-de-inversion-en-estados-unidos" },
-  { label: "Inversión", href: "#", children: [
-    { label: "Proteger patrimonio", href: "/oportunidades-de-inversion-en-estados-unidos" },
-    { label: "Migrar con inversión", href: "/visa-e2-inversion-en-estados-unidos" },
-    { label: "Estructura empresarial", href: "/estructura-de-inversion-en-usa" },
-  ]},
   { label: "Quiénes Somos", href: "/quienes-somos" },
 ];
 
