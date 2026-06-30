@@ -70,33 +70,36 @@ const OPCIONES_4 = [
 
 const VEHICULOS_CATEGORIAS = [
   {
-    titulo: "Generar Flujo Pasivo",
+    id: "flujo",
+    titulo: "Generar flujo pasivo",
     items: [
-      { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/fondo" },
-      { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/vc-8" },
-      { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos" },
+      { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/fondo", exclusivo: false },
+      { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/vc-8", exclusivo: false },
+      { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos", exclusivo: true },
     ],
   },
   {
-    titulo: "Construir Patrimonio",
+    id: "patrimonio",
+    titulo: "Construir patrimonio",
     items: [
-      { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+", href: "/propiedades" },
-      { id: "estructura-llc", nombre: "Fondos & Estructuras", frase: "Diversificación en activos americanos con protección legal", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+", href: "/estructura-de-inversion-en-usa" },
-      { id: "adquisiciones", nombre: "Negocios", frase: "Adquiere o construye un negocio americano", participacion: "Activa", horizonte: "3-5 años", ticket: "200k+", href: "" },
+      { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+", href: "/propiedades", exclusivo: false },
+      { id: "estructura-llc", nombre: "Fondos & Estructuras", frase: "Diversificación en activos americanos con protección legal", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+", href: "/estructura-de-inversion-en-usa", exclusivo: false },
+      { id: "adquisiciones", nombre: "Negocios", frase: "Adquiere o construye un negocio americano", participacion: "Activa", horizonte: "3-5 años", ticket: "200k+", href: "", exclusivo: true },
     ],
   },
   {
-    titulo: "Expandir Empresa",
+    id: "empresa",
+    titulo: "Expandir empresa",
     items: [
-      { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", participacion: "Activa", horizonte: "1-3 años", ticket: "Consultar", href: "/expansion-internacional-empresas" },
-      { id: "adquisiciones-emp", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", participacion: "Activa", horizonte: "6-12 meses", ticket: "500k+", href: "" },
-      { id: "plan-migratorio", nombre: "Visa E-2", frase: "Expansión con opción a residencia vía inversión", participacion: "Activa", horizonte: "1-2 años", ticket: "100k+", href: "/visa-e2-inversionista-usa" },
+      { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", participacion: "Activa", horizonte: "1-3 años", ticket: "Consultar", href: "/expansion-internacional-empresas", exclusivo: true },
+      { id: "adquisiciones-emp", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", participacion: "Activa", horizonte: "6-12 meses", ticket: "500k+", href: "", exclusivo: true },
+      { id: "plan-migratorio", nombre: "Visa E-2", frase: "Expansión con opción a residencia vía inversión", participacion: "Activa", horizonte: "1-2 años", ticket: "100k+", href: "/visa-e2-inversionista-usa", exclusivo: true },
     ],
   },
 ];
 
 const COMPARACION = {
-  headers: ["Victory Capital", "Section 8", "Membresía"],
+  headers: ["Victory Capital", "Section 8", "Círculo Cercano"],
   rows: [
     { label: "Participación", values: ["Pasiva", "Semi-pasiva", "Estratégica"] },
     { label: "Horizonte", values: ["5-7 años", "Largo plazo", "Continuo"] },
@@ -1299,66 +1302,125 @@ function MiRutaSection({ objetivo }: { objetivo: string | null }) {
 }
 
 /* ─── EXPLORAR VEHÍCULOS ─── */
-function VehiculoCard({ v, recommended }: { v: typeof VEHICULOS_CATEGORIAS[0]["items"][0]; recommended?: boolean }) {
+function VehiculoCard({ v, recommended, categoriaTag }: { v: typeof VEHICULOS_CATEGORIAS[0]["items"][0]; recommended?: boolean; categoriaTag?: string }) {
   return (
-    <div style={{ background: NAVY_CARD, border: `1px solid ${recommended ? GOLD + "70" : NAVY_BORDER}`, borderRadius: "14px", padding: "24px", minWidth: "240px", maxWidth: "260px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "12px", position: "relative", overflow: "hidden" }}>
+    <div style={{ background: NAVY_CARD, border: `1px solid ${recommended ? GOLD + "70" : NAVY_BORDER}`, borderRadius: "14px", padding: "22px", minWidth: "230px", maxWidth: "255px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "11px", position: "relative", overflow: "hidden" }}>
       {recommended && (
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` }} />
       )}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-        <div style={{ height: "3px", background: recommended ? `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` : NAVY_BORDER, borderRadius: "2px", marginBottom: "4px", width: recommended ? "40px" : "24px" }} />
+      {/* Header badges */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px" }}>
+        {categoriaTag && (
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.14em", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase", whiteSpace: "nowrap" }}>{categoriaTag}</span>
+        )}
+        {!categoriaTag && <div style={{ height: "3px", background: recommended ? `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` : NAVY_BORDER, borderRadius: "2px", width: recommended ? "36px" : "20px" }} />}
         {recommended && (
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase" }}>Tu perfil</span>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase", whiteSpace: "nowrap" }}>Tu perfil</span>
         )}
       </div>
-      <h4 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "18px", fontWeight: 700, color: recommended ? "#fff" : "#C8D6E8", lineHeight: 1.2 }}>{v.nombre}</h4>
-      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF", lineHeight: 1.6, flex: 1 }}>{v.frase}</p>
-      <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, paddingTop: "12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+      <h4 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: recommended ? "#fff" : "#C8D6E8", lineHeight: 1.2, margin: 0 }}>{v.nombre}</h4>
+      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", lineHeight: 1.6, flex: 1, margin: 0 }}>{v.frase}</p>
+      <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, paddingTop: "10px", display: "flex", flexDirection: "column", gap: "5px" }}>
         {[["Participación", v.participacion], ["Horizonte", v.horizonte], ["Ticket mínimo", v.ticket]].map(([k, val]) => (
           <div key={k} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580" }}>{k}</span>
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#C8D6E8" }}>{val}</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580" }}>{k}</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{val}</span>
           </div>
         ))}
       </div>
-      {v.href ? (
-        <a href={v.href} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "10px", background: recommended ? `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` : "transparent", border: recommended ? "none" : `1px solid ${GOLD}`, color: recommended ? NAVY : GOLD, fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: "8px", cursor: "pointer", textDecoration: "none" }}>
+      {v.exclusivo ? (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "9px", background: `${GOLD}12`, border: `1px solid ${GOLD}40`, color: `${GOLD}CC`, fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", borderRadius: "8px" }}>
+          ✦ Exclusivo
+        </div>
+      ) : v.href ? (
+        <a href={v.href} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "9px", background: recommended ? `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` : "transparent", border: recommended ? "none" : `1px solid ${GOLD}`, color: recommended ? NAVY : GOLD, fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: "8px", cursor: "pointer", textDecoration: "none" }}>
           Explorar
         </a>
-      ) : (
-        <button style={{ width: "100%", padding: "10px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, color: "#4A6580", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", borderRadius: "8px", cursor: "default" }}>
-          Próximamente
-        </button>
-      )}
+      ) : null}
     </div>
   );
 }
 
 function ExplorarVehiculosSection({ rankedIds }: { rankedIds?: string[] }) {
-  const top4 = new Set((rankedIds ?? []).slice(0, 4));
+  const [vista, setVista] = useState<"perfil" | "explorar">("perfil");
+  const [tabIdx, setTabIdx] = useState(0);
+  const top3Ids = (rankedIds ?? []).slice(0, 3);
+  const top3Set = new Set(top3Ids);
+
+  // Build "Tu perfil" cards: up to 3 matched, ordered by rank, with category tag
+  const perfilCards: { item: typeof VEHICULOS_CATEGORIAS[0]["items"][0]; cat: typeof VEHICULOS_CATEGORIAS[0] }[] = [];
+  for (const id of top3Ids) {
+    for (const cat of VEHICULOS_CATEGORIAS) {
+      const item = cat.items.find(i => i.id === id);
+      if (item) { perfilCards.push({ item, cat }); break; }
+    }
+  }
+
+  const activeCat = VEHICULOS_CATEGORIAS[tabIdx];
+
+  const btnBase: React.CSSProperties = { fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", padding: "9px 22px", borderRadius: "22px", cursor: "pointer", transition: "all 0.2s", border: "none" };
+  const btnActive: React.CSSProperties = { ...btnBase, background: GOLD, color: NAVY };
+  const btnInactive: React.CSSProperties = { ...btnBase, background: "transparent", color: "#6A8FAF", border: `1px solid ${NAVY_BORDER}` };
+
+  const tabBase: React.CSSProperties = { fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", padding: "8px 16px", borderRadius: "6px", cursor: "pointer", transition: "all 0.2s", border: "none", whiteSpace: "nowrap" };
+
   return (
-    <div style={{ padding: "80px 0", background: `${NAVY_CARD}40`, borderTop: `1px solid ${NAVY_BORDER}`, borderBottom: `1px solid ${NAVY_BORDER}` }}>
+    <div style={{ padding: "72px 0 60px", background: `${NAVY_CARD}40`, borderTop: `1px solid ${NAVY_BORDER}`, borderBottom: `1px solid ${NAVY_BORDER}` }}>
       <div style={{ padding: "0 24px", maxWidth: "1100px", margin: "0 auto" }}>
-        <SectionHeader label="Vehículos Estratégicos" title="Explora tus instrumentos" sub="Cada vehículo está diseñado para un tipo específico de inversionista. Los marcados como 'Tu perfil' son los más compatibles con tus respuestas." />
-        {rankedIds && rankedIds.length > 0 && (
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "32px", padding: "12px 16px", background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "10px" }}>
-            <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: GOLD, flexShrink: 0 }} />
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: `${GOLD}CC`, margin: 0 }}>
-              Las tarjetas con <strong style={{ color: GOLD }}>Tu perfil</strong> fueron seleccionadas según tus respuestas del GPS Estratégico.
-            </p>
+        <SectionHeader label="Vehículos Estratégicos" title="Explora tus instrumentos" sub="Cada instrumento está diseñado para un perfil específico de inversionista." />
+
+        {/* Toggle buttons */}
+        <div style={{ display: "flex", gap: "10px", marginBottom: "36px" }}>
+          <button onClick={() => setVista("perfil")} style={vista === "perfil" ? btnActive : btnInactive}>
+            Tu Perfil
+          </button>
+          <button onClick={() => setVista("explorar")} style={vista === "explorar" ? btnActive : btnInactive}>
+            Explorar todos
+          </button>
+        </div>
+
+        {/* ── Tu Perfil view ── */}
+        {vista === "perfil" && (
+          perfilCards.length > 0 ? (
+            <div>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: `${GOLD}CC`, marginBottom: "24px", display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ display: "inline-block", width: "7px", height: "7px", borderRadius: "50%", background: GOLD }} />
+                Mostrando los instrumentos que mejor encajan con tu perfil GPS Estratégico
+              </p>
+              <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+                {perfilCards.map(({ item, cat }) => (
+                  <VehiculoCard key={item.id} v={item} recommended categoriaTag={cat.titulo} />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div style={{ textAlign: "center", padding: "48px 0", color: "#4A6580", fontFamily: "'Inter',sans-serif", fontSize: "14px" }}>
+              Completa el GPS Estratégico para ver tus instrumentos recomendados.
+            </div>
+          )
+        )}
+
+        {/* ── Explorar view ── */}
+        {vista === "explorar" && (
+          <div>
+            {/* Category tabs */}
+            <div style={{ display: "flex", gap: "8px", marginBottom: "28px", overflowX: "auto", scrollbarWidth: "none", paddingBottom: "4px" }}>
+              {VEHICULOS_CATEGORIAS.map((cat, i) => (
+                <button key={cat.id} onClick={() => setTabIdx(i)}
+                  style={{ ...tabBase, background: tabIdx === i ? `${GOLD}18` : "transparent", color: tabIdx === i ? GOLD : "#6A8FAF", border: tabIdx === i ? `1px solid ${GOLD}50` : `1px solid ${NAVY_BORDER}` }}>
+                  — {cat.titulo}
+                </button>
+              ))}
+            </div>
+            {/* Cards for selected category */}
+            <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+              {activeCat.items.map((v) => (
+                <VehiculoCard key={v.id} v={v} recommended={top3Set.has(v.id)} />
+              ))}
+            </div>
           </div>
         )}
       </div>
-      {VEHICULOS_CATEGORIAS.map((cat) => (
-        <div key={cat.titulo} style={{ marginBottom: "48px" }}>
-          <div style={{ padding: "0 24px", maxWidth: "1100px", margin: "0 auto 20px" }}>
-            <h3 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 700, color: "#fff" }}>{cat.titulo}</h3>
-          </div>
-          <div style={{ display: "flex", gap: "14px", overflowX: "auto", padding: "4px 24px 16px", scrollbarWidth: "none" }}>
-            {cat.items.map((v) => <VehiculoCard key={v.id} v={v} recommended={top4.has(v.id)} />)}
-          </div>
-        </div>
-      ))}
     </div>
   );
 }
