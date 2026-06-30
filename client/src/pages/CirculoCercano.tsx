@@ -314,6 +314,7 @@ export default function CirculoCercano() {
   const [activeHito, setActiveHito] = useState<number | null>(null);
   const [activeRama, setActiveRama] = useState<string | null>(null);
   const [openLibro, setOpenLibro] = useState<number | null>(null);
+  const [showPlanes, setShowPlanes] = useState(false);
   const [openTestimonio, setOpenTestimonio] = useState<number | null>(null);
   const [openExperto, setOpenExperto] = useState<number | null>(null);
   const heroRef = useRef<HTMLElement>(null);
@@ -414,22 +415,52 @@ export default function CirculoCercano() {
                 className="group relative w-full h-full block"
                 aria-label="Reproducir video de Edmundo Treviño"
               >
-                <img
-                  src={DINNER_IMAGE}
-                  alt="Edmundo Treviño — Círculo Cercano"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                {/* Background gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0d2a4a] to-[#091A30]" />
+
+                {/* Decorative rings */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-64 h-64 rounded-full border border-blue-500/10" />
+                  <div className="absolute w-48 h-48 rounded-full border border-blue-500/15" />
+                  <div className="absolute w-32 h-32 rounded-full border border-blue-500/20" />
+                </div>
+
+                {/* Edmundo portrait — right side */}
+                <div className="absolute right-0 bottom-0 h-full flex items-end justify-end overflow-hidden">
+                  <img
+                    src={EDMUNDO_PORTRAIT}
+                    alt="Edmundo Treviño"
+                    className="h-full object-cover object-top opacity-60 group-hover:opacity-70 transition-opacity duration-500"
+                    style={{ maxWidth: "55%" }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A] via-[#0B1F3A]/60 to-transparent" />
+                </div>
+
+                {/* Text + play — left side */}
+                <div className="absolute inset-0 flex flex-col items-start justify-center px-10 gap-6">
+                  <div>
+                    <p className="text-blue-400 text-xs font-semibold tracking-[0.25em] uppercase font-mono mb-3">
+                      Círculo Cercano · 2026
+                    </p>
+                    <h3 className="text-white text-2xl md:text-3xl font-light leading-snug max-w-xs">
+                      Edmundo te habla
+                      <br />
+                      <span className="font-bold">directamente.</span>
+                    </h3>
+                  </div>
+
                   <motion.div
-                    className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center shadow-2xl shadow-blue-600/40"
-                    whileHover={{ scale: 1.1 }}
+                    className="flex items-center gap-4"
+                    whileHover={{ x: 4 }}
+                    transition={{ duration: 0.2 }}
                   >
-                    <Play className="w-8 h-8 text-white ml-1" />
+                    <div className="w-16 h-16 rounded-full bg-primary group-hover:bg-blue-500 transition-colors flex items-center justify-center shadow-2xl shadow-blue-600/50">
+                      <Play className="w-6 h-6 text-white ml-1" />
+                    </div>
+                    <span className="text-white/70 text-sm font-medium group-hover:text-white transition-colors">
+                      Ver mensaje
+                    </span>
                   </motion.div>
-                  <p className="text-white/80 text-sm font-medium tracking-wide">
-                    Edmundo te habla directamente
-                  </p>
                 </div>
               </button>
             ) : (
@@ -1149,37 +1180,192 @@ export default function CirculoCercano() {
 
           {/* Investment box */}
           <FadeIn delay={0.3}>
-            <div className="mt-10 bg-[#0E2544] border border-blue-500/20 rounded-2xl p-8 md:p-10">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div>
-                  <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase font-mono mb-4">
-                    Inversión de acceso
-                  </p>
-                  <p className="text-white text-4xl font-bold mb-2">USD $10,000</p>
-                  <p className="text-slate-500 text-sm mb-4">Pago único · Sin anualidades</p>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    La inversión de acceso existe principalmente para proteger la calidad y exclusividad del círculo.
-                    No buscamos curiosos. Buscamos empresarios e inversionistas comprometidos con construir proyectos reales.
-                  </p>
+            <div className="mt-10">
+              {/* Main recommended plan */}
+              <div className="relative bg-[#0E2544] border-2 border-primary/50 rounded-2xl p-8 md:p-10 shadow-xl shadow-blue-600/10">
+                {/* Recommended badge */}
+                <div className="absolute -top-3.5 left-8">
+                  <span className="bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full tracking-wide shadow-lg">
+                    Recomendado
+                  </span>
                 </div>
-                <div className="md:border-l md:border-[#1E3A5F] md:pl-8">
-                  <p className="text-slate-400 text-sm mb-4">El acceso incluye:</p>
-                  <ul className="space-y-2">
-                    {[
-                      "Sesión de diagnóstico estratégico",
-                      "Acceso a la red de expertos",
-                      "Reuniones privadas con Edmundo",
-                      "Comunidad de 40+ miembros",
-                      "Oportunidades curadas",
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
-                        <span className="text-slate-300 text-sm">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+
+                <div className="grid md:grid-cols-2 gap-8 items-start pt-2">
+                  <div>
+                    <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase font-mono mb-4">
+                      Inversión de acceso
+                    </p>
+                    <p className="text-white text-4xl font-bold mb-1">USD $10,000</p>
+                    <p className="text-slate-500 text-sm mb-5">Pago único · Sin anualidades</p>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                      La inversión de acceso existe principalmente para proteger la calidad y exclusividad del círculo.
+                      No buscamos curiosos. Buscamos empresarios e inversionistas comprometidos con construir proyectos reales.
+                    </p>
+                  </div>
+                  <div className="md:border-l md:border-[#1E3A5F] md:pl-8">
+                    <p className="text-slate-400 text-sm mb-4">El acceso incluye:</p>
+                    <ul className="space-y-2.5">
+                      {[
+                        "Sesión de diagnóstico estratégico",
+                        "Acceso a la red de expertos",
+                        "Reuniones privadas con Edmundo",
+                        "Comunidad de 40+ miembros",
+                        "Oportunidades curadas",
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-center gap-2.5">
+                          <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
+                          <span className="text-slate-300 text-sm">{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Expandir planes */}
+                <div className="mt-8 pt-6 border-t border-[#1E3A5F]">
+                  <button
+                    onClick={() => setShowPlanes(!showPlanes)}
+                    className="flex items-center gap-2 text-slate-400 hover:text-white text-sm transition-colors group"
+                  >
+                    <span>{showPlanes ? "Ocultar opciones" : "Explorar más opciones"}</span>
+                    <motion.span
+                      animate={{ rotate: showPlanes ? 180 : 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="inline-block"
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </motion.span>
+                  </button>
                 </div>
               </div>
+
+              {/* Planes expandibles */}
+              <AnimatePresence>
+                {showPlanes && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="pt-6">
+                      <p className="text-slate-400 text-xs font-semibold tracking-[0.25em] uppercase font-mono text-center mb-2">
+                        Planes de acceso
+                      </p>
+                      <h3 className="text-white text-2xl font-semibold text-center mb-8">
+                        Elige el nivel que mejor se ajuste a tu estrategia.
+                      </h3>
+
+                      <div className="grid md:grid-cols-3 gap-5">
+                        {/* Entry */}
+                        <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-6 flex flex-col">
+                          <p className="text-slate-400 text-xs font-mono mb-2">Investor</p>
+                          <p className="text-white text-xl font-bold mb-0.5">Entry</p>
+                          <p className="text-white text-3xl font-bold mb-1">$10,000</p>
+                          <p className="text-slate-500 text-xs mb-4">Primeros pasos en Estados Unidos</p>
+                          <div className="flex gap-3 mb-5 text-xs">
+                            <span className="text-slate-400">Valor: <span className="text-white font-medium">$19,150</span></span>
+                            <span className="text-blue-400 font-semibold">Ahorro: $11,650</span>
+                          </div>
+                          <ul className="space-y-2.5 flex-1">
+                            {[
+                              "Deal Day & Deal Finding presencial",
+                              "Consulta de inmigración (1 hora)",
+                              "Sesiones Estratégicas",
+                              "Comunidad privada de inversionistas + eventos digitales",
+                              "Acceso VIP a eventos presenciales: Cumbres, eventos de networking",
+                              "Ecosistema de Expertos",
+                            ].map((f, i) => (
+                              <li key={i} className="flex items-start gap-2">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
+                                <span className="text-slate-400 text-xs leading-relaxed">{f}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <button
+                            onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola Edmundo, me interesa el plan Investor Entry del Círculo Cercano.")}
+                            className="mt-6 w-full py-3 rounded-xl border border-[#1E3A5F] hover:border-blue-500/40 text-slate-300 hover:text-white text-sm font-medium transition-all"
+                          >
+                            Solicitar acceso
+                          </button>
+                        </div>
+
+                        {/* Growth — destacado */}
+                        <div className="relative bg-[#0E2544] border-2 border-primary/60 rounded-2xl p-6 flex flex-col shadow-xl shadow-blue-600/15">
+                          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                            <span className="bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap">
+                              Más Popular
+                            </span>
+                          </div>
+                          <p className="text-blue-400 text-xs font-mono mb-2 mt-1">Investor</p>
+                          <p className="text-white text-xl font-bold mb-0.5">Growth</p>
+                          <p className="text-white text-3xl font-bold mb-1">$15,000</p>
+                          <p className="text-slate-400 text-xs mb-4">Inversionistas con estrategia clara</p>
+                          <div className="flex gap-3 mb-5 text-xs">
+                            <span className="text-slate-400">Valor: <span className="text-white font-medium">$25,000+</span></span>
+                            <span className="text-blue-400 font-semibold">Ahorro: $10,000+</span>
+                          </div>
+                          <ul className="space-y-2.5 flex-1">
+                            {[
+                              "Todo lo del Entry, más:",
+                              "Estrategia de acceso bancario personalizada",
+                              "Planeación patrimonial y de sucesión 1:1",
+                              "Acceso anticipado a oportunidades",
+                              "Mentoría en estructuras complejas",
+                              "Prioridad en Deal Day",
+                            ].map((f, i) => (
+                              <li key={i} className={`flex items-start gap-2 ${i === 0 ? "mb-1" : ""}`}>
+                                <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${i === 0 ? "text-slate-500" : "text-blue-400"}`} />
+                                <span className={`text-xs leading-relaxed ${i === 0 ? "text-slate-500 font-medium" : "text-slate-300"}`}>{f}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <button
+                            onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola Edmundo, me interesa el plan Investor Growth del Círculo Cercano.")}
+                            className="mt-6 w-full py-3 rounded-xl bg-primary hover:bg-blue-500 text-white text-sm font-semibold transition-all shadow-lg shadow-blue-600/30"
+                          >
+                            Solicitar acceso
+                          </button>
+                        </div>
+
+                        {/* Legacy */}
+                        <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-6 flex flex-col">
+                          <p className="text-slate-400 text-xs font-mono mb-2">Investor</p>
+                          <p className="text-white text-xl font-bold mb-0.5">Legacy</p>
+                          <p className="text-white text-3xl font-bold mb-1">$25,000</p>
+                          <p className="text-slate-500 text-xs mb-4">Máximo acceso y acompañamiento</p>
+                          <div className="flex gap-3 mb-5 text-xs">
+                            <span className="text-slate-400">Valor: <span className="text-white font-medium">$40,000+</span></span>
+                            <span className="text-blue-400 font-semibold">Ahorro: $15,000+</span>
+                          </div>
+                          <ul className="space-y-2.5 flex-1">
+                            {[
+                              "Todo lo del Growth, más:",
+                              "Acceso VIP a todas las oportunidades",
+                              "Mentoría exclusiva con fundadores",
+                              "Participación en decisiones estratégicas",
+                              "Networking prioritario alto nivel",
+                              "Asesoría personalizada continua",
+                            ].map((f, i) => (
+                              <li key={i} className={`flex items-start gap-2 ${i === 0 ? "mb-1" : ""}`}>
+                                <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${i === 0 ? "text-slate-500" : "text-blue-400"}`} />
+                                <span className={`text-xs leading-relaxed ${i === 0 ? "text-slate-500 font-medium" : "text-slate-400"}`}>{f}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <button
+                            onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola Edmundo, me interesa el plan Investor Legacy del Círculo Cercano.")}
+                            className="mt-6 w-full py-3 rounded-xl border border-[#1E3A5F] hover:border-blue-500/40 text-slate-300 hover:text-white text-sm font-medium transition-all"
+                          >
+                            Solicitar acceso
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </FadeIn>
         </div>
