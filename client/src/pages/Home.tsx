@@ -77,7 +77,7 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
   title: "Comprando América | Inversión y estructura en Estados Unidos",
-  description: "Club de inversión privado para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Comunidad exclusiva con criterio.",
+  description: "Círculo Cercano de Edmundo Treviño: la comunidad privada para empresarios latinos que invierten, estructuran y crecen en Estados Unidos. Acceso por aplicación desde $100,000 USD.",
   path: "/",
   schema: {
     "@context": "https://schema.org",

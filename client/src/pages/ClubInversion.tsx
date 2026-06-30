@@ -70,7 +70,7 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
   title: "Círculo Cercano de Edmundo Treviño en Estados Unidos | Comprando América",
-  description: "Club privado de inversión para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Acompañamiento legal, fiscal y migratorio.",
+  description: "El Círculo Cercano de Edmundo Treviño es la comunidad de inversión privada más exclusiva para latinos en Estados Unidos. Deal Day mensual, expertos, visas y oportunidades desde $100,000 USD.",
   path: "/club-de-inversion-en-estados-unidos",
   schema: [
     { "@context": "https://schema.org", "@type": "Product", "name": "Círculo Cercano de Edmundo Treviño Comprando América", "description": "Club privado de inversión para empresarios latinos en Estados Unidos", "brand": { "@type": "Brand", "name": "Comprando América" }, "offers": { "@type": "AggregateOffer", "lowPrice": "10000", "highPrice": "25000", "priceCurrency": "USD" } },
