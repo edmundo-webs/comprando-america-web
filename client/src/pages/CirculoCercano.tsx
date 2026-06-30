@@ -63,7 +63,7 @@ const expertos = [
   { name: "Aubrey Dwyer", role: "Abogada Corporativa", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439190/comprando-america/TehgUNVHXbrssxsK.jpg", bio: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma." },
   { name: "Destiny Bounds", role: "Abogada Corporativa y PI", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439307/comprando-america/pdCooMLqOfvqVFar.avif", bio: "Fundadora de Bounds Law LLC, especializada en derecho corporativo y propiedad intelectual. Autora y conferencista nacional." },
   { name: "Sebastián Jara", role: "Consultor de Marketing Digital", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439309/comprando-america/qrZqfOUTzqKwJcYP.avif", bio: "15+ años optimizando estrategias digitales con IA para empresas en inmobiliario, educación y e-commerce." },
-  { name: "John McKee", role: "Consultor Comercial", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png", bio: "35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología." },
+  { name: "John McKee", role: "Consultor Comercial", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439314/comprando-america/sZacCQEqvoOyeOMO.avif", bio: "35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología." },
 ];
 
 const libros = [
@@ -83,6 +83,7 @@ export default function CirculoCercano() {
   const [openTestimonio, setOpenTestimonio] = useState<number | null>(null);
   const [openExperto, setOpenExperto] = useState<number | null>(null);
   const [showPlanes, setShowPlanes] = useState(false);
+  const [showBio, setShowBio] = useState(false);
 
   function toggle(id: number) {
     setSelected(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
@@ -327,6 +328,13 @@ export default function CirculoCercano() {
                 "La mayoría de los errores se pueden evitar cuando tienes a las personas correctas a tu lado."
               </p>
               <p className="text-blue-400 text-sm mt-3 font-bold">— Edmundo Treviño</p>
+            </div>
+            <div className="mt-8 flex items-center gap-4">
+              <img src={EDMUNDO} alt="Edmundo Treviño" className="w-12 h-12 rounded-full object-cover object-top border-2 border-primary/40 shrink-0" />
+              <button onClick={() => setShowBio(true)}
+                className="inline-flex items-center gap-2 bg-[#0F2542] hover:bg-[#162E50] border border-[#1E3A5F] hover:border-primary/50 text-slate-200 hover:text-white font-semibold px-6 py-3 rounded-xl text-sm transition-all">
+                Biografía de Edmundo <ChevronDown className="w-4 h-4 -rotate-90" />
+              </button>
             </div>
           </FadeIn>
         </div>
@@ -880,6 +888,65 @@ export default function CirculoCercano() {
       </section>
 
       <Footer />
+
+      {/* ══ MODAL BIOGRAFÍA ═══════════════════════════════════ */}
+      <AnimatePresence>
+        {showBio && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+            onClick={() => setShowBio(false)}>
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+            <motion.div initial={{ opacity: 0, y: 24, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 16, scale: 0.97 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              className="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
+              onClick={e => e.stopPropagation()}>
+              {/* Header */}
+              <div className="flex items-start justify-between p-8 pb-6 border-b border-slate-100">
+                <div className="flex items-center gap-4">
+                  <img src={EDMUNDO} alt="Edmundo Treviño" className="w-16 h-16 rounded-full object-cover object-top border-2 border-blue-100 shrink-0" />
+                  <div>
+                    <h2 className="text-slate-900 text-2xl font-bold">Biografía completa</h2>
+                    <p className="text-blue-600 text-sm font-semibold mt-0.5">Edmundo Treviño · Fundador, Comprando América</p>
+                  </div>
+                </div>
+                <button onClick={() => setShowBio(false)} className="text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-lg hover:bg-slate-100 shrink-0 ml-4">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+
+              <div className="p-8">
+                <div className="text-slate-700 text-sm leading-relaxed space-y-4 mb-8">
+                  <p>Edmundo Treviño es empresario, inversionista y fundador de Comprando América, una comunidad privada de empresarios e inversionistas latinos enfocada en crear, adquirir y escalar negocios en Estados Unidos.</p>
+                  <p>Con más de 20 años de experiencia en comercio internacional y operaciones empresariales entre México y Estados Unidos, Edmundo ha fundado y operado más de 9 empresas activas en ambos países, abarcando sectores como transporte, servicios financieros, bienes raíces y consultoría estratégica.</p>
+                  <p>Es egresado del MBA en Economía Industrial y cuenta con una Maestría en el Sistema Fiscal de Estados Unidos. Su enfoque se centra en la creación de riqueza patrimonial a través de estructura, criterio y ejecución — no de promesas.</p>
+                  <p>A través de Comprando América, Edmundo ha acompañado a decenas de empresarios en la apertura de más de 50 LLCs, la evaluación de oportunidades de inversión y la estructuración de rutas migratorias basadas en inversión real.</p>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  {[
+                    { icon: "🎓", title: "Formación Académica", items: ["MBA en Economía Industrial", "Maestría en Sistema Fiscal en Estados Unidos", "Formación continua en inversión inmobiliaria y corporativa"] },
+                    { icon: "🏢", title: "Empresas y Operaciones", items: ["9+ empresas activas en Estados Unidos y México", "Transporte, servicios financieros, bienes raíces", "Consultoría estratégica para inversionistas latinos", "50+ LLCs estructuradas para miembros de la comunidad"] },
+                    { icon: "💼", title: "Enfoque Actual", items: ["Comunidad de inversión Comprando América", "Cumbres y eventos presenciales de inversión", "Viajes de inspección inmobiliaria en Florida", "Acompañamiento estratégico E-2 y estructura empresarial"] },
+                  ].map(section => (
+                    <div key={section.title}>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-base">{section.icon}</span>
+                        <h3 className="text-slate-900 font-bold text-sm">{section.title}</h3>
+                      </div>
+                      <ul className="space-y-2">
+                        {section.items.map((item, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-blue-500 mt-1 shrink-0">•</span>
+                            <span className="text-blue-600 text-sm">{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
