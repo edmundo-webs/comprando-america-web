@@ -373,9 +373,9 @@ export default function Recursos() {
                     Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <a href="/membresia">
+                <a href="https://comprandoamerica.com/grupo-empresarial-edmundo">
                   <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
-                    Conocer el Club de Inversión
+                    Conocer el Grupo Empresarial
                   </Button>
                 </a>
               </div>

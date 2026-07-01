@@ -244,10 +244,10 @@ export default function BlogList() {
               <p className="text-white/60 text-lg mb-10 leading-relaxed">
                 Únete a nuestra comunidad de inversionistas y accede a análisis profundos, estrategias probadas y oportunidades filtradas.
               </p>
-              <Link href="/membresia">
+              <Link href="https://comprandoamerica.com/grupo-empresarial-edmundo">
                 <a>
                   <Button className="bg-primary hover:bg-primary-dark text-white font-semibold px-10 py-6 text-lg gap-2">
-                    Conocer Club de Inversión <ArrowRight className="w-5 h-5" />
+                    Conocer el Grupo Empresarial <ArrowRight className="w-5 h-5" />
                   </Button>
                 </a>
               </Link>

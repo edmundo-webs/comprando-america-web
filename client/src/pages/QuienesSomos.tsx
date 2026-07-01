@@ -79,9 +79,9 @@ export default function QuienesSomos() {
                 <p className="font-semibold text-white">No somos brokers. No vendemos negocios. No improvisamos.</p>
                 <p>Diseñamos y presentamos oportunidades estructuradas con análisis previo y visión estratégica.</p>
               </div>
-              <a href="/membresia">
+              <a href="https://comprandoamerica.com/grupo-empresarial-edmundo">
                 <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                  Conoce el Club de Inversión <ArrowRight className="w-4 h-4" />
+                  Conoce el Grupo Empresarial <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
             </div>
@@ -282,9 +282,9 @@ export default function QuienesSomos() {
                 Nuestros miembros comparten un mismo objetivo: generar crecimiento sostenido a través de decisiones estratégicas en uno de los mercados más estables del mundo.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/membresia">
+                <a href="https://comprandoamerica.com/grupo-empresarial-edmundo">
                   <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
-                    Conoce el Club de Inversión <ArrowRight className="w-4 h-4" />
+                    Conoce el Grupo Empresarial <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
                 <a href="/tu-ruta">
