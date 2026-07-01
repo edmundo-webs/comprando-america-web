@@ -24,7 +24,7 @@ export const EXTERNAL_LINKS = {
 };
 
 export const NAV_ITEMS = [
-  { label: "Grupo Empresarial de Edmundo", href: "/circulo-cercano" },
+  { label: "Grupo Empresarial de Edmundo", href: "/grupo-empresarial-edmundo" },
   { label: "Quiénes Somos", href: "/quienes-somos" },
 ];
 

@@ -209,7 +209,7 @@ export default function CirculoCercano() {
                     <div className="flex items-center gap-2.5">
                       <div className="w-5 h-0.5 bg-primary" />
                       <span className="text-blue-400 text-[10px] md:text-xs font-mono font-semibold tracking-[0.3em] uppercase">
-                        Círculo Cercano · 2026
+                        Grupo Empresarial de Edmundo · 2026
                       </span>
                     </div>
                     <span className="bg-primary/20 border border-primary/30 text-blue-300 text-[9px] md:text-[10px] font-bold px-3 py-1 rounded-full tracking-widest uppercase">
@@ -226,7 +226,7 @@ export default function CirculoCercano() {
                       Edmundo Treviño
                     </h3>
                     <p className="text-slate-400 text-xs md:text-sm mb-6 md:mb-9 leading-relaxed max-w-[260px] hidden sm:block">
-                      "Quiero hablarte directamente sobre lo que significa pertenecer al Círculo Cercano."
+                      "Quiero hablarte directamente sobre lo que significa pertenecer al Grupo Empresarial de Edmundo."
                     </p>
                     <div className="flex items-center gap-3 md:gap-4">
                       <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary group-hover:bg-blue-500 group-hover:scale-110 transition-all duration-300 flex items-center justify-center shadow-2xl shadow-blue-600/50">

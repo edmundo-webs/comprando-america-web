@@ -362,7 +362,7 @@ export default function Oportunidades() {
 
                         <a href="/membresia">
                           <Button className="bg-primary hover:bg-blue-600 text-white px-6 py-5 rounded-full font-semibold gap-2 shadow-lg shadow-blue-600/25">
-                            Acceder al Círculo Cercano <ArrowRight className="w-4 h-4" />
+                            Acceder al Grupo Empresarial de Edmundo <ArrowRight className="w-4 h-4" />
                           </Button>
                         </a>
                       </div>
@@ -386,7 +386,7 @@ export default function Oportunidades() {
 
                     <div className="mt-10 pt-8 border-t border-blue-500/10">
                       <p className="text-slate-500 text-sm italic text-center">
-                        El acceso a Deal Day es exclusivo para miembros activos del Círculo Cercano de Edmundo Treviño.
+                        El acceso a Deal Day es exclusivo para miembros activos del Grupo Empresarial de Edmundo Treviño.
                       </p>
                     </div>
                   </div>
@@ -573,8 +573,8 @@ export default function Oportunidades() {
                 <Zap className="w-6 h-6 text-gray-400 mx-auto mb-2" />
                 <p className="text-gray-500 text-sm">
                   Nuevas oportunidades se presentan mensualmente en el{" "}
-                  <a href="/membresia" className="font-semibold underline underline-offset-2 text-primary">
-                    Círculo Cercano
+                  <a href="/grupo-empresarial-edmundo" className="font-semibold underline underline-offset-2 text-primary">
+                    Grupo Empresarial de Edmundo
                   </a>
                   . El acceso es exclusivo para miembros.
                 </p>
@@ -623,18 +623,18 @@ export default function Oportunidades() {
           <div className="max-w-5xl mx-auto">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <FadeIn direction="left">
-                <SectionLabel>Círculo Cercano</SectionLabel>
+                <SectionLabel>Grupo Empresarial de Edmundo</SectionLabel>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A] mb-6 leading-tight">
                   La mayoría de oportunidades se presentan dentro del{" "}
-                  <span className="text-primary">Círculo Cercano</span>
+                  <span className="text-primary">Grupo Empresarial de Edmundo</span>
                 </h2>
                 <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
                   La comunidad es el espacio donde se presentan oportunidades, se discuten con expertos y
                   se toman decisiones con respaldo profesional.
                 </p>
-                <a href="/membresia">
+                <a href="/grupo-empresarial-edmundo">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 rounded-full font-semibold shadow-lg shadow-blue-600/20">
-                    Conocer el Círculo Cercano <ArrowRight className="w-4 h-4" />
+                    Conocer el Grupo Empresarial de Edmundo <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
               </FadeIn>

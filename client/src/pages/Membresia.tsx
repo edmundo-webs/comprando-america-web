@@ -3,8 +3,8 @@ import SEOHead from "@/components/SEOHead";
 import Navbar from "@/components/Navbar";
 
 const PAGE_SEO = {
-  title: "Círculo Cercano de Edmundo Treviño | Comprando América",
-  description: "Accede al Círculo Cercano de Edmundo Treviño: la comunidad privada de empresarios latinos que invierten en Estados Unidos con estructura, criterio y acompañamiento experto.",
+  title: "Grupo Empresarial de Edmundo | Comprando América",
+  description: "Accede al Grupo Empresarial de Edmundo: la comunidad privada de empresarios latinos que invierten en Estados Unidos con estructura, criterio y acompañamiento experto.",
   path: "/membresia",
 };
 import Footer from "@/components/Footer";
