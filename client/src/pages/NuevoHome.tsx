@@ -99,7 +99,7 @@ const VEHICULOS_CATEGORIAS = [
 ];
 
 const COMPARACION = {
-  headers: ["Victory Capital", "Section 8", "Círculo Cercano"],
+  headers: ["Victory Capital", "Section 8", "Grupo Empresarial de Edmundo"],
   rows: [
     { label: "Participación", values: ["Pasiva", "Semi-pasiva", "Estratégica"] },
     { label: "Horizonte", values: ["5-7 años", "Largo plazo", "Continuo"] },
@@ -133,7 +133,7 @@ type VehicleEntry = {
 };
 
 const VEHICLE_DATA: VehicleEntry[] = [
-  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/circulo-cercano" },
+  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/grupo-empresarial-edmundo" },
   { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"], href: "/fondo" },
   { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"], href: "/vc-8" },
   { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"], href: "/club-de-inversion-en-estados-unidos" },

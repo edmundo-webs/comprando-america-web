@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -53,7 +53,7 @@ function Router() {
       <Route path={"/home2"} component={Home2Page} />
       <Route path={"/tu-ruta"} component={NuevoHome} />
       <Route path="/membresia" component={Membresia} />
-      <Route path="/circulo-cercano" component={Membresia2} />
+      <Route path="/circulo-cercano"><Redirect to="/grupo-empresarial-edmundo" /></Route>
       <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
       <Route path="/blog" component={BlogList} />
       <Route path="/blog/:slug" component={BlogPost} />
@@ -84,7 +84,7 @@ function Router() {
       <Route path="/vc-8" component={Section8} />
       <Route path="/propiedades" component={Propiedades} />
       <Route path="/fondo" component={FondoVictoryCapital} />
-      <Route path="/circulo-cercano" component={CirculoCercano} />
+      <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
