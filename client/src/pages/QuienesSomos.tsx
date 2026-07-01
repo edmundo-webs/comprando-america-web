@@ -24,7 +24,7 @@ const HERO_IMAGE = "https://lh3.googleusercontent.com/d/12leYCR8tlXXxZ6jeBlgthhm
 const TEAM_IMAGE = "https://lh3.googleusercontent.com/d/1RK1ICQKrETpZBFYH_NoZmnYzMULHREYu=w1920"; // equipo rooftop
 const AUDIENCE_IMAGE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920"; // sala llena
 const EDMUNDO_PORTRAIT = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800";
-const WORKSHOP_IMAGE = "https://lh3.googleusercontent.com/d/1mQWgGjGOCgTU8BsOl3Rgdh5mGR3eObRd=w1200";
+const WORKSHOP_IMAGE = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439276/comprando-america/htgNAsNCnOVTXGtc.JPG.webp";
 
 const stats = [
   { value: 40, suffix: "+", label: "Miembros activos" },
