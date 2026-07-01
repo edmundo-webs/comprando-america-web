@@ -297,7 +297,7 @@ export default function CirculoCercano() {
             {selected.size >= 2 && (
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }}
                 className="mt-8 bg-primary/10 border border-primary/30 rounded-2xl p-8 text-center">
-                <p className="text-white font-bold text-xl mb-2">Probablemente este círculo puede ayudarte.</p>
+                <p className="text-white font-bold text-xl mb-2">Probablemente este grupo puede ayudarte.</p>
                 <p className="text-slate-400 text-sm mb-6 max-w-md mx-auto">Te identificas con {selected.size} situaciones. El primer paso es una conversación honesta.</p>
                 <button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA)}
                   className="inline-flex items-center gap-2 bg-primary hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl text-sm transition-all shadow-lg shadow-blue-600/25">
