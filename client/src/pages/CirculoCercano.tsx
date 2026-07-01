@@ -24,6 +24,241 @@ const VIDEO_POSTER = "https://res.cloudinary.com/dgruohz6f/video/upload/so_2,w_9
 const EDMUNDO = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800";
 const WA = "Hola Edmundo, vi la página del Círculo Cercano y me gustaría agendar una sesión de diagnóstico estratégico.";
 
+const WA_MESSAGE =
+  "Hola Edmundo, vi la página del Grupo Empresarial de Edmundo y me gustaría agendar una sesión de diagnóstico estratégico.";
+
+/* ── timeline data ── */
+const hitos = [
+  {
+    year: "2003",
+    label: "Llegué a Estados Unidos",
+    icon: "✈️",
+    story:
+      "Con sueños, incertidumbre y muchas preguntas. Sin mapa. Sin red de contactos. Sin saber exactamente qué construiría.",
+    highlight: "El inicio del camino.",
+  },
+  {
+    year: "2004",
+    label: "Abrí mis primeras empresas",
+    icon: "🏢",
+    story:
+      "Aprendí sobre la marcha. Sin mentores locales. Cometiendo errores de principiante que hoy hubiera evitado con un solo consejo correcto.",
+    highlight: "Aprendiendo sin red.",
+  },
+  {
+    year: "2006",
+    label: "Perdí dinero",
+    icon: "📉",
+    story:
+      "Confié en las personas equivocadas. No tenía los instrumentos para evaluar oportunidades correctamente. Esa pérdida me enseñó más que cualquier éxito.",
+    highlight: "El error más valioso.",
+  },
+  {
+    year: "2008",
+    label: "Cometí errores costosos",
+    icon: "⚠️",
+    story:
+      "Decisiones que hoy haría completamente diferente. Estructuras incorrectas, contratos mal negociados, socios mal elegidos.",
+    highlight: "Lecciones que duelen.",
+  },
+  {
+    year: "2005–2024",
+    label: "Renovando visa E-2",
+    icon: "🛂",
+    story:
+      "Durante más de 20 años mantuve activa mi visa E-2. Eso significa negocios operando, creciendo y generando empleos reales en Estados Unidos.",
+    highlight: "20+ años de operación.",
+  },
+  {
+    year: "2010",
+    label: "Litigios y negociaciones difíciles",
+    icon: "⚖️",
+    story:
+      "Enfrenté situaciones legales que nadie me dijo que podían ocurrir. Salí adelante. Y con eso aprendí a estructurar mejor desde el inicio.",
+    highlight: "Proteger el patrimonio.",
+  },
+  {
+    year: "2012",
+    label: "Compré y vendí empresas",
+    icon: "🔄",
+    story:
+      "Empecé a entender los ciclos de negocios. Cómo valorar, cómo negociar, cómo salir. El proceso completo, no solo la entrada.",
+    highlight: "Ciclos completos.",
+  },
+  {
+    year: "2015",
+    label: "Construí relaciones de confianza",
+    icon: "🤝",
+    story:
+      "Los mejores abogados, contadores, asesores migratorios y bancos no se encuentran en Google. Se consiguen con años de relaciones construidas.",
+    highlight: "La red más valiosa.",
+  },
+  {
+    year: "2020",
+    label: "Descubrí patrones de éxito y fracaso",
+    icon: "🔭",
+    story:
+      "Después de ver decenas de historias, empecé a ver patrones claros. Hay errores que casi todos cometen. Y hay decisiones que casi siempre funcionan.",
+    highlight: "El criterio como activo.",
+  },
+  {
+    year: "Hoy",
+    label: "Hoy acompaño a otros empresarios",
+    icon: "🌐",
+    story:
+      "Decidí abrir mi círculo más cercano para empresarios e inversionistas que quieren construir en Estados Unidos con más claridad y menos errores.",
+    highlight: "Pasando la antorcha.",
+  },
+];
+
+/* ── concept map data ── */
+const ramas = [
+  {
+    id: "claridad",
+    label: "Claridad",
+    icon: <Lightbulb className="w-5 h-5" />,
+    color: "from-blue-500/20 to-blue-600/10",
+    borderColor: "border-blue-500/40",
+    desc: "Te ayudo a ordenar las ideas y definir qué tiene sentido para ti específicamente. No hay una sola respuesta correcta. Pero hay preguntas correctas que te llevan a la tuya.",
+    angle: -90,
+  },
+  {
+    id: "criterio",
+    label: "Criterio",
+    icon: <Shield className="w-5 h-5" />,
+    color: "from-indigo-500/20 to-indigo-600/10",
+    borderColor: "border-indigo-500/40",
+    desc: "Aprenderás a identificar riesgos ocultos, hacer mejores preguntas y evaluar oportunidades más allá de una presentación comercial.",
+    angle: -30,
+  },
+  {
+    id: "relaciones",
+    label: "Relaciones",
+    icon: <Users className="w-5 h-5" />,
+    color: "from-cyan-500/20 to-cyan-600/10",
+    borderColor: "border-cyan-500/40",
+    desc: "Acceso a mi red de abogados, contadores, bancos y operadores construida durante más de 20 años. No se consigue en Google.",
+    angle: 30,
+  },
+  {
+    id: "comunidad",
+    label: "Comunidad",
+    icon: <Globe className="w-5 h-5" />,
+    color: "from-teal-500/20 to-teal-600/10",
+    borderColor: "border-teal-500/40",
+    desc: "40+ empresarios e inversionistas activos. Algunos llegan buscando orientación. Otros, perspectivas. Muchos permanecen porque las mejores decisiones rara vez se toman solos.",
+    angle: 90,
+  },
+  {
+    id: "oportunidades",
+    label: "Oportunidades",
+    icon: <TrendingUp className="w-5 h-5" />,
+    color: "from-emerald-500/20 to-emerald-600/10",
+    borderColor: "border-emerald-500/40",
+    desc: "No todo llega aquí. Solo proyectos que yo mismo evalúo primero. Empresas, inmuebles, fondos y operaciones reales.",
+    angle: 150,
+  },
+  {
+    id: "estructura",
+    label: "Estructura",
+    icon: <Building2 className="w-5 h-5" />,
+    color: "from-violet-500/20 to-violet-600/10",
+    borderColor: "border-violet-500/40",
+    desc: "Legal, fiscal, migratoria. La estructura correcta desde el inicio evita años de problemas. Te guío para que no improvises.",
+    angle: 210,
+  },
+  {
+    id: "perspectiva",
+    label: "Perspectiva",
+    icon: <BookOpen className="w-5 h-5" />,
+    color: "from-pink-500/20 to-pink-600/10",
+    borderColor: "border-pink-500/40",
+    desc: "Visión de largo plazo. El patrimonio no se construye en un trimestre. Aprenderás a pensar en décadas, no en meses.",
+    angle: 270,
+  },
+];
+
+/* ── expert network ── */
+const expertos = [
+  {
+    name: "Joe Faraci",
+    role: "Inversionista en Bienes Raíces",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
+    bio: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
+  },
+  {
+    name: "Tomás Resendez",
+    role: "Abogado de Inmigración",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674490/tts-news/eyuxiu9xuevkwulfcf2j.jpg",
+    bio: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés–español), garantiza asesoramiento legal claro y preciso.",
+  },
+  {
+    name: "Daniel Palacios",
+    role: "Contador CPA y Fiscalista",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png",
+    bio: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
+  },
+  {
+    name: "Aubrey Dwyer",
+    role: "Abogada Corporativa",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439190/comprando-america/TehgUNVHXbrssxsK.jpg",
+    bio: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
+  },
+  {
+    name: "Destiny Bounds",
+    role: "Abogada Corporativa y PI",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439307/comprando-america/pdCooMLqOfvqVFar.avif",
+    bio: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
+  },
+  {
+    name: "Sebastián Jara",
+    role: "Consultor de Marketing Digital",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439309/comprando-america/qrZqfOUTzqKwJcYP.avif",
+    bio: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
+  },
+  {
+    name: "John McKee",
+    role: "Consultor Comercial",
+    photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png",
+    bio: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
+  },
+];
+
+/* ── member profiles ── */
+const perfiles = [
+  { type: "Empresarios", icon: "🏢", count: "12+" },
+  { type: "Desarrolladores", icon: "🏗️", count: "8+" },
+  { type: "Industriales", icon: "⚙️", count: "5+" },
+  { type: "Inversionistas", icon: "📈", count: "9+" },
+  { type: "Exportadores", icon: "🌎", count: "4+" },
+  { type: "Profesionales", icon: "👔", count: "6+" },
+];
+
+/* ── books ── */
+const libros = [
+  {
+    title: "The E-Myth Revisited",
+    author: "Michael E. Gerber",
+    note: "Entender la diferencia entre trabajar en tu negocio y trabajar para tu negocio.",
+  },
+  {
+    title: "Rich Dad Poor Dad",
+    author: "Robert Kiyosaki",
+    note: "La mentalidad que te enseñan vs. la que te hace libre financieramente.",
+  },
+  {
+    title: "Never Split the Difference",
+    author: "Chris Voss",
+    note: "Negociación real. No teoría. Técnicas de un ex-negociador del FBI.",
+  },
+  {
+    title: "The Millionaire Next Door",
+    author: "Thomas Stanley",
+    note: "Cómo realmente se construye patrimonio. Sin atajos.",
+  },
+];
+
+/* ── situaciones ── */
 const situaciones = [
   { id: 1, text: "Tengo capital disponible, pero no sé cuál es la mejor alternativa." },
   { id: 2, text: "Quiero invertir, pero no sé en quién confiar." },
@@ -114,16 +349,11 @@ export default function CirculoCercano() {
         {/* Blue radial behind text */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_80%_at_10%_50%,_#0F2E56_0%,_transparent_65%)]" />
 
-        {/* Content */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 md:px-12 pt-32 pb-24">
-          <div className="max-w-xl">
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              <div className="flex items-center gap-3 mb-8">
-                <div className="w-8 h-0.5 bg-primary" />
-                <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">
-                  Círculo Cercano · Comprando América 2026
-                </span>
-              </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6 font-light">
+              Quiero invitarte personalmente
+              <br />
+              <span className="font-bold">a mi Grupo Empresarial de Edmundo.</span>
+            </h1>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.0] tracking-tight mb-6">
                 No tienes que
@@ -139,27 +369,35 @@ export default function CirculoCercano() {
                 <span className="text-white font-semibold"> es saber en quién confiar.</span>
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <motion.button
-                  onClick={() => document.getElementById("diagnostico")?.scrollIntoView({ behavior: "smooth" })}
-                  whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl text-sm tracking-wide shadow-2xl shadow-blue-700/40 transition-colors"
-                >
-                  Descubre si este círculo es para ti <ArrowRight className="w-4 h-4" />
-                </motion.button>
-                <button onClick={() => openWhatsApp(WHATSAPP_PHONE, WA)} className="text-slate-400 hover:text-white text-sm transition-colors self-center">
-                  Hablar directamente →
-                </button>
-              </div>
-            </motion.div>
-
-            {/* Stat pills */}
-            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap gap-3 mt-12">
-              {[["40+", "Miembros activos"], ["20+", "Años en EE.UU."], ["$10K", "Inversión de acceso"]].map(([n, l]) => (
-                <div key={l} className="flex items-center gap-2.5 bg-white/5 border border-white/10 rounded-full px-4 py-2">
-                  <span className="text-blue-400 font-bold text-sm">{n}</span>
-                  <span className="text-slate-400 text-xs">{l}</span>
+          {/* Hero video */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+            className="relative rounded-2xl overflow-hidden border border-[#1E3A5F] bg-black aspect-video shadow-2xl shadow-black/60"
+          >
+            {!showHeroVideo ? (
+              <button
+                onClick={() => setShowHeroVideo(true)}
+                className="group relative w-full h-full block"
+                aria-label="Reproducir video de Edmundo Treviño"
+              >
+                <img
+                  src={DINNER_IMAGE}
+                  alt="Edmundo Treviño — Grupo Empresarial de Edmundo"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors" />
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                  <motion.div
+                    className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center shadow-2xl shadow-blue-600/40"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <Play className="w-8 h-8 text-white ml-1" />
+                  </motion.div>
+                  <p className="text-white/80 text-sm font-medium tracking-wide">
+                    Edmundo te habla directamente
+                  </p>
                 </div>
               ))}
             </motion.div>
@@ -1041,34 +1279,17 @@ export default function CirculoCercano() {
             </h2>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              { name: "Arturo Orozco", videoId: "WYNwoTzG8Ss", title: "Testimonial de Arturo Orozco" },
-              { name: "Gerardo Bejarano", videoId: "6J6IIPFsTD0", title: "Testimonial de Gerardo Bejarano" },
-            ].map((t, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#0B1F3A] border border-[#1E3A5F] hover:border-primary/40 rounded-2xl overflow-hidden transition-all shadow-xl shadow-black/30">
-                  <div className="relative w-full aspect-video overflow-hidden bg-[#091A30]">
-                    <iframe
-                      width="100%" height="100%"
-                      src={`https://www.youtube.com/embed/${t.videoId}?rel=0&modestbranding=1`}
-                      title={t.title}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="absolute inset-0"
-                    />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-white font-bold text-base mb-0.5">{t.name}</h3>
-                    <p className="text-slate-500 text-sm">{t.title}</p>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+          <FadeIn delay={0.15}>
+            <div className="border-t border-[#1E3A5F] pt-14">
+              <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-xl p-7 mb-10">
+                <p className="text-white font-semibold text-lg mb-2">
+                  Solicita una sesión de diagnóstico estratégico.
+                </p>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Una conversación honesta donde evaluamos si el Grupo Empresarial de Edmundo tiene sentido para tu situación específica.
+                  Sin compromiso. Sin presión. Solo claridad.
+                </p>
+              </div>
 
       {/* ══ CTA FINAL ══════════════════════════════════════════ */}
       <section className="relative bg-[#0B1F3A] py-36 px-4 overflow-hidden">
@@ -1087,27 +1308,8 @@ export default function CirculoCercano() {
               <div className="w-12 h-0.5 bg-primary/60" />
             </div>
 
-            <img src={EDMUNDO} alt="Edmundo Treviño" className="w-20 h-20 rounded-full object-cover object-top border-2 border-primary mx-auto mb-8 shadow-xl shadow-blue-600/30" />
-
-            <blockquote className="text-white text-3xl md:text-4xl font-light leading-tight mb-5">
-              "Si pudiera regresar 20 años atrás,
-              <br />le diría algo al Edmundo que apenas comenzaba:
-              <br />
-              <span className="font-extrabold text-blue-400">No intentes hacerlo solo."</span>
-            </blockquote>
-            <p className="text-blue-400 text-sm font-bold tracking-widest mb-14">— Edmundo Treviño</p>
-
-            <div className="w-16 h-0.5 bg-primary/40 mx-auto mb-14" />
-
-            <p className="text-slate-400 text-base mb-2">Hoy quiero extenderte esa misma mano.</p>
-            <p className="text-white font-bold text-xl mb-10 max-w-xl mx-auto leading-relaxed">
-              No estás comprando una membresía. Estás accediendo a años de experiencia, relaciones y criterio construidos haciendo negocios reales en Estados Unidos.
-            </p>
-
-            <div className="bg-[#0F2542] border border-[#1E3A5F] rounded-2xl p-7 mb-10 text-left max-w-xl mx-auto">
-              <p className="text-white font-bold mb-2">Solicita una sesión de diagnóstico estratégico.</p>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Una conversación honesta donde evaluamos si el Círculo Cercano tiene sentido para tu situación. Sin compromiso. Sin presión.
+              <p className="text-slate-600 text-xs mt-6 max-w-md leading-relaxed">
+                El Grupo Empresarial de Edmundo no está diseñado para curiosos. Está diseñado para empresarios e inversionistas que están listos para actuar.
               </p>
             </div>
 

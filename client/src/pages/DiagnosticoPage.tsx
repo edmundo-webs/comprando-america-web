@@ -99,7 +99,7 @@ const ROADMAP_STEPS = [
     id: "C",
     label: "Ejecución",
     desc: "Deal Day",
-    detail: "El punto fuerte de el Círculo Cercano. Accedes a propiedades fuera del mercado con precios y condiciones exclusivas.",
+    detail: "El punto fuerte de el Grupo Empresarial de Edmundo. Accedes a propiedades fuera del mercado con precios y condiciones exclusivas.",
     icon: "🔑",
   },
   {
@@ -546,7 +546,7 @@ function ComparisonTable() {
         </div>
 
         <div className="mt-8 rounded-2xl border border-[#368A45]/30 bg-[#368A45]/8 p-6 text-center">
-          <p className="text-white/60 text-sm mb-1">Inversión en el Círculo Cercano</p>
+          <p className="text-white/60 text-sm mb-1">Inversión en el Grupo Empresarial de Edmundo</p>
           <p className="text-4xl font-black text-white">
             $10,000{" "}
             <span className="text-lg font-normal text-white/40">USD</span>

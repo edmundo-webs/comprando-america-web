@@ -23,7 +23,7 @@ const CTA_CONFIG: Record<string, { title: string; description: string; buttonTex
   "economia-finanzas": {
     title: "¿Quieres proteger tu patrimonio invirtiendo en Estados Unidos?",
     description: "Únete a nuestra comunidad de inversionistas y accede a oportunidades exclusivas de inversión en Estados Unidos. Te ayudamos a diversificar tu portafolio con criterio y estructura.",
-    buttonText: "Conoce el Círculo Cercano de Edmundo Treviño",
+    buttonText: "Conoce el Grupo Empresarial de Edmundo",
     link: "/membresia",
     icon: <TrendingUp className="w-6 h-6" />,
   },
