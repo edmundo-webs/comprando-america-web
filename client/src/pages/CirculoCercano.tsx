@@ -599,9 +599,9 @@ export default function CirculoCercano() {
 
           <div className="space-y-3">
             {[
-              { name: "Miembro del Círculo", role: "Empresario industrial, México", text: "Llegué con muchas dudas sobre cómo estructurar mi inversión. No necesitaba que alguien me dijera qué comprar. Necesitaba criterio para decidir bien. Eso es exactamente lo que encontré." },
-              { name: "Miembro del Círculo", role: "Inversionista de bienes raíces", text: "La sesión de diagnóstico me ahorró cometer un error de $200,000 dólares. No exagero. La conversación me ayudó a ver lo que yo no podía ver porque estaba demasiado cerca del proyecto." },
-              { name: "Miembro del Círculo", role: "Empresario exportador", text: "Lo más valioso no es la red de expertos, aunque es excelente. Es la forma en que Edmundo te hace las preguntas correctas. Te obliga a pensar diferente." },
+              { name: "Miembro del Grupo", role: "Empresario industrial, México", text: "Llegué con muchas dudas sobre cómo estructurar mi inversión. No necesitaba que alguien me dijera qué comprar. Necesitaba criterio para decidir bien. Eso es exactamente lo que encontré." },
+              { name: "Miembro del Grupo", role: "Inversionista de bienes raíces", text: "La sesión de diagnóstico me ahorró cometer un error de $200,000 dólares. No exagero. La conversación me ayudó a ver lo que yo no podía ver porque estaba demasiado cerca del proyecto." },
+              { name: "Miembro del Grupo", role: "Empresario exportador", text: "Lo más valioso no es la red de expertos, aunque es excelente. Es la forma en que Edmundo te hace las preguntas correctas. Te obliga a pensar diferente." },
             ].map((t, i) => {
               const open = openTestimonio === i;
               return (
