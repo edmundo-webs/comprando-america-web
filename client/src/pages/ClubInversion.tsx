@@ -1,5 +1,5 @@
 /*
- * Círculo Cercano de Edmundo Treviño 2026 — Central product page
+ * Grupo Empresarial de Edmundo 2026 — Central product page
  * /club-de-inversion-en-estados-unidos
  * No external navigation — everything stays on page
  * Pillars + authority + fear-resolving
@@ -69,14 +69,14 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
-  title: "Círculo Cercano de Edmundo Treviño en Estados Unidos | Comprando América",
-  description: "El Círculo Cercano de Edmundo Treviño es la comunidad de inversión privada más exclusiva para latinos en Estados Unidos. Deal Day mensual, expertos, visas y oportunidades desde $100,000 USD.",
+  title: "Grupo Empresarial de Edmundo en Estados Unidos | Comprando América",
+  description: "Club privado de inversión para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Acompañamiento legal, fiscal y migratorio.",
   path: "/club-de-inversion-en-estados-unidos",
   schema: [
-    { "@context": "https://schema.org", "@type": "Product", "name": "Círculo Cercano de Edmundo Treviño Comprando América", "description": "Club privado de inversión para empresarios latinos en Estados Unidos", "brand": { "@type": "Brand", "name": "Comprando América" }, "offers": { "@type": "AggregateOffer", "lowPrice": "10000", "highPrice": "25000", "priceCurrency": "USD" } },
+    { "@context": "https://schema.org", "@type": "Product", "name": "Grupo Empresarial de Edmundo Comprando América", "description": "Club privado de inversión para empresarios latinos en Estados Unidos", "brand": { "@type": "Brand", "name": "Comprando América" }, "offers": { "@type": "AggregateOffer", "lowPrice": "10000", "highPrice": "25000", "priceCurrency": "USD" } },
     { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
-      { "@type": "Question", "name": "¿Qué incluye el Círculo Cercano?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías en tiempo real, eventos presenciales VIP, conversaciones exclusivas y Mesa de Dueños." } },
-      { "@type": "Question", "name": "¿Cuánto cuesta el Círculo Cercano?", "acceptedAnswer": { "@type": "Answer", "text": "Desde $10,000 USD (Investor Entry) hasta $25,000 USD (Investor Legacy) con diferentes niveles de acceso y acompañamiento." } },
+      { "@type": "Question", "name": "¿Qué incluye el Grupo Empresarial de Edmundo?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías en tiempo real, eventos presenciales VIP, conversaciones exclusivas y Mesa de Dueños." } },
+      { "@type": "Question", "name": "¿Cuánto cuesta el Grupo Empresarial de Edmundo?", "acceptedAnswer": { "@type": "Answer", "text": "Desde $10,000 USD (Investor Entry) hasta $25,000 USD (Investor Legacy) con diferentes niveles de acceso y acompañamiento." } },
       { "@type": "Question", "name": "¿Para quién es este club?", "acceptedAnswer": { "@type": "Answer", "text": "Empresarios latinos que pueden invertir desde $100,000 USD, buscan diversificación con estructura y valoran el acompañamiento profesional." } }
     ] }
   ],
@@ -169,7 +169,7 @@ export default function ClubInversion() {
               Club Privado · Desde $100,000 USD
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
-              El Círculo Cercano para latinos en{" "}
+              El Grupo Empresarial de Edmundo para latinos en{" "}
               <span className="gradient-text-primary">Estados Unidos</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-4 max-w-2xl">
@@ -184,7 +184,7 @@ export default function ClubInversion() {
                   Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
-              <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el Círculo Cercano de Comprando América.")} className="border-slate-500 text-white hover:bg-white/10 px-8 py-6 text-base">
+              <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el Grupo Empresarial de Edmundo de Comprando América.")} className="border-slate-500 text-white hover:bg-white/10 px-8 py-6 text-base">
                 Hablar con un asesor
               </Button>
             </div>
@@ -580,7 +580,7 @@ export default function ClubInversion() {
                     Evaluar mi Perfil <ArrowRight className="w-5 h-5" />
                   </Button>
                 </a>
-                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, quiero saber si el Círculo Cercano es para mi perfil.")} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
+                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, quiero saber si el Grupo Empresarial de Edmundo es para mi perfil.")} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
                   Hablar con un asesor
                 </Button>
               </div>

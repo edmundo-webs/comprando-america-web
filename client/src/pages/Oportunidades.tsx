@@ -466,13 +466,19 @@ export default function Oportunidades() {
       <section className="bg-white py-24 md:py-32">
         <div className="container">
           <FadeIn>
-            <div className="text-center mb-16">
-              <SectionLabel>Oportunidades</SectionLabel>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#0B1F3A]">Oportunidades activas actualmente</h2>
-              <Divider />
-              <p className="text-[#6B7280] max-w-xl mx-auto">
-                Cada oportunidad pasa por un filtro riguroso antes de ser presentada a la comunidad.
+            <div className="max-w-3xl mx-auto text-center">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Grupo Empresarial de Edmundo</p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+                La mayoría de las oportunidades se presentan dentro de el Grupo Empresarial de Edmundo
+              </h2>
+              <p className="text-[#4B5563] text-lg leading-relaxed mb-10">
+                La comunidad es el espacio donde se presentan oportunidades, se discuten con expertos y se toman decisiones con respaldo profesional.
               </p>
+              <a href="/membresia">
+                <Button className="bg-primary hover:bg-blue-600 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
+                  Conocer el Grupo Empresarial de Edmundo <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
             </div>
           </FadeIn>
 
@@ -810,8 +816,8 @@ export default function Oportunidades() {
                   </Button>
                 </a>
                 <a href="/membresia">
-                  <Button variant="outline" className="px-8 py-6 text-base rounded-full border-blue-500/30 text-blue-400 hover:bg-blue-500/10">
-                    Conocer el Círculo Cercano
+                  <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
+                    Conocer el Grupo Empresarial de Edmundo
                   </Button>
                 </a>
                 <Button

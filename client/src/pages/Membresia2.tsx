@@ -42,7 +42,7 @@ const DINNER_IMAGE =
   "https://lh3.googleusercontent.com/d/1VKFcr6XRJ81P6XX9JbQ_GQvTsQdcvsQC=w1200";
 
 const WA_MESSAGE =
-  "Hola Edmundo, vi la página del Círculo Cercano y me gustaría agendar una sesión de diagnóstico estratégico.";
+  "Hola Edmundo, vi la página del Grupo Empresarial de Edmundo y me gustaría agendar una sesión de diagnóstico estratégico.";
 
 /* ── data ── */
 const hitos = [
@@ -106,7 +106,7 @@ export default function Membresia2() {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <span className="inline-block text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase mb-8 font-mono">
-              Edmundo Treviño · Círculo Cercano
+              Edmundo Treviño · Grupo Empresarial de Edmundo
             </span>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6 font-light">
@@ -116,7 +116,7 @@ export default function Membresia2() {
             </h1>
 
             <p className="text-slate-400 text-lg md:text-xl max-w-xl mx-auto mb-12 leading-relaxed">
-              Quiero invitarte personalmente a mi círculo cercano.
+              Quiero invitarte personalmente a mi Grupo Empresarial de Edmundo.
             </p>
           </motion.div>
 
@@ -133,45 +133,16 @@ export default function Membresia2() {
                 className="group relative w-full block"
                 aria-label="Reproducir video de Edmundo Treviño"
               >
-                {/* Split layout: left text / right photo */}
-                <div className="flex h-[340px] md:h-[420px]">
-                  {/* Left panel — dark navy with text */}
-                  <div className="relative flex-1 bg-[#071628] flex flex-col justify-end p-8 md:p-12">
-                    {/* Subtle blue glow top-left */}
-                    <div className="absolute top-0 left-0 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-                    {/* Label */}
-                    <div className="flex items-center gap-2 mb-5">
-                      <div className="w-6 h-px bg-blue-400" />
-                      <span className="text-blue-400 text-xs font-semibold tracking-[0.25em] uppercase font-mono">
-                        Círculo Cercano 2026
-                      </span>
-                    </div>
-                    <h2 className="text-white text-3xl md:text-4xl font-bold leading-tight mb-1 text-left">
-                      Edmundo Treviño
-                    </h2>
-                    <p className="text-slate-400 text-sm mb-8 text-left">Fundador · Comprando América</p>
-                    {/* Play CTA */}
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-primary group-hover:bg-blue-500 group-hover:scale-110 transition-all flex items-center justify-center shadow-lg shadow-blue-600/40 shrink-0">
-                        <Play className="w-5 h-5 text-white ml-0.5" />
-                      </div>
-                      <span className="text-white font-medium text-sm group-hover:text-blue-300 transition-colors">
-                        Ver mensaje
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Right panel — Edmundo photo */}
-                  <div className="relative w-[45%] md:w-[48%] shrink-0">
-                    <img
-                      src={EDMUNDO_PORTRAIT}
-                      alt="Edmundo Treviño"
-                      className="w-full h-full object-cover object-top"
-                    />
-                    {/* Gradient fade left to blend with navy panel */}
-                    <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#071628] to-transparent" />
-                    {/* Dark overlay on hover */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors" />
+                <img
+                  src={DINNER_IMAGE}
+                  alt="Edmundo Treviño - Grupo Empresarial de Edmundo"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors" />
+                {/* Play button */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+                  <div className="w-20 h-20 rounded-full bg-primary/90 group-hover:bg-primary group-hover:scale-110 transition-all flex items-center justify-center shadow-2xl shadow-blue-600/40">
+                    <Play className="w-8 h-8 text-white ml-1" />
                   </div>
                 </div>
               </button>
@@ -402,7 +373,7 @@ export default function Membresia2() {
             <div className="mt-14 text-center">
               <p className="text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">
                 Por eso decidí abrir mi{" "}
-                <span className="text-white font-semibold">Círculo Cercano.</span>
+                <span className="text-white font-semibold">Grupo Empresarial de Edmundo.</span>
                 {" "}Un espacio privado para empresarios e inversionistas que desean construir patrimonio en Estados Unidos con mayor claridad y menos errores.
               </p>
             </div>
@@ -508,7 +479,7 @@ export default function Membresia2() {
                 Hoy quiero extenderte esa misma mano.
               </p>
               <p className="text-white font-semibold text-xl mb-10 max-w-2xl">
-                Bienvenido al Círculo Cercano de Edmundo Treviño.
+                Bienvenido al Grupo Empresarial de Edmundo.
               </p>
 
               <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-7 mb-10 max-w-2xl">
@@ -530,7 +501,7 @@ export default function Membresia2() {
               </div>
 
               <p className="text-slate-600 text-xs mt-6 max-w-md">
-                El Círculo Cercano no está diseñado para curiosos. Está diseñado para empresarios e inversionistas que están listos para actuar.
+                El Grupo Empresarial de Edmundo no está diseñado para curiosos. Está diseñado para empresarios e inversionistas que están listos para actuar.
               </p>
             </div>
           </FadeIn>

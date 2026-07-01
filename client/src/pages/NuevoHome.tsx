@@ -980,7 +980,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
             ))}
           </div>
         </div>
-        {/* ── Círculo Cercano de Edmundo Treviño ── */}
+        {/* ── Grupo Empresarial de Edmundo ── */}
         <div style={{ marginBottom: "44px" }}>
           <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "18px" }}>Próximo Paso Recomendado</h3>
           <div style={{ background: `linear-gradient(135deg, #0D1F3C 0%, #0F2847 100%)`, border: `1px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", position: "relative", overflow: "hidden" }}>
@@ -992,7 +992,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
                 <img src={LOGO_URL} alt="" style={{ height: "28px", width: "28px", borderRadius: "6px", opacity: 0.9 }} />
                 <div>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: `${GOLD}90`, textTransform: "uppercase" }}>Comprando América</div>
-                  <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Círculo Cercano de Edmundo Treviño</div>
+                  <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Grupo Empresarial de Edmundo</div>
                 </div>
               </div>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "3px 8px", textTransform: "uppercase", flexShrink: 0 }}>Exclusivo</span>
@@ -1012,8 +1012,8 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
               </div>
             )}
             <div style={{ display: "flex", gap: "10px" }}>
-              <a href="/circulo-cercano" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "9px", cursor: "pointer", textDecoration: "none" }}>
-                Explorar Círculo Cercano <IconRight color={NAVY} />
+              <a href="/membresia-2" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "9px", cursor: "pointer", textDecoration: "none" }}>
+                Explorar Grupo Empresarial de Edmundo <IconRight color={NAVY} />
               </a>
             </div>
           </div>

@@ -190,7 +190,7 @@ export default function BlogPost() {
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <a href="/#membresia">
                     <Button className="bg-primary hover:bg-primary-blue-dark text-white font-semibold px-8 py-5 gap-2">
-                      Conoce el Círculo Cercano de Edmundo Treviño
+                      Conoce el Grupo Empresarial de Edmundo
                     </Button>
                   </a>
                   <a href="/#blog">
