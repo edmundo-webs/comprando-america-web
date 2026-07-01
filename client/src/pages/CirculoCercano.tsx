@@ -178,41 +178,78 @@ export default function CirculoCercano() {
       {/* ══ VIDEO — MENSAJE DE EDMUNDO ═════════════════════════ */}
       <section className="bg-[#091A30] py-24 px-4">
         <div className="max-w-4xl mx-auto">
-          <FadeIn className="text-center mb-8">
-            <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Un mensaje personal</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mt-3">
-              — Edmundo Treviño —
-            </h2>
+          <FadeIn className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-8 h-0.5 bg-primary/50" />
+              <span className="text-blue-400 text-xs font-mono font-semibold tracking-[0.3em] uppercase">Un mensaje personal</span>
+              <div className="w-8 h-0.5 bg-primary/50" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white">Edmundo Treviño</h2>
+            <p className="text-slate-500 text-sm mt-2">Fundador · Comprando América</p>
           </FadeIn>
 
           <FadeIn delay={0.1}>
-            <div className="relative rounded-2xl overflow-hidden bg-[#0B1F3A] aspect-video border border-[#1E3A5F] shadow-2xl shadow-black/60">
+            <div className="relative rounded-2xl overflow-hidden bg-[#060F1E] aspect-video border border-[#1E3A5F] shadow-2xl shadow-black/70 group cursor-pointer">
               {!showVideo ? (
-                <button onClick={() => setShowVideo(true)} className="group relative w-full h-full block" aria-label="Reproducir">
-                  {/* BG */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#0F2847] to-[#091A30]" />
-                  {/* Portrait right */}
-                  <div className="absolute right-0 inset-y-0 w-[55%]">
-                    <img src={EDMUNDO} alt="Edmundo Treviño" className="w-full h-full object-cover object-top opacity-70 group-hover:opacity-80 transition-opacity duration-500" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#0F2847] via-[#0F2847]/50 to-transparent" />
-                  </div>
-                  {/* Left content */}
-                  <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 max-w-[55%]">
-                    <div className="flex items-center gap-2 mb-4">
+                <button onClick={() => setShowVideo(true)} className="relative w-full h-full block" aria-label="Reproducir video de Edmundo Treviño">
+
+                  {/* Portrait full-bleed */}
+                  <img
+                    src={EDMUNDO}
+                    alt="Edmundo Treviño"
+                    className="absolute inset-0 w-full h-full object-cover object-top opacity-55 group-hover:opacity-70 group-hover:scale-[1.02] transition-all duration-700"
+                  />
+
+                  {/* Gradient overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#060F1E]/95 via-[#060F1E]/65 to-[#060F1E]/15" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060F1E]/80 via-transparent to-[#060F1E]/35" />
+
+                  {/* Top bar */}
+                  <div className="absolute top-0 inset-x-0 flex items-center justify-between px-6 md:px-10 pt-5 md:pt-7">
+                    <div className="flex items-center gap-2.5">
                       <div className="w-5 h-0.5 bg-primary" />
-                      <span className="text-blue-400 text-[10px] font-mono tracking-[0.3em] uppercase">Grupo Empresarial de Edmundo 2026</span>
+                      <span className="text-blue-400 text-[10px] md:text-xs font-mono font-semibold tracking-[0.3em] uppercase">
+                        Círculo Cercano · 2026
+                      </span>
                     </div>
-                    <h3 className="text-white text-2xl md:text-3xl lg:text-4xl font-extrabold leading-tight mb-2">
+                    <span className="bg-primary/20 border border-primary/30 text-blue-300 text-[9px] md:text-[10px] font-bold px-3 py-1 rounded-full tracking-widest uppercase">
+                      Exclusivo
+                    </span>
+                  </div>
+
+                  {/* Main left content */}
+                  <div className="absolute inset-0 flex flex-col justify-center px-6 md:px-14 max-w-[58%]">
+                    <p className="text-blue-400/60 text-[10px] font-mono tracking-widest uppercase mb-3 hidden md:block">
+                      Mensaje directo
+                    </p>
+                    <h3 className="text-white text-xl md:text-3xl lg:text-[2.6rem] font-extrabold leading-tight mb-1 md:mb-3">
                       Edmundo Treviño
                     </h3>
-                    <p className="text-slate-400 text-sm mb-8">Fundador · Comprando América</p>
-                    <motion.div whileHover={{ x: 4 }} className="flex items-center gap-4">
-                      <div className="w-14 h-14 rounded-full bg-primary group-hover:bg-blue-500 transition-colors flex items-center justify-center shadow-xl shadow-blue-600/40">
-                        <Play className="w-5 h-5 text-white ml-0.5" />
+                    <p className="text-slate-400 text-xs md:text-sm mb-6 md:mb-9 leading-relaxed max-w-[260px] hidden sm:block">
+                      "Quiero hablarte directamente sobre lo que significa pertenecer al Círculo Cercano."
+                    </p>
+                    <div className="flex items-center gap-3 md:gap-4">
+                      <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary group-hover:bg-blue-500 group-hover:scale-110 transition-all duration-300 flex items-center justify-center shadow-2xl shadow-blue-600/50">
+                        <Play className="w-5 h-5 md:w-6 md:h-6 text-white ml-0.5 md:ml-1" />
                       </div>
-                      <span className="text-slate-300 text-sm font-medium group-hover:text-white transition-colors">Ver mensaje</span>
-                    </motion.div>
+                      <div>
+                        <p className="text-white font-bold text-sm group-hover:text-blue-300 transition-colors">Ver mensaje</p>
+                        <p className="text-slate-500 text-xs hidden md:block">Comprando América</p>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* Bottom bar */}
+                  <div className="absolute bottom-0 inset-x-0 flex items-center justify-between px-6 md:px-10 pb-4 md:pb-6">
+                    <p className="text-slate-600 text-[10px] font-mono tracking-widest uppercase hidden md:block">
+                      comprandoamerica.com
+                    </p>
+                    <div className="flex items-center gap-1.5 ml-auto">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                      <span className="text-slate-500 text-[10px] font-mono uppercase tracking-wider">En vivo</span>
+                    </div>
+                  </div>
+
                 </button>
               ) : (
                 <video src={VIDEO_URL} controls autoPlay className="w-full h-full" poster={VIDEO_POSTER} />
