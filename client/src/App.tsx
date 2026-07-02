@@ -45,6 +45,7 @@ import Membresia2 from "./pages/Membresia2";
 import Section8 from "./pages/Section8";
 import Propiedades from "./pages/Propiedades";
 import FondoVictoryCapital from "./pages/FondoVictoryCapital";
+import GpsPage from "./pages/GpsPage";
 
 function Router() {
   return (
@@ -85,6 +86,7 @@ function Router() {
       <Route path="/propiedades" component={Propiedades} />
       <Route path="/fondo" component={FondoVictoryCapital} />
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
+      <Route path="/gps" component={GpsPage} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>
