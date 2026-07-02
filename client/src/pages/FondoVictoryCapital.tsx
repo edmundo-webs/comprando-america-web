@@ -28,14 +28,14 @@ import {
 } from "lucide-react";
 
 const PAGE_SEO = {
-  title: "Fondo Victory Capital — Inversión en Parques de Casas Móviles en EE.UU. | Comprando América",
+  title: "Fondo de Tierra Estratégica — Inversión en Parques de Casas Móviles en Estados Unidos | Comprando América",
   description:
-    "Invierte en tierra estratégica en Estados Unidos sin tener que operar. Victory Capital reúne capital para adquirir y administrar parques de casas móviles. Ticket mínimo USD $100,000.",
+    "Invierte en tierra estratégica en Estados Unidos sin tener que operar. Flujo en dólares, apreciación patrimonial y gestión profesional. Ticket mínimo USD $100,000.",
   path: "/fondo",
 };
 
 const WA_MSG =
-  "Hola, quiero evaluar si el Fondo Victory Capital tiene sentido para mi perfil patrimonial.";
+  "Hola, quiero evaluar si el Fondo de Tierra Estratégica tiene sentido para mi perfil patrimonial.";
 
 function FadeIn({
   children,
@@ -134,20 +134,20 @@ export default function FondoVictoryCapital() {
             <div className="max-w-3xl">
               {/* Label */}
               <p className="text-blue-400 text-xs font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Fondo de Inversión · Victory Capital
+                Fondo de Tierra Estratégica
               </p>
 
               {/* Headline */}
               <h1 className="text-3xl md:text-5xl text-white leading-tight mb-3">
-                Invierte en tierra estratégica en{" "}
-                <span className="gradient-text-primary">Estados Unidos</span>{" "}
-                sin tener que operar.
+                Fondo de{" "}
+                <span className="gradient-text-primary">Tierra Estratégica</span>
               </h1>
 
               {/* Subhead — 1 línea */}
               <p className="text-slate-400 text-base md:text-lg mb-6 max-w-xl">
-                Parques de casas móviles. Flujo potencial, apreciación y operación
-                profesional. Tú solo aportas el capital.
+                Flujo en dólares, apreciación patrimonial y gestión profesional.
+                Parques de casas móviles y tierra productiva en Estados Unidos.
+                Tú solo aportas el capital.
               </p>
 
               {/* Stats en una sola fila horizontal */}
@@ -677,7 +677,7 @@ export default function FondoVictoryCapital() {
                   </p>
                   {checkedCount >= 4 ? (
                     <p className="text-[#0B1F3A] text-sm leading-relaxed">
-                      Victory Capital podría ser una ruta a evaluar dentro de tu
+                      El Fondo de Tierra Estratégica podría ser una ruta a evaluar dentro de tu
                       estrategia patrimonial.
                     </p>
                   ) : (
@@ -838,7 +838,7 @@ export default function FondoVictoryCapital() {
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
               <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-6 font-mono">
-                Victory Capital
+                Fondo de Tierra Estratégica
               </p>
               <h2 className="text-3xl md:text-4xl text-white mb-4">
                 No necesitas evaluar todas las oportunidades.
@@ -847,9 +847,9 @@ export default function FondoVictoryCapital() {
                 Necesitas entender cuál tiene sentido para ti.
               </p>
               <p className="text-slate-500 text-sm mb-12 max-w-lg mx-auto leading-relaxed">
-                Victory Capital puede ser una ruta interesante para inversionistas que
-                buscan exposición inmobiliaria en Estados Unidos, flujo potencial,
-                diversificación en dólares y operación profesional.
+                El Fondo de Tierra Estratégica puede ser una ruta interesante para inversionistas que
+                buscan exposición inmobiliaria en Estados Unidos, flujo en dólares,
+                apreciación patrimonial y gestión profesional.
               </p>
 
               <div className="bg-[#0E2544] border border-[#1E3A5F] rounded-2xl p-8 mb-10 text-left">

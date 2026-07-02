@@ -72,7 +72,7 @@ function GoldAccent() {
 /* ─── SEO ─── */
 const PAGE_SEO = {
   title:
-    "Propiedades Section 8 en Estados Unidos | Ingresos en Dólares y Patrimonio | Comprando América",
+    "Programa de Vivienda con Renta Respaldada por el Gobierno | Ingresos en Dólares y Patrimonio | Comprando América",
   description:
     "Descubre cómo invertir en propiedades administradas bajo el programa Section 8 en Estados Unidos. Genera ingresos en dólares, diversifica tu patrimonio y evalúa si esta estrategia tiene sentido para tus objetivos.",
   path: "/vc-8",
@@ -215,15 +215,16 @@ export default function Section8() {
           <FadeIn>
             <div className="max-w-2xl">
               <p className="text-xs font-semibold tracking-[0.3em] uppercase mb-4 font-mono" style={{ color: GOLD }}>
-                Propiedades · Programa Section 8
+                Propiedades · Programa de Vivienda con Renta Respaldada por el Gobierno
               </p>
 
-              <h1 className="text-3xl md:text-4xl text-white font-bold leading-tight mb-4">
-                Construye patrimonio en Estados Unidos a través de{" "}
-                <span className="gradient-text-primary">
-                  propiedades administradas profesionalmente.
-                </span>
+              <h1 className="text-3xl md:text-4xl text-white font-bold leading-tight mb-2">
+                Programa de Vivienda con Renta Respaldada por el Gobierno
               </h1>
+
+              <p className="text-lg font-medium mb-4" style={{ color: GOLD_LIGHT }}>
+                Flujo inmobiliario respaldado por programas gubernamentales
+              </p>
 
               <p className="text-slate-300 text-base leading-relaxed mb-1 max-w-xl">
                 Genera ingresos en dólares mediante bienes raíces respaldados por una necesidad básica: vivienda.
@@ -316,7 +317,7 @@ export default function Section8() {
           <FadeIn delay={0.32} className="mt-16">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                { emoji: "🏛️", label: "Gobierno de EE.UU.", sub: "Aprueba el voucher" },
+                { emoji: "🏛️", label: "Gobierno de Estados Unidos", sub: "Aprueba el voucher" },
                 { emoji: "💵", label: "Pago directo", sub: "Al propietario" },
                 { emoji: "🏠", label: "Tu propiedad", sub: "Genera renta mensual" },
               ].map((step, i) => (

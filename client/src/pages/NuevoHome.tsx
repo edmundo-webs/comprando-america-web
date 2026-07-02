@@ -27,27 +27,27 @@ const PERFILES: Record<string, { nombre: string; descripcion: string; vehiculos:
   patrimonio: {
     nombre: "PROTECTOR PATRIMONIAL",
     descripcion: "Tu prioridad parece estar enfocada en preservar patrimonio, diversificar riesgos y construir activos en dólares con visión de largo plazo.",
-    vehiculos: ["Membresía Comprando América", "Victory Capital", "Propiedades individuales", "Estructura LLC"],
+    vehiculos: ["Grupo Empresarial de Edmundo Treviño", "Fondo de Tierra Estratégica", "Propiedades individuales", "Estructura LLC"],
   },
   ingresos: {
     nombre: "GENERADOR DE FLUJO",
     descripcion: "Tu enfoque principal es construir una fuente de ingresos constante en dólares con activos que trabajan por ti.",
-    vehiculos: ["Victory Capital", "Section 8", "Coinversiones", "Membresía Comprando América"],
+    vehiculos: ["Fondo de Tierra Estratégica", "Programa de Vivienda con Renta Respaldada por el Gobierno", "Oportunidades Privadas Curadas", "Grupo Empresarial de Edmundo Treviño"],
   },
   empresa: {
     nombre: "EMPRESARIO EXPANSIVO",
     descripcion: "Tienes una empresa funcionando y quieres llevarla al mercado más grande del mundo con estructura legal y fiscal correcta.",
-    vehiculos: ["Americaniza tu Operación", "Estructura LLC", "Adquisiciones", "Membresía Comprando América"],
+    vehiculos: ["Americaniza tu Operación", "Estructura LLC", "Adquisiciones", "Grupo Empresarial de Edmundo Treviño"],
   },
   familia: {
     nombre: "ARQUITECTO FAMILIAR",
     descripcion: "Tu inversión está diseñada para abrir puertas a tu familia combinando estrategia migratoria con estructuras patrimoniales.",
-    vehiculos: ["Membresía Comprando América", "Estructura LLC", "Propiedades individuales", "Plan Migratorio"],
+    vehiculos: ["Grupo Empresarial de Edmundo Treviño", "Estructura LLC", "Propiedades individuales", "Plan Migratorio"],
   },
   explorar: {
     nombre: "EXPLORADOR ESTRATÉGICO",
     descripcion: "Sabes que quieres estar en Estados Unidos pero aún estás definiendo tu camino. Tu ruta comienza con claridad.",
-    vehiculos: ["Membresía Comprando América", "Diagnóstico Personalizado", "Mapa de Rutas", "Comunidad"],
+    vehiculos: ["Grupo Empresarial de Edmundo Treviño", "Diagnóstico Personalizado", "Mapa de Rutas", "Comunidad"],
   },
 };
 
@@ -73,9 +73,9 @@ const VEHICULOS_CATEGORIAS = [
     id: "flujo",
     titulo: "Generar flujo pasivo",
     items: [
-      { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/fondo", exclusivo: false },
-      { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/vc-8", exclusivo: false },
-      { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos", exclusivo: true },
+      { id: "victory-capital", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/fondo", exclusivo: false },
+      { id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/vc-8", exclusivo: false },
+      { id: "coinversiones", nombre: "Oportunidades Privadas Curadas", frase: "Proyectos seleccionados para perfiles específicos de inversionista", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos", exclusivo: true },
     ],
   },
   {
@@ -83,7 +83,7 @@ const VEHICULOS_CATEGORIAS = [
     titulo: "Construir patrimonio",
     items: [
       { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+", href: "/propiedades", exclusivo: false },
-      { id: "estructura-llc", nombre: "Fondos & Estructuras", frase: "Diversificación en activos americanos con protección legal", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+", href: "/estructura-de-inversion-en-usa", exclusivo: false },
+      { id: "estructura-llc", nombre: "Estructura para Invertir en Estados Unidos", frase: "Legal, fiscal, bancaria y patrimonial desde el primer día", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+", href: "/estructura-de-inversion-en-usa", exclusivo: false },
       { id: "adquisiciones", nombre: "Negocios", frase: "Adquiere o construye un negocio americano", participacion: "Activa", horizonte: "3-5 años", ticket: "200k+", href: "", exclusivo: true },
     ],
   },
@@ -99,7 +99,7 @@ const VEHICULOS_CATEGORIAS = [
 ];
 
 const COMPARACION = {
-  headers: ["Victory Capital", "Section 8", "Grupo Empresarial de Edmundo"],
+  headers: ["Fondo de Tierra Estratégica", "Programa de Vivienda con Renta Respaldada por el Gobierno", "Grupo Empresarial de Edmundo Treviño"],
   rows: [
     { label: "Participación", values: ["Pasiva", "Semi-pasiva", "Estratégica"] },
     { label: "Horizonte", values: ["5-7 años", "Largo plazo", "Continuo"] },
@@ -114,7 +114,7 @@ const BIBLIOTECA = [
   { tipo: "guia", titulo: "Proteger tu patrimonio en Estados Unidos", meta: "12 min", cat: "Patrimonio" },
   { tipo: "podcast", titulo: "Renta garantizada con Section 8", meta: "45 min", cat: "Flujo" },
   { tipo: "caso", titulo: "Empresario colombiano expande a Texas", meta: "Caso de estudio", cat: "Empresa" },
-  { tipo: "video", titulo: "Victory Capital: qué es y cómo funciona", meta: "12 min", cat: "Flujo" },
+  { tipo: "video", titulo: "Fondo de Tierra Estratégica: qué es y cómo funciona", meta: "12 min", cat: "Flujo" },
   { tipo: "guia", titulo: "Las 5 estructuras más usadas por inversionistas latinos", meta: "8 min", cat: "Estructura" },
 ];
 
@@ -133,12 +133,12 @@ type VehicleEntry = {
 };
 
 const VEHICLE_DATA: VehicleEntry[] = [
-  { id: "membresia", nombre: "Membresía Comprando América", frase: "Acceso a comunidad, red y dealflow estratégico", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/grupo-empresarial-edmundo" },
-  { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"], href: "/fondo" },
-  { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"], href: "/vc-8" },
-  { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"], href: "/club-de-inversion-en-estados-unidos" },
+  { id: "membresia", nombre: "Grupo Empresarial de Edmundo Treviño", frase: "El ecosistema de confianza para empresarios en Estados Unidos", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/grupo-empresarial-edmundo" },
+  { id: "victory-capital", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"], href: "/fondo" },
+  { id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"], href: "/vc-8" },
+  { id: "coinversiones", nombre: "Oportunidades Privadas Curadas", frase: "Proyectos seleccionados para perfiles específicos de inversionista", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"], href: "/club-de-inversion-en-estados-unidos" },
   { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", ticketMin: 150, ticketLabel: "$150k+", horizonte: "Largo plazo", participacion: ["supervisar", "activo"], objetivos: ["patrimonio", "familia", "ingresos"], prioridades: ["apreciacion", "proteccion", "flujo"], href: "/propiedades" },
-  { id: "estructura-llc", nombre: "Estructura LLC", frase: "Entidad legal para operar y proteger activos en USA", ticketMin: 5, ticketLabel: "$5k", horizonte: "Corto plazo", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["empresa", "familia", "patrimonio", "ingresos"], prioridades: ["proteccion", "crecimiento", "migracion"], href: "/estructura-de-inversion-en-usa" },
+  { id: "estructura-llc", nombre: "Estructura LLC", frase: "Entidad legal para operar y proteger activos en Estados Unidos", ticketMin: 5, ticketLabel: "$5k", horizonte: "Corto plazo", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["empresa", "familia", "patrimonio", "ingresos"], prioridades: ["proteccion", "crecimiento", "migracion"], href: "/estructura-de-inversion-en-usa" },
   { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["activo", "supervisar"], objetivos: ["empresa"], prioridades: ["crecimiento", "acceso", "flujo"], href: "/expansion-internacional-empresas" },
   { id: "adquisiciones", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", ticketMin: 500, ticketLabel: "$500k+", horizonte: "6-12 meses", participacion: ["activo"], objetivos: ["empresa"], prioridades: ["crecimiento", "flujo"] },
   { id: "plan-migratorio", nombre: "Plan Migratorio", frase: "Residencia con base en estructura de inversión", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["familia"], prioridades: ["migracion", "proteccion"], href: "/visa-e2-inversionista-usa" },
@@ -163,8 +163,8 @@ function rankVehicles(params: { objetivo: string; participacion: string; capital
 }
 
 const DIAGNOSTICO_RESPUESTAS: Record<string, string> = {
-  patrimonio: "Tu siguiente paso es entender la estructura correcta para tu patrimonio. Recomendamos comenzar con una evaluación de Estructura LLC y Victory Capital.",
-  invertir: "Tu siguiente paso es explorar Victory Capital o Section 8, según tu horizonte y nivel de participación deseado.",
+  patrimonio: "Tu siguiente paso es entender la estructura correcta para tu patrimonio. Recomendamos comenzar con una evaluación de Estructura LLC y Fondo de Tierra Estratégica.",
+  invertir: "Tu siguiente paso es explorar Fondo de Tierra Estratégica o Programa de Vivienda con Renta Respaldada por el Gobierno, según tu horizonte y nivel de participación deseado.",
   expandir: "Tu siguiente paso es el programa Americaniza tu Operación. Creamos el puente entre tu empresa actual y el mercado americano.",
   familia: "Tu siguiente paso incluye una evaluación de opciones migratorias y las estructuras que benefician directamente a tu familia.",
   nosc: "Eso está bien. Tu siguiente paso es un diagnóstico estratégico donde exploramos juntos tus opciones reales, sin compromisos.",
@@ -998,7 +998,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "3px 8px", textTransform: "uppercase", flexShrink: 0 }}>Exclusivo</span>
             </div>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "20px" }}>
-              Antes de invertir, lo más valioso es tener claridad. En el Círculo exploramos tus opciones, desarrollamos criterio, definimos el momento correcto y estructuramos una ruta para Estados Unidos — con opción a visa, según tu capital y caso particular.
+              Antes de invertir, lo más valioso es tener claridad. En el Grupo Empresarial exploramos tus opciones, desarrollamos criterio, definimos el momento correcto y estructuramos una ruta para Estados Unidos — con opción a visa, según tu capital y caso particular.
             </p>
             {/* Ficha del diagnóstico */}
             {fichaData.length > 0 && (
