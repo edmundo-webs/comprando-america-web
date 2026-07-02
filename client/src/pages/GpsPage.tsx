@@ -118,21 +118,121 @@ const PARTICIPACION_LABELS: Record<string, string> = {
 /* ─── Vehicle data ─── */
 type VehicleEntry = {
   id: string; nombre: string; frase: string; descripcion: string;
+  desde: string; hacia: string; ganas: string[];
   ticketMin: number; ticketLabel: string; horizonte: string;
   participacion: string[]; objetivos: string[]; prioridades: string[];
   href?: string; exclusivo?: boolean;
 };
 
 const VEHICLE_DATA: VehicleEntry[] = [
-  { id: "membresia", nombre: "Círculo Cercano", frase: "Acceso a comunidad, red y oportunidades de inversión disponibles", descripcion: "Antes de invertir, lo más valioso es tener criterio. En el Círculo exploramos tus opciones, desarrollamos criterio y estructuramos tu ruta para Estados Unidos.", ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"], prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"], href: "/circulo-cercano" },
-  { id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional", descripcion: "Fondo de inversión con gestión activa. Tú pones el capital, nosotros lo gestionamos. Retornos proyectados en dólares con reportes periódicos.", ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años", participacion: ["no-operar", "supervisar"], objetivos: ["patrimonio", "ingresos", "explorar"], prioridades: ["flujo", "apreciacion", "proteccion"], href: "/fondo" },
-  { id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal", descripcion: "Propiedades con arrendatario garantizado por el gobierno federal de EE.UU. Flujo mensual sin vacantes, ideal para inversión pasiva.", ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo", participacion: ["no-operar", "supervisar"], objetivos: ["ingresos", "patrimonio"], prioridades: ["flujo", "proteccion", "apreciacion"], href: "/vc-8" },
-  { id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos", descripcion: "Accede a proyectos seleccionados junto a otros inversionistas de la comunidad. Capital conjunto, dealflow curado, rendimientos compartidos.", ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años", participacion: ["supervisar", "activo", "nosc"], objetivos: ["ingresos", "patrimonio", "explorar"], prioridades: ["flujo", "apreciacion", "acceso"], href: "/club-de-inversion-en-estados-unidos", exclusivo: true },
-  { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", descripcion: "Adquisición de propiedades en mercados con alta apreciación y demanda de renta. Patrimonio en dólares respaldado por activos tangibles.", ticketMin: 150, ticketLabel: "$150k+", horizonte: "Largo plazo", participacion: ["supervisar", "activo"], objetivos: ["patrimonio", "familia", "ingresos"], prioridades: ["apreciacion", "proteccion", "flujo"], href: "/propiedades" },
-  { id: "estructura-llc", nombre: "Fondos & Estructuras", frase: "Diversificación en activos americanos con protección legal", descripcion: "Estructura jurídica y fiscal en EE.UU. para operar, proteger activos y optimizar impuestos. Base legal de toda inversión seria.", ticketMin: 5, ticketLabel: "$5k", horizonte: "Corto plazo", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["empresa", "familia", "patrimonio", "ingresos"], prioridades: ["proteccion", "crecimiento", "migracion"], href: "/estructura-de-inversion-en-usa" },
-  { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", descripcion: "Programa para llevar tu empresa latina al mercado norteamericano con estructura legal, fiscal y operativa correcta desde el primer día.", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años", participacion: ["activo", "supervisar"], objetivos: ["empresa"], prioridades: ["crecimiento", "acceso", "flujo"], href: "/expansion-internacional-empresas", exclusivo: true },
-  { id: "adquisiciones", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", descripcion: "Adquiere una empresa en funcionamiento en EE.UU. con flujo de caja positivo. Proceso de due diligence y estructura de adquisición incluido.", ticketMin: 500, ticketLabel: "$500k+", horizonte: "6-12 meses", participacion: ["activo"], objetivos: ["empresa"], prioridades: ["crecimiento", "flujo"], exclusivo: true },
-  { id: "plan-migratorio", nombre: "Visa E-2", frase: "Expansión con opción a residencia vía inversión", descripcion: "Visa de inversionista que permite residir legalmente en EE.UU. ligada a una inversión activa. Camino a la residencia desde tu negocio.", ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-2 años", participacion: ["no-operar", "supervisar", "activo", "nosc"], objetivos: ["familia"], prioridades: ["migracion", "proteccion"], href: "/visa-e2-inversionista-usa", exclusivo: true },
+  {
+    id: "membresia", nombre: "Círculo Cercano", frase: "Acceso a comunidad, red y oportunidades de inversión disponibles",
+    descripcion: "Un espacio privado donde inversionistas latinos con visión global desarrollan criterio, acceden a proyectos y se acompañan en el proceso de entrar al mercado americano.",
+    desde: "Tienes capital o intención de invertir en EE.UU., pero no sabes exactamente por dónde empezar ni en quién confiar.",
+    hacia: "Formas parte de una comunidad de alto nivel que te da contexto, criterio y acceso a oportunidades reales antes de comprometer tu dinero.",
+    ganas: ["Claridad sobre qué ruta es la correcta para tu perfil", "Acceso anticipado a proyectos y coinversiones curadas", "Red de inversionistas que ya han recorrido el camino", "Mentoría directa para estructurar tu entrada a EE.UU."],
+    ticketMin: 10, ticketLabel: "$10k", horizonte: "Inmediato",
+    participacion: ["no-operar", "supervisar", "activo", "nosc"],
+    objetivos: ["patrimonio", "ingresos", "empresa", "familia", "explorar"],
+    prioridades: ["acceso", "flujo", "proteccion", "crecimiento", "migracion", "apreciacion"],
+    href: "/circulo-cercano",
+  },
+  {
+    id: "victory-capital", nombre: "Victory Capital", frase: "Retornos en dólares con gestión profesional",
+    descripcion: "Fondo de inversión con gestión activa y estrategia diversificada. Tú aportas capital, un equipo profesional lo administra y tú recibes reportes y retornos en dólares.",
+    desde: "Tu dinero está en tu país, expuesto a devaluación e incertidumbre, sin que trabaje con la eficiencia que podría.",
+    hacia: "Tu capital opera dentro del sistema financiero americano, gestionado por profesionales, generando retornos en la moneda más sólida del mundo.",
+    ganas: ["Retornos proyectados en dólares con gestión activa", "Diversificación fuera del riesgo de tu país de origen", "Tranquilidad de saber que expertos cuidan tu capital", "Reportes periódicos sin necesidad de operar nada tú mismo"],
+    ticketMin: 100, ticketLabel: "$100k+", horizonte: "5-7 años",
+    participacion: ["no-operar", "supervisar"],
+    objetivos: ["patrimonio", "ingresos", "explorar"],
+    prioridades: ["flujo", "apreciacion", "proteccion"],
+    href: "/fondo",
+  },
+  {
+    id: "section8", nombre: "Section 8", frase: "Renta garantizada con subsidio federal",
+    descripcion: "Propiedades residenciales con arrendatario garantizado por el gobierno federal de EE.UU. El programa Section 8 asegura que la renta llegue puntualmente cada mes, independientemente del inquilino.",
+    desde: "Buscas flujo mensual en dólares pero temes las vacantes, los impagos o tener que gestionar propiedades desde otro país.",
+    hacia: "Eres dueño de un activo inmobiliario en EE.UU. que paga renta puntual garantizada por el gobierno federal, mes tras mes.",
+    ganas: ["Flujo mensual en dólares respaldado por subsidio federal", "Eliminación del riesgo de vacante o impago", "Apreciación del activo a largo plazo en mercados americanos", "Inversión completamente pasiva, sin necesidad de operar"],
+    ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo",
+    participacion: ["no-operar", "supervisar"],
+    objetivos: ["ingresos", "patrimonio"],
+    prioridades: ["flujo", "proteccion", "apreciacion"],
+    href: "/vc-8",
+  },
+  {
+    id: "coinversiones", nombre: "Coinversiones", frase: "Participa en proyectos con socios estratégicos",
+    descripcion: "Accede a proyectos de inversión seleccionados en EE.UU. junto a otros inversionistas de la comunidad. Capital conjunto, proyectos curados por el equipo, rendimientos compartidos.",
+    desde: "Quieres entrar a proyectos de alto rendimiento en EE.UU. pero el ticket mínimo individual o la complejidad operativa te limita.",
+    hacia: "Co-inviertes en proyectos seleccionados con acceso institucional, reduciendo riesgo y ampliando potencial desde un capital accesible.",
+    ganas: ["Acceso a proyectos que individualmente serían inaccesibles", "Rendimientos en dólares distribuidos entre socios estratégicos", "Proyectos curados por un equipo con criterio en el mercado americano", "Comunidad de coinversionistas con visión de largo plazo"],
+    ticketMin: 50, ticketLabel: "$50k+", horizonte: "2-4 años",
+    participacion: ["supervisar", "activo", "nosc"],
+    objetivos: ["ingresos", "patrimonio", "explorar"],
+    prioridades: ["flujo", "apreciacion", "acceso"],
+    href: "/club-de-inversion-en-estados-unidos", exclusivo: true,
+  },
+  {
+    id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda",
+    descripcion: "Adquisición de propiedades en mercados americanos con alta demanda de renta y apreciación histórica. Patrimonio tangible en dólares, protegido por el sistema legal más sólido del mundo.",
+    desde: "Tu patrimonio está concentrado en un solo país, expuesto a inestabilidad política, cambiaria o jurídica.",
+    hacia: "Tienes activos inmobiliarios en EE.UU.: tangibles, en dólares, protegidos legalmente y con potencial de renta y apreciación simultánea.",
+    ganas: ["Patrimonio tangible en la economía más grande del mundo", "Protección contra devaluación e inestabilidad en tu país", "Ingreso por renta y apreciación del activo en paralelo", "Legado transferible a las generaciones siguientes"],
+    ticketMin: 150, ticketLabel: "$150k+", horizonte: "Largo plazo",
+    participacion: ["supervisar", "activo"],
+    objetivos: ["patrimonio", "familia", "ingresos"],
+    prioridades: ["apreciacion", "proteccion", "flujo"],
+    href: "/propiedades",
+  },
+  {
+    id: "estructura-llc", nombre: "Fondos & Estructuras", frase: "Diversificación en activos americanos con protección legal",
+    descripcion: "Diseño y constitución de estructuras jurídicas y fiscales en EE.UU. —LLC, corporaciones, holdings— para operar, proteger activos y optimizar tu carga tributaria desde el primer día.",
+    desde: "Operas o inviertes sin una estructura legal en EE.UU., lo que te expone a responsabilidad personal, doble tributación y falta de credibilidad ante el sistema americano.",
+    hacia: "Tienes una entidad legal americana que te protege, te da acceso a cuentas bancarias, contratos y ventajas fiscales que antes estaban fuera de tu alcance.",
+    ganas: ["Protección de activos personales frente a litigios o deudas", "Separación legal entre tú y tus inversiones en EE.UU.", "Optimización fiscal con estructura correcta desde el inicio", "Credibilidad y acceso al sistema financiero americano"],
+    ticketMin: 5, ticketLabel: "$5k", horizonte: "Corto plazo",
+    participacion: ["no-operar", "supervisar", "activo", "nosc"],
+    objetivos: ["empresa", "familia", "patrimonio", "ingresos"],
+    prioridades: ["proteccion", "crecimiento", "migracion"],
+    href: "/estructura-de-inversion-en-usa",
+  },
+  {
+    id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano",
+    descripcion: "Programa diseñado para empresas latinas que quieren operar en EE.UU. con estructura legal, fiscal y comercial correcta desde el primer día, con acompañamiento estratégico en cada etapa.",
+    desde: "Tu empresa opera bien en tu país pero el mercado americano parece lejano, complejo o reservado para grandes corporaciones.",
+    hacia: "Tu empresa tiene presencia, estructura y operación activa en el mercado más grande del mundo, con todos los elementos legales y fiscales en orden.",
+    ganas: ["Acceso real al mercado americano con estructura correcta", "Credibilidad frente a clientes, socios y proveedores en EE.UU.", "Acompañamiento estratégico de quienes ya lo han hecho antes", "Escalabilidad de tu modelo de negocio en dólares"],
+    ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-3 años",
+    participacion: ["activo", "supervisar"],
+    objetivos: ["empresa"],
+    prioridades: ["crecimiento", "acceso", "flujo"],
+    href: "/expansion-internacional-empresas", exclusivo: true,
+  },
+  {
+    id: "adquisiciones", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación",
+    descripcion: "Proceso guiado para adquirir una empresa en funcionamiento en EE.UU. con flujo de caja positivo. Incluye búsqueda, due diligence, estructuración legal y cierre de la operación.",
+    desde: "Tienes capital y capacidad para operar un negocio, pero crear uno desde cero en EE.UU. implica años de esfuerzo sin certeza de retorno.",
+    hacia: "Eres dueño de un negocio americano ya probado, con clientes, ingresos y operación establecida desde el primer día.",
+    ganas: ["Acceso inmediato a flujo de caja desde el día uno", "Negocio con historial financiero verificable en EE.UU.", "Proceso estructurado de due diligence para minimizar riesgo", "Propiedad en el mercado más robusto y transparente del mundo"],
+    ticketMin: 500, ticketLabel: "$500k+", horizonte: "6-12 meses",
+    participacion: ["activo"],
+    objetivos: ["empresa"],
+    prioridades: ["crecimiento", "flujo"],
+    exclusivo: true,
+  },
+  {
+    id: "plan-migratorio", nombre: "Visa E-2", frase: "Expansión con opción a residencia vía inversión",
+    descripcion: "Visa de inversionista que permite residir legalmente en EE.UU. vinculada a una inversión activa en un negocio americano. La ruta más directa hacia la residencia desde tu empresa.",
+    desde: "Quieres vivir o tener presencia legal en EE.UU., pero las opciones de migración convencionales son lentas, inciertas o no aplican a tu perfil.",
+    hacia: "Tú y tu familia tienen estatus legal en EE.UU., respaldado por una inversión activa y una empresa que genera valor en el mercado americano.",
+    ganas: ["Residencia legal en EE.UU. para ti y tu familia", "Autorización de trabajo vinculada a tu propia empresa", "Acceso al sistema de salud, educación y movilidad americana", "Una ruta migratoria bajo tu control, no a la espera de sorteos"],
+    ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-2 años",
+    participacion: ["no-operar", "supervisar", "activo", "nosc"],
+    objetivos: ["familia"],
+    prioridades: ["migracion", "proteccion"],
+    href: "/visa-e2-inversionista-usa", exclusivo: true,
+  },
 ];
 
 function rankVehicles(params: { objetivo: string; participacion: string; capital: string; prioridades: string[] }) {
@@ -854,40 +954,96 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
 
 /* ─── Vehicle detail drawer ─── */
 function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: number }) | null; onClose: () => void }) {
+  const SECTION_LABEL: React.CSSProperties = {
+    fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700,
+    letterSpacing: "0.2em", textTransform: "uppercase" as const, marginBottom: "6px",
+  };
   return (
     <AnimatePresence>
       {vehicle && (
         <>
           <motion.div key="ov" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 400 }} />
+            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", zIndex: 400 }} />
           <motion.div key="dw" initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 28, stiffness: 260 }}
-            style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY_CARD, borderTop: `1px solid ${NAVY_BORDER}`, borderRadius: "20px 20px 0 0", zIndex: 500, padding: "28px 24px 40px", maxHeight: "80vh", overflowY: "auto" }}>
+            style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY_CARD, borderTop: `1px solid ${NAVY_BORDER}`, borderRadius: "20px 20px 0 0", zIndex: 500, padding: "28px 24px 44px", maxHeight: "88vh", overflowY: "auto" }}>
+
             {/* Handle */}
             <div style={{ width: "40px", height: "4px", background: NAVY_BORDER, borderRadius: "2px", margin: "0 auto 24px" }} />
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+
+            {/* Header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "20px" }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "4px" }}>{vehicle.pct}% compatibilidad</div>
-                <h3 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "24px", fontWeight: 700, color: "#fff", margin: 0, lineHeight: 1.2 }}>{vehicle.nombre}</h3>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "6px" }}>
+                  {vehicle.pct}% compatibilidad con tu perfil
+                </div>
+                <h3 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "26px", fontWeight: 700, color: "#fff", margin: 0, lineHeight: 1.2 }}>{vehicle.nombre}</h3>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#5A7A99", margin: "6px 0 0", fontStyle: "italic" }}>{vehicle.frase}</p>
               </div>
-              <button onClick={onClose} style={{ background: "transparent", border: "none", cursor: "pointer", padding: "4px", marginLeft: "12px" }}><IconX /></button>
+              <button onClick={onClose} style={{ background: "transparent", border: "none", cursor: "pointer", padding: "4px", marginLeft: "12px", flexShrink: 0 }}><IconX /></button>
             </div>
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "20px" }}>{vehicle.descripcion}</p>
+
+            {/* ¿Qué es? */}
+            <div style={{ marginBottom: "20px" }}>
+              <div style={{ ...SECTION_LABEL, color: "#4A6580" }}>¿Qué es?</div>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#A8BDD4", lineHeight: 1.7, margin: 0 }}>{vehicle.descripcion}</p>
+            </div>
+
+            {/* Separador */}
+            <div style={{ height: "1px", background: NAVY_BORDER, marginBottom: "20px" }} />
+
+            {/* Desde → Hacia */}
+            <div style={{ marginBottom: "20px" }}>
+              <div style={{ ...SECTION_LABEL, color: "#4A6580" }}>Tu transformación</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: "10px", alignItems: "center" }}>
+                <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", padding: "12px 14px" }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: "#4A6580", textTransform: "uppercase", marginBottom: "6px" }}>Dónde estás</div>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#7A9AB8", lineHeight: 1.55, margin: 0 }}>{vehicle.desde}</p>
+                </div>
+                <div style={{ fontSize: "20px", color: GOLD, fontWeight: 700, flexShrink: 0 }}>→</div>
+                <div style={{ background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "10px", padding: "12px 14px" }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: GOLD, textTransform: "uppercase", marginBottom: "6px" }}>Hacia dónde vas</div>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.55, margin: 0 }}>{vehicle.hacia}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Separador */}
+            <div style={{ height: "1px", background: NAVY_BORDER, marginBottom: "20px" }} />
+
+            {/* Qué obtienes */}
+            <div style={{ marginBottom: "24px" }}>
+              <div style={{ ...SECTION_LABEL, color: "#4A6580" }}>Qué obtienes</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {vehicle.ganas.map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                    <div style={{ width: "20px", height: "20px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
+                      <IconCheck color={GOLD} size={10} />
+                    </div>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#C8D6E8", lineHeight: 1.55 }}>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Specs */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginBottom: "24px" }}>
-              {[["Participación", vehicle.participacion[0]], ["Horizonte", vehicle.horizonte], ["Ticket mínimo", vehicle.ticketLabel]].map(([k, v]) => (
+              {[["Horizonte", vehicle.horizonte], ["Ticket mínimo", vehicle.ticketLabel], ["Participación", PARTICIPACION_LABELS[vehicle.participacion[0]] ?? vehicle.participacion[0]]].map(([k, v]) => (
                 <div key={k} style={{ background: `${NAVY}80`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "12px 10px", textAlign: "center" }}>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: "#4A6580", textTransform: "uppercase", marginBottom: "4px" }}>{k}</div>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#C8D6E8" }}>{v}</div>
                 </div>
               ))}
             </div>
+
+            {/* CTA */}
             {vehicle.exclusivo ? (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: `${GOLD}12`, border: `1px solid ${GOLD}40`, borderRadius: "10px", color: `${GOLD}CC`, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: `${GOLD}12`, border: `1px solid ${GOLD}40`, borderRadius: "10px", color: `${GOLD}CC`, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", textAlign: "center" }}>
                 ✦ Exclusivo para miembros · Agenda tu diagnóstico para acceder
               </div>
             ) : vehicle.href ? (
               <a href={vehicle.href}
-                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "14px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", borderRadius: "10px", textDecoration: "none" }}>
-                Explorar {vehicle.nombre} <IconRight color={NAVY} />
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", padding: "14px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", borderRadius: "10px", textDecoration: "none" }}>
+                Explorar {vehicle.nombre} <IconRight color="#fff" />
               </a>
             ) : null}
           </motion.div>
