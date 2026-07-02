@@ -82,11 +82,11 @@ const SLIDER_POINTS = [
 
 // Capital: incluye opción < $100k
 const OPCIONES_CAPITAL = [
-  { id: "menos-100k", label: "Menos de $100k USD", sub: "Comenzamos construyendo criterio y estructura antes de invertir", info: true },
-  { id: "100k-250k", label: "$100k – $250k USD", sub: "Flujo en dólares, coinversiones y bienes raíces de entrada" },
-  { id: "250k-500k", label: "$250k – $500k USD", sub: "Estrategias de alto impacto patrimonial" },
-  { id: "500k-1m", label: "$500k – $1M USD", sub: "Adquisiciones, fondos y estructuras avanzadas" },
-  { id: "mas-1m", label: "Más de $1M USD", sub: "Estructuras institucionales y portafolios complejos" },
+  { id: "menos-100k", label: "Menos de $100k USD", sub: "", info: true },
+  { id: "100k-250k", label: "$100k – $250k USD", sub: "" },
+  { id: "250k-500k", label: "$250k – $500k USD", sub: "" },
+  { id: "500k-1m", label: "$500k – $1M USD", sub: "" },
+  { id: "mas-1m", label: "Más de $1M USD", sub: "" },
 ];
 
 const OPCIONES_PARTICIPACION = [
@@ -605,11 +605,7 @@ function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
                   {isSel && <div style={{ width: "7px", height: "7px", borderRadius: "50%", background: NAVY }} />}
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 600, color: isSel ? "#fff" : "#C8D6E8" }}>{op.label}</span>
-                    {op.info && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.12em", color: "#6A8FAF", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 6px", textTransform: "uppercase" }}>Comenzamos con criterio</span>}
-                  </div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", marginTop: "2px" }}>{op.sub}</div>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 600, color: isSel ? "#fff" : "#C8D6E8" }}>{op.label}</span>
                 </div>
                 {isSel && (
                   <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: GOLD, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
