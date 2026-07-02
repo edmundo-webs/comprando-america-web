@@ -9,7 +9,7 @@ const GOLD_LIGHT = "#3B82F6";
 const NAVY_CARD = "#0F2847";
 const NAVY_BORDER = "#1E3A5F";
 
-const LOGO_URL = "https://res.cloudinary.com/dkn4ybzog/image/upload/v1748886739/favicon_compass_hhz2ib.png";
+const LOGO_URL = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438699/comprando-america/logo.png";
 
 const PHOTOS = {
   hero: "https://res.cloudinary.com/dkn4ybzog/image/upload/v1749082671/hero-skyline_c7itvs.jpg",
@@ -359,9 +359,8 @@ function FlowTopBar({ screen, totalScreens, onBack }: { screen: number; totalScr
   const canGoBack = screen >= 2 && screen !== 6;
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 80, padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", background: `linear-gradient(to bottom, ${NAVY}E8 0%, ${NAVY}A0 70%, transparent 100%)`, pointerEvents: "none" }}>
-      <a href="https://www.comprandoamerica.com" style={{ display: "flex", alignItems: "center", gap: "10px", pointerEvents: "auto", textDecoration: "none" }}>
-        <img src={LOGO_URL} alt="Comprando América" style={{ height: "38px", width: "38px", borderRadius: "6px", objectFit: "contain" }} />
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", color: "#fff" }}>Comprando América</span>
+      <a href="https://www.comprandoamerica.com" style={{ display: "flex", alignItems: "center", pointerEvents: "auto", textDecoration: "none" }}>
+        <img src={LOGO_URL} alt="Comprando América" style={{ height: "32px", width: "auto", objectFit: "contain" }} />
       </a>
       {/* Step counter + back */}
       <div style={{ display: "flex", alignItems: "center", gap: "10px", pointerEvents: "auto" }}>
@@ -1191,7 +1190,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <img src={LOGO_URL} alt="" style={{ height: "28px", width: "28px", borderRadius: "6px", opacity: 0.9 }} />
+                <img src={LOGO_URL} alt="" style={{ height: "22px", width: "auto", opacity: 0.9 }} />
                 <div>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: `${GOLD}90`, textTransform: "uppercase" }}>Comprando América</div>
                   <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Círculo Cercano de Edmundo Treviño</div>
@@ -1290,7 +1289,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         <div style={{ marginTop: "56px", paddingTop: "32px", borderTop: `1px solid ${NAVY_BORDER}`, textAlign: "center" }}>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
             <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
-            <img src={LOGO_URL} alt="" style={{ height: "22px", width: "22px", opacity: 0.6, borderRadius: "4px" }} />
+            <img src={LOGO_URL} alt="" style={{ height: "18px", width: "auto", opacity: 0.5 }} />
             <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
           </div>
           <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "13px", fontStyle: "italic", color: `${GOLD}80`, lineHeight: 1.85, margin: 0 }}>
