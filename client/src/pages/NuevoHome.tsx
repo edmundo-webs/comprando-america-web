@@ -1877,7 +1877,7 @@ export default function NuevoHome() {
               )}
               {screen === 8 && perfil && (
                 <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}>
-                  <ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} onUnderstandRoute={() => { setShowMain(true); window.scrollTo({ top: 0, behavior: "instant" }); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
+                  <ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} onUnderstandRoute={() => { setShowMain(true); setTimeout(() => rutaRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 500); }} onCompare={() => { setObjetivo(null); goScreen(1); }} />
                 </motion.div>
               )}
             </AnimatePresence>
