@@ -1082,26 +1082,39 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
     setTimeout(() => confirmRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
   }
 
+  const prioridadesLabels = investorData.prioridades.map(id => OPCIONES_4.find(o => o.id === id)?.label ?? id);
+
   function sendWhatsApp() {
     const nombre = contactData?.nombre ?? "";
     const whatsapp = `${contactData?.countryCode ?? ""}${contactData?.whatsapp ?? ""}`;
     const email = contactData?.email ?? "";
     const msg = [
-      `Hola, soy ${nombre}. Acabo de completar el GPS Estratégico de Comprando América.`,
+      `Hola, soy ${nombre}. Acabo de completar el GPS Estratégico de Comprando América y quiero entender mi ruta.`,
       "",
-      "── FICHA DE PERFIL ──",
-      `Perfil: ${perfil.nombre}`,
-      fichaData.map(f => `${f.label}: ${f.value}`).join(" · "),
+      "╔══════════════════════════╗",
+      "   MI PERFIL GPS ESTRATÉGICO",
+      "╚══════════════════════════╝",
+      "",
+      `🧭 Perfil: ${perfil.nombre}`,
       "",
       perfil.descripcion,
       "",
-      "── VEHÍCULOS COMPATIBLES ──",
-      ...topVehicles.slice(0, 3).map(v => `• ${v.nombre} — ${v.pct}% compatibilidad`),
+      "── DATOS DE MI PERFIL ──",
+      ...fichaData.map(f => `▸ ${f.label}: ${f.value}`),
+      ...(prioridadesLabels.length ? [`▸ Prioridades: ${prioridadesLabels.join(", ")}`] : []),
+      "",
+      "── VEHÍCULOS RECOMENDADOS ──",
+      ...topVehicles.slice(0, 3).map((v, i) => `${i + 1}. ${v.nombre} — ${v.pct}% compatibilidad`),
+      "",
+      "── POR QUÉ ENCAJA CONMIGO ──",
+      perfil.porQueEncaja,
       "",
       "── MIS DATOS DE CONTACTO ──",
-      `Nombre: ${nombre}`, `WhatsApp: ${whatsapp}`, `Correo: ${email}`,
+      `Nombre: ${nombre}`,
+      `WhatsApp: ${whatsapp}`,
+      `Correo: ${email}`,
       "",
-      "Me gustaría agendar un diagnóstico estratégico.",
+      "Me gustaría agendar un diagnóstico estratégico personalizado.",
     ].join("\n");
     window.open(`https://wa.me/523346766178?text=${encodeURIComponent(msg)}`, "_blank");
   }
@@ -1222,10 +1235,15 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
+          {/* Botón principal — abre ficha + WhatsApp */}
+          <button onClick={openConfirm}
+            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+            Quiero entender esta ruta <IconRight color="#fff" />
+          </button>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             <button onClick={openConfirm}
               style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-              Agendar diagnóstico
+              📅 Agendar diagnóstico
             </button>
             <button onClick={onCompare}
               style={{ padding: "13px 18px", background: "transparent", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer" }}>
@@ -1237,37 +1255,82 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         {/* Confirmation card */}
         <AnimatePresence>
           {showConfirm && contactData && (
-            <motion.div ref={confirmRef} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.3 }}
-              style={{ background: `linear-gradient(135deg, #091830 0%, #0D1F3C 100%)`, border: `1.5px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", marginBottom: "16px", position: "relative", overflow: "hidden" }}>
+            <motion.div ref={confirmRef} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.35 }}
+              style={{ background: `linear-gradient(145deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}50`, borderRadius: "18px", marginBottom: "16px", position: "relative", overflow: "hidden" }}>
+              {/* Gold top line */}
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "22px" }}>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase", margin: 0 }}>Confirma tu solicitud</p>
-                <button onClick={() => setShowConfirm(false)} style={{ background: "transparent", border: "none", cursor: "pointer", color: "#4A6580", padding: "2px" }}><IconX color="#4A6580" /></button>
+
+              {/* Header */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 24px 0" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>🧭 Tu Ficha GPS Estratégica</span>
+                </div>
+                <button onClick={() => setShowConfirm(false)} style={{ background: "transparent", border: "none", cursor: "pointer", padding: "2px" }}><IconX color="#4A6580" /></button>
               </div>
-              <div style={{ marginBottom: "18px" }}>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}80`, textTransform: "uppercase", marginBottom: "8px" }}>Tu perfil GPS</p>
-                <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "16px", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>{perfil.nombre}</p>
-                {fichaData.length > 0 && (
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                    {fichaData.map(({ label, value }) => (
-                      <span key={label} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "4px 10px", color: "#8FA5C0" }}>
-                        <span style={{ color: `${GOLD}90` }}>{label}:</span> <strong style={{ color: "#C8D6E8" }}>{value}</strong>
-                      </span>
-                    ))}
-                  </div>
-                )}
+
+              {/* Perfil nombre */}
+              <div style={{ padding: "16px 24px 0" }}>
+                <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 800, color: "#fff", margin: "0 0 6px", lineHeight: 1.2 }}>{perfil.nombre}</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#7A9AB8", lineHeight: 1.6, margin: 0 }}>{perfil.descripcion}</p>
               </div>
-              <div style={{ height: "1px", background: `${NAVY_BORDER}80`, marginBottom: "18px" }} />
-              <div style={{ marginBottom: "22px" }}>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}80`, textTransform: "uppercase", marginBottom: "12px" }}>Datos de contacto</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+
+              {/* Por qué encaja */}
+              <div style={{ margin: "16px 24px 0", background: `${GOLD}0E`, border: `1px solid ${GOLD}25`, borderRadius: "10px", padding: "14px 16px" }}>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "6px" }}>Por qué esta ruta es para ti</div>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.6, margin: 0 }}>{perfil.porQueEncaja}</p>
+              </div>
+
+              {/* Datos del perfil */}
+              <div style={{ padding: "16px 24px 0" }}>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase", marginBottom: "10px" }}>Datos de tu perfil</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
+                  {fichaData.map(({ label, value }) => (
+                    <div key={label} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "3px" }}>{label}</div>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
+                    </div>
+                  ))}
+                  {prioridadesLabels.length > 0 && (
+                    <div style={{ gridColumn: "1 / -1", background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "6px" }}>Prioridades</div>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                        {prioridadesLabels.map(p => (
+                          <span key={p} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{p}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Vehículos compatibles */}
+              <div style={{ padding: "16px 24px 0" }}>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase", marginBottom: "10px" }}>Vehículos recomendados para tu perfil</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  {topVehicles.slice(0, 3).map((v, i) => (
+                    <div key={v.id} style={{ display: "flex", alignItems: "center", gap: "12px", background: i === 0 ? `${GOLD}10` : `${NAVY}80`, border: `1px solid ${i === 0 ? GOLD + "40" : NAVY_BORDER}`, borderRadius: "8px", padding: "10px 14px" }}>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580", width: "16px", flexShrink: 0 }}>{i + 1}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: i === 0 ? "#fff" : "#C8D6E8" }}>{v.nombre}</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", marginTop: "1px" }}>{v.frase}</div>
+                      </div>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF", flexShrink: 0 }}>{v.pct}%</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Datos de contacto */}
+              <div style={{ padding: "16px 24px 0" }}>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase", marginBottom: "10px" }}>Tus datos de contacto</div>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {[
-                    { label: "Nombre", value: contactData.nombre, icon: "👤" },
-                    { label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}`, icon: "📱" },
-                    { label: "Correo", value: contactData.email, icon: "✉️" },
-                  ].map(({ label, value, icon }) => (
-                    <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "10px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>
-                      <span style={{ fontSize: "14px", flexShrink: 0 }}>{icon}</span>
+                    { icon: "👤", label: "Nombre", value: contactData.nombre },
+                    { icon: "📱", label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}` },
+                    { icon: "✉️", label: "Correo", value: contactData.email },
+                  ].map(({ icon, label, value }) => (
+                    <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "9px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>
+                      <span style={{ fontSize: "13px", flexShrink: 0 }}>{icon}</span>
                       <div>
                         <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
                         <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
@@ -1276,14 +1339,18 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   ))}
                 </div>
               </div>
-              <button onClick={sendWhatsApp}
-                style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill={NAVY}><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Confirmar y agendar por WhatsApp
-              </button>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center", marginTop: "10px" }}>
-                Esta información se enviará directamente a nuestro equipo.
-              </p>
+
+              {/* CTA WhatsApp */}
+              <div style={{ padding: "20px 24px 28px" }}>
+                <button onClick={sendWhatsApp}
+                  style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  Enviar ficha y agendar por WhatsApp
+                </button>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center", marginTop: "10px" }}>
+                  Tu ficha completa se enviará directamente a nuestro equipo estratégico.
+                </p>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
