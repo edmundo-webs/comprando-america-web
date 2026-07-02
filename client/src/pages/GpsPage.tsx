@@ -320,7 +320,7 @@ function CinematicPhotoBg({ src, intensity = 0.1 }: { src: string; intensity?: n
 /* ─── Transition sound ─── */
 function useTransitionSound() {
   const ctxRef = useRef<AudioContext | null>(null);
-  const [enabled, setEnabled] = useState(false);
+  const [enabled, setEnabled] = useState(true);
   function getCtx() {
     if (!ctxRef.current) ctxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
     return ctxRef.current;
@@ -348,8 +348,11 @@ function useTransitionSound() {
 function SoundToggle({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
   return (
     <button onClick={onToggle} title={enabled ? "Silenciar" : "Activar sonido"}
-      style={{ position: "fixed", bottom: "28px", left: "24px", zIndex: 100, width: "42px", height: "42px", borderRadius: "50%", border: `1px solid ${enabled ? GOLD + "80" : NAVY_BORDER}`, background: `${NAVY_CARD}E0`, backdropFilter: "blur(8px)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: enabled ? GOLD : "#4A6580", fontSize: "16px", transition: "all 0.2s" }}>
-      {enabled ? "♪" : "♩"}
+      style={{ position: "fixed", bottom: "28px", left: "24px", zIndex: 100, width: "44px", height: "44px", borderRadius: "50%", border: `1px solid ${enabled ? GOLD + "90" : NAVY_BORDER + "80"}`, background: enabled ? `${GOLD}18` : `${NAVY_CARD}CC`, backdropFilter: "blur(10px)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: enabled ? GOLD : "#4A6580", fontSize: "18px", transition: "all 0.25s", boxShadow: enabled ? `0 0 12px ${GOLD}30` : "none" }}>
+      {enabled ? "♪" : "♪"}
+      {!enabled && (
+        <span style={{ position: "absolute", width: "28px", height: "1.5px", background: "#4A6580", borderRadius: "1px", transform: "rotate(-45deg)" }} />
+      )}
     </button>
   );
 }
