@@ -1199,7 +1199,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
           </div>
         </div>
 
-        {/* Círculo Cercano */}
+        {/* Grupo Empresarial de Edmundo Treviño */}
         <div style={{ marginBottom: "44px" }}>
           <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "18px" }}>Próximo Paso Recomendado</h3>
           <div style={{ background: `linear-gradient(135deg, #0D1F3C 0%, #0F2847 100%)`, border: `1px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", position: "relative", overflow: "hidden" }}>
@@ -1209,13 +1209,13 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                 <img src={LOGO_URL} alt="" style={{ height: "22px", width: "auto", opacity: 0.9 }} />
                 <div>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: `${GOLD}90`, textTransform: "uppercase" }}>Comprando América</div>
-                  <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Círculo Cercano de Edmundo Treviño</div>
+                  <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Grupo Empresarial de Edmundo Treviño</div>
                 </div>
               </div>
               <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "3px 8px", textTransform: "uppercase", flexShrink: 0 }}>Exclusivo</span>
             </div>
             <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "20px" }}>
-              Antes de invertir, lo más valioso es tener claridad. En el Círculo exploramos tus opciones, desarrollamos criterio, definimos el momento correcto y estructuramos una ruta para Estados Unidos — con opción a visa, según tu capital y caso particular.
+              Antes de invertir, lo más valioso es tener claridad. En el Grupo Empresarial exploramos tus opciones, desarrollamos criterio, definimos el momento correcto y estructuramos una ruta para Estados Unidos — con opción a visa, según tu capital y caso particular.
             </p>
             {fichaData.length > 0 && (
               <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "20px" }}>
@@ -1227,19 +1227,19 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                 ))}
               </div>
             )}
-            <a href="/circulo-cercano" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", borderRadius: "9px", textDecoration: "none" }}>
-              Explorar Círculo Cercano <IconRight color={NAVY} />
+            <a href="/grupo-empresarial-edmundo" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", borderRadius: "9px", textDecoration: "none" }}>
+              Explorar Grupo Empresarial <IconRight color={NAVY} />
             </a>
           </div>
         </div>
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
-          {/* Botón principal — abre ficha + WhatsApp */}
-          <button onClick={openConfirm}
-            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+          {/* Botón principal — navega a /tu-ruta para completar perfil completo */}
+          <a href="/tu-ruta"
+            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none" }}>
             Quiero entender esta ruta <IconRight color="#fff" />
-          </button>
+          </a>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             <button onClick={openConfirm}
               style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>

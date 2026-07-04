@@ -99,7 +99,7 @@ const VEHICULOS_CATEGORIAS = [
 ];
 
 const COMPARACION = {
-  headers: ["Fondo de Tierra Estratégica", "Programa de Vivienda con Renta Respaldada por el Gobierno", "Grupo Empresarial de Edmundo Treviño"],
+  headers: ["Fondo de Tierra Estratégica", "Vivienda Respaldada por el Gobierno", "Grupo Empresarial de Edmundo"],
   rows: [
     { label: "Participación", values: ["Pasiva", "Semi-pasiva", "Estratégica"] },
     { label: "Horizonte", values: ["5-7 años", "Largo plazo", "Continuo"] },
@@ -1432,14 +1432,14 @@ function CompararSection() {
     <div style={{ padding: "80px 24px", background: NAVY }}>
       <div style={{ maxWidth: "860px", margin: "0 auto" }}>
         <SectionHeader label="Comparador Inteligente" title="Compara estrategias" sub="Elige el vehículo que mejor se adapta a tu horizonte, nivel de participación y objetivo principal." />
-        <div style={{ overflowX: "auto", borderRadius: "16px", border: `1px solid ${NAVY_BORDER}` }}>
+        <div style={{ overflowX: "auto", overflowY: "auto", maxHeight: "340px", borderRadius: "16px", border: `1px solid ${NAVY_BORDER}` }}>
           <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "500px" }}>
             <thead>
               <tr style={{ background: NAVY_CARD }}>
-                <th style={{ padding: "16px 20px", textAlign: "left", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", color: "#4A6580", textTransform: "uppercase", borderBottom: `1px solid ${NAVY_BORDER}` }} />
+                <th style={{ padding: "16px 20px", textAlign: "left", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", color: "#4A6580", textTransform: "uppercase", borderBottom: `1px solid ${NAVY_BORDER}`, position: "sticky", top: 0, background: NAVY_CARD, zIndex: 2 }} />
                 {COMPARACION.headers.map((h, i) => (
                   <th key={h} onClick={() => setHighlighted(highlighted === i ? null : i)}
-                    style={{ padding: "16px 20px", textAlign: "center", fontFamily: "'Playfair Display',Georgia,serif", fontSize: "16px", fontWeight: 700, color: highlighted === i ? GOLD : "#fff", borderBottom: `1px solid ${NAVY_BORDER}`, cursor: "pointer", background: highlighted === i ? `${GOLD}10` : "transparent", transition: "all 0.2s", borderRight: i < COMPARACION.headers.length - 1 ? `1px solid ${NAVY_BORDER}` : "none" }}>
+                    style={{ padding: "16px 20px", textAlign: "center", fontFamily: "'Playfair Display',Georgia,serif", fontSize: "15px", fontWeight: 700, color: highlighted === i ? GOLD : "#fff", borderBottom: `1px solid ${NAVY_BORDER}`, cursor: "pointer", background: highlighted === i ? `${GOLD}10` : NAVY_CARD, transition: "all 0.2s", borderRight: i < COMPARACION.headers.length - 1 ? `1px solid ${NAVY_BORDER}` : "none", position: "sticky", top: 0, zIndex: 2 }}>
                     {h}
                   </th>
                 ))}
