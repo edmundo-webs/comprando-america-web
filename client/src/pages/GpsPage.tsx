@@ -1,5 +1,6 @@
-// GPS Page — versión mejorada de /tu-ruta
+// Diagnóstico de Inversión — página principal en /diagnostico
 import React, { useState, useEffect, useRef } from "react";
+import { trpc } from "@/lib/trpc";
 import { AnimatePresence, motion } from "framer-motion";
 
 /* ─── Brand ─── */
@@ -123,6 +124,22 @@ const CAPITAL_LABELS: Record<string, string> = {
 };
 const PARTICIPACION_LABELS: Record<string, string> = {
   "no-operar": "Delegar", "supervisar": "Supervisar", "activo": "Activo", "nosc": "Por definir",
+};
+
+/* ─── Diagnóstico final — preguntas adicionales de perfilamiento ─── */
+const DIAG_OPCIONES = [
+  { id: "patrimonio", label: "Proteger mi patrimonio" },
+  { id: "invertir", label: "Invertir" },
+  { id: "expandir", label: "Expandirme" },
+  { id: "familia", label: "Explorar opciones familiares" },
+  { id: "nosc", label: "No estoy seguro" },
+];
+const DIAGNOSTICO_RESPUESTAS: Record<string, string> = {
+  patrimonio: "Tu siguiente paso es entender la estructura correcta para tu patrimonio. Recomendamos comenzar con una evaluación de Estructura LLC y Fondo de Tierra Estratégica.",
+  invertir: "Tu siguiente paso es explorar Fondo de Tierra Estratégica o Programa de Vivienda con Renta Respaldada por el Gobierno, según tu horizonte y nivel de participación deseado.",
+  expandir: "Tu siguiente paso es el programa Americaniza tu Operación. Creamos el puente entre tu empresa actual y el mercado americano en Estados Unidos.",
+  familia: "Tu siguiente paso incluye una evaluación de opciones migratorias y las estructuras que benefician directamente a tu familia en Estados Unidos.",
+  nosc: "Eso está bien. Tu siguiente paso es un diagnóstico estratégico donde exploramos juntos tus opciones reales en Estados Unidos, sin compromisos.",
 };
 
 /* ─── Vehicle data ─── */
@@ -270,6 +287,14 @@ function IconCheck({ color = NAVY, size = 14 }: { color?: string; size?: number 
 }
 function IconX({ color = "#6A8FAF" }: { color?: string }) {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>;
+}
+function IconCalendar({ color = NAVY }: { color?: string }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
 }
 function IconCompass({ color = GOLD }: { color?: string }) {
   return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>;
@@ -852,7 +877,12 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
   const [form, setForm] = useState<ContactData>({ nombre: "", countryCode: "+52", whatsapp: "", email: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactData, string>>>({});
   const [focused, setFocused] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const createLead = trpc.leads.create.useMutation({
+    onSuccess: () => onNext(form),
+    onError: () => setSubmitError("Ocurrió un error al registrar tus datos. Intenta de nuevo."),
+  });
 
   function validate() {
     const e: Partial<Record<keyof ContactData, string>> = {};
@@ -865,9 +895,16 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
   function handleSubmit() {
     const e = validate();
     if (Object.keys(e).length > 0) { setErrors(e); return; }
-    setSubmitting(true);
-    setTimeout(() => onNext(form), 600);
+    setSubmitError(null);
+    createLead.mutate({
+      nombreCompleto: form.nombre.trim(),
+      whatsapp: `${form.countryCode} ${form.whatsapp.trim()}`,
+      email: form.email.trim(),
+      fuente: "gps-diagnostico",
+    });
   }
+
+  const submitting = createLead.isPending;
 
   function fieldStyle(id: string, hasErr: boolean): React.CSSProperties {
     const isFoc = focused === id;
@@ -943,6 +980,9 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
           {" "}Tus datos serán utilizados exclusivamente para darte seguimiento a tu solicitud de diagnóstico estratégico.
         </p>
 
+        {submitError && (
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#E05C5C", marginBottom: "12px", textAlign: "center" }}>{submitError}</p>
+        )}
         <motion.button onClick={handleSubmit} disabled={submitting} animate={{ opacity: submitting ? 0.7 : 1 }}
           style={{ width: "100%", padding: "16px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "10px", cursor: submitting ? "wait" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
           {submitting ? (
@@ -1047,7 +1087,7 @@ function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: n
             {/* CTA */}
             {vehicle.exclusivo ? (
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "14px", background: `${GOLD}12`, border: `1px solid ${GOLD}40`, borderRadius: "10px", color: `${GOLD}CC`, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", textAlign: "center" }}>
-                ✦ Exclusivo para miembros · Agenda tu diagnóstico para acceder
+                Exclusivo para miembros · Agenda tu diagnóstico para acceder
               </div>
             ) : vehicle.href ? (
               <a href={vehicle.href}
@@ -1073,6 +1113,8 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   const [showConfirm, setShowConfirm] = useState(false);
   const [drawerVehicle, setDrawerVehicle] = useState<(VehicleEntry & { score: number; pct: number }) | null>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
+  const [diagAnswer, setDiagAnswer] = useState<string | null>(null);
+  const [notas, setNotas] = useState("");
 
   const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
   const topVehicles = rankedVehicles.slice(0, 5);
@@ -1106,7 +1148,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       "   MI PERFIL GPS ESTRATÉGICO",
       "╚══════════════════════════╝",
       "",
-      `🧭 Perfil: ${perfil.nombre}`,
+      `Perfil: ${perfil.nombre}`,
       "",
       perfil.descripcion,
       "",
@@ -1126,6 +1168,8 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       `Correo: ${email}`,
       "",
       "Me gustaría agendar un diagnóstico estratégico personalizado.",
+      ...(diagAnswer ? [`\n── QUÉ QUIERO RESOLVER PRIMERO ──\n${DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer}`] : []),
+      ...(notas.trim() ? [`\n── NOTAS ADICIONALES ──\n${notas.trim()}`] : []),
     ].join("\n");
     window.open(`https://wa.me/523346766178?text=${encodeURIComponent(msg)}`, "_blank");
   }
@@ -1244,9 +1288,95 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
           </div>
         </div>
 
+        {/* ── Diagnóstico Final — preguntas adicionales de perfilamiento ── */}
+        <div style={{ marginBottom: "44px" }}>
+          <div style={{ marginBottom: "24px" }}>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase", display: "block", marginBottom: "12px" }}>Diagnóstico Final</span>
+            <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: 0 }}>Tu siguiente paso</h2>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {/* Mensaje del asesor */}
+            <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <IconCompass color={GOLD} />
+              </div>
+              <div style={{ background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "0 14px 14px 14px", padding: "16px 20px", maxWidth: "420px" }}>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#E8ECF1", lineHeight: 1.7, margin: 0 }}>
+                  Después de revisar tu perfil, ¿qué te gustaría resolver primero?
+                </p>
+              </div>
+            </div>
+
+            {/* Opciones (solo si no ha respondido) */}
+            {!diagAnswer && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                style={{ paddingLeft: "48px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                {DIAG_OPCIONES.map(op => (
+                  <button key={op.id} onClick={() => setDiagAnswer(op.id)}
+                    style={{ padding: "11px 18px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", color: "#C8D6E8", fontFamily: "'Inter',sans-serif", fontSize: "14px", cursor: "pointer", textAlign: "left", transition: "all 0.2s" }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.color = "#fff"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = NAVY_BORDER; e.currentTarget.style.color = "#C8D6E8"; }}>
+                    {op.label}
+                  </button>
+                ))}
+              </motion.div>
+            )}
+
+            {/* Respuesta del usuario */}
+            {diagAnswer && (
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "10px" }}>
+                <button onClick={() => { setDiagAnswer(null); setNotas(""); }}
+                  style={{ background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "16px", padding: "5px 12px", cursor: "pointer", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, display: "flex", alignItems: "center", gap: "5px", transition: "all 0.2s", flexShrink: 0 }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.color = GOLD; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = NAVY_BORDER; e.currentTarget.style.color = "#6A8FAF"; }}>
+                  <IconArrowLeft color="currentColor" /> Cambiar
+                </button>
+                <div style={{ background: `${GOLD}20`, border: `1px solid ${GOLD}40`, borderRadius: "14px 0 14px 14px", padding: "12px 18px", maxWidth: "280px" }}>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: GOLD_LIGHT, margin: 0 }}>
+                    {DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Respuesta del asesor + notas + CTA */}
+            {diagAnswer && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+                style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <IconCompass color={GOLD} />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "0 14px 14px 14px", padding: "16px 20px", marginBottom: "20px" }}>
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#E8ECF1", lineHeight: 1.7, margin: 0 }}>
+                      {DIAGNOSTICO_RESPUESTAS[diagAnswer]}
+                    </p>
+                  </div>
+
+                  {/* Campo de notas opcional */}
+                  <div style={{ marginBottom: "16px" }}>
+                    <label style={{ display: "block", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: "#6A8FAF", textTransform: "uppercase", marginBottom: "8px" }}>
+                      ¿Algo más que quieras compartir antes de tu llamada?
+                      <span style={{ fontWeight: 400, color: "#4A6580", marginLeft: "6px" }}>(opcional)</span>
+                    </label>
+                    <textarea
+                      value={notas}
+                      onChange={e => setNotas(e.target.value)}
+                      placeholder="Escribe aquí cualquier contexto adicional que quieras que tu asesor conozca antes de la llamada..."
+                      rows={3}
+                      style={{ width: "100%", padding: "12px 14px", background: NAVY_CARD, border: `1.5px solid ${NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", lineHeight: 1.6, outline: "none", resize: "vertical", boxSizing: "border-box" }}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        </div>
+
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
-          {/* Botón principal — navega a /tu-ruta para completar perfil completo */}
           <a href="/tu-ruta"
             style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none" }}>
             Quiero entender esta ruta <IconRight color="#fff" />
@@ -1254,7 +1384,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             <button onClick={openConfirm}
               style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-              📅 Agendar diagnóstico
+              <IconCalendar color={GOLD} /> Agendar diagnóstico
             </button>
             <button onClick={onCompare}
               style={{ padding: "13px 18px", background: "transparent", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer" }}>
@@ -1274,7 +1404,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
               {/* Header */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 24px 0" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>🧭 Tu Ficha GPS Estratégica</span>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>Tu Ficha GPS Estratégica</span>
                 </div>
                 <button onClick={() => setShowConfirm(false)} style={{ background: "transparent", border: "none", cursor: "pointer", padding: "2px" }}><IconX color="#4A6580" /></button>
               </div>
@@ -1336,12 +1466,11 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                 <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase", marginBottom: "10px" }}>Tus datos de contacto</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {[
-                    { icon: "👤", label: "Nombre", value: contactData.nombre },
-                    { icon: "📱", label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}` },
-                    { icon: "✉️", label: "Correo", value: contactData.email },
-                  ].map(({ icon, label, value }) => (
+                    { label: "Nombre", value: contactData.nombre },
+                    { label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}` },
+                    { label: "Correo", value: contactData.email },
+                  ].map(({ label, value }) => (
                     <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "9px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>
-                      <span style={{ fontSize: "13px", flexShrink: 0 }}>{icon}</span>
                       <div>
                         <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
                         <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
