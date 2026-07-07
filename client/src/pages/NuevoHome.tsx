@@ -920,7 +920,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
 
           {/* Ficha data — investor's own answers as summary */}
           {fichaData.length > 0 && (
-            <div style={{ display: "grid", gridTemplateColumns: `repeat(${fichaData.length}, 1fr)`, gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "0" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "0" }}>
               {fichaData.map(({ label, value }) => (
                 <div key={label} style={{ background: `rgba(10,26,48,0.9)`, padding: "16px 14px" }}>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: `${GOLD}90`, textTransform: "uppercase", marginBottom: "6px" }}>{label}</div>
@@ -1304,7 +1304,7 @@ function MiRutaSection({ objetivo }: { objetivo: string | null }) {
 /* ─── EXPLORAR VEHÍCULOS ─── */
 function VehiculoCard({ v, recommended, categoriaTag }: { v: typeof VEHICULOS_CATEGORIAS[0]["items"][0]; recommended?: boolean; categoriaTag?: string }) {
   return (
-    <div style={{ background: NAVY_CARD, border: `1px solid ${recommended ? GOLD + "70" : NAVY_BORDER}`, borderRadius: "14px", padding: "22px", minWidth: "230px", maxWidth: "255px", flexShrink: 0, display: "flex", flexDirection: "column", gap: "11px", position: "relative", overflow: "hidden" }}>
+    <div style={{ background: NAVY_CARD, border: `1px solid ${recommended ? GOLD + "70" : NAVY_BORDER}`, borderRadius: "14px", padding: "22px", minWidth: "min(230px, 100%)", maxWidth: "255px", flex: "1 0 auto", display: "flex", flexDirection: "column", gap: "11px", position: "relative", overflow: "hidden" }}>
       {recommended && (
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})` }} />
       )}
@@ -1718,7 +1718,7 @@ function JourneyStrip({ screen, objetivo, participacion, horizonte, capital }: {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
       style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 90, pointerEvents: "none" }}>
-      <div style={{ background: `linear-gradient(to top, ${NAVY}FA 0%, ${NAVY}CC 65%, transparent 100%)`, padding: "28px 80px 14px", display: "flex", justifyContent: "center" }}>
+      <div style={{ background: `linear-gradient(to top, ${NAVY}FA 0%, ${NAVY}CC 65%, transparent 100%)`, padding: "28px 16px 14px", display: "flex", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", justifyContent: "center" }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", color: `${GOLD}70`, textTransform: "uppercase", marginRight: "4px" }}>Tu ruta</span>
           {crumbs.map((c, i) => (
