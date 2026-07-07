@@ -1,4 +1,4 @@
-// GPS Page — versión mejorada de /tu-ruta
+// Diagnóstico de Inversión — página principal en /diagnostico
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -1246,8 +1246,8 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
-          {/* Botón principal — navega a /tu-ruta para completar perfil completo */}
-          <a href="/tu-ruta"
+          
+          <a href="/diagnostico"
             style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none" }}>
             Quiero entender esta ruta <IconRight color="#fff" />
           </a>

@@ -287,7 +287,7 @@ export default function QuienesSomos() {
                     Conoce el Grupo Empresarial <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <a href="/tu-ruta">
+                <a href="/diagnostico">
                   <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-gray-50 px-8 py-6 text-base">
                     Evaluar mi Perfil
                   </Button>
