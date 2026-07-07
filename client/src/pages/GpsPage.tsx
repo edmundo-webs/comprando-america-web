@@ -30,6 +30,16 @@ function usePlayfairFont() {
   }, []);
 }
 
+function useIsMobile(bp = 600) {
+  const [is, setIs] = useState(() => typeof window !== "undefined" && window.innerWidth < bp);
+  useEffect(() => {
+    const fn = () => setIs(window.innerWidth < bp);
+    window.addEventListener("resize", fn);
+    return () => window.removeEventListener("resize", fn);
+  }, [bp]);
+  return is;
+}
+
 /* ─── Data ─── */
 const PERFILES: Record<string, { nombre: string; descripcion: string; vehiculos: string[]; porQueEncaja: string }> = {
   patrimonio: {
@@ -422,7 +432,7 @@ function JourneyStrip({ screen, objetivo, participacion, horizonte, capital }: {
   return (
     <motion.div initial={{ y: 60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 60, opacity: 0 }}
       style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 90, pointerEvents: "none" }}>
-      <div style={{ background: `linear-gradient(to top, ${NAVY}FA 0%, ${NAVY}CC 65%, transparent 100%)`, padding: "28px 80px 14px", display: "flex", justifyContent: "center" }}>
+      <div style={{ background: `linear-gradient(to top, ${NAVY}FA 0%, ${NAVY}CC 65%, transparent 100%)`, padding: "28px 16px 14px", display: "flex", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", justifyContent: "center" }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.15em", color: `${GOLD}70`, textTransform: "uppercase", marginRight: "4px" }}>Tu ruta</span>
           {crumbs.map((c, i) => (
@@ -450,7 +460,7 @@ function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "52px", background: "#000", zIndex: 3, opacity: 0.55 }} />
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "52px", background: "#000", zIndex: 3, opacity: 0.55 }} />
 
-      <div style={{ position: "relative", zIndex: 5, width: "100%", maxWidth: "960px", padding: "96px 24px 80px", textAlign: "center" }}>
+      <div style={{ position: "relative", zIndex: 5, width: "100%", maxWidth: "960px", padding: "clamp(72px,10dvh,96px) 20px clamp(60px,8dvh,80px)", textAlign: "center" }}>
         <div style={{ marginBottom: "32px", display: "flex", justifyContent: "center", alignItems: "center", gap: "16px" }}>
           <div style={{ width: "60px", height: "1px", background: `linear-gradient(90deg, transparent, ${GOLD}90)` }} />
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.38em", color: `${GOLD}A0`, textTransform: "uppercase" }}>GPS Estratégico · Comprando América</span>
@@ -952,6 +962,7 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
 
 /* ─── Vehicle detail drawer ─── */
 function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: number }) | null; onClose: () => void }) {
+  const isMobile = useIsMobile();
   const SECTION_LABEL: React.CSSProperties = {
     fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700,
     letterSpacing: "0.2em", textTransform: "uppercase" as const, marginBottom: "6px",
@@ -992,13 +1003,13 @@ function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: n
             {/* Desde → Hacia */}
             <div style={{ marginBottom: "20px" }}>
               <div style={{ ...SECTION_LABEL, color: "#4A6580" }}>Tu transformación</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: "10px", alignItems: "center" }}>
-                <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", padding: "12px 14px" }}>
+              <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: "10px", alignItems: isMobile ? "stretch" : "center" }}>
+                <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", padding: "12px 14px", flex: 1 }}>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: "#4A6580", textTransform: "uppercase", marginBottom: "6px" }}>Dónde estás</div>
                   <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#7A9AB8", lineHeight: 1.55, margin: 0 }}>{vehicle.desde}</p>
                 </div>
-                <div style={{ fontSize: "20px", color: GOLD, fontWeight: 700, flexShrink: 0 }}>→</div>
-                <div style={{ background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "10px", padding: "12px 14px" }}>
+                <div style={{ fontSize: "20px", color: GOLD, fontWeight: 700, flexShrink: 0, textAlign: "center" }}>{isMobile ? "↓" : "→"}</div>
+                <div style={{ background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "10px", padding: "12px 14px", flex: 1 }}>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: GOLD, textTransform: "uppercase", marginBottom: "6px" }}>Hacia dónde vas</div>
                   <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.55, margin: 0 }}>{vehicle.hacia}</p>
                 </div>
@@ -1024,7 +1035,7 @@ function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: n
             </div>
 
             {/* Specs */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", marginBottom: "24px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr", gap: "8px", marginBottom: "24px" }}>
               {[["Horizonte", vehicle.horizonte], ["Ticket mínimo", vehicle.ticketLabel], ["Participación", PARTICIPACION_LABELS[vehicle.participacion[0]] ?? vehicle.participacion[0]]].map(([k, v]) => (
                 <div key={k} style={{ background: `${NAVY}80`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "12px 10px", textAlign: "center" }}>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: "#4A6580", textTransform: "uppercase", marginBottom: "4px" }}>{k}</div>
@@ -1138,7 +1149,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
             </p>
           )}
           {fichaData.length > 0 && (
-            <div style={{ display: "grid", gridTemplateColumns: `repeat(${fichaData.length}, 1fr)`, gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "0" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "0" }}>
               {fichaData.map(({ label, value }) => (
                 <div key={label} style={{ background: `rgba(10,26,48,0.9)`, padding: "16px 14px" }}>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: `${GOLD}90`, textTransform: "uppercase", marginBottom: "6px" }}>{label}</div>
