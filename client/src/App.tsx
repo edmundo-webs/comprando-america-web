@@ -52,7 +52,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/home2"} component={Home2Page} />
-      <Route path={"/tu-ruta"}><Redirect to="/diagnostico" /></Route>
+      <Route path={"/tu-ruta"} component={NuevoHome} />
       <Route path="/membresia" component={Membresia} />
       <Route path="/circulo-cercano"><Redirect to="/grupo-empresarial-edmundo" /></Route>
       <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
@@ -79,14 +79,14 @@ function Router() {
       <Route path="/terminos" component={TermsAndConditions} />
       <Route path="/privacidad" component={PrivacyPolicy} />
       <Route path="/disclaimers" component={Disclaimers} />
-      <Route path="/diagnostico" component={GpsPage} />
+      <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path="/cumbre-digital" component={CumbreDigital} />
       <Route path="/cumbre-digital-2" component={CumbreDigital2} />
       <Route path="/vc-8" component={Section8} />
       <Route path="/propiedades" component={Propiedades} />
       <Route path="/fondo" component={FondoVictoryCapital} />
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
-      <Route path="/gps"><Redirect to="/diagnostico" /></Route>
+      <Route path="/gps" component={GpsPage} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
         <DashboardLayout>

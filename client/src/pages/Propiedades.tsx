@@ -335,7 +335,7 @@ export default function Propiedades() {
               style={{ padding: "13px 26px", background: `linear-gradient(90deg,${BLUE},${BLUE_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "10px", cursor: "pointer" }}>
               Consultar por WhatsApp
             </button>
-            <a href="/diagnostico"
+            <a href="/tu-ruta"
               style={{ display: "inline-flex", alignItems: "center", padding: "13px 26px", background: "transparent", color: GOLD_LIGHT, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}50`, borderRadius: "10px", textDecoration: "none" }}>
               Evaluar mi perfil →
             </a>
