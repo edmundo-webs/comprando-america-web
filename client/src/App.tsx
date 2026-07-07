@@ -52,7 +52,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/home2"} component={Home2Page} />
-      <Route path={"/tu-ruta"}><Redirect to="/diagnostico" /></Route>
+      <Route path={"/tu-ruta"} component={NuevoHome} />
       <Route path="/membresia" component={Membresia} />
       <Route path="/circulo-cercano"><Redirect to="/grupo-empresarial-edmundo" /></Route>
       <Route path="/club-de-inversion-en-estados-unidos" component={ClubInversion} />
