@@ -877,12 +877,8 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
   const [form, setForm] = useState<ContactData>({ nombre: "", countryCode: "+52", whatsapp: "", email: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactData, string>>>({});
   const [focused, setFocused] = useState<string | null>(null);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-
-  const createLead = trpc.leads.create.useMutation({
-    onSuccess: () => onNext(form),
-    onError: () => setSubmitError("Ocurrió un error al registrar tus datos. Intenta de nuevo."),
-  });
+  const createLead = trpc.leads.create.useMutation();
+  const [submitting, setSubmitting] = useState(false);
 
   function validate() {
     const e: Partial<Record<keyof ContactData, string>> = {};
@@ -895,16 +891,16 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
   function handleSubmit() {
     const e = validate();
     if (Object.keys(e).length > 0) { setErrors(e); return; }
-    setSubmitError(null);
+    setSubmitting(true);
+    // Envío al CRM best-effort — si falla, el WhatsApp tiene toda la información
     createLead.mutate({
       nombreCompleto: form.nombre.trim(),
       whatsapp: `${form.countryCode} ${form.whatsapp.trim()}`,
       email: form.email.trim(),
       fuente: "gps-diagnostico",
     });
+    setTimeout(() => onNext(form), 600);
   }
-
-  const submitting = createLead.isPending;
 
   function fieldStyle(id: string, hasErr: boolean): React.CSSProperties {
     const isFoc = focused === id;
@@ -980,9 +976,6 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
           {" "}Tus datos serán utilizados exclusivamente para darte seguimiento a tu solicitud de diagnóstico estratégico.
         </p>
 
-        {submitError && (
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#E05C5C", marginBottom: "12px", textAlign: "center" }}>{submitError}</p>
-        )}
         <motion.button onClick={handleSubmit} disabled={submitting} animate={{ opacity: submitting ? 0.7 : 1 }}
           style={{ width: "100%", padding: "16px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "10px", cursor: submitting ? "wait" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
           {submitting ? (
