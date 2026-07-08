@@ -1489,6 +1489,14 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       {/* Resume narrow column */}
       <div style={{ maxWidth: "680px", margin: "0 auto", padding: "60px 24px 100px" }}>
 
+        {/* CTA principal — antes del diagnóstico */}
+        <div style={{ marginBottom: "40px" }}>
+          <a href="/grupo-empresarial-edmundo"
+            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none", boxSizing: "border-box" as const }}>
+            Entender mi ruta estratégica <IconRight color="#fff" />
+          </a>
+        </div>
+
         {/* ── Diagnóstico Final — preguntas adicionales de perfilamiento ── */}
         <div style={{ marginBottom: "44px" }}>
           <div style={{ marginBottom: "24px" }}>
@@ -1578,10 +1586,6 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
         {/* CTAs */}
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
-          <a href="/tu-ruta"
-            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none" }}>
-            Quiero entender esta ruta <IconRight color="#fff" />
-          </a>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             <button onClick={openConfirm}
               style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
