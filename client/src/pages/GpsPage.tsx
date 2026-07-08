@@ -1293,46 +1293,92 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
   function sendWhatsApp() {
     const nombre = contactData?.nombre ?? "";
+    const firstName = nombre.trim().split(" ")[0];
     const whatsapp = `${contactData?.countryCode ?? ""}${contactData?.whatsapp ?? ""}`;
     const email = contactData?.email ?? "";
-    const msg = [
-      `Hola, soy ${nombre}. Acabo de completar el GPS Estratégico de Comprando América y quiero entender mi ruta.`,
-      "",
-      "╔══════════════════════════╗",
-      "   MI PERFIL GPS ESTRATÉGICO",
-      "╚══════════════════════════╝",
-      "",
-      `Perfil: ${perfil.nombre}`,
-      "",
-      perfil.descripcion,
-      "",
-      "── DATOS DE MI PERFIL ──",
-      ...fichaData.map(f => `▸ ${f.label}: ${f.value}`),
-      ...(prioridadesLabels.length ? [`▸ Prioridades: ${prioridadesLabels.join(", ")}`] : []),
-      "",
-      "── VEHÍCULOS RECOMENDADOS ──",
-      ...topVehicles.slice(0, 3).map((v, i) => `${i + 1}. ${v.nombre} — ${v.pct}% compatibilidad`),
-      "",
-      "── POR QUÉ ENCAJA CONMIGO ──",
-      perfil.porQueEncaja,
-      "",
-      "── MIS DATOS DE CONTACTO ──",
-      `Nombre: ${nombre}`,
-      `WhatsApp: ${whatsapp}`,
-      `Correo: ${email}`,
-      "",
-      "Me gustaría agendar un diagnóstico estratégico personalizado.",
-      ...(patrimonioPct || liquidez || estructuraArea.length ? [
-        "",
-        "── PREGUNTAS DE CRITERIO ──",
-        ...(patrimonioPct ? [`▸ Patrimonio a dolarizar: ${patrimonioPct}`] : []),
-        ...(liquidez ? [`▸ Liquidez: ${liquidez}`] : []),
-        ...(estructuraArea.length ? [`▸ Áreas de interés: ${estructuraArea.join(", ")}`] : []),
-        ...(operarDelegar ? [`▸ Operar o delegar: ${operarDelegar}`] : []),
-      ] : []),
-      ...(diagAnswer ? [`\n── QUÉ QUIERO RESOLVER PRIMERO ──\n${DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer}`] : []),
-      ...(notas.trim() ? [`\n── NOTAS ADICIONALES ──\n${notas.trim()}`] : []),
-    ].join("\n");
+
+    const AREA_LABELS: Record<string, string> = {
+      "estructura-legal": "Estructura legal y fiscal",
+      "flujo-pasivo": "Flujo pasivo en dólares",
+      "bienes-raices": "Bienes raíces",
+      "expansion-empresa": "Expansión de empresa",
+      "visa-residencia": "Visa o residencia",
+    };
+
+    const lines: string[] = [];
+
+    // Saludo
+    lines.push(`Hola, soy *${firstName}* y acabo de completar el GPS Estratégico de *Comprando América*.`);
+    lines.push("");
+    lines.push("Quiero entender mi ruta y explorar cómo puedo avanzar hacia Estados Unidos.");
+    lines.push("");
+
+    // Perfil
+    lines.push("*📋 MI PERFIL GPS*");
+    lines.push(`*${perfil.nombre}*`);
+    lines.push("");
+    lines.push(`_${perfil.descripcion}_`);
+    lines.push("");
+
+    // Datos del perfil
+    lines.push("*Mis datos de perfil:*");
+    fichaData.forEach(f => lines.push(`  • *${f.label}:* ${f.value}`));
+    if (prioridadesLabels.length) {
+      lines.push(`  • *Prioridades:* ${prioridadesLabels.join(", ")}`);
+    }
+    lines.push("");
+
+    // Criterio (solo si respondió)
+    const hayCriterio = patrimonioPct || liquidez || operarDelegar || estructuraArea.length > 0;
+    if (hayCriterio) {
+      lines.push("*Mi criterio de inversión:*");
+      if (patrimonioPct) lines.push(`  • *Patrimonio a dolarizar:* ${patrimonioPct}`);
+      if (liquidez) lines.push(`  • *Liquidez disponible:* ${liquidez}`);
+      if (operarDelegar) lines.push(`  • *Prefiero:* ${operarDelegar}`);
+      if (estructuraArea.length) {
+        lines.push(`  • *Áreas de interés:* ${estructuraArea.map(id => AREA_LABELS[id] ?? id).join(", ")}`);
+      }
+      lines.push("");
+    }
+
+    // Diagnóstico
+    if (diagAnswer) {
+      const diagLabel = DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer;
+      lines.push("*Lo que quiero resolver primero:*");
+      lines.push(`  "${diagLabel}"`);
+      lines.push("");
+    }
+
+    // Notas
+    if (notas.trim()) {
+      lines.push("*Contexto adicional:*");
+      lines.push(`  _${notas.trim()}_`);
+      lines.push("");
+    }
+
+    // Vehículos
+    lines.push("*Vehículos recomendados para mi perfil:*");
+    topVehicles.slice(0, 3).forEach((v, i) => {
+      const medal = i === 0 ? "1." : i === 1 ? "2." : "3.";
+      lines.push(`  ${medal} *${v.nombre}* — ${v.pct}% compatibilidad`);
+    });
+    lines.push("");
+
+    // Por qué encaja
+    lines.push("*Por qué esta ruta tiene sentido para mí:*");
+    lines.push(`_${perfil.porQueEncaja}_`);
+    lines.push("");
+
+    // Contacto
+    lines.push("─────────────────────");
+    lines.push("*Mis datos de contacto:*");
+    lines.push(`  • *Nombre:* ${nombre}`);
+    lines.push(`  • *WhatsApp:* ${whatsapp}`);
+    lines.push(`  • *Correo:* ${email}`);
+    lines.push("");
+    lines.push("Me gustaría agendar un diagnóstico estratégico personalizado.");
+
+    const msg = lines.join("\n");
     window.open(`https://wa.me/523346766178?text=${encodeURIComponent(msg)}`, "_blank");
   }
 
