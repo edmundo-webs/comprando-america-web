@@ -299,6 +299,18 @@ function IconCalendar({ color = NAVY }: { color?: string }) {
 function IconCompass({ color = GOLD }: { color?: string }) {
   return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>;
 }
+function IconPlay({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill={color} stroke="none"><polygon points="5 3 19 12 5 21 5 3" /></svg>;
+}
+function IconBook({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>;
+}
+function IconMic({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /></svg>;
+}
+function IconBarChart({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>;
+}
 function IconUser({ color = GOLD }: { color?: string }) {
   return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
 }
@@ -993,6 +1005,174 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
   );
 }
 
+/* ─── Biblioteca data ─── */
+const BIBLIOTECA = [
+  { tipo: "video", titulo: "¿Qué es una LLC y para qué sirve?", meta: "7 min", cat: "Estructura" },
+  { tipo: "guia", titulo: "Proteger tu patrimonio en Estados Unidos", meta: "12 min", cat: "Patrimonio" },
+  { tipo: "podcast", titulo: "Renta garantizada con Section 8", meta: "45 min", cat: "Flujo" },
+  { tipo: "caso", titulo: "Empresario colombiano expande a Texas", meta: "Caso de estudio", cat: "Empresa" },
+  { tipo: "video", titulo: "Fondo de Tierra Estratégica: qué es y cómo funciona", meta: "12 min", cat: "Flujo" },
+  { tipo: "guia", titulo: "Las 5 estructuras más usadas por inversionistas latinos", meta: "8 min", cat: "Estructura" },
+];
+const TIPO_ICONS: Record<string, () => JSX.Element> = {
+  video: () => <IconPlay />,
+  guia: () => <IconBook />,
+  podcast: () => <IconMic />,
+  caso: () => <IconBarChart />,
+};
+const TIPO_LABELS: Record<string, string> = { video: "Video", guia: "Guía", podcast: "Podcast", caso: "Caso" };
+
+/* ─── Preguntas adicionales de perfil ─── */
+function PreguntasAdicionalesSection({
+  patrimonioPct, setPatrimonioPct,
+  liquidez, setLiquidez,
+  estructuraArea, setEstructuraArea,
+}: {
+  patrimonioPct: string | null; setPatrimonioPct: (v: string) => void;
+  liquidez: string | null; setLiquidez: (v: string) => void;
+  estructuraArea: string[]; setEstructuraArea: (v: string[]) => void;
+}) {
+  const AREAS = ["Patrimonio", "Fiscal", "Legal", "Sucesión", "Migración"];
+  function toggleArea(a: string) {
+    setEstructuraArea(estructuraArea.includes(a) ? estructuraArea.filter(x => x !== a) : [...estructuraArea, a]);
+  }
+  return (
+    <div style={{ padding: "60px 24px", background: `${NAVY_CARD}50`, borderTop: `1px solid ${NAVY_BORDER}` }}>
+      <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 2 · Criterio</span>
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>
+          Calibra tu perfil
+        </h2>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "40px", lineHeight: 1.7 }}>Cada respuesta afina tu diagnóstico. No hay respuesta incorrecta.</p>
+
+        {/* Q1: % patrimonio */}
+        <div style={{ marginBottom: "36px" }}>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>¿Qué porcentaje de tu patrimonio quieres dolarizar?</p>
+          <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+            {["10 – 25%", "25 – 50%", "50 – 75%", "75%+"].map(v => (
+              <button key={v} onClick={() => setPatrimonioPct(v)}
+                style={{ padding: "10px 20px", background: patrimonioPct === v ? GOLD : "transparent", color: patrimonioPct === v ? NAVY : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: patrimonioPct === v ? 700 : 500, border: `1px solid ${patrimonioPct === v ? GOLD : NAVY_BORDER}`, borderRadius: "20px", cursor: "pointer", transition: "all 0.2s" }}>
+                {v}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Q2: Liquidez */}
+        <div style={{ marginBottom: "36px" }}>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>¿Qué tan importante es la liquidez?</p>
+          <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+            {["Crítica", "Importante", "Secundaria"].map(v => (
+              <button key={v} onClick={() => setLiquidez(v)}
+                style={{ padding: "10px 20px", background: liquidez === v ? GOLD : "transparent", color: liquidez === v ? NAVY : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: liquidez === v ? 700 : 500, border: `1px solid ${liquidez === v ? GOLD : NAVY_BORDER}`, borderRadius: "20px", cursor: "pointer", transition: "all 0.2s" }}>
+                {v}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Q3: Área estructura (Estación 3) */}
+        <div>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 3 · Estructura</span>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>Selecciona el área que más te interesa explorar</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,160px),1fr))", gap: "10px" }}>
+            {AREAS.map(a => {
+              const sel = estructuraArea.includes(a);
+              return (
+                <button key={a} onClick={() => toggleArea(a)}
+                  style={{ padding: "14px 12px", background: sel ? `${GOLD}18` : NAVY_CARD, border: `1.5px solid ${sel ? GOLD : NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer", textAlign: "left" as const, transition: "all 0.2s" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <div style={{ width: "16px", height: "16px", borderRadius: "4px", border: `2px solid ${sel ? GOLD : NAVY_BORDER}`, background: sel ? GOLD : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
+                      {sel && <IconCheck color={NAVY} size={10} />}
+                    </div>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: sel ? 700 : 500, color: sel ? "#fff" : "#8FA5C0" }}>{a}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Biblioteca del Inversionista ─── */
+function BibliotecaSection() {
+  const [filtro, setFiltro] = useState<string>("todos");
+  const tipos = ["todos", "video", "guia", "podcast", "caso"];
+  const filtrados = filtro === "todos" ? BIBLIOTECA : BIBLIOTECA.filter(b => b.tipo === filtro);
+  return (
+    <div style={{ padding: "80px 24px", background: `${NAVY}F0`, borderTop: `1px solid ${NAVY_BORDER}` }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Biblioteca del Inversionista</span>
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "14px" }}>Aprende a tu ritmo</h2>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#6A8FAF", maxWidth: "520px", lineHeight: 1.7, marginBottom: "36px" }}>Contenido curado para empresarios latinos que quieren entender antes de decidir.</p>
+        <div style={{ display: "flex", gap: "8px", marginBottom: "36px", flexWrap: "wrap" as const }}>
+          {tipos.map(t => (
+            <button key={t} onClick={() => setFiltro(t)}
+              style={{ padding: "8px 16px", background: filtro === t ? GOLD : "transparent", color: filtro === t ? NAVY : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: filtro === t ? 700 : 500, border: `1px solid ${filtro === t ? GOLD : NAVY_BORDER}`, borderRadius: "20px", cursor: "pointer", textTransform: "capitalize" as const, transition: "all 0.2s" }}>
+              {t === "todos" ? "Todo" : TIPO_LABELS[t] || t}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,280px),1fr))", gap: "16px" }}>
+          {filtrados.map((item, i) => (
+            <div key={i} style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "12px", padding: "20px", cursor: "pointer", transition: "border-color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = GOLD)}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = NAVY_BORDER)}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                <div style={{ width: "28px", height: "28px", borderRadius: "6px", background: `${GOLD}18`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {(TIPO_ICONS[item.tipo] || TIPO_ICONS.video)()}
+                </div>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", color: GOLD, textTransform: "uppercase" as const }}>{TIPO_LABELS[item.tipo] || item.tipo}</span>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", marginLeft: "auto" }}>{item.meta}</span>
+              </div>
+              <h4 style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 600, color: "#E8ECF1", lineHeight: 1.5, marginBottom: "8px" }}>{item.titulo}</h4>
+              <div style={{ display: "inline-block", padding: "3px 8px", background: `${NAVY}80`, borderRadius: "4px", fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#6A8FAF" }}>{item.cat}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── No Somos / Somos ─── */
+function NoSomosSection() {
+  return (
+    <div style={{ background: NAVY, display: "flex", alignItems: "center", padding: "80px 24px", borderTop: `1px solid ${NAVY_BORDER}` }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto", width: "100%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,400px),1fr))", gap: "64px" }}>
+          <div>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "28px" }}>No somos</div>
+            {["Un catálogo de inversiones.", "Un marketplace financiero.", "Un despacho migratorio.", "Una empresa de trámites."].map(t => (
+              <div key={t} style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+                <div style={{ width: "20px", height: "2px", background: "#4A6580", flexShrink: 0 }} />
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#4A6580", textDecoration: "line-through" }}>{t}</span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" as const, marginBottom: "28px" }}>Somos</div>
+            {["Arquitectos de decisiones.", "Constructores de criterio.", "Comunidad de empresarios.", "Curadores de oportunidades.", "Socios estratégicos."].map(t => (
+              <div key={t} style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+                <div style={{ width: "20px", height: "2px", background: GOLD, flexShrink: 0 }} />
+                <span style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "18px", fontWeight: 600, color: "#fff" }}>{t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginTop: "64px", borderTop: `1px solid ${NAVY_BORDER}`, paddingTop: "48px", textAlign: "center" as const }}>
+          <blockquote style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(20px,2.5vw,28px)", fontStyle: "italic", color: GOLD_LIGHT, lineHeight: 1.5, maxWidth: "640px", margin: "0 auto" }}>
+            "No necesitas más oportunidades.<br />Necesitas saber cuál tiene sentido para ti."
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Vehicle detail drawer ─── */
 function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: number }) | null; onClose: () => void }) {
   const isMobile = useIsMobile();
@@ -1108,6 +1288,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   const confirmRef = useRef<HTMLDivElement>(null);
   const [diagAnswer, setDiagAnswer] = useState<string | null>(null);
   const [notas, setNotas] = useState("");
+  const [patrimonioPct, setPatrimonioPct] = useState<string | null>(null);
+  const [liquidez, setLiquidez] = useState<string | null>(null);
+  const [estructuraArea, setEstructuraArea] = useState<string[]>([]);
 
   const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
   const topVehicles = rankedVehicles.slice(0, 5);
@@ -1161,6 +1344,13 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       `Correo: ${email}`,
       "",
       "Me gustaría agendar un diagnóstico estratégico personalizado.",
+      ...(patrimonioPct || liquidez || estructuraArea.length ? [
+        "",
+        "── PREGUNTAS DE CRITERIO ──",
+        ...(patrimonioPct ? [`▸ Patrimonio a dolarizar: ${patrimonioPct}`] : []),
+        ...(liquidez ? [`▸ Liquidez: ${liquidez}`] : []),
+        ...(estructuraArea.length ? [`▸ Áreas de interés: ${estructuraArea.join(", ")}`] : []),
+      ] : []),
       ...(diagAnswer ? [`\n── QUÉ QUIERO RESOLVER PRIMERO ──\n${DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer}`] : []),
       ...(notas.trim() ? [`\n── NOTAS ADICIONALES ──\n${notas.trim()}`] : []),
     ].join("\n");
@@ -1280,6 +1470,24 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
             </a>
           </div>
         </div>
+
+      </div>{/* end 680px column */}
+
+      {/* Full-width: Preguntas adicionales de perfil */}
+      <PreguntasAdicionalesSection
+        patrimonioPct={patrimonioPct} setPatrimonioPct={setPatrimonioPct}
+        liquidez={liquidez} setLiquidez={setLiquidez}
+        estructuraArea={estructuraArea} setEstructuraArea={setEstructuraArea}
+      />
+
+      {/* Full-width: Biblioteca */}
+      <BibliotecaSection />
+
+      {/* Full-width: No somos / Somos */}
+      <NoSomosSection />
+
+      {/* Resume narrow column */}
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "60px 24px 100px" }}>
 
         {/* ── Diagnóstico Final — preguntas adicionales de perfilamiento ── */}
         <div style={{ marginBottom: "44px" }}>
