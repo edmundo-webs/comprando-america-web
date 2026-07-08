@@ -117,7 +117,7 @@ export default function RutaInmobiliaria() {
                 </span>
               </div>
 
-              <a href="/tu-ruta">
+              <a href="https://comprandoamerica.com/gps">
                 <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                   Evaluar mi perfil para asistir <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -347,7 +347,7 @@ export default function RutaInmobiliaria() {
               <p className="text-slate-500 text-sm mb-10">Los espacios son limitados y se asignan a perfiles que cumplen con el criterio de inversión.</p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/tu-ruta">
+                <a href="https://comprandoamerica.com/gps">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-5 h-5" />
                   </Button>

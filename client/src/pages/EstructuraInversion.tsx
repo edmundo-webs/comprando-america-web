@@ -80,7 +80,7 @@ export default function EstructuraInversion() {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <a href="/tu-ruta">
+                <a href="https://comprandoamerica.com/gps">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
@@ -285,7 +285,7 @@ export default function EstructuraInversion() {
                 Si cuentas con capacidad de inversión desde <strong className="text-white">$100,000 USD</strong> y quieres invertir con claridad legal, fiscal y operativa.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/tu-ruta">
+                <a href="https://comprandoamerica.com/gps">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>

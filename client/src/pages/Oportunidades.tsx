@@ -810,7 +810,7 @@ export default function Oportunidades() {
               <p className="text-slate-600 text-sm mb-12">Pero pueden estar disponibles para el perfil correcto.</p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/tu-ruta">
+                <a href="https://comprandoamerica.com/gps">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 rounded-full font-bold shadow-2xl shadow-blue-600/30">
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>

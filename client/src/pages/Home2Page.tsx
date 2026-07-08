@@ -363,7 +363,7 @@ export default function Home2Page() {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <a href="/diagnostico">
+                <a href="https://comprandoamerica.com/gps">
                   <Button
                     className="px-8 py-6 text-base font-semibold gap-2 rounded-xl border-0"
                     style={{ background: GREEN, color: "#061008" }}
@@ -789,7 +789,7 @@ export default function Home2Page() {
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/diagnostico">
+                <a href="https://comprandoamerica.com/gps">
                   <Button
                     className="px-10 py-6 text-base font-semibold gap-2 rounded-xl border-0"
                     style={{ background: GREEN, color: "#061008" }}

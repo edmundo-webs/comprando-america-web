@@ -238,7 +238,7 @@ export default function Membresia() {
                 >
                   Solicitar Acceso <ArrowRight className="w-4 h-4" />
                 </Button>
-                <a href="/tu-ruta">
+                <a href="https://comprandoamerica.com/gps">
                   <Button variant="outline" className="border-slate-500 text-white hover:bg-white/10 px-8 py-6 text-base">
                     Evaluar mi Perfil
                   </Button>
@@ -667,7 +667,7 @@ export default function Membresia() {
                 >
                   Solicitar Evaluación <ArrowRight className="w-5 h-5" />
                 </Button>
-                <a href="/tu-ruta">
+                <a href="https://comprandoamerica.com/gps">
                   <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
                     Evaluar mi Perfil
                   </Button>
