@@ -1255,7 +1255,8 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   const [diagAnswer, setDiagAnswer] = useState<string | null>(null);
   const [notas, setNotas] = useState("");
   const [patrimonioPct, setPatrimonioPct] = useState<string | null>(null);
-  const [liquidez, setLiquidez] = useState<string | null>(null);
+  const [posicionRiesgo, setPosicionRiesgo] = useState<string | null>(null);
+  const [composicionCapital, setComposicionCapital] = useState<string | null>(null);
   const [estructuraArea, setEstructuraArea] = useState<string[]>([]);
   const [showCriterio, setShowCriterio] = useState(false);
   const [operarDelegar, setOperarDelegar] = useState<string | null>(null);
@@ -1287,7 +1288,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
   const prioridadesLabels = investorData.prioridades.map(id => OPCIONES_4.find(o => o.id === id)?.label ?? id);
 
-  useEffect(() => { if (patrimonioPct && liquidez && operarDelegar) setShowEstructura(true); }, [patrimonioPct, liquidez, operarDelegar]);
+  useEffect(() => { if (patrimonioPct && posicionRiesgo && composicionCapital && operarDelegar) setShowEstructura(true); }, [patrimonioPct, posicionRiesgo, composicionCapital, operarDelegar]);
   useEffect(() => { if (estructuraArea.length > 0) setShowDiag(true); }, [estructuraArea]);
   useEffect(() => { if (diagAnswer) setShowVehiculos(true); }, [diagAnswer]);
 
@@ -1329,11 +1330,12 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
     lines.push("");
 
     // Criterio (solo si respondió)
-    const hayCriterio = patrimonioPct || liquidez || operarDelegar || estructuraArea.length > 0;
+    const hayCriterio = patrimonioPct || posicionRiesgo || composicionCapital || operarDelegar || estructuraArea.length > 0;
     if (hayCriterio) {
       lines.push("*Mi criterio de inversión:*");
       if (patrimonioPct) lines.push(`  • *Patrimonio a dolarizar:* ${patrimonioPct}`);
-      if (liquidez) lines.push(`  • *Liquidez disponible:* ${liquidez}`);
+      if (posicionRiesgo) lines.push(`  • *Posición de riesgo:* ${posicionRiesgo}`);
+      if (composicionCapital) lines.push(`  • *Capital disponible:* ${composicionCapital}`);
       if (operarDelegar) lines.push(`  • *Prefiero:* ${operarDelegar}`);
       if (estructuraArea.length) {
         lines.push(`  • *Áreas de interés:* ${estructuraArea.map(id => AREA_LABELS[id] ?? id).join(", ")}`);
@@ -1491,16 +1493,23 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   </div>
                 </div>
 
-                {/* Q2 — visible si patrimonioPct */}
+                {/* Q2 — posición de riesgo, visible si patrimonioPct */}
                 <AnimatePresence>
                   {patrimonioPct && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: "24px" }}>
-                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>¿Cuánta liquidez tienes disponible para invertir hoy?</p>
-                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
-                        {["Menos de 50k USD", "50k – 100k USD", "100k – 300k USD", "Más de 300k USD"].map(v => (
-                          <button key={v} onClick={() => setLiquidez(liquidez === v ? null : v)}
-                            style={{ padding: "10px 20px", background: liquidez === v ? GOLD : "transparent", color: liquidez === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: liquidez === v ? 700 : 500, border: `1px solid ${liquidez === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
-                            {v}
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "6px" }}>¿Qué tanto representa esta inversión respecto a tu patrimonio total?</p>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "14px", lineHeight: 1.5 }}>Esto nos ayuda a entender tu posición de riesgo y el momento adecuado para cada vehículo.</p>
+                      <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px" }}>
+                        {[
+                          { v: "Es casi todo mi capital disponible", sub: "Posición crítica — priorizamos estructura y timing" },
+                          { v: "Es una parte importante, tengo más respaldo", sub: "Posición moderada — podemos avanzar con criterio" },
+                          { v: "Es una porción menor, no compromete mi patrimonio", sub: "Posición cómoda — mayor libertad para explorar" },
+                          { v: "No tengo mucho efectivo, pero sí activos o propiedades", sub: "Capital en activos — exploramos cómo estructurarlo" },
+                        ].map(({ v, sub }) => (
+                          <button key={v} onClick={() => setPosicionRiesgo(posicionRiesgo === v ? null : v)}
+                            style={{ padding: "12px 16px", background: posicionRiesgo === v ? `${GOLD}20` : "transparent", color: posicionRiesgo === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: posicionRiesgo === v ? 700 : 500, border: `1px solid ${posicionRiesgo === v ? GOLD : NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer", transition: "all 0.2s", textAlign: "left" as const }}>
+                            <span style={{ display: "block", color: posicionRiesgo === v ? "#fff" : "#C8D6E8", fontWeight: 600 }}>{v}</span>
+                            <span style={{ display: "block", fontSize: "11px", color: posicionRiesgo === v ? `${GOLD_LIGHT}CC` : "#4A6580", marginTop: "3px" }}>{sub}</span>
                           </button>
                         ))}
                       </div>
@@ -1508,15 +1517,22 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   )}
                 </AnimatePresence>
 
-                {/* Q3 — visible si liquidez */}
+                {/* Q3 — composición del capital, visible si posicionRiesgo */}
                 <AnimatePresence>
-                  {liquidez && (
+                  {posicionRiesgo && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: "24px" }}>
-                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>¿Prefieres operar tus inversiones o delegar la gestión?</p>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "6px" }}>¿Cómo está compuesto principalmente el capital que planeas invertir?</p>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "14px", lineHeight: 1.5 }}>No importa si es una combinación — queremos entender con qué trabajamos.</p>
                       <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
-                        {["Operar directamente", "Delegar la gestión", "Modelo híbrido"].map(v => (
-                          <button key={v} onClick={() => setOperarDelegar(operarDelegar === v ? null : v)}
-                            style={{ padding: "10px 20px", background: operarDelegar === v ? GOLD : "transparent", color: operarDelegar === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: operarDelegar === v ? 700 : 500, border: `1px solid ${operarDelegar === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                        {[
+                          "Efectivo listo para invertir",
+                          "Propiedades o bienes raíces que puedo liquidar",
+                          "Mi empresa o negocio es mi principal activo",
+                          "Una mezcla de efectivo y activos",
+                          "Aún estoy estructurando cómo liberarlo",
+                        ].map(v => (
+                          <button key={v} onClick={() => setComposicionCapital(composicionCapital === v ? null : v)}
+                            style={{ padding: "9px 16px", background: composicionCapital === v ? GOLD : "transparent", color: composicionCapital === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: composicionCapital === v ? 700 : 500, border: `1px solid ${composicionCapital === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
                             {v}
                           </button>
                         ))}
@@ -1525,17 +1541,35 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   )}
                 </AnimatePresence>
 
-                {/* Resumen cuando las 3 están respondidas */}
+                {/* Q4 — operar/delegar, visible si composicionCapital */}
                 <AnimatePresence>
-                  {patrimonioPct && liquidez && operarDelegar && (
+                  {composicionCapital && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: "24px" }}>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "6px" }}>¿Cómo te imaginas gestionando tu inversión en Estados Unidos?</p>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "14px", lineHeight: 1.5 }}>Define qué tan involucrado quieres estar en las decisiones del día a día.</p>
+                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+                        {["Quiero estar al frente de cada decisión", "Prefiero supervisar sin operar", "Delego completamente — quiero flujo sin gestión"].map(v => (
+                          <button key={v} onClick={() => setOperarDelegar(operarDelegar === v ? null : v)}
+                            style={{ padding: "9px 16px", background: operarDelegar === v ? GOLD : "transparent", color: operarDelegar === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: operarDelegar === v ? 700 : 500, border: `1px solid ${operarDelegar === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                            {v}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Resumen cuando las 4 están respondidas */}
+                <AnimatePresence>
+                  {patrimonioPct && posicionRiesgo && composicionCapital && operarDelegar && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginTop: "8px" }}>
                       <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px", marginBottom: "12px" }}>
-                        {[patrimonioPct, liquidez, operarDelegar].map(v => (
+                        {[patrimonioPct, posicionRiesgo.split(" — ")[0], composicionCapital, operarDelegar].map(v => (
                           <span key={v} style={{ padding: "6px 14px", background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: GOLD_LIGHT }}>{v}</span>
                         ))}
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF" }}>Perfecto — ahora dinos en qué áreas quieres avanzar</span>
+                        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF" }}>Criterio definido — dinos en qué áreas quieres avanzar</span>
                         <motion.span animate={{ y: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6A8FAF" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
                         </motion.span>
@@ -1814,7 +1848,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                     </div>
                   </div>
                   {/* Tus respuestas */}
-                  {(patrimonioPct || liquidez || operarDelegar || estructuraArea.length > 0 || diagAnswer || notas.trim()) && (
+                  {(patrimonioPct || posicionRiesgo || composicionCapital || operarDelegar || estructuraArea.length > 0 || diagAnswer || notas.trim()) && (
                     <div style={{ padding: "16px 24px 0" }}>
                       <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus respuestas</div>
                       <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
@@ -1824,15 +1858,21 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                             <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{patrimonioPct}</div>
                           </div>
                         )}
-                        {liquidez && (
+                        {posicionRiesgo && (
                           <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Liquidez disponible</div>
-                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{liquidez}</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Posición de riesgo</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{posicionRiesgo.split(" — ")[0]}</div>
+                          </div>
+                        )}
+                        {composicionCapital && (
+                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Composición del capital</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{composicionCapital}</div>
                           </div>
                         )}
                         {operarDelegar && (
                           <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Operar o delegar</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Gestión preferida</div>
                             <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{operarDelegar}</div>
                           </div>
                         )}
