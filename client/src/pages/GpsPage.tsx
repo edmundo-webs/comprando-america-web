@@ -299,6 +299,18 @@ function IconCalendar({ color = NAVY }: { color?: string }) {
 function IconCompass({ color = GOLD }: { color?: string }) {
   return <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>;
 }
+function IconPlay({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill={color} stroke="none"><polygon points="5 3 19 12 5 21 5 3" /></svg>;
+}
+function IconBook({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>;
+}
+function IconMic({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="23" /></svg>;
+}
+function IconBarChart({ color = GOLD }: { color?: string }) {
+  return <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>;
+}
 function IconUser({ color = GOLD }: { color?: string }) {
   return <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
 }
@@ -993,6 +1005,140 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
   );
 }
 
+/* ─── Biblioteca data ─── */
+const BIBLIOTECA = [
+  { tipo: "video", titulo: "¿Qué es una LLC y para qué sirve?", meta: "7 min", cat: "Estructura" },
+  { tipo: "guia", titulo: "Proteger tu patrimonio en Estados Unidos", meta: "12 min", cat: "Patrimonio" },
+  { tipo: "podcast", titulo: "Renta garantizada con Section 8", meta: "45 min", cat: "Flujo" },
+  { tipo: "caso", titulo: "Empresario colombiano expande a Texas", meta: "Caso de estudio", cat: "Empresa" },
+  { tipo: "video", titulo: "Fondo de Tierra Estratégica: qué es y cómo funciona", meta: "12 min", cat: "Flujo" },
+  { tipo: "guia", titulo: "Las 5 estructuras más usadas por inversionistas latinos", meta: "8 min", cat: "Estructura" },
+];
+const TIPO_ICONS: Record<string, () => JSX.Element> = {
+  video: () => <IconPlay />,
+  guia: () => <IconBook />,
+  podcast: () => <IconMic />,
+  caso: () => <IconBarChart />,
+};
+const TIPO_LABELS: Record<string, string> = { video: "Video", guia: "Guía", podcast: "Podcast", caso: "Caso" };
+
+const VEHICULOS_CATEGORIAS = [
+  {
+    id: "flujo",
+    titulo: "Generar flujo pasivo",
+    items: [
+      { id: "victory-capital", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/fondo", exclusivo: false },
+      { id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/vc-8", exclusivo: false },
+      { id: "coinversiones", nombre: "Oportunidades Privadas Curadas", frase: "Proyectos seleccionados para perfiles específicos de inversionista", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos", exclusivo: true },
+    ],
+  },
+  {
+    id: "patrimonio",
+    titulo: "Construir patrimonio",
+    items: [
+      { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+", href: "/propiedades", exclusivo: false },
+      { id: "estructura-llc", nombre: "Estructura para Invertir en Estados Unidos", frase: "Legal, fiscal, bancaria y patrimonial desde el primer día", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+", href: "/estructura-de-inversion-en-usa", exclusivo: false },
+      { id: "adquisiciones", nombre: "Negocios", frase: "Adquiere o construye un negocio americano", participacion: "Activa", horizonte: "3-5 años", ticket: "200k+", href: "", exclusivo: true },
+    ],
+  },
+  {
+    id: "empresa",
+    titulo: "Expandir empresa",
+    items: [
+      { id: "americaniza", nombre: "Americaniza tu Operación", frase: "Lleva tu empresa al mercado americano", participacion: "Activa", horizonte: "1-3 años", ticket: "Consultar", href: "/expansion-internacional-empresas", exclusivo: true },
+      { id: "adquisiciones-emp", nombre: "Adquisiciones", frase: "Compra una empresa americana en operación", participacion: "Activa", horizonte: "6-12 meses", ticket: "500k+", href: "", exclusivo: true },
+      { id: "plan-migratorio", nombre: "Visa E-2", frase: "Expansión con opción a residencia vía inversión", participacion: "Activa", horizonte: "1-2 años", ticket: "100k+", href: "/visa-e2-inversionista-usa", exclusivo: true },
+    ],
+  },
+];
+
+const COMPARACION = {
+  headers: ["Fondo de Tierra Estratégica", "Programa de Vivienda con Renta Respaldada por el Gobierno", "Grupo Empresarial de Edmundo Treviño"],
+  rows: [
+    { label: "Participación", values: ["Pasiva", "Semi-pasiva", "Estratégica"] },
+    { label: "Horizonte", values: ["5-7 años", "Largo plazo", "Continuo"] },
+    { label: "Ticket", values: ["100k+", "90k+", "10k"] },
+    { label: "Visa", values: ["No directa", "No directa", "Puede explorar"] },
+    { label: "Objetivo", values: ["Flujo", "Patrimonio", "Claridad"] },
+  ],
+};
+
+/* ─── Biblioteca del Inversionista ─── */
+function BibliotecaSection() {
+  const [filtro, setFiltro] = useState<string>("todos");
+  const tipos = ["todos", "video", "guia", "podcast", "caso"];
+  const filtrados = filtro === "todos" ? BIBLIOTECA : BIBLIOTECA.filter(b => b.tipo === filtro);
+  return (
+    <div style={{ padding: "80px 24px", background: `${NAVY}F0`, borderTop: `1px solid ${NAVY_BORDER}` }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Biblioteca del Inversionista</span>
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "14px" }}>Aprende a tu ritmo</h2>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#6A8FAF", maxWidth: "520px", lineHeight: 1.7, marginBottom: "36px" }}>Contenido curado para empresarios latinos que quieren entender antes de decidir.</p>
+        <div style={{ display: "flex", gap: "8px", marginBottom: "36px", flexWrap: "wrap" as const }}>
+          {tipos.map(t => (
+            <button key={t} onClick={() => setFiltro(t)}
+              style={{ padding: "8px 16px", background: filtro === t ? GOLD : "transparent", color: filtro === t ? NAVY : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: filtro === t ? 700 : 500, border: `1px solid ${filtro === t ? GOLD : NAVY_BORDER}`, borderRadius: "20px", cursor: "pointer", textTransform: "capitalize" as const, transition: "all 0.2s" }}>
+              {t === "todos" ? "Todo" : TIPO_LABELS[t] || t}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,280px),1fr))", gap: "16px" }}>
+          {filtrados.map((item, i) => (
+            <div key={i} style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "12px", padding: "20px", cursor: "pointer", transition: "border-color 0.2s" }}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = GOLD)}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = NAVY_BORDER)}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" }}>
+                <div style={{ width: "28px", height: "28px", borderRadius: "6px", background: `${GOLD}18`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {(TIPO_ICONS[item.tipo] || TIPO_ICONS.video)()}
+                </div>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", color: GOLD, textTransform: "uppercase" as const }}>{TIPO_LABELS[item.tipo] || item.tipo}</span>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", marginLeft: "auto" }}>{item.meta}</span>
+              </div>
+              <h4 style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 600, color: "#E8ECF1", lineHeight: 1.5, marginBottom: "8px" }}>{item.titulo}</h4>
+              <div style={{ display: "inline-block", padding: "3px 8px", background: `${NAVY}80`, borderRadius: "4px", fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#6A8FAF" }}>{item.cat}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── No Somos / Somos ─── */
+function NoSomosSection() {
+  return (
+    <div style={{ background: NAVY, display: "flex", alignItems: "center", padding: "80px 24px", borderTop: `1px solid ${NAVY_BORDER}` }}>
+      <div style={{ maxWidth: "960px", margin: "0 auto", width: "100%" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,400px),1fr))", gap: "64px" }}>
+          <div>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "28px" }}>No somos</div>
+            {["Un catálogo de inversiones.", "Un marketplace financiero.", "Un despacho migratorio.", "Una empresa de trámites."].map(t => (
+              <div key={t} style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+                <div style={{ width: "20px", height: "2px", background: "#4A6580", flexShrink: 0 }} />
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#4A6580", textDecoration: "line-through" }}>{t}</span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" as const, marginBottom: "28px" }}>Somos</div>
+            {["Arquitectos de decisiones.", "Constructores de criterio.", "Comunidad de empresarios.", "Curadores de oportunidades.", "Socios estratégicos."].map(t => (
+              <div key={t} style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+                <div style={{ width: "20px", height: "2px", background: GOLD, flexShrink: 0 }} />
+                <span style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "18px", fontWeight: 600, color: "#fff" }}>{t}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ marginTop: "64px", borderTop: `1px solid ${NAVY_BORDER}`, paddingTop: "48px", textAlign: "center" as const }}>
+          <blockquote style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(20px,2.5vw,28px)", fontStyle: "italic", color: GOLD_LIGHT, lineHeight: 1.5, maxWidth: "640px", margin: "0 auto" }}>
+            "No necesitas más oportunidades.<br />Necesitas saber cuál tiene sentido para ti."
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Vehicle detail drawer ─── */
 function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: number }) | null; onClose: () => void }) {
   const isMobile = useIsMobile();
@@ -1108,6 +1254,13 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   const confirmRef = useRef<HTMLDivElement>(null);
   const [diagAnswer, setDiagAnswer] = useState<string | null>(null);
   const [notas, setNotas] = useState("");
+  const [patrimonioPct, setPatrimonioPct] = useState<string | null>(null);
+  const [liquidez, setLiquidez] = useState<string | null>(null);
+  const [estructuraArea, setEstructuraArea] = useState<string[]>([]);
+  const [showCriterio, setShowCriterio] = useState(false);
+  const [operarDelegar, setOperarDelegar] = useState<string | null>(null);
+  const [vehiculosView, setVehiculosView] = useState<"perfil" | "todos">("perfil");
+  const [selectedColumn, setSelectedColumn] = useState<number | null>(null);
 
   const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
   const topVehicles = rankedVehicles.slice(0, 5);
@@ -1161,6 +1314,14 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       `Correo: ${email}`,
       "",
       "Me gustaría agendar un diagnóstico estratégico personalizado.",
+      ...(patrimonioPct || liquidez || estructuraArea.length ? [
+        "",
+        "── PREGUNTAS DE CRITERIO ──",
+        ...(patrimonioPct ? [`▸ Patrimonio a dolarizar: ${patrimonioPct}`] : []),
+        ...(liquidez ? [`▸ Liquidez: ${liquidez}`] : []),
+        ...(estructuraArea.length ? [`▸ Áreas de interés: ${estructuraArea.join(", ")}`] : []),
+        ...(operarDelegar ? [`▸ Operar o delegar: ${operarDelegar}`] : []),
+      ] : []),
       ...(diagAnswer ? [`\n── QUÉ QUIERO RESOLVER PRIMERO ──\n${DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer}`] : []),
       ...(notas.trim() ? [`\n── NOTAS ADICIONALES ──\n${notas.trim()}`] : []),
     ].join("\n");
@@ -1169,13 +1330,14 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
   return (
     <div style={{ minHeight: "100dvh", background: NAVY, overflowY: "auto" }}>
-      {/* Hero ficha */}
+
+      {/* ── Hero ficha ── */}
       <div style={{ position: "relative", background: `linear-gradient(180deg, #0A1A30 0%, ${NAVY} 100%)`, padding: "80px 24px 0", overflow: "hidden" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${GOLD}08 1px, transparent 1px), linear-gradient(90deg, ${GOLD}08 1px, transparent 1px)`, backgroundSize: "60px 60px", zIndex: 0 }} />
         <div style={{ position: "relative", zIndex: 2, maxWidth: "680px", margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
             <div style={{ width: "28px", height: "1px", background: GOLD }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.35em", color: GOLD, textTransform: "uppercase" }}>GPS · Comprando América</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.35em", color: GOLD, textTransform: "uppercase" as const }}>GPS · Comprando América</span>
           </div>
           <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(32px,6vw,64px)", fontWeight: 900, color: "#fff", lineHeight: 1.05, marginBottom: "16px" }}>
             {perfil.nombre}
@@ -1186,10 +1348,10 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
             </p>
           )}
           {fichaData.length > 0 && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "0" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden" }}>
               {fichaData.map(({ label, value }) => (
-                <div key={label} style={{ background: `rgba(10,26,48,0.9)`, padding: "16px 14px" }}>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: `${GOLD}90`, textTransform: "uppercase", marginBottom: "6px" }}>{label}</div>
+                <div key={label} style={{ background: "rgba(10,26,48,0.9)", padding: "16px 14px" }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: `${GOLD}90`, textTransform: "uppercase" as const, marginBottom: "6px" }}>{label}</div>
                   <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
                 </div>
               ))}
@@ -1199,97 +1361,285 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         <div style={{ height: "48px", background: `linear-gradient(to bottom, transparent, ${NAVY})` }} />
       </div>
 
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "0 24px 100px" }}>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "48px", maxWidth: "520px" }}>{perfil.descripcion}</p>
+      {/* ── Estación 1 · Claridad ── */}
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "60px 24px 0" }}>
+        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 1 · Claridad</span>
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>¿Dónde estás hoy?</h2>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "32px", maxWidth: "520px" }}>{perfil.descripcion}</p>
 
-        {/* Vehicles — clickable for drawer */}
-        <div style={{ marginBottom: "44px" }}>
-          <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "6px" }}>Vehículos recomendados</h3>
-          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "18px" }}>Toca cualquier vehículo para ver el resumen ejecutivo · Ordenados por compatibilidad</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-            {topVehicles.map((v, i) => (
-              <div key={v.id} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "16px 18px", display: "flex", flexDirection: "column", gap: "12px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                  <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "2px", flexWrap: "wrap" }}>
-                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 600, color: i === 0 ? "#fff" : "#C8D6E8" }}>{v.nombre}</span>
-                      {i === 0 && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "2px 6px", textTransform: "uppercase" }}>Mejor match</span>}
-                    </div>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580" }}>{v.frase}</div>
-                    <div style={{ display: "flex", gap: "8px", marginTop: "6px", flexWrap: "wrap" }}>
-                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.ticketLabel}</span>
-                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#6A8FAF", background: `${NAVY_BORDER}80`, borderRadius: "4px", padding: "2px 7px" }}>{v.horizonte}</span>
-                    </div>
-                  </div>
-                  <div style={{ flexShrink: 0, textAlign: "center" }}>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "17px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
-                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580" }}>compatibilidad</div>
-                  </div>
-                </div>
-                {/* Action row */}
-                <div style={{ display: "grid", gridTemplateColumns: v.href ? "1fr 1fr" : "1fr", gap: "8px" }}>
-                  <button onClick={() => setDrawerVehicle(v)}
-                    style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "9px 0", background: `${NAVY_BORDER}40`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", cursor: "pointer" }}>
-                    Resumen ejecutivo
-                  </button>
-                  {v.href && (
-                    <a href={v.href}
-                      style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "9px 0", background: i === 0 ? `${GOLD}15` : `${NAVY_BORDER}40`, border: `1px solid ${i === 0 ? GOLD + "50" : NAVY_BORDER}`, borderRadius: "8px", color: i === 0 ? GOLD : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", textDecoration: "none" }}>
-                      Conocer más <IconRight color={i === 0 ? GOLD : "#6A8FAF"} />
-                    </a>
-                  )}
-                </div>
+        {/* Video placeholder — Edmundo explica */}
+        <div style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "14px", overflow: "hidden", marginBottom: "32px", position: "relative" }}>
+          <div style={{ paddingBottom: "56.25%", position: "relative", background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)` }}>
+            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", gap: "16px" }}>
+              <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: `${GOLD}20`, border: `2px solid ${GOLD}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <IconPlay color={GOLD} />
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Grupo Empresarial de Edmundo Treviño */}
-        <div style={{ marginBottom: "44px" }}>
-          <h3 style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "18px" }}>Próximo Paso Recomendado</h3>
-          <div style={{ background: `linear-gradient(135deg, #0D1F3C 0%, #0F2847 100%)`, border: `1px solid ${GOLD}50`, borderRadius: "16px", padding: "28px 24px", position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <img src={LOGO_URL} alt="" style={{ height: "22px", width: "auto", opacity: 0.9 }} />
-                <div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: `${GOLD}90`, textTransform: "uppercase" }}>Comprando América</div>
-                  <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "17px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>Grupo Empresarial de Edmundo Treviño</div>
-                </div>
+              <div style={{ textAlign: "center" as const }}>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: "#fff", margin: "0 0 4px" }}>Edmundo te explica tu ruta</p>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", margin: 0 }}>Video — 1:00 min</p>
               </div>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: NAVY, background: GOLD, borderRadius: "4px", padding: "3px 8px", textTransform: "uppercase", flexShrink: 0 }}>Exclusivo</span>
             </div>
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "20px" }}>
-              Antes de invertir, lo más valioso es tener claridad. En el Grupo Empresarial exploramos tus opciones, desarrollamos criterio, definimos el momento correcto y estructuramos una ruta para Estados Unidos — con opción a visa, según tu capital y caso particular.
-            </p>
-            {fichaData.length > 0 && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "20px" }}>
-                {fichaData.map(({ label, value }) => (
-                  <div key={label} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "6px 12px" }}>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: `${GOLD}80`, textTransform: "uppercase", letterSpacing: "0.12em" }}>{label}: </span>
-                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-            <a href="/grupo-empresarial-edmundo" style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 22px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: NAVY, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", borderRadius: "9px", textDecoration: "none" }}>
-              Explorar Grupo Empresarial <IconRight color={NAVY} />
-            </a>
           </div>
         </div>
 
-        {/* ── Diagnóstico Final — preguntas adicionales de perfilamiento ── */}
+        {!showCriterio && (
+          <motion.button
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+            onClick={() => setShowCriterio(true)}
+            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "60px" }}>
+            Esto describe mi situación <IconRight color="#fff" />
+          </motion.button>
+        )}
+      </div>
+
+      {/* ── Estación 2 · Criterio (aparece al hacer clic) ── */}
+      <AnimatePresence>
+        {showCriterio && (
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "60px 24px 0" }}>
+              <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 2 · Criterio</span>
+                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Cada respuesta calibra tu experiencia</h2>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "44px", lineHeight: 1.7 }}>No hay respuesta incorrecta — hay respuestas honestas.</p>
+
+                {/* Q1 */}
+                <div style={{ marginBottom: "36px" }}>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#C8D6E8", marginBottom: "16px" }}>¿Qué porcentaje de tu patrimonio quieres dolarizar?</p>
+                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+                    {["10 – 25%", "25 – 50%", "50 – 75%", "75%+"].map(v => (
+                      <button key={v} onClick={() => setPatrimonioPct(patrimonioPct === v ? null : v)}
+                        style={{ padding: "11px 22px", background: patrimonioPct === v ? GOLD : "transparent", color: patrimonioPct === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: patrimonioPct === v ? 700 : 500, border: `1px solid ${patrimonioPct === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Q2 */}
+                <div style={{ marginBottom: "36px" }}>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#C8D6E8", marginBottom: "16px" }}>¿Qué tan importante es la liquidez?</p>
+                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+                    {["Crítica", "Importante", "Secundaria"].map(v => (
+                      <button key={v} onClick={() => setLiquidez(liquidez === v ? null : v)}
+                        style={{ padding: "11px 22px", background: liquidez === v ? GOLD : "transparent", color: liquidez === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: liquidez === v ? 700 : 500, border: `1px solid ${liquidez === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Q3 */}
+                <div style={{ marginBottom: "60px" }}>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#C8D6E8", marginBottom: "16px" }}>¿Quieres operar o delegar?</p>
+                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+                    {["Operar", "Supervisar", "Delegar totalmente"].map(v => (
+                      <button key={v} onClick={() => setOperarDelegar(operarDelegar === v ? null : v)}
+                        style={{ padding: "11px 22px", background: operarDelegar === v ? GOLD : "transparent", color: operarDelegar === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: operarDelegar === v ? 700 : 500, border: `1px solid ${operarDelegar === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Estación 3 · Estructura ── */}
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "60px 24px 0" }}>
+              <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 3 · Estructura</span>
+                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Antes de invertir, define la estructura correcta</h2>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "44px", lineHeight: 1.7 }}>Selecciona el área que más te interesa explorar.</p>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,200px),1fr))", gap: "12px", marginBottom: "60px" }}>
+                  {[
+                    { id: "Patrimonio", sub: "¿Quién será el propietario del activo?" },
+                    { id: "Fiscal", sub: "Optimiza la carga impositiva de tus operaciones" },
+                    { id: "Legal", sub: "Protege tu empresa con estructuras sólidas" },
+                    { id: "Sucesión", sub: "Transfiere tu patrimonio con claridad" },
+                    { id: "Migración", sub: "Abre puertas a la residencia desde tu inversión" },
+                  ].map(({ id, sub }) => {
+                    const sel = estructuraArea.includes(id);
+                    return (
+                      <button key={id} onClick={() => setEstructuraArea(sel ? estructuraArea.filter(x => x !== id) : [...estructuraArea, id])}
+                        style={{ padding: "18px 16px", background: sel ? `${GOLD}18` : NAVY_CARD, border: `1.5px solid ${sel ? GOLD : NAVY_BORDER}`, borderRadius: "12px", cursor: "pointer", textAlign: "left" as const, transition: "all 0.2s" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
+                          <div style={{ width: "18px", height: "18px", borderRadius: "4px", border: `2px solid ${sel ? GOLD : NAVY_BORDER}`, background: sel ? GOLD : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
+                            {sel && <IconCheck color="#fff" size={10} />}
+                          </div>
+                          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: sel ? "#fff" : "#C8D6E8" }}>{id}</span>
+                        </div>
+                        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", lineHeight: 1.5, margin: "0 0 0 28px" }}>{sub}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* ── Estación 4 · Vehículos Estratégicos ── */}
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "80px 24px" }}>
+              <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+                <div style={{ maxWidth: "680px", marginBottom: "40px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 4 · Vehículos Estratégicos</span>
+                  <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Explora tus instrumentos</h2>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#6A8FAF", lineHeight: 1.7, marginBottom: "28px" }}>Cada instrumento está diseñado para un perfil específico de inversionista.</p>
+                  {/* Toggle */}
+                  <div style={{ display: "inline-flex", background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "28px", padding: "4px", gap: "4px" }}>
+                    {(["perfil", "todos"] as const).map(v => (
+                      <button key={v} onClick={() => setVehiculosView(v)}
+                        style={{ padding: "9px 22px", background: vehiculosView === v ? GOLD : "transparent", color: vehiculosView === v ? "#fff" : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, border: "none", borderRadius: "24px", cursor: "pointer", transition: "all 0.25s" }}>
+                        {v === "perfil" ? "Tu Perfil" : "Explorar todos"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {vehiculosView === "perfil" ? (
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: "12px" }}>
+                    {topVehicles.map((v, i) => (
+                      <div key={v.id} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "20px 22px", display: "flex", alignItems: "center", gap: "16px" }}>
+                        <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" as const, marginBottom: "2px" }}>
+                            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 600, color: "#fff" }}>{v.nombre}</span>
+                            {i === 0 && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: "#fff", background: GOLD, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase" as const }}>Tu Perfil</span>}
+                          </div>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", marginBottom: "10px" }}>{v.frase}</div>
+                          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" as const }}>
+                            {[["Participación", PARTICIPACION_LABELS[v.participacion[0]] ?? v.participacion[0]], ["Horizonte", v.horizonte], ["Ticket mínimo", v.ticketLabel]].map(([k, val]) => (
+                              <div key={k} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "6px", padding: "4px 10px" }}>
+                                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>{k}: </span>
+                                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{val}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div style={{ flexShrink: 0, display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: "8px" }}>
+                          <div style={{ textAlign: "center" as const }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "18px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580" }}>compatibilidad</div>
+                          </div>
+                          <button onClick={() => setDrawerVehicle(v)}
+                            style={{ padding: "8px 14px", background: i === 0 ? `${GOLD}15` : `${NAVY_BORDER}40`, border: `1px solid ${i === 0 ? GOLD + "50" : NAVY_BORDER}`, borderRadius: "8px", color: i === 0 ? GOLD : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "pointer" }}>
+                            Ver más
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: "48px" }}>
+                    {VEHICULOS_CATEGORIAS.map(cat => (
+                      <div key={cat.id}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
+                          <div style={{ width: "20px", height: "2px", background: GOLD }} />
+                          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: GOLD, textTransform: "uppercase" as const }}>{cat.titulo}</span>
+                        </div>
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,300px),1fr))", gap: "14px" }}>
+                          {cat.items.map(item => (
+                            <div key={item.id} style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "12px", padding: "20px", position: "relative" as const }}>
+                              {item.exclusivo && (
+                                <span style={{ position: "absolute" as const, top: "14px", right: "14px", fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.12em", color: GOLD, background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase" as const }}>Exclusivo</span>
+                              )}
+                              <div style={{ width: "3px", height: "32px", background: `linear-gradient(to bottom,${GOLD},${GOLD_LIGHT})`, borderRadius: "2px", marginBottom: "14px" }} />
+                              <h4 style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#fff", marginBottom: "6px", lineHeight: 1.3, paddingRight: item.exclusivo ? "70px" : 0 }}>{item.nombre}</h4>
+                              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", lineHeight: 1.55, marginBottom: "16px" }}>{item.frase}</p>
+                              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" as const, marginBottom: "16px" }}>
+                                {[["Participación", item.participacion], ["Horizonte", item.horizonte], ["Ticket mínimo", item.ticket]].map(([k, val]) => (
+                                  <div key={k} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "6px", padding: "4px 10px" }}>
+                                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.1em", marginBottom: "1px" }}>{k}</div>
+                                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{val}</div>
+                                  </div>
+                                ))}
+                              </div>
+                              {item.exclusivo ? (
+                                <div style={{ padding: "10px", background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", color: `${GOLD}CC`, fontWeight: 700, textAlign: "center" as const, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>
+                                  Exclusivo · Agenda diagnóstico
+                                </div>
+                              ) : item.href ? (
+                                <a href={item.href} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "10px", background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: GOLD, letterSpacing: "0.06em", textTransform: "uppercase" as const, textDecoration: "none" }}>
+                                  Explorar <IconRight color={GOLD} />
+                                </a>
+                              ) : null}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ── Comparador Inteligente ── */}
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "80px 24px" }}>
+              <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+                <div style={{ maxWidth: "680px", marginBottom: "40px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Comparador Inteligente</span>
+                  <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Compara estrategias</h2>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#6A8FAF", lineHeight: 1.7, marginBottom: "8px" }}>Elige el vehículo que mejor se adapta a tu horizonte, nivel de participación y objetivo principal.</p>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580" }}>Haz clic en el nombre de un vehículo para resaltar su columna</p>
+                </div>
+                <div style={{ overflowX: "auto" as const }}>
+                  <table style={{ width: "100%", borderCollapse: "separate" as const, borderSpacing: 0, minWidth: "500px" }}>
+                    <thead>
+                      <tr>
+                        <th style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, color: "#4A6580", textAlign: "left" as const, borderBottom: `1px solid ${NAVY_BORDER}`, background: NAVY }} />
+                        {COMPARACION.headers.map((h, i) => (
+                          <th key={i}
+                            onClick={() => setSelectedColumn(selectedColumn === i ? null : i)}
+                            style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: selectedColumn === i ? GOLD : "#C8D6E8", textAlign: "center" as const, borderBottom: `1px solid ${selectedColumn === i ? GOLD : NAVY_BORDER}`, background: selectedColumn === i ? `${GOLD}10` : NAVY_CARD, cursor: "pointer", transition: "all 0.2s", lineHeight: 1.3 }}>
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {COMPARACION.rows.map((row, ri) => (
+                        <tr key={ri}>
+                          <td style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: "#6A8FAF", textTransform: "uppercase" as const, letterSpacing: "0.1em", borderBottom: `1px solid ${NAVY_BORDER}`, background: NAVY, whiteSpace: "nowrap" as const }}>{row.label}</td>
+                          {row.values.map((val, ci) => (
+                            <td key={ci} style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: selectedColumn === ci ? 700 : 400, color: selectedColumn === ci ? "#fff" : "#A8BDD4", textAlign: "center" as const, borderBottom: `1px solid ${NAVY_BORDER}`, background: selectedColumn === ci ? `${GOLD}10` : NAVY_CARD, transition: "all 0.2s" }}>
+                              {val}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Biblioteca del Inversionista ── */}
+      <BibliotecaSection />
+
+      {/* ── No somos / Somos ── */}
+      <NoSomosSection />
+
+      {/* ── Diagnóstico Final + CTAs + Footer ── */}
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "60px 24px 100px" }}>
+
+        {/* CTA principal */}
+        <div style={{ marginBottom: "40px" }}>
+          <a href="/grupo-empresarial-edmundo"
+            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none", boxSizing: "border-box" as const }}>
+            Entender mi ruta estratégica <IconRight color="#fff" />
+          </a>
+        </div>
+
+        {/* ── Diagnóstico Final ── */}
         <div style={{ marginBottom: "44px" }}>
           <div style={{ marginBottom: "24px" }}>
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase", display: "block", marginBottom: "12px" }}>Diagnóstico Final</span>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Diagnóstico Final</span>
             <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: 0 }}>Tu siguiente paso</h2>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {/* Mensaje del asesor */}
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: "16px" }}>
             <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
               <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <IconCompass color={GOLD} />
@@ -1301,13 +1651,12 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
               </div>
             </div>
 
-            {/* Opciones (solo si no ha respondido) */}
             {!diagAnswer && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                style={{ paddingLeft: "48px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                style={{ paddingLeft: "48px", display: "flex", flexDirection: "column" as const, gap: "8px" }}>
                 {DIAG_OPCIONES.map(op => (
                   <button key={op.id} onClick={() => setDiagAnswer(op.id)}
-                    style={{ padding: "11px 18px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", color: "#C8D6E8", fontFamily: "'Inter',sans-serif", fontSize: "14px", cursor: "pointer", textAlign: "left", transition: "all 0.2s" }}
+                    style={{ padding: "11px 18px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", color: "#C8D6E8", fontFamily: "'Inter',sans-serif", fontSize: "14px", cursor: "pointer", textAlign: "left" as const, transition: "all 0.2s" }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.color = "#fff"; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = NAVY_BORDER; e.currentTarget.style.color = "#C8D6E8"; }}>
                     {op.label}
@@ -1316,7 +1665,6 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
               </motion.div>
             )}
 
-            {/* Respuesta del usuario */}
             {diagAnswer && (
               <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
                 style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "10px" }}>
@@ -1334,7 +1682,6 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
               </motion.div>
             )}
 
-            {/* Respuesta del asesor + notas + CTA */}
             {diagAnswer && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
                 style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
@@ -1347,10 +1694,8 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                       {DIAGNOSTICO_RESPUESTAS[diagAnswer]}
                     </p>
                   </div>
-
-                  {/* Campo de notas opcional */}
                   <div style={{ marginBottom: "16px" }}>
-                    <label style={{ display: "block", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: "#6A8FAF", textTransform: "uppercase", marginBottom: "8px" }}>
+                    <label style={{ display: "block", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: "#6A8FAF", textTransform: "uppercase" as const, marginBottom: "8px" }}>
                       ¿Algo más que quieras compartir antes de tu llamada?
                       <span style={{ fontWeight: 400, color: "#4A6580", marginLeft: "6px" }}>(opcional)</span>
                     </label>
@@ -1359,7 +1704,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                       onChange={e => setNotas(e.target.value)}
                       placeholder="Escribe aquí cualquier contexto adicional que quieras que tu asesor conozca antes de la llamada..."
                       rows={3}
-                      style={{ width: "100%", padding: "12px 14px", background: NAVY_CARD, border: `1.5px solid ${NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", lineHeight: 1.6, outline: "none", resize: "vertical", boxSizing: "border-box" }}
+                      style={{ width: "100%", padding: "12px 14px", background: NAVY_CARD, border: `1.5px solid ${NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", lineHeight: 1.6, outline: "none", resize: "vertical" as const, boxSizing: "border-box" as const }}
                     />
                   </div>
                 </div>
@@ -1368,12 +1713,8 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
           </div>
         </div>
 
-        {/* CTAs */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "16px" }}>
-          <a href="/tu-ruta"
-            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none" }}>
-            Quiero entender esta ruta <IconRight color="#fff" />
-          </a>
+        {/* CTAs secundarios */}
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px", marginBottom: "16px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
             <button onClick={openConfirm}
               style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
@@ -1390,44 +1731,33 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         <AnimatePresence>
           {showConfirm && contactData && (
             <motion.div ref={confirmRef} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.35 }}
-              style={{ background: `linear-gradient(145deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}50`, borderRadius: "18px", marginBottom: "16px", position: "relative", overflow: "hidden" }}>
-              {/* Gold top line */}
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
-
-              {/* Header */}
+              style={{ background: `linear-gradient(145deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}50`, borderRadius: "18px", marginBottom: "16px", position: "relative" as const, overflow: "hidden" }}>
+              <div style={{ position: "absolute" as const, top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 24px 0" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" }}>Tu Ficha GPS Estratégica</span>
-                </div>
+                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" as const }}>Tu Ficha GPS Estratégica</span>
                 <button onClick={() => setShowConfirm(false)} style={{ background: "transparent", border: "none", cursor: "pointer", padding: "2px" }}><IconX color="#4A6580" /></button>
               </div>
-
-              {/* Perfil nombre */}
               <div style={{ padding: "16px 24px 0" }}>
                 <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 800, color: "#fff", margin: "0 0 6px", lineHeight: 1.2 }}>{perfil.nombre}</p>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#7A9AB8", lineHeight: 1.6, margin: 0 }}>{perfil.descripcion}</p>
               </div>
-
-              {/* Por qué encaja */}
               <div style={{ margin: "16px 24px 0", background: `${GOLD}0E`, border: `1px solid ${GOLD}25`, borderRadius: "10px", padding: "14px 16px" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase", marginBottom: "6px" }}>Por qué esta ruta es para ti</div>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase" as const, marginBottom: "6px" }}>Por qué esta ruta es para ti</div>
                 <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.6, margin: 0 }}>{perfil.porQueEncaja}</p>
               </div>
-
-              {/* Datos del perfil */}
               <div style={{ padding: "16px 24px 0" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase", marginBottom: "10px" }}>Datos de tu perfil</div>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Datos de tu perfil</div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
                   {fichaData.map(({ label, value }) => (
                     <div key={label} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "3px" }}>{label}</div>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>{label}</div>
                       <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
                     </div>
                   ))}
                   {prioridadesLabels.length > 0 && (
                     <div style={{ gridColumn: "1 / -1", background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "6px" }}>Prioridades</div>
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "6px" }}>Prioridades</div>
+                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "5px" }}>
                         {prioridadesLabels.map(p => (
                           <span key={p} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{p}</span>
                         ))}
@@ -1436,11 +1766,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   )}
                 </div>
               </div>
-
-              {/* Vehículos compatibles */}
               <div style={{ padding: "16px 24px 0" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase", marginBottom: "10px" }}>Vehículos recomendados para tu perfil</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Vehículos recomendados para tu perfil</div>
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
                   {topVehicles.slice(0, 3).map((v, i) => (
                     <div key={v.id} style={{ display: "flex", alignItems: "center", gap: "12px", background: i === 0 ? `${GOLD}10` : `${NAVY}80`, border: `1px solid ${i === 0 ? GOLD + "40" : NAVY_BORDER}`, borderRadius: "8px", padding: "10px 14px" }}>
                       <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580", width: "16px", flexShrink: 0 }}>{i + 1}</div>
@@ -1453,11 +1781,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   ))}
                 </div>
               </div>
-
-              {/* Datos de contacto */}
               <div style={{ padding: "16px 24px 0" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase", marginBottom: "10px" }}>Tus datos de contacto</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus datos de contacto</div>
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
                   {[
                     { label: "Nombre", value: contactData.nombre },
                     { label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}` },
@@ -1465,22 +1791,20 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   ].map(({ label, value }) => (
                     <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "9px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>
                       <div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", letterSpacing: "0.1em", textTransform: "uppercase" as const }}>{label}</div>
                         <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-
-              {/* CTA WhatsApp */}
               <div style={{ padding: "20px 24px 28px" }}>
                 <button onClick={sendWhatsApp}
-                  style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase", border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                  style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                   Enviar ficha y agendar por WhatsApp
                 </button>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center", marginTop: "10px" }}>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center" as const, marginTop: "10px" }}>
                   Tu ficha completa se enviará directamente a nuestro equipo estratégico.
                 </p>
               </div>
@@ -1489,7 +1813,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         </AnimatePresence>
 
         {/* Footer */}
-        <div style={{ marginTop: "56px", paddingTop: "32px", borderTop: `1px solid ${NAVY_BORDER}`, textAlign: "center" }}>
+        <div style={{ marginTop: "56px", paddingTop: "32px", borderTop: `1px solid ${NAVY_BORDER}`, textAlign: "center" as const }}>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
             <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
             <img src={LOGO_URL} alt="" style={{ height: "18px", width: "auto", opacity: 0.5 }} />
