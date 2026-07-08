@@ -83,6 +83,7 @@ function Router() {
       <Route path="/cumbre-digital" component={CumbreDigital} />
       <Route path="/cumbre-digital-2" component={CumbreDigital2} />
       <Route path="/vc-8" component={Section8} />
+      <Route path="/Programa-de-Vivienda" component={Section8} />
       <Route path="/propiedades" component={Propiedades} />
       <Route path="/fondo" component={FondoVictoryCapital} />
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
