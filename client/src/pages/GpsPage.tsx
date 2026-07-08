@@ -1261,6 +1261,10 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   const [operarDelegar, setOperarDelegar] = useState<string | null>(null);
   const [vehiculosView, setVehiculosView] = useState<"perfil" | "todos">("perfil");
   const [selectedColumn, setSelectedColumn] = useState<number | null>(null);
+  const [videoExpanded, setVideoExpanded] = useState(false);
+  const [showEstructura, setShowEstructura] = useState(false);
+  const [showDiag, setShowDiag] = useState(false);
+  const [showVehiculos, setShowVehiculos] = useState(false);
 
   const firstName = contactData?.nombre?.trim().split(" ")[0] ?? "";
   const topVehicles = rankedVehicles.slice(0, 5);
@@ -1282,6 +1286,10 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   }
 
   const prioridadesLabels = investorData.prioridades.map(id => OPCIONES_4.find(o => o.id === id)?.label ?? id);
+
+  useEffect(() => { if (patrimonioPct && liquidez && operarDelegar) setShowEstructura(true); }, [patrimonioPct, liquidez, operarDelegar]);
+  useEffect(() => { if (estructuraArea.length > 0) setShowDiag(true); }, [estructuraArea]);
+  useEffect(() => { if (diagAnswer) setShowVehiculos(true); }, [diagAnswer]);
 
   function sendWhatsApp() {
     const nombre = contactData?.nombre ?? "";
@@ -1331,283 +1339,534 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   return (
     <div style={{ minHeight: "100dvh", background: NAVY, overflowY: "auto" }}>
 
-      {/* ── Hero ficha ── */}
-      <div style={{ position: "relative", background: `linear-gradient(180deg, #0A1A30 0%, ${NAVY} 100%)`, padding: "80px 24px 0", overflow: "hidden" }}>
+      {/* ── SECCIÓN 1: CLARIDAD ── */}
+      <div style={{ position: "relative", background: `linear-gradient(180deg, #0A1A30 0%, ${NAVY} 100%)`, padding: "80px 24px 56px", overflow: "hidden" }}>
         <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${GOLD}08 1px, transparent 1px), linear-gradient(90deg, ${GOLD}08 1px, transparent 1px)`, backgroundSize: "60px 60px", zIndex: 0 }} />
         <div style={{ position: "relative", zIndex: 2, maxWidth: "680px", margin: "0 auto" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
-            <div style={{ width: "28px", height: "1px", background: GOLD }} />
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.35em", color: GOLD, textTransform: "uppercase" as const }}>GPS · Comprando América</span>
+          {/* Badge */}
+          <div style={{ marginBottom: "16px" }}>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.3em", color: GOLD, textTransform: "uppercase" as const, background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", padding: "5px 14px" }}>Estación 1 · Claridad</span>
           </div>
-          <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(32px,6vw,64px)", fontWeight: 900, color: "#fff", lineHeight: 1.05, marginBottom: "16px" }}>
+          {/* Profile name */}
+          <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(28px,5vw,52px)", fontWeight: 900, color: "#fff", lineHeight: 1.1, marginBottom: "10px" }}>
             {perfil.nombre}
           </h1>
+          {/* Greeting */}
           {firstName && (
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "32px" }}>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "24px" }}>
               Hola, <span style={{ color: "#fff", fontWeight: 600 }}>{firstName}</span> — esta es tu ruta estratégica.
             </p>
           )}
+          {/* fichaData grid compacto */}
           {fichaData.length > 0 && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "32px" }}>
               {fichaData.map(({ label, value }) => (
-                <div key={label} style={{ background: "rgba(10,26,48,0.9)", padding: "16px 14px" }}>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: `${GOLD}90`, textTransform: "uppercase" as const, marginBottom: "6px" }}>{label}</div>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
+                <div key={label} style={{ background: "rgba(10,26,48,0.9)", padding: "14px 12px" }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: `${GOLD}90`, textTransform: "uppercase" as const, marginBottom: "4px" }}>{label}</div>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
                 </div>
               ))}
             </div>
           )}
-        </div>
-        <div style={{ height: "48px", background: `linear-gradient(to bottom, transparent, ${NAVY})` }} />
-      </div>
 
-      {/* ── Estación 1 · Claridad ── */}
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "60px 24px 0" }}>
-        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 1 · Claridad</span>
-        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>¿Dónde estás hoy?</h2>
-        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "32px", maxWidth: "520px" }}>{perfil.descripcion}</p>
-
-        {/* Video placeholder — Edmundo explica */}
-        <div style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "14px", overflow: "hidden", marginBottom: "32px", position: "relative" }}>
-          <div style={{ paddingBottom: "56.25%", position: "relative", background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)` }}>
-            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", gap: "16px" }}>
-              <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: `${GOLD}20`, border: `2px solid ${GOLD}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <IconPlay color={GOLD} />
+          {/* VIDEO EXPANDIBLE */}
+          <div
+            style={{ marginBottom: "28px", borderRadius: "14px", border: `1px solid ${NAVY_BORDER}`, overflow: "hidden", cursor: videoExpanded ? "default" : "pointer" }}
+            onClick={() => !videoExpanded && setVideoExpanded(true)}>
+            {!videoExpanded ? (
+              <div style={{ height: "200px", background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)`, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", gap: "14px" }}>
+                <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: `${GOLD}20`, border: `2px solid ${GOLD}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <IconPlay color={GOLD} />
+                </div>
+                <div style={{ textAlign: "center" as const }}>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: "#fff", margin: "0 0 4px" }}>Edmundo te explica tu ruta · 60 seg</p>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#6A8FAF", margin: 0 }}>Haz clic para ver</p>
+                </div>
               </div>
-              <div style={{ textAlign: "center" as const }}>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: "#fff", margin: "0 0 4px" }}>Edmundo te explica tu ruta</p>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", margin: 0 }}>Video — 1:00 min</p>
-              </div>
-            </div>
+            ) : (
+              <AnimatePresence>
+                <motion.div key="video-expanded" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.35 }}
+                  style={{ position: "relative", paddingBottom: "56.25%", background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)` }}>
+                  <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", gap: "16px" }}>
+                    <div style={{ width: "64px", height: "64px", borderRadius: "50%", background: `${GOLD}20`, border: `2px solid ${GOLD}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <IconPlay color={GOLD} />
+                    </div>
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: "#fff", margin: 0 }}>Edmundo te explica tu ruta</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            )}
           </div>
-        </div>
 
-        {!showCriterio && (
-          <motion.button
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            onClick={() => setShowCriterio(true)}
-            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", marginBottom: "60px" }}>
-            Esto describe mi situación <IconRight color="#fff" />
-          </motion.button>
-        )}
+          {/* Profile description */}
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "28px", maxWidth: "520px" }}>{perfil.descripcion}</p>
+
+          {/* CTA button */}
+          {!showCriterio ? (
+            <motion.button
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              onClick={() => setShowCriterio(true)}
+              style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+              Esto describe mi situación <IconRight color="#fff" />
+            </motion.button>
+          ) : (
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 18px", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.4)", borderRadius: "10px" }}>
+              <div style={{ width: "18px", height: "18px", borderRadius: "50%", background: "rgba(16,185,129,0.3)", border: "1px solid rgba(16,185,129,0.6)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <IconCheck color="rgb(16,185,129)" size={10} />
+              </div>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "rgb(16,185,129)" }}>Confirmado — continúa tu diagnóstico</span>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* ── Estación 2 · Criterio (aparece al hacer clic) ── */}
+      {/* ── SECCIÓN 2: CRITERIO ── */}
       <AnimatePresence>
         {showCriterio && (
-          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "60px 24px 0" }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, background: `${NAVY_CARD}60`, padding: "56px 24px" }}>
               <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 2 · Criterio</span>
-                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Cada respuesta calibra tu experiencia</h2>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "44px", lineHeight: 1.7 }}>No hay respuesta incorrecta — hay respuestas honestas.</p>
+                <div style={{ marginBottom: "16px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.3em", color: GOLD, textTransform: "uppercase" as const, background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", padding: "5px 14px" }}>Estación 2 · Criterio</span>
+                </div>
+                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "6px" }}>Afina tu criterio</h2>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "32px", lineHeight: 1.7 }}>No hay respuesta incorrecta — hay respuestas honestas.</p>
 
-                {/* Q1 */}
-                <div style={{ marginBottom: "36px" }}>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#C8D6E8", marginBottom: "16px" }}>¿Qué porcentaje de tu patrimonio quieres dolarizar?</p>
+                {/* Q1 — siempre visible */}
+                <div style={{ marginBottom: "24px" }}>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>¿Qué porcentaje de tu patrimonio quieres dolarizar?</p>
                   <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
                     {["10 – 25%", "25 – 50%", "50 – 75%", "75%+"].map(v => (
                       <button key={v} onClick={() => setPatrimonioPct(patrimonioPct === v ? null : v)}
-                        style={{ padding: "11px 22px", background: patrimonioPct === v ? GOLD : "transparent", color: patrimonioPct === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: patrimonioPct === v ? 700 : 500, border: `1px solid ${patrimonioPct === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                        style={{ padding: "10px 20px", background: patrimonioPct === v ? GOLD : "transparent", color: patrimonioPct === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: patrimonioPct === v ? 700 : 500, border: `1px solid ${patrimonioPct === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
                         {v}
                       </button>
                     ))}
                   </div>
                 </div>
 
-                {/* Q2 */}
-                <div style={{ marginBottom: "36px" }}>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#C8D6E8", marginBottom: "16px" }}>¿Qué tan importante es la liquidez?</p>
-                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
-                    {["Crítica", "Importante", "Secundaria"].map(v => (
-                      <button key={v} onClick={() => setLiquidez(liquidez === v ? null : v)}
-                        style={{ padding: "11px 22px", background: liquidez === v ? GOLD : "transparent", color: liquidez === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: liquidez === v ? 700 : 500, border: `1px solid ${liquidez === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
-                        {v}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                {/* Q2 — visible si patrimonioPct */}
+                <AnimatePresence>
+                  {patrimonioPct && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: "24px" }}>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>¿Cuánta liquidez tienes disponible para invertir hoy?</p>
+                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+                        {["Menos de 50k USD", "50k – 100k USD", "100k – 300k USD", "Más de 300k USD"].map(v => (
+                          <button key={v} onClick={() => setLiquidez(liquidez === v ? null : v)}
+                            style={{ padding: "10px 20px", background: liquidez === v ? GOLD : "transparent", color: liquidez === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: liquidez === v ? 700 : 500, border: `1px solid ${liquidez === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                            {v}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
-                {/* Q3 */}
-                <div style={{ marginBottom: "60px" }}>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#C8D6E8", marginBottom: "16px" }}>¿Quieres operar o delegar?</p>
-                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
-                    {["Operar", "Supervisar", "Delegar totalmente"].map(v => (
-                      <button key={v} onClick={() => setOperarDelegar(operarDelegar === v ? null : v)}
-                        style={{ padding: "11px 22px", background: operarDelegar === v ? GOLD : "transparent", color: operarDelegar === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: operarDelegar === v ? 700 : 500, border: `1px solid ${operarDelegar === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
-                        {v}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                {/* Q3 — visible si liquidez */}
+                <AnimatePresence>
+                  {liquidez && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: "24px" }}>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "14px" }}>¿Prefieres operar tus inversiones o delegar la gestión?</p>
+                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
+                        {["Operar directamente", "Delegar la gestión", "Modelo híbrido"].map(v => (
+                          <button key={v} onClick={() => setOperarDelegar(operarDelegar === v ? null : v)}
+                            style={{ padding: "10px 20px", background: operarDelegar === v ? GOLD : "transparent", color: operarDelegar === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: operarDelegar === v ? 700 : 500, border: `1px solid ${operarDelegar === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
+                            {v}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Resumen cuando las 3 están respondidas */}
+                <AnimatePresence>
+                  {patrimonioPct && liquidez && operarDelegar && (
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginTop: "8px" }}>
+                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px", marginBottom: "12px" }}>
+                        {[patrimonioPct, liquidez, operarDelegar].map(v => (
+                          <span key={v} style={{ padding: "6px 14px", background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: GOLD_LIGHT }}>{v}</span>
+                        ))}
+                      </div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                        <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF" }}>Perfecto — ahora dinos en qué áreas quieres avanzar</span>
+                        <motion.span animate={{ y: [0, 4, 0] }} transition={{ duration: 1.2, repeat: Infinity }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6A8FAF" strokeWidth="2" strokeLinecap="round"><polyline points="6 9 12 15 18 9" /></svg>
+                        </motion.span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            {/* ── Estación 3 · Estructura ── */}
-            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "60px 24px 0" }}>
+      {/* ── SECCIÓN 3: ESTRUCTURA ── */}
+      <AnimatePresence>
+        {showEstructura && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "56px 24px" }}>
               <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 3 · Estructura</span>
-                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Antes de invertir, define la estructura correcta</h2>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "44px", lineHeight: 1.7 }}>Selecciona el área que más te interesa explorar.</p>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,200px),1fr))", gap: "12px", marginBottom: "60px" }}>
+                <div style={{ marginBottom: "16px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.3em", color: GOLD, textTransform: "uppercase" as const, background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", padding: "5px 14px" }}>Estación 3 · Estructura</span>
+                </div>
+                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "6px" }}>¿En qué áreas quieres avanzar?</h2>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "24px", lineHeight: 1.7 }}>Selecciona las que apliquen — guían tu ruta.</p>
+
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "8px", marginBottom: "20px" }}>
                   {[
-                    { id: "Patrimonio", sub: "¿Quién será el propietario del activo?" },
-                    { id: "Fiscal", sub: "Optimiza la carga impositiva de tus operaciones" },
-                    { id: "Legal", sub: "Protege tu empresa con estructuras sólidas" },
-                    { id: "Sucesión", sub: "Transfiere tu patrimonio con claridad" },
-                    { id: "Migración", sub: "Abre puertas a la residencia desde tu inversión" },
-                  ].map(({ id, sub }) => {
+                    { id: "estructura-legal", label: "Estructura legal y fiscal", sub: "LLC, protección patrimonial, optimización." },
+                    { id: "flujo-pasivo", label: "Flujo pasivo en dólares", sub: "Ingresos recurrentes sin gestión activa." },
+                    { id: "bienes-raices", label: "Bienes raíces y activos tangibles", sub: "Propiedades con apreciación a largo plazo." },
+                    { id: "expansion-empresa", label: "Expansión de mi empresa", sub: "Lleva tu operación al mercado americano." },
+                    { id: "visa-residencia", label: "Visa o residencia", sub: "E-2, EB-5 según tu perfil y objetivo." },
+                  ].map(({ id, label, sub }) => {
                     const sel = estructuraArea.includes(id);
                     return (
                       <button key={id} onClick={() => setEstructuraArea(sel ? estructuraArea.filter(x => x !== id) : [...estructuraArea, id])}
-                        style={{ padding: "18px 16px", background: sel ? `${GOLD}18` : NAVY_CARD, border: `1.5px solid ${sel ? GOLD : NAVY_BORDER}`, borderRadius: "12px", cursor: "pointer", textAlign: "left" as const, transition: "all 0.2s" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" }}>
-                          <div style={{ width: "18px", height: "18px", borderRadius: "4px", border: `2px solid ${sel ? GOLD : NAVY_BORDER}`, background: sel ? GOLD : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
-                            {sel && <IconCheck color="#fff" size={10} />}
-                          </div>
-                          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: sel ? "#fff" : "#C8D6E8" }}>{id}</span>
+                        style={{ padding: "14px 16px", background: sel ? `${GOLD}18` : NAVY_CARD, border: `1.5px solid ${sel ? GOLD : NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer", textAlign: "left" as const, transition: "all 0.2s", display: "flex", alignItems: "center", gap: "12px" }}>
+                        <div style={{ width: "18px", height: "18px", borderRadius: "4px", border: `2px solid ${sel ? GOLD : NAVY_BORDER}`, background: sel ? GOLD : "transparent", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s" }}>
+                          {sel && <IconCheck color="#fff" size={10} />}
                         </div>
-                        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", lineHeight: 1.5, margin: "0 0 0 28px" }}>{sub}</p>
+                        <div>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: sel ? "#fff" : "#C8D6E8" }}>{label}</div>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", lineHeight: 1.4 }}>{sub}</div>
+                        </div>
                       </button>
                     );
                   })}
                 </div>
-              </div>
-            </div>
 
-            {/* ── Estación 4 · Vehículos Estratégicos ── */}
-            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "80px 24px" }}>
-              <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-                <div style={{ maxWidth: "680px", marginBottom: "40px" }}>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Estación 4 · Vehículos Estratégicos</span>
-                  <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Explora tus instrumentos</h2>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#6A8FAF", lineHeight: 1.7, marginBottom: "28px" }}>Cada instrumento está diseñado para un perfil específico de inversionista.</p>
-                  {/* Toggle */}
-                  <div style={{ display: "inline-flex", background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "28px", padding: "4px", gap: "4px" }}>
-                    {(["perfil", "todos"] as const).map(v => (
-                      <button key={v} onClick={() => setVehiculosView(v)}
-                        style={{ padding: "9px 22px", background: vehiculosView === v ? GOLD : "transparent", color: vehiculosView === v ? "#fff" : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, border: "none", borderRadius: "24px", cursor: "pointer", transition: "all 0.25s" }}>
-                        {v === "perfil" ? "Tu Perfil" : "Explorar todos"}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {vehiculosView === "perfil" ? (
-                  <div style={{ display: "flex", flexDirection: "column" as const, gap: "12px" }}>
-                    {topVehicles.map((v, i) => (
-                      <div key={v.id} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "20px 22px", display: "flex", alignItems: "center", gap: "16px" }}>
-                        <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" as const, marginBottom: "2px" }}>
-                            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 600, color: "#fff" }}>{v.nombre}</span>
-                            {i === 0 && <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.15em", color: "#fff", background: GOLD, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase" as const }}>Tu Perfil</span>}
-                          </div>
-                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", marginBottom: "10px" }}>{v.frase}</div>
-                          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" as const }}>
-                            {[["Participación", PARTICIPACION_LABELS[v.participacion[0]] ?? v.participacion[0]], ["Horizonte", v.horizonte], ["Ticket mínimo", v.ticketLabel]].map(([k, val]) => (
-                              <div key={k} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "6px", padding: "4px 10px" }}>
-                                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.1em" }}>{k}: </span>
-                                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{val}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div style={{ flexShrink: 0, display: "flex", flexDirection: "column" as const, alignItems: "flex-end", gap: "8px" }}>
-                          <div style={{ textAlign: "center" as const }}>
-                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "18px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
-                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580" }}>compatibilidad</div>
-                          </div>
-                          <button onClick={() => setDrawerVehicle(v)}
-                            style={{ padding: "8px 14px", background: i === 0 ? `${GOLD}15` : `${NAVY_BORDER}40`, border: `1px solid ${i === 0 ? GOLD + "50" : NAVY_BORDER}`, borderRadius: "8px", color: i === 0 ? GOLD : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, cursor: "pointer" }}>
-                            Ver más
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column" as const, gap: "48px" }}>
-                    {VEHICULOS_CATEGORIAS.map(cat => (
-                      <div key={cat.id}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
-                          <div style={{ width: "20px", height: "2px", background: GOLD }} />
-                          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: GOLD, textTransform: "uppercase" as const }}>{cat.titulo}</span>
-                        </div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,300px),1fr))", gap: "14px" }}>
-                          {cat.items.map(item => (
-                            <div key={item.id} style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "12px", padding: "20px", position: "relative" as const }}>
-                              {item.exclusivo && (
-                                <span style={{ position: "absolute" as const, top: "14px", right: "14px", fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.12em", color: GOLD, background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "4px", padding: "2px 7px", textTransform: "uppercase" as const }}>Exclusivo</span>
-                              )}
-                              <div style={{ width: "3px", height: "32px", background: `linear-gradient(to bottom,${GOLD},${GOLD_LIGHT})`, borderRadius: "2px", marginBottom: "14px" }} />
-                              <h4 style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", fontWeight: 700, color: "#fff", marginBottom: "6px", lineHeight: 1.3, paddingRight: item.exclusivo ? "70px" : 0 }}>{item.nombre}</h4>
-                              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", lineHeight: 1.55, marginBottom: "16px" }}>{item.frase}</p>
-                              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" as const, marginBottom: "16px" }}>
-                                {[["Participación", item.participacion], ["Horizonte", item.horizonte], ["Ticket mínimo", item.ticket]].map(([k, val]) => (
-                                  <div key={k} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "6px", padding: "4px 10px" }}>
-                                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.1em", marginBottom: "1px" }}>{k}</div>
-                                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{val}</div>
-                                  </div>
-                                ))}
-                              </div>
-                              {item.exclusivo ? (
-                                <div style={{ padding: "10px", background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", color: `${GOLD}CC`, fontWeight: 700, textAlign: "center" as const, letterSpacing: "0.06em", textTransform: "uppercase" as const }}>
-                                  Exclusivo · Agenda diagnóstico
-                                </div>
-                              ) : item.href ? (
-                                <a href={item.href} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "10px", background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: GOLD, letterSpacing: "0.06em", textTransform: "uppercase" as const, textDecoration: "none" }}>
-                                  Explorar <IconRight color={GOLD} />
-                                </a>
-                              ) : null}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                {estructuraArea.length > 0 && (
+                  <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF", margin: 0 }}>
+                    Listo — última pregunta para completar tu perfil
+                  </motion.p>
                 )}
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            {/* ── Comparador Inteligente ── */}
-            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "80px 24px" }}>
-              <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-                <div style={{ maxWidth: "680px", marginBottom: "40px" }}>
-                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Comparador Inteligente</span>
-                  <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(24px,3.5vw,40px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "8px" }}>Compara estrategias</h2>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#6A8FAF", lineHeight: 1.7, marginBottom: "8px" }}>Elige el vehículo que mejor se adapta a tu horizonte, nivel de participación y objetivo principal.</p>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580" }}>Haz clic en el nombre de un vehículo para resaltar su columna</p>
+      {/* ── SECCIÓN 4: DIAGNÓSTICO FINAL ── */}
+      <AnimatePresence>
+        {showDiag && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, background: `${NAVY_CARD}60`, padding: "56px 24px" }}>
+              <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+                <div style={{ marginBottom: "16px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.3em", color: GOLD, textTransform: "uppercase" as const, background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", padding: "5px 14px" }}>Diagnóstico Final</span>
                 </div>
-                <div style={{ overflowX: "auto" as const }}>
-                  <table style={{ width: "100%", borderCollapse: "separate" as const, borderSpacing: 0, minWidth: "500px" }}>
-                    <thead>
-                      <tr>
-                        <th style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, color: "#4A6580", textAlign: "left" as const, borderBottom: `1px solid ${NAVY_BORDER}`, background: NAVY }} />
-                        {COMPARACION.headers.map((h, i) => (
-                          <th key={i}
-                            onClick={() => setSelectedColumn(selectedColumn === i ? null : i)}
-                            style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, color: selectedColumn === i ? GOLD : "#C8D6E8", textAlign: "center" as const, borderBottom: `1px solid ${selectedColumn === i ? GOLD : NAVY_BORDER}`, background: selectedColumn === i ? `${GOLD}10` : NAVY_CARD, cursor: "pointer", transition: "all 0.2s", lineHeight: 1.3 }}>
-                            {h}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {COMPARACION.rows.map((row, ri) => (
-                        <tr key={ri}>
-                          <td style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: "#6A8FAF", textTransform: "uppercase" as const, letterSpacing: "0.1em", borderBottom: `1px solid ${NAVY_BORDER}`, background: NAVY, whiteSpace: "nowrap" as const }}>{row.label}</td>
-                          {row.values.map((val, ci) => (
-                            <td key={ci} style={{ padding: "14px 16px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: selectedColumn === ci ? 700 : 400, color: selectedColumn === ci ? "#fff" : "#A8BDD4", textAlign: "center" as const, borderBottom: `1px solid ${NAVY_BORDER}`, background: selectedColumn === ci ? `${GOLD}10` : NAVY_CARD, transition: "all 0.2s" }}>
-                              {val}
-                            </td>
-                          ))}
-                        </tr>
+                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "24px" }}>Tu siguiente paso</h2>
+
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "14px" }}>
+                  {/* Burbuja asesor */}
+                  <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                    <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <IconCompass color={GOLD} />
+                    </div>
+                    <div style={{ background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "0 14px 14px 14px", padding: "14px 18px", maxWidth: "420px" }}>
+                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#E8ECF1", lineHeight: 1.7, margin: 0 }}>
+                        Después de explorar tu ruta, ¿qué te gustaría resolver primero?
+                      </p>
+                    </div>
+                  </div>
+
+                  {!diagAnswer && (
+                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                      style={{ paddingLeft: "48px", display: "flex", flexDirection: "column" as const, gap: "8px" }}>
+                      {DIAG_OPCIONES.map(op => (
+                        <button key={op.id} onClick={() => setDiagAnswer(op.id)}
+                          style={{ padding: "11px 18px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", color: "#C8D6E8", fontFamily: "'Inter',sans-serif", fontSize: "14px", cursor: "pointer", textAlign: "left" as const, transition: "all 0.2s" }}
+                          onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.color = "#fff"; }}
+                          onMouseLeave={e => { e.currentTarget.style.borderColor = NAVY_BORDER; e.currentTarget.style.color = "#C8D6E8"; }}>
+                          {op.label}
+                        </button>
                       ))}
-                    </tbody>
-                  </table>
+                    </motion.div>
+                  )}
+
+                  {diagAnswer && (
+                    <>
+                      <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                        style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "10px" }}>
+                        <button onClick={() => { setDiagAnswer(null); setNotas(""); }}
+                          style={{ background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "16px", padding: "5px 12px", cursor: "pointer", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, display: "flex", alignItems: "center", gap: "5px", transition: "all 0.2s", flexShrink: 0 }}
+                          onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.color = GOLD; }}
+                          onMouseLeave={e => { e.currentTarget.style.borderColor = NAVY_BORDER; e.currentTarget.style.color = "#6A8FAF"; }}>
+                          <IconArrowLeft color="currentColor" /> Cambiar
+                        </button>
+                        <div style={{ background: `${GOLD}20`, border: `1px solid ${GOLD}40`, borderRadius: "14px 0 14px 14px", padding: "12px 18px", maxWidth: "280px" }}>
+                          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: GOLD_LIGHT, margin: 0 }}>
+                            {DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label}
+                          </p>
+                        </div>
+                      </motion.div>
+
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+                        style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+                        <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <IconCompass color={GOLD} />
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "0 14px 14px 14px", padding: "14px 18px", marginBottom: "16px" }}>
+                            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#E8ECF1", lineHeight: 1.7, margin: 0 }}>
+                              {DIAGNOSTICO_RESPUESTAS[diagAnswer]}
+                            </p>
+                          </div>
+                          <div style={{ marginBottom: "12px" }}>
+                            <label style={{ display: "block", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: "#6A8FAF", textTransform: "uppercase" as const, marginBottom: "8px" }}>
+                              ¿Algo más que quieras compartir? <span style={{ fontWeight: 400, color: "#4A6580" }}>(opcional)</span>
+                            </label>
+                            <textarea
+                              value={notas}
+                              onChange={e => setNotas(e.target.value)}
+                              placeholder="Escribe cualquier contexto adicional..."
+                              rows={3}
+                              style={{ width: "100%", padding: "12px 14px", background: NAVY_CARD, border: `1.5px solid ${NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", lineHeight: 1.6, outline: "none", resize: "vertical" as const, boxSizing: "border-box" as const }}
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── SECCIÓN 5: TU RUTA RECOMENDADA ── */}
+      <AnimatePresence>
+        {showVehiculos && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "56px 24px" }}>
+              <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+                <div style={{ marginBottom: "16px" }}>
+                  <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.3em", color: GOLD, textTransform: "uppercase" as const, background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", padding: "5px 14px" }}>Estación 5 · Tu Ruta Recomendada</span>
+                </div>
+                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: "6px" }}>Basado en tu perfil</h2>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "28px", lineHeight: 1.7 }}>Estos son los vehículos más compatibles con tus respuestas.</p>
+
+                {/* Top 3 vehículos — cards verticales compactos */}
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "12px", marginBottom: "32px" }}>
+                  {rankedVehicles.slice(0, 3).map((v, i) => (
+                    <div key={v.id} style={{ background: NAVY_CARD, border: `1px solid ${i === 0 ? GOLD + "60" : NAVY_BORDER}`, borderRadius: "12px", padding: "18px 20px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
+                        <div style={{ width: "30px", height: "30px", borderRadius: "50%", background: i === 0 ? `${GOLD}20` : `${NAVY_BORDER}60`, border: `1.5px solid ${i === 0 ? GOLD : NAVY_BORDER}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580" }}>{i + 1}</span>
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#fff" }}>{v.nombre}</div>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>{v.frase}</div>
+                        </div>
+                        <div style={{ textAlign: "center" as const, flexShrink: 0 }}>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "16px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF" }}>{v.pct}%</div>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: "#4A6580" }}>compatibilidad</div>
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" as const, marginBottom: "12px" }}>
+                        {[v.ticketLabel, v.horizonte].map((val, pi) => (
+                          <div key={pi} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "6px", padding: "3px 10px", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, color: "#C8D6E8" }}>{val}</div>
+                        ))}
+                      </div>
+                      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" as const }}>
+                        <button onClick={() => setDrawerVehicle(v)}
+                          style={{ padding: "8px 14px", background: i === 0 ? `${GOLD}15` : `${NAVY_BORDER}40`, border: `1px solid ${i === 0 ? GOLD + "50" : NAVY_BORDER}`, borderRadius: "8px", color: i === 0 ? GOLD : "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, cursor: "pointer" }}>
+                          Ver detalle
+                        </button>
+                        {v.href && (
+                          <a href={v.href}
+                            style={{ padding: "8px 14px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", color: "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, cursor: "pointer", textDecoration: "none" }}>
+                            Conocer más
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Grupo Empresarial de Edmundo Treviño */}
+                <div style={{ background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}40`, borderRadius: "14px", padding: "24px", marginBottom: "24px", position: "relative" as const, overflow: "hidden" }}>
+                  <div style={{ position: "absolute" as const, top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
+                    <img src={LOGO_URL} alt="Comprando América" style={{ height: "22px", width: "auto", objectFit: "contain", opacity: 0.9 }} />
+                  </div>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.7, marginBottom: "18px" }}>
+                    Antes de invertir, lo más valioso es tener claridad. En el Grupo Empresarial exploramos tus opciones, desarrollamos criterio y estructuramos una ruta para Estados Unidos.
+                  </p>
+                  <a href="/grupo-empresarial-edmundo"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 20px", background: `${GOLD}15`, border: `1px solid ${GOLD}50`, borderRadius: "10px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: GOLD, textDecoration: "none" }}>
+                    Explorar Grupo Empresarial <IconRight color={GOLD} />
+                  </a>
+                </div>
+
+                {/* CTAs */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                  <button onClick={openConfirm}
+                    style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                    <IconCalendar color={GOLD} /> Agendar diagnóstico
+                  </button>
+                  <button onClick={onCompare}
+                    style={{ padding: "13px 18px", background: "transparent", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer" }}>
+                    Comparar otra ruta
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── FICHA DE CONFIRMACIÓN ── */}
+      <AnimatePresence>
+        {showConfirm && contactData && (
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.35 }}>
+            <div style={{ padding: "0 24px 56px" }}>
+              <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+                <div ref={confirmRef} style={{ background: `linear-gradient(145deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}50`, borderRadius: "18px", position: "relative" as const, overflow: "hidden" }}>
+                  <div style={{ position: "absolute" as const, top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+                  {/* Header */}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 24px 0" }}>
+                    <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" as const }}>Tu Ficha GPS Estratégica</span>
+                    <button onClick={() => setShowConfirm(false)} style={{ background: "transparent", border: "none", cursor: "pointer", padding: "2px" }}><IconX color="#4A6580" /></button>
+                  </div>
+                  {/* Perfil */}
+                  <div style={{ padding: "16px 24px 0" }}>
+                    <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 800, color: "#fff", margin: "0 0 6px", lineHeight: 1.2 }}>{perfil.nombre}</p>
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#7A9AB8", lineHeight: 1.6, margin: 0 }}>{perfil.descripcion}</p>
+                  </div>
+                  {/* Por qué esta ruta */}
+                  <div style={{ margin: "16px 24px 0", background: `${GOLD}0E`, border: `1px solid ${GOLD}25`, borderRadius: "10px", padding: "14px 16px" }}>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase" as const, marginBottom: "6px" }}>Por qué esta ruta es para ti</div>
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.6, margin: 0 }}>{perfil.porQueEncaja}</p>
+                  </div>
+                  {/* Datos del perfil */}
+                  <div style={{ padding: "16px 24px 0" }}>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Datos de tu perfil</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
+                      {fichaData.map(({ label, value }) => (
+                        <div key={label} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>{label}</div>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
+                        </div>
+                      ))}
+                      {prioridadesLabels.length > 0 && (
+                        <div style={{ gridColumn: "1 / -1", background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "6px" }}>Prioridades</div>
+                          <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "5px" }}>
+                            {prioridadesLabels.map(p => (
+                              <span key={p} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{p}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {/* Tus respuestas */}
+                  {(patrimonioPct || liquidez || operarDelegar || estructuraArea.length > 0 || diagAnswer || notas.trim()) && (
+                    <div style={{ padding: "16px 24px 0" }}>
+                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus respuestas</div>
+                      <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
+                        {patrimonioPct && (
+                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Patrimonio a dolarizar</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{patrimonioPct}</div>
+                          </div>
+                        )}
+                        {liquidez && (
+                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Liquidez disponible</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{liquidez}</div>
+                          </div>
+                        )}
+                        {operarDelegar && (
+                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Operar o delegar</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{operarDelegar}</div>
+                          </div>
+                        )}
+                        {estructuraArea.length > 0 && (
+                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "6px" }}>Áreas de interés</div>
+                            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "5px" }}>
+                              {estructuraArea.map(id => {
+                                const areaLabels: Record<string, string> = {
+                                  "estructura-legal": "Estructura legal y fiscal",
+                                  "flujo-pasivo": "Flujo pasivo",
+                                  "bienes-raices": "Bienes raíces",
+                                  "expansion-empresa": "Expansión de empresa",
+                                  "visa-residencia": "Visa o residencia",
+                                };
+                                return <span key={id} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{areaLabels[id] ?? id}</span>;
+                              })}
+                            </div>
+                          </div>
+                        )}
+                        {diagAnswer && (
+                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Qué resolver primero</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer}</div>
+                          </div>
+                        )}
+                        {notas.trim() && (
+                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Notas adicionales</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.5 }}>{notas.trim()}</div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {/* Top 3 vehículos compacto */}
+                  <div style={{ padding: "16px 24px 0" }}>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Vehículos recomendados para tu perfil</div>
+                    <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
+                      {rankedVehicles.slice(0, 3).map((v, i) => (
+                        <div key={v.id} style={{ display: "flex", alignItems: "center", gap: "12px", background: i === 0 ? `${GOLD}10` : `${NAVY}80`, border: `1px solid ${i === 0 ? GOLD + "40" : NAVY_BORDER}`, borderRadius: "8px", padding: "10px 14px" }}>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580", width: "16px", flexShrink: 0 }}>{i + 1}</div>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: i === 0 ? "#fff" : "#C8D6E8" }}>{v.nombre}</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", marginTop: "1px" }}>{v.frase}</div>
+                          </div>
+                          <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF", flexShrink: 0 }}>{v.pct}%</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Datos de contacto */}
+                  <div style={{ padding: "16px 24px 0" }}>
+                    <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus datos de contacto</div>
+                    <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
+                      {[
+                        { label: "Nombre", value: contactData.nombre },
+                        { label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}` },
+                        { label: "Correo", value: contactData.email },
+                      ].map(({ label, value }) => (
+                        <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "9px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>
+                          <div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", letterSpacing: "0.1em", textTransform: "uppercase" as const }}>{label}</div>
+                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* WhatsApp CTA */}
+                  <div style={{ padding: "20px 24px 28px" }}>
+                    <button onClick={sendWhatsApp}
+                      style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                      Enviar ficha y agendar por WhatsApp
+                    </button>
+                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center" as const, marginTop: "10px" }}>
+                      Tu ficha completa se enviará directamente a nuestro equipo estratégico.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1621,256 +1880,16 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       {/* ── No somos / Somos ── */}
       <NoSomosSection />
 
-      {/* ── Diagnóstico Final + CTAs + Footer ── */}
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "60px 24px 100px" }}>
-
-        {/* ── Diagnóstico Final ── */}
-        <div style={{ marginBottom: "44px" }}>
-          <div style={{ marginBottom: "24px" }}>
-            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase" as const, display: "block", marginBottom: "12px" }}>Diagnóstico Final</span>
-            <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3vw,34px)", fontWeight: 700, color: "#fff", lineHeight: 1.2, marginBottom: 0 }}>Tu siguiente paso</h2>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: "16px" }}>
-            <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-              <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <IconCompass color={GOLD} />
-              </div>
-              <div style={{ background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "0 14px 14px 14px", padding: "16px 20px", maxWidth: "420px" }}>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#E8ECF1", lineHeight: 1.7, margin: 0 }}>
-                  Después de revisar tu perfil, ¿qué te gustaría resolver primero?
-                </p>
-              </div>
-            </div>
-
-            {!diagAnswer && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                style={{ paddingLeft: "48px", display: "flex", flexDirection: "column" as const, gap: "8px" }}>
-                {DIAG_OPCIONES.map(op => (
-                  <button key={op.id} onClick={() => setDiagAnswer(op.id)}
-                    style={{ padding: "11px 18px", background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", color: "#C8D6E8", fontFamily: "'Inter',sans-serif", fontSize: "14px", cursor: "pointer", textAlign: "left" as const, transition: "all 0.2s" }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.color = "#fff"; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = NAVY_BORDER; e.currentTarget.style.color = "#C8D6E8"; }}>
-                    {op.label}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-
-            {diagAnswer && (
-              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-                style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: "10px" }}>
-                <button onClick={() => { setDiagAnswer(null); setNotas(""); }}
-                  style={{ background: "transparent", border: `1px solid ${NAVY_BORDER}`, borderRadius: "16px", padding: "5px 12px", cursor: "pointer", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 600, display: "flex", alignItems: "center", gap: "5px", transition: "all 0.2s", flexShrink: 0 }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = GOLD; e.currentTarget.style.color = GOLD; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = NAVY_BORDER; e.currentTarget.style.color = "#6A8FAF"; }}>
-                  <IconArrowLeft color="currentColor" /> Cambiar
-                </button>
-                <div style={{ background: `${GOLD}20`, border: `1px solid ${GOLD}40`, borderRadius: "14px 0 14px 14px", padding: "12px 18px", maxWidth: "280px" }}>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: GOLD_LIGHT, margin: 0 }}>
-                    {DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label}
-                  </p>
-                </div>
-              </motion.div>
-            )}
-
-            {diagAnswer && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-                style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: `${GOLD}20`, border: `1px solid ${GOLD}50`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <IconCompass color={GOLD} />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "0 14px 14px 14px", padding: "16px 20px", marginBottom: "20px" }}>
-                    <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#E8ECF1", lineHeight: 1.7, margin: 0 }}>
-                      {DIAGNOSTICO_RESPUESTAS[diagAnswer]}
-                    </p>
-                  </div>
-                  <div style={{ marginBottom: "16px" }}>
-                    <label style={{ display: "block", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: "#6A8FAF", textTransform: "uppercase" as const, marginBottom: "8px" }}>
-                      ¿Algo más que quieras compartir antes de tu llamada?
-                      <span style={{ fontWeight: 400, color: "#4A6580", marginLeft: "6px" }}>(opcional)</span>
-                    </label>
-                    <textarea
-                      value={notas}
-                      onChange={e => setNotas(e.target.value)}
-                      placeholder="Escribe aquí cualquier contexto adicional que quieras que tu asesor conozca antes de la llamada..."
-                      rows={3}
-                      style={{ width: "100%", padding: "12px 14px", background: NAVY_CARD, border: `1.5px solid ${NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", lineHeight: 1.6, outline: "none", resize: "vertical" as const, boxSizing: "border-box" as const }}
-                    />
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </div>
+      {/* ── Footer ── */}
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px 80px", textAlign: "center" as const }}>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
+          <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
+          <img src={LOGO_URL} alt="" style={{ height: "18px", width: "auto", opacity: 0.5 }} />
+          <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
         </div>
-
-        {/* CTAs secundarios */}
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: "10px", marginBottom: "16px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-            <button onClick={openConfirm}
-              style={{ padding: "13px 18px", background: showConfirm ? `${GOLD}15` : "transparent", color: GOLD, fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${GOLD}`, borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-              <IconCalendar color={GOLD} /> Agendar diagnóstico
-            </button>
-            <button onClick={onCompare}
-              style={{ padding: "13px 18px", background: "transparent", color: "#6A8FAF", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, border: `1px solid ${NAVY_BORDER}`, borderRadius: "10px", cursor: "pointer" }}>
-              Comparar otra ruta
-            </button>
-          </div>
-        </div>
-
-        {/* Confirmation card */}
-        <AnimatePresence>
-          {showConfirm && contactData && (
-            <motion.div ref={confirmRef} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.35 }}
-              style={{ background: `linear-gradient(145deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}50`, borderRadius: "18px", marginBottom: "16px", position: "relative" as const, overflow: "hidden" }}>
-              <div style={{ position: "absolute" as const, top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "24px 24px 0" }}>
-                <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.25em", color: GOLD, textTransform: "uppercase" as const }}>Tu Ficha GPS Estratégica</span>
-                <button onClick={() => setShowConfirm(false)} style={{ background: "transparent", border: "none", cursor: "pointer", padding: "2px" }}><IconX color="#4A6580" /></button>
-              </div>
-              <div style={{ padding: "16px 24px 0" }}>
-                <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "22px", fontWeight: 800, color: "#fff", margin: "0 0 6px", lineHeight: 1.2 }}>{perfil.nombre}</p>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#7A9AB8", lineHeight: 1.6, margin: 0 }}>{perfil.descripcion}</p>
-              </div>
-              <div style={{ margin: "16px 24px 0", background: `${GOLD}0E`, border: `1px solid ${GOLD}25`, borderRadius: "10px", padding: "14px 16px" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: GOLD, textTransform: "uppercase" as const, marginBottom: "6px" }}>Por qué esta ruta es para ti</div>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.6, margin: 0 }}>{perfil.porQueEncaja}</p>
-              </div>
-              <div style={{ padding: "16px 24px 0" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Datos de tu perfil</div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
-                  {fichaData.map(({ label, value }) => (
-                    <div key={label} style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>{label}</div>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
-                    </div>
-                  ))}
-                  {prioridadesLabels.length > 0 && (
-                    <div style={{ gridColumn: "1 / -1", background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "6px" }}>Prioridades</div>
-                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "5px" }}>
-                        {prioridadesLabels.map(p => (
-                          <span key={p} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{p}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div style={{ padding: "16px 24px 0" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Vehículos recomendados para tu perfil</div>
-                <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
-                  {topVehicles.slice(0, 3).map((v, i) => (
-                    <div key={v.id} style={{ display: "flex", alignItems: "center", gap: "12px", background: i === 0 ? `${GOLD}10` : `${NAVY}80`, border: `1px solid ${i === 0 ? GOLD + "40" : NAVY_BORDER}`, borderRadius: "8px", padding: "10px 14px" }}>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, color: i === 0 ? GOLD : "#4A6580", width: "16px", flexShrink: 0 }}>{i + 1}</div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: i === 0 ? "#fff" : "#C8D6E8" }}>{v.nombre}</div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", marginTop: "1px" }}>{v.frase}</div>
-                      </div>
-                      <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: i === 0 ? GOLD : "#6A8FAF", flexShrink: 0 }}>{v.pct}%</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div style={{ padding: "16px 24px 0" }}>
-                <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus datos de contacto</div>
-                <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
-                  {[
-                    { label: "Nombre", value: contactData.nombre },
-                    { label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}` },
-                    { label: "Correo", value: contactData.email },
-                  ].map(({ label, value }) => (
-                    <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "9px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>
-                      <div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", letterSpacing: "0.1em", textTransform: "uppercase" as const }}>{label}</div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "#E8ECF1" }}>{value}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {/* Respuestas del lead */}
-              {(patrimonioPct || liquidez || operarDelegar || estructuraArea.length > 0 || diagAnswer || notas.trim()) && (
-                <div style={{ padding: "16px 24px 0" }}>
-                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus respuestas</div>
-                  <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
-                    {patrimonioPct && (
-                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Patrimonio a dolarizar</div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{patrimonioPct}</div>
-                      </div>
-                    )}
-                    {liquidez && (
-                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Liquidez disponible</div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{liquidez}</div>
-                      </div>
-                    )}
-                    {operarDelegar && (
-                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Operar o delegar</div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{operarDelegar}</div>
-                      </div>
-                    )}
-                    {estructuraArea.length > 0 && (
-                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "6px" }}>Áreas de interés</div>
-                        <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "5px" }}>
-                          {estructuraArea.map(id => {
-                            const labels: Record<string, string> = {
-                              "estructura-legal": "Estructura legal y fiscal",
-                              "flujo-pasivo": "Flujo pasivo en dólares",
-                              "bienes-raices": "Bienes raíces",
-                              "expansion-empresa": "Expansión de empresa",
-                              "visa-residencia": "Visa o residencia",
-                            };
-                            return <span key={id} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{labels[id] ?? id}</span>;
-                          })}
-                        </div>
-                      </div>
-                    )}
-                    {diagAnswer && (
-                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Qué quiero resolver primero</div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer}</div>
-                      </div>
-                    )}
-                    {notas.trim() && (
-                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Notas adicionales</div>
-                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.5 }}>{notas.trim()}</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              <div style={{ padding: "20px 24px 28px" }}>
-                <button onClick={sendWhatsApp}
-                  style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                  Enviar ficha y agendar por WhatsApp
-                </button>
-                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center" as const, marginTop: "10px" }}>
-                  Tu ficha completa se enviará directamente a nuestro equipo estratégico.
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Footer */}
-        <div style={{ marginTop: "56px", paddingTop: "32px", borderTop: `1px solid ${NAVY_BORDER}`, textAlign: "center" as const }}>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-            <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
-            <img src={LOGO_URL} alt="" style={{ height: "18px", width: "auto", opacity: 0.5 }} />
-            <div style={{ width: "32px", height: "1px", background: `${GOLD}50` }} />
-          </div>
-          <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "13px", fontStyle: "italic", color: `${GOLD}80`, lineHeight: 1.85, margin: 0 }}>
-            Claridad antes de invertir.<br />Criterio antes de decidir.<br />Comunidad para ejecutar.
-          </p>
-        </div>
+        <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "13px", fontStyle: "italic", color: `${GOLD}80`, lineHeight: 1.85, margin: 0 }}>
+          Claridad antes de invertir.<br />Criterio antes de decidir.<br />Comunidad para ejecutar.
+        </p>
       </div>
 
       {/* Vehicle detail drawer */}
