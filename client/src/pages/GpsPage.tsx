@@ -1624,14 +1624,6 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       {/* ── Diagnóstico Final + CTAs + Footer ── */}
       <div style={{ maxWidth: "680px", margin: "0 auto", padding: "60px 24px 100px" }}>
 
-        {/* CTA principal */}
-        <div style={{ marginBottom: "40px" }}>
-          <a href="/grupo-empresarial-edmundo"
-            style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", textDecoration: "none", boxSizing: "border-box" as const }}>
-            Entender mi ruta estratégica <IconRight color="#fff" />
-          </a>
-        </div>
-
         {/* ── Diagnóstico Final ── */}
         <div style={{ marginBottom: "44px" }}>
           <div style={{ marginBottom: "24px" }}>
@@ -1798,6 +1790,62 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   ))}
                 </div>
               </div>
+              {/* Respuestas del lead */}
+              {(patrimonioPct || liquidez || operarDelegar || estructuraArea.length > 0 || diagAnswer || notas.trim()) && (
+                <div style={{ padding: "16px 24px 0" }}>
+                  <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus respuestas</div>
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
+                    {patrimonioPct && (
+                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Patrimonio a dolarizar</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{patrimonioPct}</div>
+                      </div>
+                    )}
+                    {liquidez && (
+                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Liquidez disponible</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{liquidez}</div>
+                      </div>
+                    )}
+                    {operarDelegar && (
+                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Operar o delegar</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{operarDelegar}</div>
+                      </div>
+                    )}
+                    {estructuraArea.length > 0 && (
+                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "6px" }}>Áreas de interés</div>
+                        <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "5px" }}>
+                          {estructuraArea.map(id => {
+                            const labels: Record<string, string> = {
+                              "estructura-legal": "Estructura legal y fiscal",
+                              "flujo-pasivo": "Flujo pasivo en dólares",
+                              "bienes-raices": "Bienes raíces",
+                              "expansion-empresa": "Expansión de empresa",
+                              "visa-residencia": "Visa o residencia",
+                            };
+                            return <span key={id} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{labels[id] ?? id}</span>;
+                          })}
+                        </div>
+                      </div>
+                    )}
+                    {diagAnswer && (
+                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Qué quiero resolver primero</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer}</div>
+                      </div>
+                    )}
+                    {notas.trim() && (
+                      <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Notas adicionales</div>
+                        <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C8D6E8", lineHeight: 1.5 }}>{notas.trim()}</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div style={{ padding: "20px 24px 28px" }}>
                 <button onClick={sendWhatsApp}
                   style={{ width: "100%", padding: "15px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
