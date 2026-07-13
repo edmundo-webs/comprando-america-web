@@ -19,6 +19,7 @@ import {
   Heart,
   Globe,
   Landmark,
+  CheckCircle2,
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
@@ -101,7 +102,7 @@ const PROJECTS = [
     objetivo: "Participar de manera pasiva en una estructura profesional dedicada a adquirir y desarrollar tierra estratégica con activos operando.",
     idealPara: "Empresarios que desean construir patrimonio sin administrar directamente un proyecto inmobiliario.",
     cta: "Conocer la estrategia",
-    href: "/fondo",
+    href: "/tierra-estrategica",
   },
   {
     icon: Home,
@@ -109,7 +110,7 @@ const PROJECTS = [
     objetivo: "Construir patrimonio mediante propiedades residenciales destinadas a programas de renta respaldados por el gobierno.",
     idealPara: "Empresarios que desean ser propietarios de un activo específico y generar flujo.",
     cta: "Conocer el programa",
-    href: "/vc-8",
+    href: "/renta-garantizada",
   },
   {
     icon: Key,
@@ -117,16 +118,15 @@ const PROJECTS = [
     objetivo: "Acceder a propiedades previamente analizadas por el equipo de Comprando América.",
     idealPara: "Empresarios que buscan adquirir un activo inmobiliario con acompañamiento estratégico.",
     cta: "Ver propiedades",
-    href: "/propiedades",
+    href: "/activos-disponibles",
   },
-  {
-    icon: Plane,
-    title: "Investment Week",
-    objetivo: "Conocer personalmente distintos proyectos inmobiliarios y comprender cómo se analizan antes de invertir.",
-    idealPara: "Empresarios que desean validar una estrategia directamente en el mercado.",
-    cta: "Conocer la experiencia",
-    href: "/investment-week",
-  },
+];
+
+const INVESTMENT_WEEK_POINTS = [
+  "Resolver dudas sobre bienes raíces en Estados Unidos",
+  "Ver y revisar propiedades físicamente",
+  "Evento ocasional, no una oferta permanente",
+  "Herramienta para entender oportunidades, no una oportunidad en sí",
 ];
 
 const CHOICE_QUESTIONS = [
@@ -260,7 +260,7 @@ export default function ArquitecturaPatrimonial() {
               </p>
             </div>
           </FadeIn>
-          <div className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {PROJECTS.map((project, i) => (
               <FadeIn key={i} delay={i * 0.1}>
                 <div className="flex flex-col h-full bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 hover:shadow-md transition-all">
@@ -290,7 +290,42 @@ export default function ArquitecturaPatrimonial() {
         </div>
       </section>
 
-      {/* ═══ 6. CÓMO ELEGIMOS UN PROYECTO — navy ═══ */}
+      {/* ═══ 6. INVESTMENT WEEK — evento, no oportunidad — ☀️ ligero ═══ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-full px-4 py-2 mb-6">
+                <Plane className="w-4 h-4 text-primary" />
+                <span className="text-primary text-sm font-semibold tracking-wide uppercase">
+                  Evento ocasional · No es una oportunidad de inversión
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+                Investment Week: una herramienta para entender, no un vehículo más
+              </h2>
+              <p className="text-[#4B5563] text-lg leading-relaxed mb-10">
+                No forma parte del listado de proyectos patrimoniales. Es una experiencia presencial y ocasional, diseñada para resolver dudas y ver de cerca cómo se analiza una inversión antes de comprometer capital.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-4 mb-10 text-left">
+                {INVESTMENT_WEEK_POINTS.map((item, i) => (
+                  <div key={i} className="flex items-start gap-3 bg-white border border-gray-200 rounded-xl p-5">
+                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                    <p className="text-[#4B5563]">{item}</p>
+                  </div>
+                ))}
+              </div>
+              <a href="/investment-week">
+                <Button variant="outline" className="border-gray-300 text-[#0B1F3A] hover:bg-[#0B1F3A] hover:text-white px-8 py-6 text-base gap-2">
+                  Conocer la experiencia <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══ 7. CÓMO ELEGIMOS UN PROYECTO — navy ═══ */}
       <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
           <FadeIn>
@@ -314,7 +349,7 @@ export default function ArquitecturaPatrimonial() {
         </div>
       </section>
 
-      {/* ═══ 7. NUESTRO PROCESO — ☀️ blanco ═══ */}
+      {/* ═══ 8. NUESTRO PROCESO — ☀️ blanco ═══ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
@@ -326,7 +361,7 @@ export default function ArquitecturaPatrimonial() {
         </div>
       </section>
 
-      {/* ═══ 8. OPORTUNIDADES NO PUBLICADAS — navy ═══ */}
+      {/* ═══ 9. OPORTUNIDADES NO PUBLICADAS — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <FadeIn>
@@ -345,7 +380,7 @@ export default function ArquitecturaPatrimonial() {
         </div>
       </section>
 
-      {/* ═══ 9. CTA FINAL — deep navy ═══ */}
+      {/* ═══ 10. CTA FINAL — deep navy ═══ */}
       <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
           <FadeIn>
