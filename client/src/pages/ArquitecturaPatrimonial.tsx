@@ -102,7 +102,7 @@ const PROJECTS = [
     objetivo: "Participar de manera pasiva en una estructura profesional dedicada a adquirir y desarrollar tierra estratégica con activos operando.",
     idealPara: "Empresarios que desean construir patrimonio sin administrar directamente un proyecto inmobiliario.",
     cta: "Conocer la estrategia",
-    href: "/fondo",
+    href: "/tierra-estrategica",
   },
   {
     icon: Home,
@@ -110,7 +110,7 @@ const PROJECTS = [
     objetivo: "Construir patrimonio mediante propiedades residenciales destinadas a programas de renta respaldados por el gobierno.",
     idealPara: "Empresarios que desean ser propietarios de un activo específico y generar flujo.",
     cta: "Conocer el programa",
-    href: "/vc-8",
+    href: "/renta-garantizada",
   },
   {
     icon: Key,
@@ -118,7 +118,7 @@ const PROJECTS = [
     objetivo: "Acceder a propiedades previamente analizadas por el equipo de Comprando América.",
     idealPara: "Empresarios que buscan adquirir un activo inmobiliario con acompañamiento estratégico.",
     cta: "Ver propiedades",
-    href: "/propiedades",
+    href: "/activos-disponibles",
   },
 ];
 
