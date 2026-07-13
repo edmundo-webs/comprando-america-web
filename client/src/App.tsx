@@ -46,6 +46,7 @@ import Section8 from "./pages/Section8";
 import Propiedades from "./pages/Propiedades";
 import FondoVictoryCapital from "./pages/FondoVictoryCapital";
 import GpsPage from "./pages/GpsPage";
+import ArquitecturaPatrimonial from "./pages/ArquitecturaPatrimonial";
 
 function Router() {
   return (
@@ -87,6 +88,7 @@ function Router() {
       <Route path="/propiedades" component={Propiedades} />
       <Route path="/fondo" component={FondoVictoryCapital} />
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
+      <Route path="/arquitectura-patrimonial" component={ArquitecturaPatrimonial} />
       <Route path="/gps" component={GpsPage} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
