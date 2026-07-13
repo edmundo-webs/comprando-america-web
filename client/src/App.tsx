@@ -83,10 +83,13 @@ function Router() {
       <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path="/cumbre-digital" component={CumbreDigital} />
       <Route path="/cumbre-digital-2" component={CumbreDigital2} />
-      <Route path="/vc-8" component={Section8} />
-      <Route path="/Programa-de-Vivienda" component={Section8} />
-      <Route path="/propiedades" component={Propiedades} />
-      <Route path="/fondo" component={FondoVictoryCapital} />
+      <Route path="/renta-garantizada" component={Section8} />
+      <Route path="/activos-disponibles" component={Propiedades} />
+      <Route path="/tierra-estrategica" component={FondoVictoryCapital} />
+      {/* 301 redirects from old URLs */}
+      <Route path="/vc-8"><Redirect to="/renta-garantizada" /></Route>
+      <Route path="/propiedades"><Redirect to="/activos-disponibles" /></Route>
+      <Route path="/fondo"><Redirect to="/tierra-estrategica" /></Route>
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
       <Route path="/arquitectura-patrimonial" component={ArquitecturaPatrimonial} />
       <Route path="/gps" component={GpsPage} />

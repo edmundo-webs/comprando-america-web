@@ -75,7 +75,7 @@ const PAGE_SEO = {
     "Programa de Vivienda con Renta Respaldada por el Gobierno | Ingresos en Dólares y Patrimonio | Comprando América",
   description:
     "Descubre cómo invertir en propiedades administradas bajo el programa Section 8 en Estados Unidos. Genera ingresos en dólares, diversifica tu patrimonio y evalúa si esta estrategia tiene sentido para tus objetivos.",
-  path: "/Programa-de-Vivienda",
+  path: "/renta-garantizada",
   schema: {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -240,7 +240,7 @@ export default function Section8() {
                 >
                   Descubrir si esta estrategia tiene sentido para mí <ArrowRight className="w-4 h-4" />
                 </Button>
-                <a href="/propiedades">
+                <a href="/activos-disponibles">
                   <Button
                     variant="outline"
                     className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm gap-2"

@@ -31,7 +31,7 @@ const PAGE_SEO = {
   title: "Fondo de Tierra Estratégica — Inversión en Parques de Casas Móviles en Estados Unidos | Comprando América",
   description:
     "Invierte en tierra estratégica en Estados Unidos sin tener que operar. Flujo en dólares, apreciación patrimonial y gestión profesional. Ticket mínimo USD $100,000.",
-  path: "/fondo",
+  path: "/tierra-estrategica",
 };
 
 const WA_MSG =

@@ -559,7 +559,7 @@ export default function InvestmentWeek() {
 
             {/* Tarjeta 1: Fondo */}
             <FadeIn delay={0.05}>
-              <a href="/fondo" className="group block">
+              <a href="/tierra-estrategica" className="group block">
                 <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
                     <Shield className="w-5 h-5 text-primary" />
@@ -585,7 +585,7 @@ export default function InvestmentWeek() {
 
             {/* Tarjeta 2: Programa Section 8 */}
             <FadeIn delay={0.1}>
-              <a href="/vc-8" className="group block">
+              <a href="/renta-garantizada" className="group block">
                 <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:border-blue-500/40 transition-all duration-300">
                   <div className="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center mb-5">
                     <Hotel className="w-5 h-5 text-blue-400" />

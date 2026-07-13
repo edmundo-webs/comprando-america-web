@@ -53,6 +53,11 @@ async function startServer() {
   // XML in dist/public/ (the old hardcoded sitemap.xml).
   app.use(seoRouter);
 
+  // 301 permanent redirects for renamed routes
+  app.get("/fondo", (_req, res) => res.redirect(301, "/tierra-estrategica"));
+  app.get("/vc-8", (_req, res) => res.redirect(301, "/renta-garantizada"));
+  app.get("/propiedades", (_req, res) => res.redirect(301, "/activos-disponibles"));
+
   // Bot-aware meta shim for /news/:slug and /blog/:slug. Intercepts
   // requests from no-JS crawlers (Facebook, WhatsApp, Twitter, LinkedIn,
   // Slack, Discord, GPTBot, ClaudeBot, etc.) and serves a static HTML

@@ -174,7 +174,7 @@ const VEHICLE_DATA: VehicleEntry[] = [
     participacion: ["no-operar", "supervisar"],
     objetivos: ["patrimonio", "ingresos", "explorar"],
     prioridades: ["flujo", "apreciacion", "proteccion"],
-    href: "/fondo",
+    href: "/tierra-estrategica",
   },
   {
     id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales",
@@ -186,7 +186,7 @@ const VEHICLE_DATA: VehicleEntry[] = [
     participacion: ["no-operar", "supervisar"],
     objetivos: ["ingresos", "patrimonio"],
     prioridades: ["flujo", "proteccion", "apreciacion"],
-    href: "/vc-8",
+    href: "/renta-garantizada",
   },
   {
     id: "coinversiones", nombre: "Oportunidades Privadas Curadas", frase: "Inversiones, proyectos y activos seleccionados para tu perfil",
@@ -210,7 +210,7 @@ const VEHICLE_DATA: VehicleEntry[] = [
     participacion: ["supervisar", "activo"],
     objetivos: ["patrimonio", "familia", "ingresos"],
     prioridades: ["apreciacion", "proteccion", "flujo"],
-    href: "/propiedades",
+    href: "/activos-disponibles",
   },
   {
     id: "estructura-llc", nombre: "Estructura para Invertir en Estados Unidos", frase: "Legal, fiscal, bancaria y patrimonial desde el primer día",
@@ -1027,8 +1027,8 @@ const VEHICULOS_CATEGORIAS = [
     id: "flujo",
     titulo: "Generar flujo pasivo",
     items: [
-      { id: "victory-capital", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/fondo", exclusivo: false },
-      { id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/vc-8", exclusivo: false },
+      { id: "victory-capital", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/tierra-estrategica", exclusivo: false },
+      { id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/renta-garantizada", exclusivo: false },
       { id: "coinversiones", nombre: "Oportunidades Privadas Curadas", frase: "Proyectos seleccionados para perfiles específicos de inversionista", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos", exclusivo: true },
     ],
   },
@@ -1036,7 +1036,7 @@ const VEHICULOS_CATEGORIAS = [
     id: "patrimonio",
     titulo: "Construir patrimonio",
     items: [
-      { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+", href: "/propiedades", exclusivo: false },
+      { id: "real-estate", nombre: "Real Estate", frase: "Bienes raíces en mercados de alta demanda", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "150k+", href: "/activos-disponibles", exclusivo: false },
       { id: "estructura-llc", nombre: "Estructura para Invertir en Estados Unidos", frase: "Legal, fiscal, bancaria y patrimonial desde el primer día", participacion: "Pasiva", horizonte: "5-10 años", ticket: "25k+", href: "/estructura-de-inversion-en-usa", exclusivo: false },
       { id: "adquisiciones", nombre: "Negocios", frase: "Adquiere o construye un negocio americano", participacion: "Activa", horizonte: "3-5 años", ticket: "200k+", href: "", exclusivo: true },
     ],
