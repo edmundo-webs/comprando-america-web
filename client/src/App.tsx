@@ -47,6 +47,7 @@ import Propiedades from "./pages/Propiedades";
 import FondoVictoryCapital from "./pages/FondoVictoryCapital";
 import GpsPage from "./pages/GpsPage";
 import ArquitecturaPatrimonial from "./pages/ArquitecturaPatrimonial";
+import Inicio from "./pages/Inicio";
 
 function Router() {
   return (
@@ -92,6 +93,7 @@ function Router() {
       <Route path="/fondo"><Redirect to="/tierra-estrategica" /></Route>
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
       <Route path="/arquitectura-patrimonial" component={ArquitecturaPatrimonial} />
+      <Route path="/inicio" component={Inicio} />
       <Route path="/gps" component={GpsPage} />
       <Route path={"/cms/login"} component={CmsLogin} />
       <Route path={"/cms"} component={() => (
