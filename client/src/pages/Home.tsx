@@ -24,7 +24,6 @@ import {
   Facebook,
   Globe,
   Shield,
-  Briefcase,
   TrendingUp,
   Users,
   MapPin,
@@ -197,16 +196,6 @@ const RUTAS = [
     orienta:
       "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación con asesoría legal especializada.",
     href: "/visa-e2-inversion-en-estados-unidos",
-  },
-  {
-    id: "compra",
-    icon: Briefcase,
-    label: "Compra de Empresas",
-    problema:
-      "Quiero adquirir un negocio establecido en Estados Unidos, no construir desde cero. Busco un activo que ya genere flujo.",
-    orienta:
-      "Evaluación, due diligence, estructura de compra y financiamiento para adquisición de negocios en el mercado americano.",
-    href: "/oportunidades-de-inversion-en-estados-unidos",
   },
   {
     id: "oportunidades",
