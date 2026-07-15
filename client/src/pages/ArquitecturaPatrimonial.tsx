@@ -29,9 +29,6 @@ import {
   Landmark,
   Home as HomeIcon,
   Hammer,
-  CreditCard,
-  Briefcase,
-  Sparkles,
   Plane,
   Users,
   MessageCircle,
@@ -106,7 +103,7 @@ const OBJECTIVES = [
     icon: Globe,
     title: "Diversificación internacional",
     description: "Reducir la dependencia de un solo país, una sola moneda o un solo mercado.",
-    vehicles: "Fondo de Compra de Tierra Estratégica, Oportunidades especiales.",
+    vehicles: "Fondo de Compra de Tierra Estratégica.",
     pos: { left: "89%", top: "73%" },
   },
   {
@@ -120,7 +117,7 @@ const OBJECTIVES = [
     icon: TrendingUp,
     title: "Crecimiento patrimonial",
     description: "Multiplicar el valor del patrimonio a través del tiempo, no solo conservarlo.",
-    vehicles: "Remodelación y venta de propiedades, Compra de negocios con componente inmobiliario.",
+    vehicles: "Remodelación y venta de propiedades.",
     pos: { left: "11%", top: "73%" },
   },
   {
@@ -175,16 +172,6 @@ const VEHICLES = [
     ctaLabel: "Ver propiedades",
   },
   {
-    icon: CreditCard,
-    title: "Compra con crédito para extranjeros",
-    paraQuien: "Empresarios que prefieren apalancar capital en vez de inmovilizarlo por completo en un solo activo.",
-    problema: "Concentrar todo el capital disponible en una sola operación.",
-    objetivo: "Crecimiento patrimonial y diversificación internacional.",
-    perfil: "Perfil que ya entiende el mercado y busca estructurar el financiamiento correctamente.",
-    href: null,
-    ctaLabel: "Conversar sobre este vehículo",
-  },
-  {
     icon: CompassIcon,
     title: "Compra de propiedades ligadas a estrategia migratoria",
     paraQuien: "Empresarios que buscan que su inversión también sostenga un proceso migratorio, como la visa E-2.",
@@ -193,26 +180,6 @@ const VEHICLES = [
     perfil: "Perfil con intención de residencia o movilidad hacia Estados Unidos.",
     href: "/visa-e2-inversion-en-estados-unidos",
     ctaLabel: "Explorar la estrategia migratoria",
-  },
-  {
-    icon: Briefcase,
-    title: "Compra de negocios con componente inmobiliario",
-    paraQuien: "Empresarios que buscan adquirir una operación existente que además incluye el inmueble donde opera.",
-    problema: "Elegir entre comprar un negocio o comprar un activo, cuando en realidad se puede evaluar ambos a la vez.",
-    objetivo: "Crecimiento patrimonial.",
-    perfil: "Perfil con experiencia operando negocios, buscando expandirse a Estados Unidos.",
-    href: null,
-    ctaLabel: "Conversar sobre este vehículo",
-  },
-  {
-    icon: Sparkles,
-    title: "Oportunidades especiales",
-    paraQuien: "Empresarios que ya tienen claridad de su perfil y buscan algo fuera de las rutas tradicionales.",
-    problema: "Que las únicas alternativas disponibles sean siempre las mismas.",
-    objetivo: "Diversificación internacional.",
-    perfil: "Estructura preparada para futuros proyectos, todavía en desarrollo.",
-    href: null,
-    ctaLabel: "Conversar sobre este vehículo",
   },
 ];
 
@@ -249,7 +216,7 @@ const PROFILE_TYPES = [
   },
   {
     label: "Quiero diversificar",
-    recommendation: "El Fondo de Compra de Tierra Estratégica suele ser el punto de entrada; las Oportunidades especiales existen para cuando ya tienes más claridad.",
+    recommendation: "El Fondo de Compra de Tierra Estratégica suele ser el punto de entrada para este objetivo.",
     links: [{ label: "Fondo de Tierra Estratégica", href: "/tierra-estrategica" }],
   },
   {
