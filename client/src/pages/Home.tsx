@@ -1,10 +1,10 @@
 /*
- * Home 2026 — Premium Investment Club
- * Profiling-first: 2 paths (Proteger patrimonio / Migrar con inversión)
- * Stats + Edmundo CEO + Experts + Testimonials + Events
+ * Home 2026 — Centro de navegación del ecosistema Comprando América
+ * Principio rector: ¿Qué estás intentando construir?
+ * El protagonista es el empresario, no los productos.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
@@ -13,28 +13,47 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
+  ChevronDown,
   CheckCircle2,
-  Shield,
-  Globe,
-  MapPin,
+  Play,
   Mic,
   Newspaper,
   BookOpen,
-  Quote,
-  ChevronDown,
-  X,
+  Youtube,
+  Instagram,
+  Facebook,
+  Globe,
+  Shield,
   Briefcase,
+  TrendingUp,
+  Users,
+  MapPin,
+  Building2,
   GraduationCap,
   Building,
-  Building2,
+  X,
   Monitor,
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
-function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+function FadeIn({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
   const { ref, isInView } = useInView();
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: "easeOut" }} className={className}>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      className={className}
+    >
       {children}
     </motion.div>
   );
@@ -44,7 +63,7 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 function useCountUp(target: number, duration: number, trigger: boolean) {
   const ref = useRef(0);
   const frameRef = useRef<number>();
-  const [count, setCount] = [ref.current, (v: number) => { ref.current = v; }];
+  const [, setCount] = useState(0);
   useEffect(() => {
     if (!trigger) return;
     let start = 0;
@@ -52,22 +71,39 @@ function useCountUp(target: number, duration: number, trigger: boolean) {
       if (!start) start = ts;
       const progress = Math.min((ts - start) / duration, 1);
       const value = Math.floor(progress * target);
+      ref.current = value;
       setCount(value);
-      document.querySelectorAll(`[data-count="${target}"]`).forEach(el => { el.textContent = String(value); });
+      document
+        .querySelectorAll(`[data-count="${target}"]`)
+        .forEach((el) => { el.textContent = String(value); });
       if (progress < 1) frameRef.current = requestAnimationFrame(step);
-      else document.querySelectorAll(`[data-count="${target}"]`).forEach(el => { el.textContent = String(target); });
+      else
+        document
+          .querySelectorAll(`[data-count="${target}"]`)
+          .forEach((el) => { el.textContent = String(target); });
     };
     frameRef.current = requestAnimationFrame(step);
     return () => { if (frameRef.current) cancelAnimationFrame(frameRef.current); };
   }, [trigger, target, duration]);
 }
 
-function StatCounter({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+function StatCounter({
+  value,
+  suffix,
+  label,
+}: {
+  value: number;
+  suffix: string;
+  label: string;
+}) {
   const { ref, isInView } = useInView();
   useCountUp(value, 2000, isInView);
   return (
     <div ref={ref} className="text-center">
-      <div className="text-primary text-3xl md:text-4xl font-bold mb-1"><span data-count={value}>0</span>{suffix}</div>
+      <div className="text-primary text-3xl md:text-4xl font-bold mb-1">
+        <span data-count={value}>0</span>
+        {suffix}
+      </div>
       <p className="text-slate-400 text-xs uppercase tracking-wider">{label}</p>
     </div>
   );
@@ -76,338 +112,358 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
-  title: "Comprando América | Inversión y estructura en Estados Unidos",
-  description: "Grupo Empresarial de Edmundo: la comunidad privada para empresarios latinos que invierten, estructuran y crecen en Estados Unidos. Acceso por aplicación desde $100,000 USD.",
+  title: "Comprando América | ¿Qué estás intentando construir?",
+  description:
+    "Comprando América no vende inversiones. Construye criterio para tomar decisiones patrimoniales. Grupo Empresarial de Edmundo — ecosistema para empresarios latinos en Estados Unidos.",
   path: "/",
   schema: {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
-      { "@type": "Question", "name": "¿Cómo invertir en Estados Unidos desde México?", "acceptedAnswer": { "@type": "Answer", "text": "Con Comprando América puedes invertir desde $100,000 USD a través de una LLC en Texas o Florida, con estructura legal, fiscal y acompañamiento para bienes raíces o adquisición de negocios." } },
-      { "@type": "Question", "name": "¿Qué es la visa E-2 de inversionista?", "acceptedAnswer": { "@type": "Answer", "text": "La visa E-2 permite a inversionistas extranjeros vivir y trabajar en Estados Unidos operando un negocio real. Requiere inversión sustancial (desde $150,000 USD) y un plan de negocios aprobado por USCIS." } },
-      { "@type": "Question", "name": "¿Necesito vivir en Estados Unidos para invertir?", "acceptedAnswer": { "@type": "Answer", "text": "No. Puedes proteger tu patrimonio invirtiendo en dólares con una LLC y cuenta bancaria en Estados Unidos sin necesidad de residir o migrar." } },
-      { "@type": "Question", "name": "¿Qué incluye el Grupo Empresarial de Edmundo de Comprando América?", "acceptedAnswer": { "@type": "Answer", "text": "Deal Day mensual, sesiones con expertos, mentorías, eventos presenciales VIP, conversaciones exclusivas con inversionistas activos y la Mesa de Dueños — comunidad privada de evaluación." } },
-      { "@type": "Question", "name": "¿Es mejor invertir en Texas o Florida?", "acceptedAnswer": { "@type": "Answer", "text": "Depende de tu objetivo. Texas ofrece protección patrimonial fuerte y sin impuesto estatal sobre la renta. Florida tiene ventajas para bienes raíces y clima favorable. Analizamos tu caso específico." } }
-    ]
-  }
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "¿Qué es Comprando América?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Comprando América es un ecosistema de decisiones patrimoniales para empresarios latinos que buscan invertir, estructurar o expandirse en Estados Unidos. No vendemos inversiones; construimos criterio.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "¿Cómo invertir en Estados Unidos desde México?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Con Comprando América puedes estructurar tu inversión desde $100,000 USD a través de una LLC con acompañamiento legal, fiscal y estratégico.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "¿Qué es el Grupo Empresarial de Edmundo?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Es el núcleo del ecosistema Comprando América. El espacio donde empresarios contrastan decisiones patrimoniales con otros empresarios que ya están ejecutando.",
+        },
+      },
+    ],
+  },
 };
 
 /* ─── Photos ─── */
-const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w1920";
-const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
-const NETWORKING = "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1920";
-const EDMUNDO_PORTRAIT = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800";
-const PANEL = "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920";
-const AERIAL = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
-const RUTA_PHOTO = "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_480,g_auto,q_auto,f_auto/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
-const INVEST_WEEK = "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200";
-const CUMBRE_DIGITAL_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675102/tts-news/qsqtimcq0kinkp5j6gcs.jpg";
-const MIGRAR_PHOTO = "https://lh3.googleusercontent.com/d/1CqOlO-lELT7-uQhCI26MjP19ibLQu95N=w1200";
+const HERO_IMAGE =
+  "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w1920";
+const AUDIENCE =
+  "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
+const NETWORKING =
+  "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1920";
+const PANEL =
+  "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920";
+const INVEST_WEEK =
+  "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200";
+const CUMBRE_DIGITAL_PHOTO =
+  "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675102/tts-news/qsqtimcq0kinkp5j6gcs.jpg";
+const RUTA_PHOTO =
+  "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_480,g_auto,q_auto,f_auto/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
+const AERIAL =
+  "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
 
-/* ─── Experts ─── */
+/* ─── Ecosystem routes ─── */
+const RUTAS = [
+  {
+    id: "patrimonio",
+    icon: Shield,
+    label: "Arquitectura Patrimonial",
+    problema:
+      "Tengo capital construido en México o Latinoamérica y quiero protegerlo, diversificarlo y hacerlo crecer en dólares con estructura real.",
+    orienta:
+      "Bienes raíces, fondos de inversión, compra de empresas y estructuras patrimoniales en Estados Unidos con criterio y acompañamiento.",
+    href: "/oportunidades-de-inversion-en-estados-unidos",
+  },
+  {
+    id: "expansion",
+    icon: Building2,
+    label: "Expansión Empresarial",
+    problema:
+      "Mi empresa funciona bien en mi país y quiero llevarla a operar en Estados Unidos, o abrir una nueva operación desde cero.",
+    orienta:
+      "Estructura legal, fiscal y operativa para empresas que buscan operar en el mercado americano con cumplimiento y eficiencia.",
+    href: "/estructura-empresarial-en-estados-unidos",
+  },
+  {
+    id: "migracion",
+    icon: Globe,
+    label: "Estrategias Migratorias",
+    problema:
+      "Evalúo una ruta migratoria real hacia Estados Unidos vinculada a una inversión o a la operación de un negocio.",
+    orienta:
+      "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación con asesoría legal especializada.",
+    href: "/visa-e2-inversion-en-estados-unidos",
+  },
+  {
+    id: "compra",
+    icon: Briefcase,
+    label: "Compra de Empresas",
+    problema:
+      "Quiero adquirir un negocio establecido en Estados Unidos, no construir desde cero. Busco un activo que ya genere flujo.",
+    orienta:
+      "Evaluación, due diligence, estructura de compra y financiamiento para adquisición de negocios en el mercado americano.",
+    href: "/oportunidades-de-inversion-en-estados-unidos",
+  },
+  {
+    id: "oportunidades",
+    icon: TrendingUp,
+    label: "Nuevas Oportunidades",
+    problema:
+      "Quiero acceder a proyectos de inversión previamente analizados y estructurados, sin tener que evaluarlos desde cero.",
+    orienta:
+      "Deal Day mensual con oportunidades filtradas, fondos de inversión y proyectos inmobiliarios con análisis previo del equipo.",
+    href: "/oportunidades-de-inversion-en-estados-unidos",
+  },
+];
+
+/* ─── Casos reales ─── */
+const CASOS = [
+  {
+    perfil: "Empresario de manufactura · México · Capital: $200k USD",
+    objetivo: "Proteger patrimonio en dólares sin migrar.",
+    ruta: "Apertura de LLC en Texas + inversión inmobiliaria en programa de renta garantizada.",
+    resultado: "Flujo mensual en dólares desde el primer trimestre. Patrimonio desvinculado del peso.",
+  },
+  {
+    perfil: "Empresario de servicios · Colombia · Capital: $150k USD",
+    objetivo: "Migrar con visa de inversionista y operar en Florida.",
+    ruta: "Visa E-2 vinculada a la adquisición de un negocio de servicios en Miami.",
+    resultado: "Visa aprobada en 4 meses. Negocio operando. Familia con estatus migratorio.",
+  },
+  {
+    perfil: "Ejecutivo corporativo · Venezuela · Capital: $120k USD",
+    objetivo: "Construir patrimonio fuera de Venezuela con estructura real.",
+    ruta: "LLC + cuenta bancaria en Texas + participación en Fondo de Tierra Estratégica.",
+    resultado: "Inversión activa en dólares. Primer Deal Day cerrado como co-inversionista.",
+  },
+];
+
+/* ─── Expertos ─── */
 const EXPERTS = [
   {
+    name: "Edmundo Treviño",
+    decision: "Arquitectura patrimonial y estrategia de inversión en Estados Unidos.",
+    img: "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800",
+  },
+  {
     name: "Joe Faraci",
-    role: "Inversionista en Bienes Raíces",
+    decision: "Operación e inversión inmobiliaria. 250+ propiedades. 28 años en el mercado.",
     img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
-    bio: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
   },
   {
     name: "Tomás Resendez",
-    role: "Abogado de Inmigración",
+    decision: "Estrategias migratorias. Visa E-2 y residencia a través de inversión.",
     img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439162/comprando-america/QGuNYwiuoAkxjDwj.png",
-    bio: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
   },
   {
     name: "Daniel Palacios",
-    role: "Contador CPA y Fiscalista",
+    decision: "Estructura fiscal y optimización tributaria para empresas e inversionistas.",
     img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439036/comprando-america/CPGtnnreqZlWVzgL.png",
-    bio: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
   },
   {
     name: "Aubrey Dwyer",
-    role: "Abogada Corporativa",
+    decision: "Apertura de empresas, contratos y propiedad intelectual en Estados Unidos.",
     img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439166/comprando-america/QZAlYTAoaVokeCSo.jpg",
-    bio: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma.",
   },
   {
     name: "Destiny Bounds",
-    role: "Abogada Corporativa y PI",
+    decision: "Derecho corporativo, pequeñas empresas y propiedad intelectual.",
     img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif",
-    bio: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
   },
   {
     name: "Sebastián Jara",
-    role: "Consultor de Marketing Digital",
+    decision: "Estrategia digital, expansión de marca y automatización para empresas en EE.UU.",
     img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439309/comprando-america/qrZqfOUTzqKwJcYP.avif",
-    bio: "15+ años optimizando estrategias digitales y procesos de marketing con automatización e IA para empresas en inmobiliario, educación y e-commerce.",
   },
   {
     name: "John McKee",
-    role: "Consultor Comercial",
+    decision: "Comercialización y adaptación de productos al mercado estadounidense.",
     img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439314/comprando-america/sZacCQEqvoOyeOMO.avif",
-    bio: "Experto en Estrategia Comercial con 35+ años adaptando productos al mercado estadounidense en manufactura, consumo masivo y tecnología.",
   },
 ];
 
-/* ─── Testimonials ─── */
-const TESTIMONIALS = [
-  { name: "Carlos", city: "Monterrey", quote: "Entré buscando cómo estructurar mi expansión a Estados Unidos. El equipo me ayudó a abrir mi LLC correctamente y entender la estructura fiscal.", initials: "C" },
-  { name: "Alejandro", city: "Ciudad de México", quote: "Lo que más valoré fue el acompañamiento del equipo multidisciplinario. No es teoría, es ejecución.", initials: "A" },
-  { name: "Ricardo", city: "Monterrey", quote: "Después de asistir a la Cumbre entendí el valor del networking con empresarios que ya están invirtiendo.", initials: "R" },
+/* ─── Plataformas de contenido ─── */
+type PlatformId =
+  | "youtube"
+  | "podcast"
+  | "linkedin"
+  | "instagram"
+  | "facebook"
+  | "spotify"
+  | "articulos"
+  | "noticias";
+
+const PLATFORMS: {
+  id: PlatformId;
+  label: string;
+  color: string;
+  preview: { title: string; desc: string; href: string; videoId?: string };
+}[] = [
+  {
+    id: "youtube",
+    label: "YouTube",
+    color: "bg-red-600",
+    preview: {
+      title: "Canal de YouTube",
+      desc: "Conversaciones sobre inversión, estructura empresarial y patrimonio en Estados Unidos.",
+      href: "https://www.youtube.com/@ComprandoAmerica",
+      videoId: "iFx3QusSR90",
+    },
+  },
+  {
+    id: "podcast",
+    label: "Podcast",
+    color: "bg-blue-600",
+    preview: {
+      title: "Podcast · Comprando América",
+      desc: "Casos reales, expertos en activo y análisis del mercado americano.",
+      href: "/podcast",
+      videoId: "asOMFCvUZNc",
+    },
+  },
+  {
+    id: "linkedin",
+    label: "LinkedIn",
+    color: "bg-[#0077B5]",
+    preview: {
+      title: "LinkedIn",
+      desc: "Reflexiones, análisis y criterio patrimonial. Seguido por empresarios de toda América Latina.",
+      href: "https://www.linkedin.com/company/comprandoamerica/",
+    },
+  },
+  {
+    id: "instagram",
+    label: "Instagram",
+    color: "bg-gradient-to-br from-purple-600 to-pink-500",
+    preview: {
+      title: "Instagram",
+      desc: "Contenido visual sobre inversión, eventos y comunidad. Casos reales en formato breve.",
+      href: "https://www.instagram.com/comprandoamerica/",
+    },
+  },
+  {
+    id: "facebook",
+    label: "Facebook",
+    color: "bg-[#1877F2]",
+    preview: {
+      title: "Facebook",
+      desc: "Comunidad activa de empresarios latinos. Transmisiones en vivo y contenido exclusivo.",
+      href: "https://www.facebook.com/comprandoamerica/",
+    },
+  },
+  {
+    id: "spotify",
+    label: "Spotify",
+    color: "bg-green-600",
+    preview: {
+      title: "Spotify",
+      desc: "Escucha el podcast en tu plataforma favorita. Disponible en todos los reproductores.",
+      href: "https://open.spotify.com/show/comprando-america",
+    },
+  },
+  {
+    id: "articulos",
+    label: "Artículos",
+    color: "bg-indigo-600",
+    preview: {
+      title: "Blog · Guías estratégicas",
+      desc: "Análisis escritos por el equipo sobre inversión, estructura legal y patrimonio en EE.UU.",
+      href: "/blog",
+    },
+  },
+  {
+    id: "noticias",
+    label: "Noticias",
+    color: "bg-slate-700",
+    preview: {
+      title: "Noticias del mercado",
+      desc: "Actualidad del mercado inmobiliario, migración y economía en EE.UU. filtrada para inversionistas.",
+      href: "/news",
+    },
+  },
 ];
-
-/* ─── Experts Section ─── */
-function ExpertsSection() {
-  const [activeExpert, setActiveExpert] = useState<number | null>(null);
-
-  return (
-    <section className="bg-[#0E2544] py-20 md:py-28">
-      <div className="container">
-        <FadeIn>
-          <div className="text-center mb-14">
-            <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Equipo Multidisciplinario</p>
-            <h2 className="text-3xl md:text-4xl text-white mb-4">Respaldado por expertos en cada área</h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">Abogados, CPAs, inversionistas y estrategas que acompañan a cada miembro en su proceso.</p>
-          </div>
-        </FadeIn>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5 max-w-5xl mx-auto mb-6">
-          {EXPERTS.map((expert, i) => {
-            const isActive = activeExpert === i;
-            return (
-              <FadeIn key={i} delay={i * 0.05}>
-                <motion.button
-                  onClick={() => setActiveExpert(isActive ? null : i)}
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={`w-full text-left rounded-2xl p-5 border transition-all duration-300 ${
-                    isActive
-                      ? "bg-primary/10 border-primary/50 shadow-lg shadow-blue-600/10"
-                      : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
-                  }`}
-                >
-                  <div className="flex flex-col items-center text-center gap-3">
-                    <div className={`w-20 h-20 rounded-full overflow-hidden border-2 transition-all ${isActive ? "border-primary" : "border-[#1E3A5F]"}`}>
-                      <img src={expert.img} alt={expert.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                      <p className="text-white text-sm font-bold leading-tight">{expert.name}</p>
-                      <p className="text-blue-400 text-xs mt-0.5">{expert.role}</p>
-                    </div>
-                  </div>
-
-                  <AnimatePresence>
-                    {isActive && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
-                      >
-                        <p className="text-slate-300 text-xs leading-relaxed mt-4 pt-4 border-t border-white/10 text-left">
-                          {expert.bio}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.button>
-              </FadeIn>
-            );
-          })}
-        </div>
-
-      </div>
-    </section>
-  );
-}
-
-/* ─── Edmundo Expandable Section ─── */
-function EdmundoSection() {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <section className="bg-[#F5F7FA] py-20 md:py-28">
-      <div className="container">
-        <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-          <FadeIn>
-            <div className="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
-              <img src={EDMUNDO_PORTRAIT} alt="Edmundo Treviño — CEO Comprando América" className="w-full h-[450px] object-cover object-top" />
-            </div>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <div>
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Liderazgo</p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Edmundo Treviño</h2>
-              <p className="text-primary font-semibold text-sm tracking-wider uppercase mb-6">Fundador y CEO · Comprando América</p>
-              <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
-                Empresario serial con más de dos décadas de experiencia operando entre México y Estados Unidos. Fundador y CEO de 9 empresas activas en Estados Unidos
-              </p>
-              <div className="space-y-3 mb-8">
-                {[
-                  "MBA en Economía Industrial",
-                  "Maestría en Sistema Fiscal en Estados Unidos",
-                  "+20 años en comercio internacional",
-                  "Más de 8 empresas operando en Estados Unidos y México",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-[#374151] text-sm">{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:text-blue-700 transition-colors"
-              >
-                {expanded ? "Cerrar" : "Conocer más sobre Edmundo"}
-                <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} />
-              </button>
-            </div>
-          </FadeIn>
-        </div>
-
-        {/* ─── Expandable bio panel ─── */}
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="overflow-hidden"
-            >
-              <div className="max-w-5xl mx-auto mt-12 bg-white border border-gray-200 rounded-2xl p-8 md:p-12 shadow-lg">
-                <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-2xl font-bold text-[#0B1F3A]">Biografía completa</h3>
-                  <button onClick={() => setExpanded(false)} className="text-[#9CA3AF] hover:text-[#0B1F3A] transition-colors">
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-10">
-                  {/* Left column — narrative */}
-                  <div className="space-y-4 text-[#4B5563] text-sm leading-relaxed">
-                    <p>
-                      Edmundo Treviño es empresario, inversionista y fundador de Comprando América, una comunidad privada de empresarios e inversionistas latinos enfocada en crear, adquirir y escalar negocios en Estados Unidos.
-                    </p>
-                    <p>
-                      Con más de 20 años de experiencia en comercio internacional y operaciones empresariales entre México y Estados Unidos, Edmundo ha fundado y operado más de 9 empresas activas en ambos países, abarcando sectores como transporte, servicios financieros, bienes raíces y consultoría estratégica.
-                    </p>
-                    <p>
-                      Es egresado del MBA en Economía Industrial y cuenta con una Maestría en el Sistema Fiscal de Estados Unidos. Su enfoque se centra en la creación de riqueza patrimonial a través de estructura, criterio y ejecución — no de promesas.
-                    </p>
-                    <p>
-                      A través de Comprando América, Edmundo ha acompañado a decenas de empresarios en la apertura de más de 50 LLCs, la evaluación de oportunidades de inversión y la estructuración de rutas migratorias basadas en inversión real.
-                    </p>
-                  </div>
-
-                  {/* Right column — structured info */}
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <GraduationCap className="w-5 h-5 text-primary" />
-                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Formación Académica</h4>
-                      </div>
-                      <div className="space-y-2 pl-7">
-                        {["MBA en Economía Industrial", "Maestría en Sistema Fiscal en Estados Unidos", "Formación continua en inversión inmobiliaria y corporativa"].map((item, i) => (
-                          <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Building className="w-5 h-5 text-primary" />
-                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Empresas y Operaciones</h4>
-                      </div>
-                      <div className="space-y-2 pl-7">
-                        {["9+ empresas activas en Estados Unidos y México", "Transporte, servicios financieros, bienes raíces", "Consultoría estratégica para inversionistas latinos", "50+ LLCs estructuradas para miembros de la comunidad"].map((item, i) => (
-                          <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Briefcase className="w-5 h-5 text-primary" />
-                        <h4 className="text-[#0B1F3A] font-semibold text-sm">Enfoque Actual</h4>
-                      </div>
-                      <div className="space-y-2 pl-7">
-                        {["Comunidad de inversión Comprando América", "Cumbres y eventos presenciales de inversión", "Viajes de inspección inmobiliaria en Florida", "Acompañamiento estratégico E-2 y estructura empresarial"].map((item, i) => (
-                          <p key={i} className="text-[#6B7280] text-sm">• {item}</p>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </section>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════ */
 
-const SITUACIONES = [
-  { id: 1, text: "Tengo capital pero no sé por dónde empezar." },
-  { id: 2, text: "Quiero invertir pero no sé en quién confiar." },
-  { id: 3, text: "Quiero construir patrimonio en Estados Unidos." },
-  { id: 4, text: "Quiero explorar opciones para mi familia." },
-  { id: 5, text: "Ya invierto, pero quiero contrastar ideas." },
-  { id: 6, text: "Quiero evitar errores costosos." },
-];
-
 export default function Home() {
-  const [selectedCards, setSelectedCards] = useState<Set<number>>(new Set());
-
-  function toggleCard(id: number) {
-    setSelectedCards((prev) => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
-  }
+  const [activeRuta, setActiveRuta] = useState<string | null>(null);
+  const [activePlatform, setActivePlatform] = useState<PlatformId | null>(null);
+  const [activeExpert, setActiveExpert] = useState<number | null>(null);
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <SEOHead {...PAGE_SEO} />
       <Navbar />
 
-      {/* ═══ 1. HERO — Edmundo rooftop ═══ */}
+      {/* ══════════════════════════════════════════════════════
+          1. HERO — El protagonista es el empresario
+      ══════════════════════════════════════════════════════ */}
       <section className="relative min-h-screen flex items-center">
         <div className="absolute inset-0">
-          <img src={HERO_IMAGE} alt="Edmundo Treviño — Comprando América" className="w-full h-full object-cover object-top" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/95 via-[#0B1F3A]/85 to-[#0B1F3A]/60" />
+          <img
+            src={HERO_IMAGE}
+            alt="Edmundo Treviño — Comprando América"
+            className="w-full h-full object-cover object-top"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1F3A]/97 via-[#0B1F3A]/90 to-[#0B1F3A]/60" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A] via-transparent to-transparent" />
         </div>
 
-        <div className="container relative z-10 pt-28 pb-20">
-          <div className="max-w-3xl">
-            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
-              <span className="inline-block text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
-                Club Privado de Inversión · Desde $100,000 USD
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6">
-                Invierte en Estados Unidos con{" "}
-                <span className="gradient-text-primary">criterio, estructura</span> y comunidad
-              </h1>
-              <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-8 max-w-2xl">
-                Comunidad exclusiva para empresarios e inversionistas latinos que buscan proteger su patrimonio o construir una ruta migratoria a través de inversión real en Estados Unidos.
+        <div className="container relative z-10 pt-32 pb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="max-w-3xl"
+          >
+            <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-8 font-light">
+              ¿Qué estás intentando{" "}
+              <span className="font-bold text-white">construir?</span>
+            </h1>
+
+            <div className="space-y-3 mb-10 text-slate-300 text-lg leading-relaxed max-w-2xl">
+              <p>No todos los empresarios llegan buscando lo mismo.</p>
+              <p>
+                Algunos quieren proteger el patrimonio que construyeron durante
+                años. Otros buscan generar flujo en dólares. Algunos evalúan
+                una estrategia migratoria.
               </p>
-              <p className="text-slate-500 text-xs mb-2">Acceso sujeto a criterios de perfil. Sin promesas irreales.</p>
-            </motion.div>
-          </div>
+              <p>
+                Y otros simplemente quieren dejar de tomar decisiones
+                patrimoniales solos.
+              </p>
+            </div>
+
+            <p className="text-slate-400 text-base mb-10 max-w-xl">
+              Comprando América existe para ayudarte a descubrir cuál de esas
+              rutas realmente hace sentido para ti.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <a href="https://comprandoamerica.com/gps">
+                <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25 font-semibold">
+                  Descubre tu ruta patrimonial{" "}
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
+              <a href="/quienes-somos">
+                <Button
+                  variant="outline"
+                  className="border-slate-500 text-white hover:bg-white/10 px-8 py-6 text-base"
+                >
+                  Conoce cómo pensamos
+                </Button>
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* ═══ BANNER PROMOCIONAL — Florida Investment Weekend II ═══ */}
+      {/* ══ Banners eventos ══ */}
       <a
         href="/investment-week"
         className="block w-full bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#1D4ED8] hover:from-[#1E40AF] hover:to-[#1E40AF] transition-colors duration-300 group"
@@ -425,8 +481,6 @@ export default function Home() {
           </span>
         </div>
       </a>
-
-      {/* ═══ BANNER PROMOCIONAL — Cumbre Digital ═══ */}
       <a
         href="/cumbre-digital"
         className="block w-full bg-gradient-to-r from-[#0B1F3A] via-[#132D52] to-[#0B1F3A] hover:from-[#061428] hover:to-[#061428] transition-colors duration-300 group border-t border-white/10"
@@ -445,111 +499,77 @@ export default function Home() {
         </div>
       </a>
 
-      {/* ═══ 2. PERFILAMIENTO — ☀️ BLANCO ═══ */}
+      {/* ══════════════════════════════════════════════════════
+          2. ¿CÓMO FUNCIONA COMPRANDO AMÉRICA?
+          Ecosistema visual — el Grupo Empresarial es el núcleo
+      ══════════════════════════════════════════════════════ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-[#0B1F3A] mb-4">¿Qué estás buscando?</h2>
-              <p className="text-[#6B7280] text-lg max-w-xl mx-auto">Identifica tu objetivo y te mostramos la ruta más clara.</p>
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                El ecosistema
+              </p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                ¿Cómo funciona Comprando América?
+              </h2>
+              <p className="text-[#6B7280] text-lg max-w-2xl mx-auto">
+                Comprando América no es un portafolio de productos. Es un
+                ecosistema de decisiones patrimoniales.
+              </p>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Card 1 — Proteger patrimonio */}
-            <FadeIn>
-              <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
-                  <Shield className="w-7 h-7 text-primary" />
+          {/* Diagrama visual del ecosistema */}
+          <FadeIn delay={0.1}>
+            <div className="max-w-4xl mx-auto">
+              {/* Núcleo */}
+              <div className="flex justify-center mb-8">
+                <div className="bg-primary text-white rounded-2xl px-8 py-6 text-center shadow-xl shadow-blue-600/25 relative">
+                  <p className="text-xs font-mono uppercase tracking-[0.3em] text-blue-200 mb-2">
+                    Núcleo del ecosistema
+                  </p>
+                  <p className="text-xl font-bold">
+                    Grupo Empresarial de Edmundo
+                  </p>
+                  <p className="text-blue-200 text-sm mt-1">
+                    Donde se contrastan las decisiones patrimoniales
+                  </p>
+                  {/* Línea hacia abajo */}
+                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-px h-8 bg-primary/40" />
                 </div>
-                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">Proteger mi patrimonio</h3>
-                <p className="text-[#4B5563] leading-relaxed mb-6">
-                  Quiero invertir en dólares con estructura legal, diversificar fuera de mi país y construir patrimonio en bienes raíces o negocios en Estados Unidos.
-                </p>
-                <div className="space-y-2 mb-8">
-                  {["Inversión desde $100,000 USD", "Estructura empresarial (LLC)", "Bienes raíces con acompañamiento", "Sin necesidad de migrar"].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      <span className="text-[#6B7280] text-sm">{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <a href="/oportunidades-de-inversion-en-estados-unidos">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full py-6 text-base shadow-lg shadow-blue-600/15">
-                    Ver opciones de inversión <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
               </div>
-            </FadeIn>
 
-            {/* Card 2 — Migrar con inversión */}
-            <FadeIn delay={0.1}>
-              <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
-                  <Globe className="w-7 h-7 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">Migrar con inversión</h3>
-                <p className="text-[#4B5563] leading-relaxed mb-6">
-                  Tengo capital y quiero una ruta migratoria real hacia Estados Unidos. Busco conectar inversión con una visa de inversionista (E-2) y estructura de negocio.
-                </p>
-                <div className="space-y-2 mb-8">
-                  {["Inversión desde $150,000 USD", "Visa E-2 de inversionista", "Negocio real en operación", "Ruta migratoria estructurada"].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      <span className="text-[#6B7280] text-sm">{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <a href="/visa-e2-inversion-en-estados-unidos">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full py-6 text-base shadow-lg shadow-blue-600/15">
-                    Ver ruta migratoria <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
+              {/* Rutas que nacen del núcleo */}
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-8">
+                {RUTAS.map((ruta, i) => {
+                  const Icon = ruta.icon;
+                  return (
+                    <FadeIn key={ruta.id} delay={0.05 * i}>
+                      <div className="bg-white border border-gray-200 rounded-xl p-4 text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+                        <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mx-auto mb-3">
+                          <Icon className="w-5 h-5 text-primary" />
+                        </div>
+                        <p className="text-[#0B1F3A] text-xs font-semibold leading-tight">
+                          {ruta.label}
+                        </p>
+                      </div>
+                    </FadeIn>
+                  );
+                })}
               </div>
-            </FadeIn>
 
-            {/* Card 3 — Estructura empresarial */}
-            <FadeIn delay={0.2}>
-              <div className="bg-white border border-gray-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
-                <div className="w-14 h-14 rounded-xl bg-blue-50 flex items-center justify-center mb-6">
-                  <Building2 className="w-7 h-7 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">Estructura empresarial</h3>
-                <p className="text-[#4B5563] leading-relaxed mb-6">
-                  Quiero constituir mi empresa en Estados Unidos con la estructura legal y fiscal correcta para operar, proteger activos y optimizar impuestos.
+              <FadeIn delay={0.3}>
+                <p className="text-center text-[#9CA3AF] text-sm mt-6">
+                  Todas las rutas nacen del Grupo Empresarial — nunca al revés.
                 </p>
-                <div className="space-y-2 mb-8">
-                  {["LLC o corporación en USA", "Estructura fiscal optimizada", "Apertura de cuenta bancaria", "Cumplimiento legal y contable"].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      <span className="text-[#6B7280] text-sm">{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <a href="https://comprandoamerica.com/estructura-de-inversion-en-usa">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full py-6 text-base shadow-lg shadow-blue-600/15">
-                    Ver estructura empresarial <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-          </div>
-
-          <FadeIn>
-            <div className="text-center mt-10">
-              <a href="https://comprandoamerica.com/gps" className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors">
-                ¿No estás seguro? Evalúa tu perfil y te orientamos <ArrowRight className="w-4 h-4" />
-              </a>
+              </FadeIn>
             </div>
           </FadeIn>
-        </div>
-      </section>
 
-      {/* ═══ 3. STATS — navy ═══ */}
-      <section className="bg-[#091A30] py-16 md:py-20">
-        <div className="container">
-          <FadeIn>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+          {/* Stats */}
+          <FadeIn delay={0.2}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mt-16 pt-16 border-t border-gray-200">
               <StatCounter value={40} suffix="+" label="Miembros activos" />
               <StatCounter value={53} suffix="+" label="LLCs estructuradas" />
               <StatCounter value={6} suffix="" label="Viajes de inspección" />
@@ -559,316 +579,652 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ══════════════════════════════════════════════════════
+          3. MAPA DEL ECOSISTEMA — Cards expandibles
+          Sin cambio de página
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Rutas disponibles
+              </p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
+                ¿Qué estás intentando construir?
+              </h2>
+              <p className="text-slate-400 text-lg max-w-xl mx-auto">
+                Selecciona la ruta que más se acerca a tu situación.
+              </p>
+            </div>
+          </FadeIn>
 
-      {/* ═══ 4. EDMUNDO CEO — ☀️ BLANCO ═══ */}
-      <EdmundoSection />
+          <div className="max-w-5xl mx-auto space-y-3">
+            {RUTAS.map((ruta, i) => {
+              const Icon = ruta.icon;
+              const isOpen = activeRuta === ruta.id;
+              return (
+                <FadeIn key={ruta.id} delay={i * 0.06}>
+                  <motion.div
+                    className={`rounded-2xl border overflow-hidden transition-all duration-200 ${
+                      isOpen
+                        ? "border-primary/50 bg-[#0F2847]"
+                        : "border-[#1E3A5F] bg-[#0F2847] hover:border-blue-500/30"
+                    }`}
+                  >
+                    {/* Header */}
+                    <button
+                      onClick={() =>
+                        setActiveRuta(isOpen ? null : ruta.id)
+                      }
+                      className="w-full flex items-center justify-between gap-4 p-6 text-left"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div
+                          className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
+                            isOpen ? "bg-primary" : "bg-[#1E3A5F]"
+                          }`}
+                        >
+                          <Icon
+                            className={`w-5 h-5 ${isOpen ? "text-white" : "text-blue-400"}`}
+                          />
+                        </div>
+                        <div>
+                          <p className="text-white font-semibold text-lg leading-tight">
+                            {ruta.label}
+                          </p>
+                          {!isOpen && (
+                            <p className="text-slate-500 text-sm mt-0.5 line-clamp-1">
+                              {ruta.problema.slice(0, 60)}…
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <ChevronDown
+                        className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300 ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
 
-      {/* ═══ 5. EXPERTOS — navy ═══ */}
-      <ExpertsSection />
+                    {/* Expandable content */}
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-6 pb-6 pt-0">
+                            <div className="border-t border-white/5 pt-5 grid md:grid-cols-2 gap-6">
+                              <div>
+                                <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-3">
+                                  Qué problema resuelve
+                                </p>
+                                <p className="text-slate-300 text-sm leading-relaxed">
+                                  {ruta.problema}
+                                </p>
+                              </div>
+                              <div>
+                                <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-3">
+                                  Cómo orienta
+                                </p>
+                                <p className="text-slate-300 text-sm leading-relaxed">
+                                  {ruta.orienta}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="mt-6 flex items-center justify-between">
+                              <p className="text-slate-500 text-xs">
+                                El GPS te indica si esta ruta aplica para tu
+                                perfil.
+                              </p>
+                              <a href={ruta.href}>
+                                <Button
+                                  size="sm"
+                                  className="bg-primary hover:bg-blue-600 text-white gap-2"
+                                >
+                                  Explorar esta ruta{" "}
+                                  <ArrowRight className="w-3.5 h-3.5" />
+                                </Button>
+                              </a>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                </FadeIn>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
-      {/* ═══ 6. TESTIMONIOS VIDEO — ☀️ BLANCO ═══ */}
+      {/* ══════════════════════════════════════════════════════
+          4. OPORTUNIDADES INMOBILIARIAS — Introducción
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-24">
+        <div className="container">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <FadeIn>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src={AERIAL}
+                  alt="Inversión inmobiliaria en Estados Unidos"
+                  className="w-full h-72 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/60 to-transparent" />
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <div>
+                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                  Arquitectura Patrimonial
+                </p>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                  Los bienes raíces son una de las rutas patrimoniales, no la
+                  única.
+                </h2>
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
+                  Comprando América trabaja con vehículos inmobiliarios
+                  estructurados: tierra estratégica, renta garantizada por el
+                  gobierno y compra de propiedades. Cada uno responde a un
+                  perfil diferente.
+                </p>
+                <a href="/oportunidades-de-inversion-en-estados-unidos">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/20">
+                    Conocer Arquitectura Patrimonial{" "}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          5. CONTENIDO GRATUITO
+          Plataformas con preview inline
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Aprende antes de invertir
+              </p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
+                Cualquier empresario puede aprender con Comprando América
+              </h2>
+              <p className="text-slate-400 text-lg max-w-xl mx-auto">
+                Antes de ser miembro, puedes construir criterio. Todo el
+                contenido es gratuito.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Platform grid */}
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+              {PLATFORMS.map((p, i) => (
+                <FadeIn key={p.id} delay={i * 0.04}>
+                  <button
+                    onClick={() =>
+                      setActivePlatform(
+                        activePlatform === p.id ? null : p.id
+                      )
+                    }
+                    className={`w-full rounded-xl px-4 py-3 text-sm font-semibold text-white transition-all border ${
+                      activePlatform === p.id
+                        ? "border-primary/60 bg-primary/10 shadow-lg shadow-blue-600/10"
+                        : "border-[#1E3A5F] bg-[#0F2847] hover:border-blue-500/30"
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                </FadeIn>
+              ))}
+            </div>
+
+            {/* Inline preview panel */}
+            <AnimatePresence mode="wait">
+              {activePlatform && (
+                <motion.div
+                  key={activePlatform}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.25 }}
+                  className="bg-[#0F2847] border border-[#1E3A5F] rounded-2xl overflow-hidden"
+                >
+                  {(() => {
+                    const platform = PLATFORMS.find(
+                      (p) => p.id === activePlatform
+                    )!;
+                    return (
+                      <div className="grid md:grid-cols-2 gap-0">
+                        {/* Video embed si aplica */}
+                        {platform.preview.videoId ? (
+                          <div className="aspect-video bg-black">
+                            <iframe
+                              src={`https://www.youtube.com/embed/${platform.preview.videoId}?rel=0&modestbranding=1`}
+                              title={platform.preview.title}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              className="w-full h-full"
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className={`${platform.color} flex items-center justify-center min-h-[160px]`}
+                          >
+                            <p className="text-white/60 text-sm px-8 text-center">
+                              Accede al contenido en {platform.label}
+                            </p>
+                          </div>
+                        )}
+                        {/* Info */}
+                        <div className="p-8 flex flex-col justify-between">
+                          <div>
+                            <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-3">
+                              {platform.label}
+                            </p>
+                            <h3 className="text-white text-xl font-bold mb-3">
+                              {platform.preview.title}
+                            </h3>
+                            <p className="text-slate-400 text-sm leading-relaxed">
+                              {platform.preview.desc}
+                            </p>
+                          </div>
+                          <div className="mt-6">
+                            <a
+                              href={platform.preview.href}
+                              target={
+                                platform.preview.href.startsWith("http")
+                                  ? "_blank"
+                                  : undefined
+                              }
+                              rel="noopener noreferrer"
+                            >
+                              <Button
+                                size="sm"
+                                className="bg-primary hover:bg-blue-600 text-white gap-2"
+                              >
+                                Seguir aprendiendo{" "}
+                                <ArrowRight className="w-3.5 h-3.5" />
+                              </Button>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {!activePlatform && (
+              <p className="text-center text-slate-600 text-sm mt-2">
+                Selecciona una plataforma para ver el contenido.
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          6. CASOS REALES
+          Perfil → Objetivo → Ruta → Resultado
+      ══════════════════════════════════════════════════════ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Lo que dicen nuestros miembros</h2>
-              <p className="text-[#6B7280] text-lg">Testimonios reales de empresarios que ya están invirtiendo.</p>
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Casos reales
+              </p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                Empresarios que encontraron su ruta
+              </h2>
+              <p className="text-[#6B7280] text-lg max-w-xl mx-auto">
+                Historias reales de cómo empresarios distintos encontraron
+                caminos distintos dentro del mismo ecosistema.
+              </p>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {[
-              { name: "Arturo Orozco", videoId: "WYNwoTzG8Ss" },
-              { name: "Gerardo Bejarano", videoId: "6J6IIPFsTD0" },
-            ].map((t, i) => (
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {CASOS.map((caso, i) => (
               <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#F5F7FA] border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-                  <div className="aspect-video">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${t.videoId}?rel=0&modestbranding=1`}
-                      title={`Testimonio de ${t.name}`}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      className="w-full h-full"
-                    />
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl overflow-hidden h-full">
+                  {/* Header */}
+                  <div className="bg-[#0B1F3A] px-6 py-5">
+                    <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-1">
+                      Perfil
+                    </p>
+                    <p className="text-white text-sm font-semibold leading-snug">
+                      {caso.perfil}
+                    </p>
                   </div>
-                  <div className="p-4 text-center">
-                    <p className="text-[#0B1F3A] font-semibold">{t.name}</p>
-                    <p className="text-[#9CA3AF] text-xs">Miembro de Comprando América</p>
+                  {/* Flow */}
+                  <div className="p-6 space-y-5">
+                    {[
+                      { label: "Objetivo", value: caso.objetivo },
+                      { label: "Ruta elegida", value: caso.ruta },
+                      { label: "Resultado", value: caso.resultado },
+                    ].map((step, j) => (
+                      <div key={j} className="flex gap-4">
+                        <div className="flex flex-col items-center shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                            <span className="text-primary text-xs font-bold">
+                              {j + 1}
+                            </span>
+                          </div>
+                          {j < 2 && (
+                            <div className="w-px flex-1 bg-gray-200 my-1" />
+                          )}
+                        </div>
+                        <div className="pb-2">
+                          <p className="text-[#6B7280] text-xs font-semibold uppercase tracking-widest mb-1">
+                            {step.label}
+                          </p>
+                          <p className="text-[#374151] text-sm leading-relaxed">
+                            {step.value}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </FadeIn>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ═══ 7. OPORTUNIDADES — navy ═══ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-28">
-        <div className="container">
           <FadeIn>
-            <div className="max-w-3xl mx-auto mb-12">
-              <h2 className="text-3xl md:text-4xl text-white mb-4">Si estás explorando Estados Unidos para invertir, proteger patrimonio o construir opciones para tu familia, el verdadero reto no es encontrar oportunidades.</h2>
-              <p className="text-slate-400 text-lg">Es saber en quién confiar y qué camino tiene sentido para ti.</p>
+            <div className="text-center mt-10">
+              <button
+                onClick={() =>
+                  openWhatsApp(
+                    WHATSAPP_PHONE,
+                    "Hola, quisiera hablar sobre mi situación y ver qué ruta hace sentido para mí."
+                  )
+                }
+                className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors"
+              >
+                Habla con el equipo sobre tu caso{" "}
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </FadeIn>
-
         </div>
       </section>
 
-
-      {/* ═══ 8. EVENTOS — ☀️ BLANCO ═══ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
+      {/* ══════════════════════════════════════════════════════
+          7. EXPERTOS
+          ¿En qué tipo de decisiones acompaña al empresario?
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Eventos y experiencias en terreno</h2>
-              <p className="text-[#4B5563] text-lg">Hay decisiones que no se toman desde una pantalla.</p>
-            </div>
-          </FadeIn>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <FadeIn>
-              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src={RUTA_PHOTO} alt="Ruta Inmobiliaria" className="w-full h-48 object-cover" />
-                <div className="p-8">
-                  <MapPin className="w-8 h-8 text-primary mb-4" />
-                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Ruta Inmobiliaria</h3>
-                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Evento presencial para entender oportunidades de bienes raíces con estructura y criterio.</p>
-                  <a href="/ruta-inmobiliaria-en-estados-unidos">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Ruta Inmobiliaria <ArrowRight className="w-3 h-3" /></Button>
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src={INVEST_WEEK} alt="Florida Investment Weekend II" className="w-full h-48 object-cover" />
-                <div className="p-8">
-                  <Globe className="w-8 h-8 text-primary mb-4" />
-                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Florida Investment Weekend II</h3>
-                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Terreno real. Propiedades reales. Números reales. Acceso por invitación.</p>
-                  <a href="/investment-week">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Investment Weekend II <ArrowRight className="w-3 h-3" /></Button>
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.2}>
-              <div className="bg-white border border-gray-200 rounded-xl overflow-hidden h-full shadow-sm hover:shadow-lg transition-all">
-                <img src={CUMBRE_DIGITAL_PHOTO} alt="Cumbre Digital" className="w-full h-48 object-cover object-top" />
-                <div className="p-8">
-                  <Monitor className="w-8 h-8 text-primary mb-4" />
-                  <h3 className="text-xl font-bold text-[#0B1F3A] mb-3">Cumbre Digital</h3>
-                  <p className="text-[#6B7280] text-sm leading-relaxed mb-6">Una mañana intensiva para construir, proteger y expandir tu patrimonio en Estados Unidos con criterio y estrategia.</p>
-                  <a href="/cumbre-digital">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 text-sm w-full">Ver Cumbre Digital <ArrowRight className="w-3 h-3" /></Button>
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ MICRODIAGNÓSTICO ═══ */}
-      <section className="bg-[#091A30] py-24 md:py-32 px-4">
-        <div className="max-w-4xl mx-auto">
-          <FadeIn>
-            <div className="text-center mb-16">
-              <span className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase font-mono">
-                Microdiagnóstico
-              </span>
-              <h2 className="text-3xl md:text-4xl text-white mt-4 mb-4 leading-tight">
-                ¿Te identificas con alguna de estas situaciones?
+            <div className="text-center mb-14">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Equipo multidisciplinario
+              </p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
+                Un equipo. Ocho perspectivas. Una sola dirección.
               </h2>
-              <p className="text-slate-400 max-w-xl mx-auto text-base">
-                Selecciona las que apliquen para ti.
+              <p className="text-slate-400 text-lg max-w-xl mx-auto">
+                No un directorio de especialistas. Un equipo que trabaja junto
+                para que el empresario tome mejores decisiones.
               </p>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {SITUACIONES.map((s, i) => {
-              const selected = selectedCards.has(s.id);
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {EXPERTS.map((expert, i) => {
+              const isActive = activeExpert === i;
               return (
-                <FadeIn key={s.id} delay={i * 0.07}>
+                <FadeIn key={i} delay={i * 0.05}>
                   <motion.button
-                    onClick={() => toggleCard(s.id)}
-                    whileHover={{ scale: 1.01 }}
-                    whileTap={{ scale: 0.99 }}
-                    className={`w-full text-left rounded-xl p-6 border transition-all duration-200 group ${
-                      selected
-                        ? "bg-primary/10 border-primary/60 shadow-lg shadow-blue-600/10"
+                    onClick={() => setActiveExpert(isActive ? null : i)}
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.97 }}
+                    className={`w-full text-left rounded-2xl p-4 border transition-all duration-300 ${
+                      isActive
+                        ? "bg-primary/10 border-primary/50 shadow-lg shadow-blue-600/10"
                         : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
                     }`}
                   >
-                    <div className="flex items-start gap-4">
+                    <div className="flex flex-col items-center text-center gap-3">
                       <div
-                        className={`w-5 h-5 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center transition-all ${
-                          selected ? "border-primary bg-primary" : "border-slate-600 group-hover:border-blue-500/50"
+                        className={`w-16 h-16 rounded-full overflow-hidden border-2 transition-all ${
+                          isActive ? "border-primary" : "border-[#1E3A5F]"
                         }`}
                       >
-                        {selected && (
-                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 12 12">
-                            <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
-                        )}
+                        <img
+                          src={expert.img}
+                          alt={expert.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
-                      <p className={`text-sm leading-relaxed transition-colors ${selected ? "text-white" : "text-slate-300"}`}>
-                        {s.text}
+                      <p className="text-white text-sm font-bold leading-tight">
+                        {expert.name}
                       </p>
                     </div>
+
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-4 pt-4 border-t border-white/10">
+                            <p className="text-blue-400 text-[10px] font-mono uppercase tracking-widest mb-2">
+                              Acompaña en
+                            </p>
+                            <p className="text-slate-300 text-xs leading-relaxed text-left">
+                              {expert.decision}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.button>
                 </FadeIn>
               );
             })}
           </div>
-
-          <AnimatePresence>
-            {selectedCards.size >= 2 && (
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.4 }}
-                className="mt-10 bg-primary/10 border border-primary/30 rounded-xl p-8 text-center"
-              >
-                <p className="text-white font-semibold text-lg mb-2">
-                  Probablemente este círculo puede ayudarte.
-                </p>
-                <p className="text-slate-400 text-sm mb-6 max-w-lg mx-auto">
-                  Te identificas con {selectedCards.size} situaciones. El primer paso es una conversación honesta.
-                </p>
-                <Button
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me identifico con varias situaciones y quiero una sesión de diagnóstico.")}
-                  className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-5 gap-2 shadow-lg shadow-blue-600/25"
-                >
-                  Solicitar sesión de diagnóstico <ArrowRight className="w-4 h-4" />
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <FadeIn>
+            <p className="text-center text-slate-600 text-sm mt-6">
+              Selecciona a un experto para ver en qué decisiones acompaña.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
-      {/* ═══ 9. RECURSOS — navy ═══ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-28">
+      {/* ══════════════════════════════════════════════════════
+          8. INVESTMENT WEEK — Reposicionado
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#F5F7FA] py-20 md:py-24">
         <div className="container">
-          <div className="max-w-6xl mx-auto">
-            <FadeIn>
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
-                <div>
-                  <span className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase font-mono block mb-3">Aprende · Analiza · Decide</span>
-                  <h2 className="text-3xl md:text-4xl text-white leading-tight">Explora las rutas para<br className="hidden md:block" /> nutrirse de información</h2>
-                </div>
-                <p className="text-slate-400 text-base max-w-xs leading-relaxed">Contenido real para inversionistas que quieren claridad antes de ejecutar.</p>
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <FadeIn delay={0.1}>
+              <div>
+                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                  Investment Week
+                </p>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+                  Hay inversiones que solo se entienden caminándolas.
+                </h2>
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-4">
+                  Hay decisiones que pueden tomarse leyendo un análisis.
+                  Y hay otras que únicamente se comprenden estando en el terreno,
+                  revisando los números reales frente a un activo real.
+                </p>
+                <p className="text-[#4B5563] text-base leading-relaxed mb-8">
+                  Investment Week existe para que el empresario comprenda{" "}
+                  <span className="font-semibold text-[#0B1F3A]">
+                    cómo analizamos activos reales
+                  </span>{" "}
+                  — no para venderle una propiedad.
+                </p>
+                <a href="/investment-week">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/20">
+                    Conocer Investment Week <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
               </div>
             </FadeIn>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  label: "Podcast",
-                  tag: "Audio · Episodios nuevos cada semana",
-                  title: "Conversaciones que mueven el criterio",
-                  desc: "Casos reales, expertos en activo y análisis del mercado americano. Escucha mientras construyes tu próxima decisión.",
-                  cta: "Escuchar episodios",
-                  href: "/podcast",
-                  image: "https://img.youtube.com/vi/iFx3QusSR90/maxresdefault.jpg",
-                  playIcon: true,
-                },
-                {
-                  label: "News",
-                  tag: "Noticias · Actualización continua",
-                  title: "Lo que está pasando y cómo te afecta",
-                  desc: "Noticias del mercado inmobiliario, migración y economía en EE.UU. filtradas para inversionistas latinos.",
-                  cta: "Leer noticias",
-                  href: "/news",
-                  image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&h=450&fit=crop",
-                  playIcon: false,
-                },
-                {
-                  label: "Blog",
-                  tag: "Artículos · Guías prácticas",
-                  title: "Análisis y guías para tomar mejores decisiones",
-                  desc: "Artículos escritos por el equipo de Comprando América sobre inversión, estructura legal y patrimonio en EE.UU.",
-                  cta: "Leer artículos",
-                  href: "/blog",
-                  image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=800&h=450&fit=crop",
-                  playIcon: false,
-                },
-              ].map((r, i) => (
-                <FadeIn key={i} delay={i * 0.1}>
-                  <a href={r.href} className="block h-full group">
-                    <div className="h-full rounded-2xl border border-[#1E3A5F] hover:border-blue-500/40 bg-[#0F2847] overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-blue-900/20 flex flex-col">
-                      {/* Image */}
-                      <div className="relative overflow-hidden h-48 shrink-0">
-                        <img
-                          src={r.image}
-                          alt={r.label}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0F2847] via-transparent to-transparent" />
-                        {r.playIcon && (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center group-hover:scale-110 transition-transform">
-                              <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z" />
-                              </svg>
-                            </div>
-                          </div>
-                        )}
-                        <span className="absolute top-3 left-3 bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
-                          {r.label}
-                        </span>
-                      </div>
-                      {/* Content */}
-                      <div className="p-6 flex flex-col flex-1">
-                        <p className="text-blue-400/70 text-xs font-mono uppercase tracking-widest mb-3">{r.tag}</p>
-                        <h3 className="text-lg font-bold text-white mb-2 leading-snug">{r.title}</h3>
-                        <p className="text-slate-400 text-sm leading-relaxed flex-1 mb-5">{r.desc}</p>
-                        <span className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 group-hover:text-blue-300 transition-colors">
-                          {r.cta} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                </FadeIn>
-              ))}
-            </div>
+            <FadeIn>
+              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+                <img
+                  src={INVEST_WEEK}
+                  alt="Florida Investment Weekend II"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/50 to-transparent" />
+                <div className="absolute bottom-6 left-6">
+                  <span className="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                    Florida Investment Weekend II
+                  </span>
+                </div>
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* ═══ 10. CTA FINAL — deep navy ═══ */}
+      {/* ══════════════════════════════════════════════════════
+          9. GRUPO EMPRESARIAL — Pilar emocional
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#0B1F3A] py-20 md:py-28">
+        <div className="container">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <FadeIn>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl overflow-hidden aspect-square">
+                  <img
+                    src={AUDIENCE}
+                    alt="Grupo Empresarial de Edmundo"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="rounded-xl overflow-hidden aspect-square mt-6">
+                  <img
+                    src={NETWORKING}
+                    alt="Comunidad de empresarios"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="rounded-xl overflow-hidden aspect-square -mt-6">
+                  <img
+                    src={PANEL}
+                    alt="Panel de expertos"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="rounded-xl overflow-hidden aspect-square">
+                  <img
+                    src={RUTA_PHOTO}
+                    alt="Evento presencial"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.1}>
+              <div>
+                <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">
+                  El núcleo del ecosistema
+                </p>
+                <h2 className="text-3xl md:text-4xl text-white mb-6">
+                  Grupo Empresarial de Edmundo
+                </h2>
+                <p className="text-slate-300 text-lg leading-relaxed mb-6">
+                  El criterio no se construye solo. Se construye contrastando
+                  decisiones con otros empresarios que ya están ejecutando.
+                </p>
+                <p className="text-slate-400 leading-relaxed mb-8">
+                  El Grupo Empresarial es el espacio donde los miembros de
+                  Comprando América contrastan sus decisiones patrimoniales con
+                  pares y expertos. No es un grupo de networking. Es un espacio
+                  de criterio compartido.
+                </p>
+                <div className="space-y-3 mb-8">
+                  {[
+                    "Decisiones patrimoniales con contexto real",
+                    "Acceso mensual al Deal Day",
+                    "Contraste con empresarios que ya ejecutan",
+                    "Acompañamiento del equipo multidisciplinario",
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
+                      <p className="text-slate-300 text-sm">{item}</p>
+                    </div>
+                  ))}
+                </div>
+                <a href="/circulo-cercano">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/25">
+                    Conocer el Grupo Empresarial{" "}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          10. GPS — Cierre natural del recorrido
+      ══════════════════════════════════════════════════════ */}
       <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-6">
-                ¿Tu objetivo es invertir o migrar a Estados Unidos?
-              </h2>
-              <p className="text-slate-400 text-lg leading-relaxed mb-10">
-                Empieza por evaluar tu perfil. Te decimos con claridad si este camino hace sentido para ti.
+              <p className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase font-mono mb-6">
+                GPS · Evaluación de perfil
               </p>
-              <div className="flex flex-wrap justify-center gap-4 mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl text-white mb-6 leading-tight">
+                Antes de elegir una inversión, conviene entender cuál estrategia
+                hace sentido para tu patrimonio.
+              </h2>
+              <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-xl mx-auto">
+                El GPS de Comprando América te ayuda a identificar tu perfil,
+                trazar tu ruta y evaluar tu capital en minutos. Sin compromiso.
+                Sin presión.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 mb-8">
                 <a href="https://comprandoamerica.com/gps">
-                  <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                    Evaluar mi Perfil <ArrowRight className="w-4 h-4" />
+                  <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25 font-semibold">
+                    Evalúa tu perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <a href="/membresia">
-                  <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base">
-                    Conocer el Grupo Empresarial de Edmundo
-                  </Button>
-                </a>
+                <button
+                  onClick={() =>
+                    openWhatsApp(
+                      WHATSAPP_PHONE,
+                      "Hola, vi Comprando América y me gustaría hablar sobre mi situación."
+                    )
+                  }
+                  className="border border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base rounded-md transition-colors font-medium"
+                >
+                  Hablar por WhatsApp
+                </button>
               </div>
-              <button onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, vi Comprando América y me gustaría saber más.")} className="inline-flex items-center gap-1 text-blue-400 text-sm hover:text-blue-300 transition-colors">
-                Hablar por WhatsApp <ArrowRight className="w-3 h-3" />
-              </button>
+              <p className="text-slate-600 text-xs">
+                Sin promesas de retorno. Sin presión de venta.
+                Contenido informativo — la elegibilidad depende del perfil y del
+                caso.
+              </p>
             </div>
           </FadeIn>
         </div>
