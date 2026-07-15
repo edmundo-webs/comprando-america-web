@@ -346,7 +346,7 @@ export default function ArquitecturaPatrimonial() {
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}
-      <section className="relative min-h-[70vh] flex items-center pt-32 pb-20 overflow-hidden">
+      <section className="relative flex items-center pt-28 pb-14 md:pt-32 md:pb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0E2544] via-[#0B1F3A] to-[#0B1F3A]" />
         <div className="container relative z-10">
           <FadeIn>
@@ -371,9 +371,9 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 2. CAMBIO DE PARADIGMA — ☀️ blanco ═══ */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-14 md:py-20">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-16 items-center max-w-5xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center max-w-5xl mx-auto">
             <FadeIn>
               <div>
                 <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
@@ -407,10 +407,10 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 3. MAPA PATRIMONIAL — navy ═══ */}
-      <section id="mapa-patrimonial" className="bg-[#0E2544] py-20 md:py-28 scroll-mt-20">
+      <section id="mapa-patrimonial" className="bg-[#0E2544] py-14 md:py-20 scroll-mt-20">
         <div className="container">
           <FadeIn>
-            <div className="max-w-2xl mx-auto text-center mb-16">
+            <div className="max-w-2xl mx-auto text-center mb-10">
               <h2 className="text-3xl md:text-4xl text-white mb-4">Mapa Patrimonial</h2>
               <p className="text-slate-400 text-lg leading-relaxed">
                 Un mismo patrimonio puede perseguir objetivos distintos. Elige uno para profundizar, sin salir de esta página.
@@ -420,7 +420,7 @@ export default function ArquitecturaPatrimonial() {
 
           {/* Desktop: radial layout */}
           <FadeIn delay={0.1}>
-            <div className="hidden md:block relative mx-auto" style={{ width: "min(90vw, 640px)", height: "min(90vw, 640px)" }}>
+            <div className="hidden md:block relative mx-auto" style={{ width: "min(70vw, 480px)", height: "min(70vw, 480px)" }}>
               <div
                 className="absolute z-10 flex flex-col items-center justify-center text-center rounded-full bg-primary shadow-lg shadow-blue-600/30"
                 style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "34%", height: "34%" }}
@@ -484,27 +484,27 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 4. VEHÍCULOS PATRIMONIALES — ☀️ blanco ═══ */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-14 md:py-20">
         <div className="container">
           <FadeIn>
-            <div className="max-w-2xl mx-auto text-center mb-14">
+            <div className="max-w-2xl mx-auto text-center mb-8">
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">Vehículos Patrimoniales</h2>
               <p className="text-[#4B5563] text-lg leading-relaxed">
                 No son un catálogo. Son herramientas construidas para objetivos distintos. Elige una para ver a quién sirve y qué problema resuelve.
               </p>
             </div>
           </FadeIn>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 max-w-6xl mx-auto">
             {VEHICLES.map((v, i) => (
               <FadeIn key={i} delay={i * 0.06}>
                 <Panel
                   title={v.title}
                   trigger={
-                    <div className="flex flex-col items-start text-left gap-3 bg-[#F5F7FA] border border-gray-200 rounded-xl p-6 h-full cursor-pointer hover:shadow-md hover:border-primary/30 transition-all">
-                      <div className="w-11 h-11 rounded-lg bg-blue-50 text-primary flex items-center justify-center shrink-0">
-                        <v.icon className="w-5 h-5" />
+                    <div className="flex flex-col items-start text-left gap-2 sm:gap-3 bg-[#F5F7FA] border border-gray-200 rounded-xl p-4 sm:p-6 h-full cursor-pointer hover:shadow-md hover:border-primary/30 transition-all">
+                      <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg bg-blue-50 text-primary flex items-center justify-center shrink-0">
+                        <v.icon className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
-                      <p className="text-[#0B1F3A] font-semibold leading-snug">{v.title}</p>
+                      <p className="text-[#0B1F3A] font-semibold text-sm sm:text-base leading-snug">{v.title}</p>
                     </div>
                   }
                 >
@@ -550,11 +550,11 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 5. UNA MISMA PROPIEDAD, OBJETIVOS DISTINTOS — navy ═══ */}
-      <section className="bg-[#0E2544] py-20 md:py-28">
+      <section className="bg-[#0E2544] py-14 md:py-20">
         <div className="container">
           <FadeIn>
-            <div className="max-w-3xl mx-auto text-center mb-12">
-              <h2 className="text-3xl md:text-4xl text-white mb-6">
+            <div className="max-w-3xl mx-auto text-center mb-6">
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
                 Una misma propiedad puede cumplir objetivos distintos
               </h2>
               <p className="text-slate-400 text-lg leading-relaxed">
@@ -562,7 +562,7 @@ export default function ArquitecturaPatrimonial() {
               </p>
             </div>
           </FadeIn>
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 max-w-4xl mx-auto">
             {[
               { icon: Banknote, label: "Generar flujo" },
               { icon: Shield, label: "Proteger patrimonio" },
@@ -571,7 +571,7 @@ export default function ArquitecturaPatrimonial() {
               { icon: Users, label: "Desarrollar patrimonio familiar" },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.06}>
-                <div className="flex flex-col items-center text-center gap-3 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-5 h-full">
+                <div className="flex flex-col items-center text-center gap-2 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-4 h-full">
                   <item.icon className="w-6 h-6 text-primary" />
                   <p className="text-white text-sm font-medium leading-snug">{item.label}</p>
                 </div>
@@ -582,7 +582,7 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 6. INVESTMENT WEEK — ☀️ blanco ═══ */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-14 md:py-20">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
@@ -607,10 +607,10 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 7. ¿QUÉ TIPO DE EMPRESARIO ERES? — navy ═══ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-28">
+      <section className="bg-[#0B1F3A] py-14 md:py-20">
         <div className="container">
           <FadeIn>
-            <div className="max-w-2xl mx-auto text-center mb-12">
+            <div className="max-w-2xl mx-auto text-center mb-8">
               <h2 className="text-3xl md:text-4xl text-white mb-4">¿Qué tipo de empresario eres?</h2>
               <p className="text-slate-400 text-lg leading-relaxed">
                 Esto no sustituye tu evaluación de perfil. Es solo orientativo, para saber por dónde empezar a mirar.
@@ -662,7 +662,7 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 8. GRUPO EMPRESARIAL — ☀️ blanco ═══ */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-14 md:py-20">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
@@ -683,19 +683,19 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 9. CASOS REALES — navy ═══ */}
-      <section className="bg-[#0E2544] py-20 md:py-28">
+      <section className="bg-[#0E2544] py-14 md:py-20">
         <div className="container">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl text-white mb-14 text-center">Casos reales</h2>
+            <h2 className="text-3xl md:text-4xl text-white mb-10 text-center">Casos reales</h2>
           </FadeIn>
-          <div className="grid sm:grid-cols-2 gap-5 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 gap-3 sm:gap-5 max-w-4xl mx-auto">
             {STORIES.map((story, i) => (
               <FadeIn key={i} delay={i * 0.08}>
                 <button onClick={() => setActiveStory(i)} className="w-full text-left">
-                  <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 hover:border-primary/40 transition-all h-full">
-                    <p className="text-white font-semibold mb-1">{story.name} · {story.city}</p>
-                    <p className="text-primary text-sm font-medium mb-3">{story.ruta}</p>
-                    <p className="text-slate-400 text-sm leading-relaxed">{story.objetivo}</p>
+                  <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-4 sm:p-6 hover:border-primary/40 transition-all h-full">
+                    <p className="text-white font-semibold text-sm sm:text-base mb-1">{story.name} · {story.city}</p>
+                    <p className="text-primary text-xs sm:text-sm font-medium mb-2 sm:mb-3">{story.ruta}</p>
+                    <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">{story.objetivo}</p>
                   </div>
                 </button>
               </FadeIn>
@@ -736,10 +736,10 @@ export default function ArquitecturaPatrimonial() {
       </Dialog>
 
       {/* ═══ 10. PREGUNTAS FRECUENTES — ☀️ blanco ═══ */}
-      <section className="bg-white py-20 md:py-28">
+      <section className="bg-white py-14 md:py-20">
         <div className="container">
           <FadeIn>
-            <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-14 text-center">Preguntas frecuentes</h2>
+            <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-10 text-center">Preguntas frecuentes</h2>
           </FadeIn>
           <FadeIn delay={0.1}>
             <div className="max-w-3xl mx-auto">
@@ -766,7 +766,7 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 11. RECURSOS GRATUITOS — navy ═══ */}
-      <section className="bg-[#0E2544] py-16 md:py-20">
+      <section className="bg-[#0E2544] py-10 md:py-14">
         <div className="container">
           <FadeIn>
             <div className="max-w-3xl mx-auto text-center">
@@ -801,7 +801,7 @@ export default function ArquitecturaPatrimonial() {
       </section>
 
       {/* ═══ 12. CTA FINAL — deep navy ═══ */}
-      <section className="bg-[#091A30] py-24 md:py-32">
+      <section className="bg-[#091A30] py-16 md:py-20">
         <div className="container">
           <FadeIn>
             <div className="max-w-2xl mx-auto text-center">
