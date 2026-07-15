@@ -418,12 +418,12 @@ export default function ArquitecturaPatrimonial() {
             </div>
           </FadeIn>
 
-          {/* Desktop: radial layout */}
+          {/* Desktop: radial layout — wide & short, so the whole map is visible at a glance */}
           <FadeIn delay={0.1}>
-            <div className="hidden md:block relative mx-auto" style={{ width: "min(70vw, 480px)", height: "min(70vw, 480px)" }}>
+            <div className="hidden md:block relative mx-auto" style={{ width: "min(95vw, 980px)", height: "min(48vw, 300px)" }}>
               <div
                 className="absolute z-10 flex flex-col items-center justify-center text-center rounded-full bg-primary shadow-lg shadow-blue-600/30"
-                style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "34%", height: "34%" }}
+                style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)", width: "150px", height: "150px" }}
               >
                 <span className="text-white font-semibold text-sm leading-tight px-2">Tu Patrimonio</span>
               </div>
@@ -431,14 +431,14 @@ export default function ArquitecturaPatrimonial() {
                 <div
                   key={i}
                   className="absolute"
-                  style={{ left: obj.pos.left, top: obj.pos.top, transform: "translate(-50%, -50%)", width: "30%" }}
+                  style={{ left: obj.pos.left, top: obj.pos.top, transform: "translate(-50%, -50%)", width: "150px" }}
                 >
                   <Panel
                     title={obj.title}
                     trigger={
-                      <div className="flex flex-col items-center gap-2 text-center cursor-pointer group">
-                        <div className="w-16 h-16 rounded-full bg-[#0F2847] border border-[#1E3A5F] group-hover:border-primary flex items-center justify-center transition-colors">
-                          <obj.icon className="w-6 h-6 text-primary" />
+                      <div className="flex flex-col items-center gap-1.5 text-center cursor-pointer group">
+                        <div className="w-12 h-12 rounded-full bg-[#0F2847] border border-[#1E3A5F] group-hover:border-primary flex items-center justify-center transition-colors">
+                          <obj.icon className="w-5 h-5 text-primary" />
                         </div>
                         <span className="text-white text-xs font-medium leading-tight">{obj.title}</span>
                       </div>
