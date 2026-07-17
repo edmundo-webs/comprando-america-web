@@ -175,7 +175,7 @@ const RUTAS = [
       "Tengo capital construido en México o Latinoamérica y quiero protegerlo, diversificarlo y hacerlo crecer en dólares con estructura real.",
     orienta:
       "Bienes raíces, fondos de inversión, compra de empresas y estructuras patrimoniales en Estados Unidos con criterio y acompañamiento.",
-    href: "/oportunidades-de-inversion-en-estados-unidos",
+    href: "https://comprandoamerica.com/arquitectura-patrimonial",
   },
   {
     id: "expansion",
