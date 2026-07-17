@@ -723,7 +723,7 @@ export default function Home() {
                   gobierno y compra de propiedades. Cada uno responde a un
                   perfil diferente.
                 </p>
-                <a href="/oportunidades-de-inversion-en-estados-unidos">
+                <a href="https://comprandoamerica.com/arquitectura-patrimonial">
                   <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/20">
                     Conocer Arquitectura Patrimonial{" "}
                     <ArrowRight className="w-4 h-4" />
