@@ -68,9 +68,9 @@ const expertos = [
 
 const libros = [
   { title: "The E-Myth Revisited", author: "Michael E. Gerber", note: "La diferencia entre trabajar en tu negocio y trabajar para tu negocio." },
-  { title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", note: "La mentalidad que te enseñan vs. la que te hace libre financieramente." },
-  { title: "Never Split the Difference", author: "Chris Voss", note: "Negociación real. No teoría. Técnicas de un ex-negociador del FBI." },
-  { title: "The Millionaire Next Door", author: "Thomas Stanley", note: "Cómo realmente se construye patrimonio. Sin atajos." },
+  { title: "Blue Ocean Strategy", author: "W. Chan Kim & Renée Mauborgne", note: "Cómo crear mercados sin competencia en lugar de pelear por los mismos clientes." },
+  { title: "This Is Marketing", author: "Seth Godin", note: "El marketing no es ruido. Es encontrar a las personas correctas y servirles mejor." },
+  { title: "Purple Cow", author: "Seth Godin", note: "Si tu negocio no es remarkable, es invisible. La mediocridad no se recuerda." },
 ];
 
 /* ════════════════════════════════════════════════════════ */
