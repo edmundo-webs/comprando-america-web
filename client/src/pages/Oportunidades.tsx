@@ -465,119 +465,126 @@ export default function Oportunidades() {
       ═══════════════════════════════════════════════ */}
       <section className="bg-white py-24 md:py-32">
         <div className="container">
+          {/* ── Tarjeta contenedor: Grupo Empresarial de Edmundo ── */}
           <FadeIn>
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Grupo Empresarial de Edmundo</p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
-                La mayoría de las oportunidades se presentan dentro de el Grupo Empresarial de Edmundo
-              </h2>
-              <p className="text-[#4B5563] text-lg leading-relaxed mb-10">
-                La comunidad es el espacio donde se presentan oportunidades, se discuten con expertos y se toman decisiones con respaldo profesional.
-              </p>
-              <a href="/membresia">
-                <Button className="bg-primary hover:bg-blue-600 text-white px-10 py-6 text-base gap-2 shadow-lg shadow-blue-600/20">
-                  Conocer el Grupo Empresarial de Edmundo <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
-            </div>
-          </FadeIn>
+            <div className="max-w-5xl mx-auto">
+              <div className="relative bg-[#0B1F3A] border-2 border-primary/40 rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/40">
+                {/* Barra superior */}
+                <div className="h-1 w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <FadeIn>
-              <div className="relative bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full group hover:border-blue-500/40 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500/60 to-transparent" />
-
-                <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/10 border border-blue-500/25 text-blue-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Activa
+                {/* Cabecera del grupo */}
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 px-8 pt-8 pb-6 border-b border-primary/20">
+                  <div>
+                    <p className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-2 font-mono">
+                      Grupo Empresarial de Edmundo
+                    </p>
+                    <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                      Las oportunidades activas se presentan dentro del Grupo
+                    </h2>
+                    <p className="text-slate-400 text-sm mt-2 max-w-xl">
+                      La comunidad donde se presentan oportunidades, se discuten con expertos y se toman decisiones con respaldo profesional.
+                    </p>
                   </div>
-                  <span className="text-slate-500 text-xs font-mono">DEAL #001</span>
-                </div>
-
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 bg-blue-500/10 border border-blue-500/20">
-                  <Building2 className="w-7 h-7 text-blue-400" />
-                </div>
-
-                <h3 className="text-2xl text-white font-bold mb-2">Fondo de bienes raíces en Estados Unidos</h3>
-                <p className="text-slate-400 text-sm mb-6 leading-relaxed">
-                  Acceso a portafolio diversificado de propiedades en mercados de alta demanda con estructura legal completa.
-                </p>
-
-                <div className="space-y-3 mb-8">
-                  {[
-                    "Inversión desde $100,000 USD",
-                    "Estructura profesional completa — LLC + fiscal",
-                    "Enfoque patrimonial a largo plazo en dólares",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-primary" />
-                      <p className="text-slate-300 text-sm">{item}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <a href="/bienes-raices-en-usa">
-                  <Button className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-5 font-semibold gap-2">
-                    Ver detalles <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.15}>
-              <div className="relative bg-[#0B1F3A] border border-[#1E3A5F] rounded-2xl p-8 h-full group hover:border-blue-500/40 transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-blue-500/60 to-transparent" />
-
-                <div className="flex items-center justify-between mb-6">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/10 border border-blue-500/25 text-blue-400">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Activa
-                  </div>
-                  <span className="text-slate-500 text-xs font-mono">DEAL #002</span>
-                </div>
-
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 bg-blue-500/10 border border-blue-500/20">
-                  <Globe className="w-7 h-7 text-blue-400" />
-                </div>
-
-                <h3 className="text-2xl text-white font-bold mb-2">Inversión + Ruta migratoria</h3>
-                <p className="text-slate-400 text-sm mb-6 leading-relaxed">
-                  Para quienes tienen $300,000 USD o más y quieren migrar a Estados Unidos con una estructura de inversión real.
-                </p>
-
-                <div className="space-y-3 mb-8">
-                  {[
-                    "Capital desde $300,000 USD disponible",
-                    "Estrategia de visa E-2 integrada",
-                    "Inversión productiva + residencia legal",
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-primary" />
-                      <p className="text-slate-300 text-sm">{item}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <Button
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el modelo de Inversión + Ruta migratoria.")}
-                  className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-5 font-semibold gap-2"
-                >
-                  Evaluar si encaja conmigo <ArrowRight className="w-4 h-4" />
-                </Button>
-              </div>
-            </FadeIn>
-          </div>
-
-          <FadeIn delay={0.3}>
-            <div className="max-w-4xl mx-auto mt-6">
-              <div className="rounded-2xl p-6 text-center bg-[#F9FAFB] border border-dashed border-gray-200">
-                <Zap className="w-6 h-6 text-gray-400 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">
-                  Nuevas oportunidades se presentan mensualmente en el{" "}
-                  <a href="/grupo-empresarial-edmundo" className="font-semibold underline underline-offset-2 text-primary">
-                    Grupo Empresarial de Edmundo
+                  <a href="/grupo-empresarial-edmundo" className="flex-shrink-0">
+                    <Button className="bg-primary hover:bg-blue-600 text-white px-7 py-5 text-sm gap-2 rounded-full font-semibold shadow-lg shadow-blue-600/25 whitespace-nowrap">
+                      Conocer el Grupo <ArrowRight className="w-4 h-4" />
+                    </Button>
                   </a>
-                  . El acceso es exclusivo para miembros.
-                </p>
+                </div>
+
+                {/* Deal cards adentro */}
+                <div className="grid md:grid-cols-2 gap-6 p-6">
+                  {/* DEAL #001 */}
+                  <div className="relative bg-[#091A30] border border-[#1E3A5F] rounded-2xl p-7 group hover:border-blue-500/40 transition-all duration-300 overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/10 border border-blue-500/25 text-blue-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Activa
+                      </div>
+                      <span className="text-slate-500 text-xs font-mono">DEAL #001</span>
+                    </div>
+
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 bg-blue-500/10 border border-blue-500/20">
+                      <Building2 className="w-6 h-6 text-blue-400" />
+                    </div>
+
+                    <h3 className="text-xl text-white font-bold mb-2">Fondo de bienes raíces en Estados Unidos</h3>
+                    <p className="text-slate-400 text-sm mb-5 leading-relaxed">
+                      Acceso a portafolio diversificado de propiedades en mercados de alta demanda con estructura legal completa.
+                    </p>
+
+                    <div className="space-y-2.5 mb-6">
+                      {[
+                        "Inversión desde $100,000 USD",
+                        "Estructura profesional completa — LLC + fiscal",
+                        "Enfoque patrimonial a largo plazo en dólares",
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-2.5">
+                          <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-primary" />
+                          <p className="text-slate-300 text-sm">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <a href="/bienes-raices-en-usa">
+                      <Button className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-4 font-semibold gap-2 text-sm">
+                        Ver detalles <ArrowRight className="w-4 h-4" />
+                      </Button>
+                    </a>
+                  </div>
+
+                  {/* DEAL #002 */}
+                  <div className="relative bg-[#091A30] border border-[#1E3A5F] rounded-2xl p-7 group hover:border-blue-500/40 transition-all duration-300 overflow-hidden">
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent" />
+
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-500/10 border border-blue-500/25 text-blue-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Activa
+                      </div>
+                      <span className="text-slate-500 text-xs font-mono">DEAL #002</span>
+                    </div>
+
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 bg-blue-500/10 border border-blue-500/20">
+                      <Globe className="w-6 h-6 text-blue-400" />
+                    </div>
+
+                    <h3 className="text-xl text-white font-bold mb-2">Inversión + Ruta migratoria</h3>
+                    <p className="text-slate-400 text-sm mb-5 leading-relaxed">
+                      Para quienes tienen $300,000 USD o más y quieren migrar a Estados Unidos con una estructura de inversión real.
+                    </p>
+
+                    <div className="space-y-2.5 mb-6">
+                      {[
+                        "Capital desde $300,000 USD disponible",
+                        "Estrategia de visa E-2 integrada",
+                        "Inversión productiva + residencia legal",
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-2.5">
+                          <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-primary" />
+                          <p className="text-slate-300 text-sm">{item}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button
+                      onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, me interesa el modelo de Inversión + Ruta migratoria.")}
+                      className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-4 font-semibold gap-2 text-sm"
+                    >
+                      Evaluar si encaja conmigo <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Footer del grupo */}
+                <div className="px-6 pb-6">
+                  <div className="rounded-xl p-4 text-center bg-primary/5 border border-primary/15">
+                    <Zap className="w-5 h-5 text-primary mx-auto mb-1.5" />
+                    <p className="text-slate-400 text-sm">
+                      Nuevas oportunidades se presentan mensualmente. El acceso es exclusivo para miembros del Grupo.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </FadeIn>
