@@ -30,6 +30,13 @@ export async function getDb() {
   return _db;
 }
 
+// Underlying mysql2 pool for raw DDL and INFORMATION_SCHEMA lookups.
+// getDb() must be called at least once first to lazily open the connection.
+export async function getDbPool(): Promise<mysql.Pool | null> {
+  await getDb();
+  return _pool;
+}
+
 export async function upsertUser(user: InsertUser): Promise<void> {
   if (!user.openId) {
     throw new Error("User openId is required for upsert");

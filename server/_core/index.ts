@@ -13,6 +13,7 @@ import { adminRouter } from "../routes/admin";
 import { botMetaMiddleware } from "../routes/bot-meta";
 import { seoRouter } from "../routes/seo";
 import { trackRouter } from "../routes/track";
+import { ensureAnalyticsTables } from "./ensureAnalyticsTables";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -193,6 +194,11 @@ async function startServer() {
     // Start the in-process news pipeline scheduler. No-op in dev unless
     // ENABLE_NEWS_CRON=true; respects DISABLE_NEWS_CRON=true to opt out.
     startScheduler();
+    // Ensure the analytics tables exist. Idempotent; safe on every boot.
+    // Runs in the background so it never blocks the listen callback.
+    ensureAnalyticsTables().catch((err) =>
+      console.error("[analytics-bootstrap] error:", err?.message)
+    );
   });
 }
 
