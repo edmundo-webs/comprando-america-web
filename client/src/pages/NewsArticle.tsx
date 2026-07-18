@@ -6,6 +6,7 @@ import { useParams, Link } from "wouter";
 import { Streamdown } from "streamdown";
 import { Button } from "@/components/ui/button";
 import { cldSrcSet, cldUrl } from "@/lib/cloudinary";
+import { trackedRedirect } from "@/lib/tracking";
 import {
   ArrowLeft, Calendar, User, ExternalLink, ArrowRight,
   Plane, TrendingUp, Building2, Briefcase, BarChart3, Clock
@@ -285,7 +286,15 @@ export default function NewsArticle() {
                         {cta.buttonText} <ArrowRight className="w-4 h-4" />
                       </Button>
                     </Link>
-                    <a href="https://wa.me/14696134741?text=Hola%2C%20me%20interesa%20obtener%20m%C3%A1s%20informaci%C3%B3n" target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={trackedRedirect(
+                        "https://wa.me/14696134741?text=Hola%2C%20me%20interesa%20obtener%20m%C3%A1s%20informaci%C3%B3n",
+                        "news-article-whatsapp",
+                        "/news"
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Button variant="outline" className="border-[#2A4A6B] text-white hover:bg-[#1E3A5F] px-6 py-5 text-base">
                         Solicitar Información
                       </Button>

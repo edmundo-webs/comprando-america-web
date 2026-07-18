@@ -233,7 +233,7 @@ export default function Membresia() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE, "membresia-hero-whatsapp", "/membresia")}
                   className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25"
                 >
                   Solicitar Acceso <ArrowRight className="w-4 h-4" />
@@ -486,7 +486,7 @@ export default function Membresia() {
                   </Accordion>
 
                   <Button
-                    onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+                    onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE, `membresia-plan-${plan.name?.toLowerCase?.().replace(/\s+/g, "-") ?? "whatsapp"}`, "/membresia")}
                     className={`w-full py-3 font-semibold gap-2 text-sm ${
                       plan.popular
                         ? "bg-primary hover:bg-blue-600 text-white shadow-lg shadow-blue-600/20"
@@ -662,7 +662,7 @@ export default function Membresia() {
               <p className="text-slate-500 text-sm mb-10">No es pagar. Es evaluar si perteneces al grupo.</p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Button
-                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE)}
+                  onClick={() => openWhatsApp(WHATSAPP_PHONE, WHATSAPP_MESSAGE, "membresia-bottom-whatsapp", "/membresia")}
                   className="bg-primary hover:bg-blue-600 text-white font-semibold px-10 py-6 text-lg gap-2 shadow-lg shadow-blue-600/25"
                 >
                   Solicitar Evaluación <ArrowRight className="w-5 h-5" />

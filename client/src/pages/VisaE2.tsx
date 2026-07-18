@@ -85,7 +85,7 @@ export default function VisaE2() {
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
+                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG, "visa-e2-hero-whatsapp", "/visa-e2")} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
                   Hablar con un asesor
                 </Button>
               </div>
@@ -412,7 +412,7 @@ export default function VisaE2() {
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
+                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG, "visa-e2-bottom-whatsapp", "/visa-e2")} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
                   Hablar con un asesor
                 </Button>
               </div>

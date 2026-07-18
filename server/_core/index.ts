@@ -12,6 +12,7 @@ import { startScheduler } from "../cron/scheduler";
 import { adminRouter } from "../routes/admin";
 import { botMetaMiddleware } from "../routes/bot-meta";
 import { seoRouter } from "../routes/seo";
+import { trackRouter } from "../routes/track";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -47,6 +48,11 @@ async function startServer() {
   // Admin REST API for the external editor agent (OpenClaw / Yael).
   // Mounted before the catch-all so it owns /api/admin/*.
   app.use("/api/admin", adminRouter);
+
+  // Public internal-analytics endpoints (no auth): POST /api/track/diagnostic,
+  // POST /api/track/cta, GET /api/track/redirect. Writes only — reads go
+  // through /api/admin/analytics/* which stays token-gated.
+  app.use(trackRouter);
 
   // Dynamic SEO endpoints (sitemap.xml, sitemap_news.xml, rss.xml).
   // Mounted at root BEFORE express.static so they override any prebuilt

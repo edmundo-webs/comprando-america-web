@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { sendDiagnostic, trackedRedirect } from "@/lib/tracking";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 type ProfileKey = "explorador" | "constructor" | "patrimonial" | null;
@@ -560,7 +561,15 @@ function ComparisonTable() {
   );
 }
 
-function WhatsAppWidget({ selectedProfile }: { selectedProfile: Profile | null }) {
+function WhatsAppWidget({
+  selectedProfile,
+  wrapWhatsApp,
+  onWhatsAppClick,
+}: {
+  selectedProfile: Profile | null;
+  wrapWhatsApp: (rawUrl: string, ctaId: string) => string;
+  onWhatsAppClick: () => void;
+}) {
   const profileLabel = selectedProfile?.title ?? "inversor";
   const message = encodeURIComponent(
     `Hola, mi perfil es ${profileLabel}. ¿Podemos validar mi capital para el plan Investor Entry?`
@@ -569,7 +578,8 @@ function WhatsAppWidget({ selectedProfile }: { selectedProfile: Profile | null }
 
   return (
     <a
-      href={whatsappUrl}
+      href={wrapWhatsApp(whatsappUrl, "diag-floating-whatsapp")}
+      onClick={onWhatsAppClick}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[#25D366] text-white font-bold text-sm px-4 py-3 rounded-2xl shadow-2xl hover:bg-[#20bd5a] transition-all duration-300 hover:scale-105 group"
@@ -597,8 +607,37 @@ function WhatsAppWidget({ selectedProfile }: { selectedProfile: Profile | null }
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function DiagnosticoPage() {
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
-  const [, setCapital] = useState(50000);
+  const [capital, setCapital] = useState(50000);
   const [scrolled, setScrolled] = useState(false);
+
+  // Persist a "diagnostic started" event once when a profile is picked;
+  // and again as "completed" if the user clicks any WhatsApp CTA from
+  // this page (see `whatsappHref` below).
+  useEffect(() => {
+    if (!selectedProfile) return;
+    sendDiagnostic({
+      profile: selectedProfile.key,
+      responses: { capital, range: selectedProfile.range },
+      completed: false,
+    });
+  }, [selectedProfile, capital]);
+
+  // Turn a raw wa.me URL into one that goes through /api/track/redirect.
+  // Pure — no side effects, safe to call inside `href={...}`.
+  const wrapWhatsApp = (rawUrl: string, ctaId: string) =>
+    trackedRedirect(rawUrl, ctaId, "/diagnostico");
+
+  // Fire on the actual click. Marks the diagnostic as "completed" (a
+  // WhatsApp click = conversion intent). The <a target="_blank"> still
+  // navigates on its own — this just persists the beacon first.
+  const onWhatsAppClick = () => {
+    if (!selectedProfile) return;
+    sendDiagnostic({
+      profile: selectedProfile.key,
+      responses: { capital, range: selectedProfile.range },
+      completed: true,
+    });
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -639,7 +678,8 @@ export default function DiagnosticoPage() {
               Roadmap
             </a>
             <a
-              href="https://wa.me/17862784421"
+              href={wrapWhatsApp("https://wa.me/17862784421", "diag-nav-whatsapp")}
+              onClick={onWhatsAppClick}
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-xl text-white text-xs font-bold transition-all duration-200 hover:opacity-90"
@@ -650,7 +690,8 @@ export default function DiagnosticoPage() {
           </nav>
 
           <a
-            href="https://wa.me/17862784421"
+            href={wrapWhatsApp("https://wa.me/17862784421", "diag-nav-whatsapp-mobile")}
+            onClick={onWhatsAppClick}
             target="_blank"
             rel="noopener noreferrer"
             className="md:hidden px-3 py-1.5 rounded-lg text-white text-xs font-bold"
@@ -795,11 +836,15 @@ export default function DiagnosticoPage() {
           </p>
 
           <a
-            href={`https://wa.me/17862784421?text=${encodeURIComponent(
-              selectedProfile
-                ? `Hola, mi perfil es ${selectedProfile.title}. ¿Podemos validar mi capital para el plan Investor Entry?`
-                : "Hola, quiero conocer más sobre el plan Investor Entry."
-            )}`}
+            href={wrapWhatsApp(
+              `https://wa.me/17862784421?text=${encodeURIComponent(
+                selectedProfile
+                  ? `Hola, mi perfil es ${selectedProfile.title}. ¿Podemos validar mi capital para el plan Investor Entry?`
+                  : "Hola, quiero conocer más sobre el plan Investor Entry."
+              )}`,
+              "diag-bottom-whatsapp"
+            )}
+            onClick={onWhatsAppClick}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg transition-all duration-300 hover:opacity-90 hover:scale-105 shadow-lg mb-12"
@@ -840,7 +885,8 @@ export default function DiagnosticoPage() {
               Inicio
             </a>
             <a
-              href="https://wa.me/17862784421"
+              href={wrapWhatsApp("https://wa.me/17862784421", "diag-footer-whatsapp")}
+              onClick={onWhatsAppClick}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-white/60 transition-colors"
@@ -852,7 +898,11 @@ export default function DiagnosticoPage() {
       </footer>
 
       {/* ── Sticky WhatsApp ── */}
-      <WhatsAppWidget selectedProfile={selectedProfile} />
+      <WhatsAppWidget
+        selectedProfile={selectedProfile}
+        wrapWhatsApp={wrapWhatsApp}
+        onWhatsAppClick={onWhatsAppClick}
+      />
 
       {/* Range input style override */}
       <style>{`

@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { sendCtaClick } from "@/lib/tracking";
 
 /* ─── Brand ─── */
 const NAVY = "#0B1F3A";
@@ -887,7 +888,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
       "",
       "Me gustaría agendar un diagnóstico estratégico.",
     ].join("\n");
-    window.open(`https://wa.me/523346766178?text=${encodeURIComponent(msg)}`, "_blank");
+    const waUrl = `https://wa.me/523346766178?text=${encodeURIComponent(msg)}`;
+    sendCtaClick({ cta: "nuevohome-gps-whatsapp", location: "/nuevo-home", destination: waUrl });
+    window.open(waUrl, "_blank");
   }
 
   return (

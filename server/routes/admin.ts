@@ -23,9 +23,9 @@
  *   POST   /run-pipeline          Trigger the full ingest -> publish chain now
  *   POST   /seed-feeds            (Re)seed ca_news_feeds from sources.ts
  */
-import { and, desc, eq, like, type SQL } from "drizzle-orm";
+import { and, desc, eq, gte, like, sql, type SQL } from "drizzle-orm";
 import { Router, type NextFunction, type Request, type Response } from "express";
-import { blogPosts, newsArticles, newsFeeds, socialPosts } from "../../drizzle/schema";
+import { blogPosts, ctaClicks, diagnosticResponses, leads, newsArticles, newsFeeds, socialPosts } from "../../drizzle/schema";
 import { ENV } from "../_core/env";
 import { regenerateImageNow, rewriteArticleNow, runStageNow, triggerPipelineNow } from "../cron/scheduler";
 import { getDb } from "../db";
@@ -824,6 +824,163 @@ adminRouter.get("/social/posts/:id", async (req, res) => {
     res.json({ ...r, brand, metricoolId: realId });
   } catch (err: any) {
     console.error("[admin] social/posts get error:", err?.message);
+    res.status(500).json({ error: err?.message || "Internal error" });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// INTERNAL ANALYTICS — read endpoints for the admin dashboard
+// ═══════════════════════════════════════════════════════════════════
+
+// Small helper: rows created since N days ago.
+function sinceDays(n: number): Date {
+  return new Date(Date.now() - n * 24 * 60 * 60 * 1000);
+}
+
+// GET /api/admin/analytics/summary?days=30
+// Returns totals + per-period counts to power the dashboard.
+adminRouter.get("/analytics/summary", async (req, res) => {
+  try {
+    const days = Math.min(asInt(req.query.days, 30) ?? 30, 365);
+    const since = sinceDays(days);
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    // Total-since counts + all-time counts for context.
+    const [leadsTotal] = await db.select({ n: sql<number>`count(*)` }).from(leads);
+    const [leadsRecent] = await db
+      .select({ n: sql<number>`count(*)` })
+      .from(leads)
+      .where(gte(leads.createdAt, since));
+
+    const [diagsTotal] = await db.select({ n: sql<number>`count(*)` }).from(diagnosticResponses);
+    const [diagsRecent] = await db
+      .select({ n: sql<number>`count(*)` })
+      .from(diagnosticResponses)
+      .where(gte(diagnosticResponses.createdAt, since));
+    const [diagsCompleted] = await db
+      .select({ n: sql<number>`count(*)` })
+      .from(diagnosticResponses)
+      .where(and(gte(diagnosticResponses.createdAt, since), eq(diagnosticResponses.completed, "true")));
+
+    const [clicksTotal] = await db.select({ n: sql<number>`count(*)` }).from(ctaClicks);
+    const [clicksRecent] = await db
+      .select({ n: sql<number>`count(*)` })
+      .from(ctaClicks)
+      .where(gte(ctaClicks.createdAt, since));
+
+    // Breakdown per profile (last N days)
+    const profileBreakdown = await db
+      .select({ profile: diagnosticResponses.profile, n: sql<number>`count(*)` })
+      .from(diagnosticResponses)
+      .where(gte(diagnosticResponses.createdAt, since))
+      .groupBy(diagnosticResponses.profile);
+
+    // Top CTAs (last N days)
+    const topCtas = await db
+      .select({ cta: ctaClicks.cta, n: sql<number>`count(*)` })
+      .from(ctaClicks)
+      .where(gte(ctaClicks.createdAt, since))
+      .groupBy(ctaClicks.cta)
+      .orderBy(desc(sql`count(*)`))
+      .limit(10);
+
+    // Top locations (where clicks happen from)
+    const topLocations = await db
+      .select({ location: ctaClicks.location, n: sql<number>`count(*)` })
+      .from(ctaClicks)
+      .where(gte(ctaClicks.createdAt, since))
+      .groupBy(ctaClicks.location)
+      .orderBy(desc(sql`count(*)`))
+      .limit(10);
+
+    // Lead sources
+    const leadSources = await db
+      .select({ fuente: leads.fuente, n: sql<number>`count(*)` })
+      .from(leads)
+      .where(gte(leads.createdAt, since))
+      .groupBy(leads.fuente)
+      .orderBy(desc(sql`count(*)`))
+      .limit(10);
+
+    res.json({
+      windowDays: days,
+      since: since.toISOString(),
+      leads: {
+        total: Number((leadsTotal as any)?.n ?? 0),
+        window: Number((leadsRecent as any)?.n ?? 0),
+        bySource: leadSources.map((r: any) => ({ fuente: r.fuente, count: Number(r.n) })),
+      },
+      diagnostics: {
+        total: Number((diagsTotal as any)?.n ?? 0),
+        window: Number((diagsRecent as any)?.n ?? 0),
+        completedWindow: Number((diagsCompleted as any)?.n ?? 0),
+        completionRate:
+          Number((diagsRecent as any)?.n) > 0
+            ? Number((diagsCompleted as any)?.n) / Number((diagsRecent as any)?.n)
+            : 0,
+        byProfile: profileBreakdown.map((r: any) => ({ profile: r.profile, count: Number(r.n) })),
+      },
+      ctaClicks: {
+        total: Number((clicksTotal as any)?.n ?? 0),
+        window: Number((clicksRecent as any)?.n ?? 0),
+        topCtas: topCtas.map((r: any) => ({ cta: r.cta, count: Number(r.n) })),
+        topLocations: topLocations.map((r: any) => ({ location: r.location, count: Number(r.n) })),
+      },
+    });
+  } catch (err: any) {
+    console.error("[admin] analytics/summary error:", err?.message);
+    res.status(500).json({ error: err?.message || "Internal error" });
+  }
+});
+
+// GET /api/admin/analytics/diagnostics?limit=100&profile=explorador
+// Latest diagnostic completions, most recent first.
+adminRouter.get("/analytics/diagnostics", async (req, res) => {
+  try {
+    const limit = Math.min(asInt(req.query.limit, 50) ?? 50, 500);
+    const profile = typeof req.query.profile === "string" ? req.query.profile : undefined;
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    const conditions: SQL[] = [];
+    if (profile) conditions.push(eq(diagnosticResponses.profile, profile));
+
+    const rows = await db
+      .select()
+      .from(diagnosticResponses)
+      .where(conditions.length ? and(...conditions) : undefined)
+      .orderBy(desc(diagnosticResponses.createdAt))
+      .limit(limit);
+
+    res.json({ count: rows.length, items: rows });
+  } catch (err: any) {
+    console.error("[admin] analytics/diagnostics error:", err?.message);
+    res.status(500).json({ error: err?.message || "Internal error" });
+  }
+});
+
+// GET /api/admin/analytics/cta-clicks?limit=100&cta=hero-whatsapp
+adminRouter.get("/analytics/cta-clicks", async (req, res) => {
+  try {
+    const limit = Math.min(asInt(req.query.limit, 100) ?? 100, 500);
+    const cta = typeof req.query.cta === "string" ? req.query.cta : undefined;
+    const db = await getDb();
+    if (!db) return res.status(503).json({ error: "Database not available" });
+
+    const conditions: SQL[] = [];
+    if (cta) conditions.push(eq(ctaClicks.cta, cta));
+
+    const rows = await db
+      .select()
+      .from(ctaClicks)
+      .where(conditions.length ? and(...conditions) : undefined)
+      .orderBy(desc(ctaClicks.createdAt))
+      .limit(limit);
+
+    res.json({ count: rows.length, items: rows });
+  } catch (err: any) {
+    console.error("[admin] analytics/cta-clicks error:", err?.message);
     res.status(500).json({ error: err?.message || "Internal error" });
   }
 });
