@@ -12,6 +12,7 @@ import { NOT_ADMIN_ERR_MSG } from "@shared/const";
 import bcrypt from "bcryptjs";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
+import { captureAudienceContact, unsubscribeByEmail } from "./marketing";
 
 // Helper: create CMS session cookie using the SDK's signSession
 // The SDK verifySession expects { openId, appId, name } in the JWT payload
@@ -365,6 +366,16 @@ export const appRouter = router({
           throw new TRPCError({ code: "CONFLICT", message: "Este email ya esta suscrito" });
         }
         await db.createNewsSubscriber(input.email, input.name, input.categories);
+        // Base de audiencias compartida (3 sitios) + correo de doble opt-in
+        // vía Resend. Fire-and-forget: nunca bloquea la respuesta al usuario.
+        captureAudienceContact({
+          email: input.email,
+          name: input.name,
+          form: "newsletter",
+          eventType: "subscribe",
+          interests: input.categories,
+          sendVerification: true,
+        }).catch(() => {});
         return { success: true, message: "Verifica tu email para confirmar la suscripcion" };
       }),
     // Public: verify subscription
@@ -385,6 +396,8 @@ export const appRouter = router({
         if (!subscriber) {
           throw new TRPCError({ code: "NOT_FOUND", message: "Token de desuscripcion invalido" });
         }
+        // Propaga la baja a la base de audiencias compartida.
+        unsubscribeByEmail(subscriber.email, "newsletter").catch(() => {});
         return { success: true, message: "Te has desuscrito correctamente" };
       }),
   }),
@@ -528,9 +541,23 @@ export const appRouter = router({
         whatsapp: z.string().min(6, "WhatsApp requerido"),
         email: z.string().email("Email inválido"),
         fuente: z.string().default("general"),
+        // Campos extra del formulario (interés, etapa, capacidad, etc.);
+        // no van a ca_leads pero sí al payload de la base compartida.
+        detalles: z.record(z.string(), z.unknown()).optional(),
       }))
       .mutation(async ({ input }) => {
-        await db.createLead(input);
+        const { detalles, ...lead } = input;
+        await db.createLead(lead);
+        // Base de audiencias compartida: el lead entra marcado con su
+        // fuente para poder segmentar envíos (no dispara doble opt-in).
+        captureAudienceContact({
+          email: input.email,
+          name: input.nombreCompleto,
+          whatsapp: input.whatsapp,
+          form: input.fuente,
+          eventType: "lead",
+          payload: input,
+        }).catch(() => {});
         return { success: true };
       }),
     // Protected: list all leads (CMS only)

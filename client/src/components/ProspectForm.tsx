@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
 interface ProspectFormProps {
   variant?: "dark" | "light";
@@ -23,16 +24,37 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
     capacidad: "",
   });
 
+  const createLead = trpc.leads.create.useMutation({
+    onSuccess: () => {
+      toast.success("¡Gracias! Nos pondremos en contacto contigo pronto.");
+      setFormData({
+        nombre: "", apellido: "", email: "", telefono: "",
+        pais: "México", interes: [], etapa: "", tipoInversionista: "", capacidad: "",
+      });
+    },
+    onError: () => {
+      toast.error("No pudimos enviar tu solicitud. Intenta de nuevo.");
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.nombre || !formData.email) {
+    if (!formData.nombre || !formData.email || !formData.telefono) {
       toast.error("Por favor completa los campos requeridos");
       return;
     }
-    toast.success("¡Gracias! Nos pondremos en contacto contigo pronto.");
-    setFormData({
-      nombre: "", apellido: "", email: "", telefono: "",
-      pais: "México", interes: [], etapa: "", tipoInversionista: "", capacidad: "",
+    createLead.mutate({
+      nombreCompleto: `${formData.nombre} ${formData.apellido}`.trim(),
+      whatsapp: formData.telefono,
+      email: formData.email,
+      fuente: "prospecto",
+      detalles: {
+        pais: formData.pais,
+        interes: formData.interes,
+        etapa: formData.etapa,
+        tipoInversionista: formData.tipoInversionista,
+        capacidad: formData.capacidad,
+      },
     });
   };
 
@@ -106,13 +128,14 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
             />
           </div>
           <div>
-            <Label className="text-white/70 text-sm mb-1.5 block">Teléfono</Label>
+            <Label className="text-white/70 text-sm mb-1.5 block">Teléfono *</Label>
             <Input
               type="tel"
               value={formData.telefono}
               onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
               className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary"
               placeholder="+52 123 456 7890"
+              required
             />
           </div>
         </div>
@@ -198,10 +221,11 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
 
         <Button
           type="submit"
+          disabled={createLead.isPending}
           className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 text-base gap-2"
         >
           <Send className="w-4 h-4" />
-          Enviar Solicitud
+          {createLead.isPending ? "Enviando..." : "Enviar Solicitud"}
         </Button>
       </form>
     </div>

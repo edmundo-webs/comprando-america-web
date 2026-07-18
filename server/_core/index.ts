@@ -14,6 +14,7 @@ import { botMetaMiddleware } from "../routes/bot-meta";
 import { seoRouter } from "../routes/seo";
 import { trackRouter } from "../routes/track";
 import { ensureAnalyticsTables } from "./ensureAnalyticsTables";
+import { ensureMarketingTables, marketingRouter } from "../marketing";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -54,6 +55,11 @@ async function startServer() {
   // POST /api/track/cta, GET /api/track/redirect. Writes only — reads go
   // through /api/admin/analytics/* which stays token-gated.
   app.use(trackRouter);
+
+  // Base de audiencias compartida entre los 3 sitios: links de
+  // verificación (doble opt-in) y baja que llegan por correo.
+  // GET /api/marketing/verify, GET /api/marketing/unsubscribe.
+  app.use(marketingRouter());
 
   // Dynamic SEO endpoints (sitemap.xml, sitemap_news.xml, rss.xml).
   // Mounted at root BEFORE express.static so they override any prebuilt
@@ -198,6 +204,10 @@ async function startServer() {
     // Runs in the background so it never blocks the listen callback.
     ensureAnalyticsTables().catch((err) =>
       console.error("[analytics-bootstrap] error:", err?.message)
+    );
+    // Ensure the shared marketing/audience tables exist (TiDB compartida).
+    ensureMarketingTables().catch((err) =>
+      console.error("[marketing-bootstrap] error:", err?.message)
     );
   });
 }

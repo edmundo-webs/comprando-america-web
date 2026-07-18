@@ -13,6 +13,7 @@
 import { Router } from "express";
 import { ctaClicks, diagnosticResponses } from "../../drizzle/schema";
 import { getDb } from "../db";
+import { captureAudienceContact } from "../marketing";
 
 export const trackRouter = Router();
 
@@ -50,6 +51,22 @@ trackRouter.post("/api/track/diagnostic", async (req, res) => {
       userAgent: MAX_STR(req.get("user-agent"), 500),
       completed: b.completed === true || b.completed === "true" ? "true" : "false",
     });
+    // Si el diagnóstico dejó email, entra a la base de audiencias
+    // compartida marcado como lead del formulario "diagnostico".
+    const email = MAX_STR(b.email, 320);
+    if (email && email.includes("@")) {
+      captureAudienceContact({
+        email,
+        name: MAX_STR(b.nombre, 255),
+        whatsapp: MAX_STR(b.whatsapp, 50),
+        form: "diagnostico",
+        eventType: "lead",
+        utmSource: MAX_STR(b.utmSource, 100),
+        utmMedium: MAX_STR(b.utmMedium, 100),
+        utmCampaign: MAX_STR(b.utmCampaign, 100),
+        payload: { profile: MAX_STR(b.profile, 32), completed: b.completed === true || b.completed === "true" },
+      }).catch(() => {});
+    }
     res.json({ ok: true });
   } catch (err: any) {
     console.error("[track/diagnostic] error:", err?.message);
