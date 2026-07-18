@@ -4,6 +4,9 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
 import { z } from "zod";
 import * as db from "./db";
+import { getDb } from "./db";
+import { ctaClicks, diagnosticResponses, leads as leadsTable } from "../drizzle/schema";
+import { desc, gte, sql as dsql } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 import { NOT_ADMIN_ERR_MSG } from "@shared/const";
 import bcrypt from "bcryptjs";
@@ -385,6 +388,137 @@ export const appRouter = router({
         return { success: true, message: "Te has desuscrito correctamente" };
       }),
   }),
+  // ═══ ANALYTICS ROUTER (internal, CMS-only) ═══
+  // Feeds the /admin/analytics page. Never expose without requireCmsAccess.
+  analytics: router({
+    summary: protectedProcedure
+      .input(z.object({ days: z.number().int().min(1).max(365).default(30) }))
+      .query(async ({ ctx, input }) => {
+        requireCmsAccess(ctx.user.role);
+        const database = await getDb();
+        if (!database) {
+          return {
+            days: input.days,
+            totals: { leads: 0, diagnostics: 0, completedDiagnostics: 0, ctaClicks: 0 },
+            leadsBySource: [] as { fuente: string; count: number }[],
+            diagnosticsByProfile: [] as { profile: string; count: number }[],
+            topCtas: [] as { cta: string; count: number }[],
+            topLocations: [] as { location: string; count: number }[],
+            dailyCtaClicks: [] as { day: string; count: number }[],
+          };
+        }
+        const since = new Date(Date.now() - input.days * 86400_000);
+
+        const [leadsCount] = await database
+          .select({ n: dsql<number>`count(*)` })
+          .from(leadsTable)
+          .where(gte(leadsTable.createdAt, since));
+        const [diagCount] = await database
+          .select({ n: dsql<number>`count(*)` })
+          .from(diagnosticResponses)
+          .where(gte(diagnosticResponses.createdAt, since));
+        const [diagCompleted] = await database
+          .select({ n: dsql<number>`count(*)` })
+          .from(diagnosticResponses)
+          .where(dsql`${diagnosticResponses.createdAt} >= ${since} AND ${diagnosticResponses.completed} = 'true'`);
+        const [ctaCount] = await database
+          .select({ n: dsql<number>`count(*)` })
+          .from(ctaClicks)
+          .where(gte(ctaClicks.createdAt, since));
+
+        const leadsBySource = await database
+          .select({ fuente: leadsTable.fuente, count: dsql<number>`count(*)` })
+          .from(leadsTable)
+          .where(gte(leadsTable.createdAt, since))
+          .groupBy(leadsTable.fuente)
+          .orderBy(dsql`count(*) desc`);
+
+        const diagnosticsByProfile = await database
+          .select({ profile: diagnosticResponses.profile, count: dsql<number>`count(*)` })
+          .from(diagnosticResponses)
+          .where(gte(diagnosticResponses.createdAt, since))
+          .groupBy(diagnosticResponses.profile)
+          .orderBy(dsql`count(*) desc`);
+
+        const topCtas = await database
+          .select({ cta: ctaClicks.cta, count: dsql<number>`count(*)` })
+          .from(ctaClicks)
+          .where(gte(ctaClicks.createdAt, since))
+          .groupBy(ctaClicks.cta)
+          .orderBy(dsql`count(*) desc`)
+          .limit(20);
+
+        const topLocations = await database
+          .select({ location: ctaClicks.location, count: dsql<number>`count(*)` })
+          .from(ctaClicks)
+          .where(gte(ctaClicks.createdAt, since))
+          .groupBy(ctaClicks.location)
+          .orderBy(dsql`count(*) desc`)
+          .limit(20);
+
+        const dailyCtaClicks = await database
+          .select({
+            day: dsql<string>`date(${ctaClicks.createdAt})`,
+            count: dsql<number>`count(*)`,
+          })
+          .from(ctaClicks)
+          .where(gte(ctaClicks.createdAt, since))
+          .groupBy(dsql`date(${ctaClicks.createdAt})`)
+          .orderBy(dsql`date(${ctaClicks.createdAt}) asc`);
+
+        return {
+          days: input.days,
+          totals: {
+            leads: Number(leadsCount?.n ?? 0),
+            diagnostics: Number(diagCount?.n ?? 0),
+            completedDiagnostics: Number(diagCompleted?.n ?? 0),
+            ctaClicks: Number(ctaCount?.n ?? 0),
+          },
+          leadsBySource: leadsBySource.map((r: any) => ({ fuente: r.fuente ?? "(sin)", count: Number(r.count) })),
+          diagnosticsByProfile: diagnosticsByProfile.map((r: any) => ({ profile: r.profile ?? "(sin)", count: Number(r.count) })),
+          topCtas: topCtas.map((r: any) => ({ cta: r.cta ?? "(sin)", count: Number(r.count) })),
+          topLocations: topLocations.map((r: any) => ({ location: r.location ?? "(sin)", count: Number(r.count) })),
+          dailyCtaClicks: dailyCtaClicks.map((r: any) => ({ day: String(r.day), count: Number(r.count) })),
+        };
+      }),
+
+    diagnostics: protectedProcedure
+      .input(z.object({
+        limit: z.number().int().min(1).max(500).default(100),
+        profile: z.string().optional(),
+      }))
+      .query(async ({ ctx, input }) => {
+        requireCmsAccess(ctx.user.role);
+        const database = await getDb();
+        if (!database) return [];
+        const rows = await database
+          .select()
+          .from(diagnosticResponses)
+          .where(input.profile ? dsql`${diagnosticResponses.profile} = ${input.profile}` : undefined)
+          .orderBy(desc(diagnosticResponses.createdAt))
+          .limit(input.limit);
+        return rows;
+      }),
+
+    ctaClicks: protectedProcedure
+      .input(z.object({
+        limit: z.number().int().min(1).max(500).default(100),
+        cta: z.string().optional(),
+      }))
+      .query(async ({ ctx, input }) => {
+        requireCmsAccess(ctx.user.role);
+        const database = await getDb();
+        if (!database) return [];
+        const rows = await database
+          .select()
+          .from(ctaClicks)
+          .where(input.cta ? dsql`${ctaClicks.cta} = ${input.cta}` : undefined)
+          .orderBy(desc(ctaClicks.createdAt))
+          .limit(input.limit);
+        return rows;
+      }),
+  }),
+
   // ═══ LEADS / CRM ROUTER ═══
   leads: router({
     // Public: register a new lead from a landing page form

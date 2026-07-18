@@ -212,3 +212,52 @@ export const leads = mysqlTable("ca_leads", {
 
 export type Lead = typeof leads.$inferSelect;
 export type InsertLead = typeof leads.$inferInsert;
+
+/**
+ * Diagnostic responses (GPS Estratégico)
+ * Captures every visitor's completion of /diagnostico. Fires from the
+ * client before redirecting to WhatsApp so we don't lose the lead.
+ * responses is a JSON blob with the full quiz answers; profile is the
+ * result the quiz gave (explorador / constructor / patrimonial).
+ */
+export const diagnosticResponses = mysqlTable("ca_diagnostic_responses", {
+  id: int("id").autoincrement().primaryKey(),
+  sessionId: varchar("sessionId", { length: 64 }),  // client-generated so we can dedupe
+  profile: varchar("profile", { length: 32 }),      // explorador | constructor | patrimonial
+  responses: text("responses"),                     // JSON of raw quiz answers
+  nombre: varchar("nombre", { length: 255 }),
+  whatsapp: varchar("whatsapp", { length: 50 }),
+  email: varchar("email", { length: 320 }),
+  utmSource: varchar("utmSource", { length: 100 }),
+  utmMedium: varchar("utmMedium", { length: 100 }),
+  utmCampaign: varchar("utmCampaign", { length: 100 }),
+  referrer: varchar("referrer", { length: 500 }),
+  userAgent: varchar("userAgent", { length: 500 }),
+  completed: varchar("completed", { length: 5 }).default("false").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type DiagnosticResponse = typeof diagnosticResponses.$inferSelect;
+export type InsertDiagnosticResponse = typeof diagnosticResponses.$inferInsert;
+
+/**
+ * CTA click tracking.
+ * Records every click on a tracked outbound link (WhatsApp, Calendly, etc.)
+ * BEFORE the actual redirect happens. Lets us measure how many users take
+ * action even though the conversion completes on an external service.
+ */
+export const ctaClicks = mysqlTable("ca_cta_clicks", {
+  id: int("id").autoincrement().primaryKey(),
+  cta: varchar("cta", { length: 64 }).notNull(),          // stable id: "hero-whatsapp", "diagnostico-cta", etc
+  location: varchar("location", { length: 128 }),          // page path where the click happened
+  destination: varchar("destination", { length: 1000 }),   // resolved target URL
+  sessionId: varchar("sessionId", { length: 64 }),
+  referrer: varchar("referrer", { length: 500 }),
+  userAgent: varchar("userAgent", { length: 500 }),
+  utmSource: varchar("utmSource", { length: 100 }),
+  utmCampaign: varchar("utmCampaign", { length: 100 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type CtaClick = typeof ctaClicks.$inferSelect;
+export type InsertCtaClick = typeof ctaClicks.$inferInsert;

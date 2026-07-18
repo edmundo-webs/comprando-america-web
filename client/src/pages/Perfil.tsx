@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowRight, Loader2, Building2, TrendingUp, Users } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { trackedRedirect } from "@/lib/tracking";
 
 // ─── Animated wrapper ───
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -851,7 +852,11 @@ export default function Perfil() {
                 {/* CTA */}
                 {scoringResult.link && (
                   <div className="text-center">
-                    <a href={scoringResult.link} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={trackedRedirect(scoringResult.link, `perfil-${scoringResult.readinessLevel?.toLowerCase?.().replace(/\s+/g, "-") ?? "cta"}`, "/perfil")}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Button className="bg-primary hover:bg-blue-600 text-white font-semibold px-8 py-6 text-base gap-2">
                         {scoringResult.cta} <ArrowRight className="w-4 h-4" />
                       </Button>

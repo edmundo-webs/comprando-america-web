@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { sendCtaClick } from "@/lib/tracking";
 
 /* ── Palette ── */
 const NAVY        = "#0B1F3A";
@@ -98,7 +99,9 @@ function DealCard({ d }: { d: Deal }) {
   const toggle = (t: Tab) => setTab(prev => prev === t ? null : t);
   const wa = () => {
     const msg = encodeURIComponent(`Hola, me interesa la Oportunidad #${d.id}: ${d.ubicacion} — ${usd(d.precio)}. ¿Está disponible?`);
-    window.open(`https://wa.me/523346766178?text=${msg}`, "_blank");
+    const waUrl = `https://wa.me/523346766178?text=${msg}`;
+    sendCtaClick({ cta: `propiedades-deal-${d.id}`, location: "/activos-disponibles", destination: waUrl });
+    window.open(waUrl, "_blank");
   };
 
   return (
@@ -253,7 +256,9 @@ function DealCard({ d }: { d: Deal }) {
 export default function Propiedades() {
   const handleContacto = () => {
     const msg = encodeURIComponent("Hola, me interesan las propiedades disponibles en Comprando América. ¿Pueden enviarme más información?");
-    window.open(`https://wa.me/523346766178?text=${msg}`, "_blank");
+    const waUrl = `https://wa.me/523346766178?text=${msg}`;
+    sendCtaClick({ cta: "propiedades-contacto-whatsapp", location: "/activos-disponibles", destination: waUrl });
+    window.open(waUrl, "_blank");
   };
 
   return (

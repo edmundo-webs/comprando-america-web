@@ -40,6 +40,7 @@ import Home2Page from "./pages/Home2Page";
 import CumbreDigital from "./pages/CumbreDigital";
 import CumbreDigital2 from "./pages/CumbreDigital2";
 import Leads from "./pages/admin/Leads";
+import Analytics from "./pages/admin/Analytics";
 import NuevoHome from "./pages/NuevoHome";
 import Membresia2 from "./pages/Membresia2";
 import Section8 from "./pages/Section8";
@@ -114,6 +115,11 @@ function Router() {
       <Route path={"/cms/leads"} component={() => (
         <DashboardLayout>
           <Leads />
+        </DashboardLayout>
+      )} />
+      <Route path={"/cms/analytics"} component={() => (
+        <DashboardLayout>
+          <Analytics />
         </DashboardLayout>
       )} />
       <Route path={"/404"} component={NotFound} />

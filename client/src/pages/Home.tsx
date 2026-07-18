@@ -939,7 +939,9 @@ export default function Home() {
                 onClick={() =>
                   openWhatsApp(
                     WHATSAPP_PHONE,
-                    "Hola, quisiera hablar sobre mi situación y ver qué ruta hace sentido para mí."
+                    "Hola, quisiera hablar sobre mi situación y ver qué ruta hace sentido para mí.",
+                    "home-rutas-whatsapp",
+                    "/"
                   )
                 }
                 className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors"
@@ -1201,7 +1203,9 @@ export default function Home() {
                   onClick={() =>
                     openWhatsApp(
                       WHATSAPP_PHONE,
-                      "Hola, vi Comprando América y me gustaría hablar sobre mi situación."
+                      "Hola, vi Comprando América y me gustaría hablar sobre mi situación.",
+                      "home-cta-whatsapp",
+                      "/"
                     )
                   }
                   className="border border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base rounded-md transition-colors font-medium"

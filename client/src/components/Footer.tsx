@@ -1,5 +1,6 @@
 import { EXTERNAL_LINKS } from "@/lib/constants";
 import { WHATSAPP_PHONE } from "@/lib/whatsapp";
+import { trackedRedirect } from "@/lib/tracking";
 import { Mail, MapPin, MessageCircle } from "lucide-react";
 
 export default function Footer() {
@@ -7,7 +8,7 @@ export default function Footer() {
     <>
     {/* WhatsApp flotante — global, todas las páginas */}
     <a
-      href={`https://wa.me/${WHATSAPP_PHONE}`}
+      href={trackedRedirect(`https://wa.me/${WHATSAPP_PHONE}`, "floating-whatsapp", typeof window !== "undefined" ? window.location.pathname : undefined)}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-40 bg-green-500 hover:bg-green-600 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all hover:scale-105"
@@ -74,7 +75,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <MessageCircle className="w-4 h-4 text-blue-400 shrink-0" />
-                <a href="https://wa.me/523346766178" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">WhatsApp</a>
+                <a href={trackedRedirect("https://wa.me/523346766178", "footer-whatsapp")} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">WhatsApp</a>
               </li>
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <MapPin className="w-4 h-4 text-blue-400 shrink-0" />

@@ -1,3 +1,5 @@
+import { sendCtaClick, trackedRedirect } from "./tracking";
+
 /**
  * Genera una URL de WhatsApp con un mensaje predefinido
  * @param phoneNumber - Número de teléfono en formato internacional (ej: 523346766178)
@@ -10,12 +12,37 @@ export function getWhatsAppUrl(phoneNumber: string, message: string): string {
 }
 
 /**
- * Abre WhatsApp con un mensaje predefinido en una nueva ventana
- * @param phoneNumber - Número de teléfono en formato internacional
- * @param message - Mensaje a enviar
+ * Igual que getWhatsAppUrl pero devuelve una URL que pasa por
+ * /api/track/redirect para que la clave del CTA quede registrada.
+ * Úsalo en <a href={...}> cuando quieras que el propio click quede loggeado
+ * incluso si el usuario abre el enlace en otra pestaña.
  */
-export function openWhatsApp(phoneNumber: string, message: string): void {
+export function getTrackedWhatsAppUrl(
+  phoneNumber: string,
+  message: string,
+  cta: string,
+  location?: string
+): string {
+  return trackedRedirect(getWhatsAppUrl(phoneNumber, message), cta, location);
+}
+
+/**
+ * Abre WhatsApp con un mensaje predefinido en una nueva ventana.
+ * Registra el click en /api/track/cta antes de abrir la ventana para que el
+ * evento quede persistido aunque el usuario cierre la pestaña original.
+ */
+export function openWhatsApp(
+  phoneNumber: string,
+  message: string,
+  cta: string = "whatsapp",
+  location?: string
+): void {
   const url = getWhatsAppUrl(phoneNumber, message);
+  try {
+    sendCtaClick({ cta, location, destination: url });
+  } catch {
+    /* swallow — nunca bloquees la apertura de WhatsApp por analytics */
+  }
   window.open(url, "_blank", "noopener,noreferrer");
 }
 

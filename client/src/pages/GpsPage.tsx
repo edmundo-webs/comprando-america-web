@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { AnimatePresence, motion } from "framer-motion";
+import { sendCtaClick } from "@/lib/tracking";
 
 /* ─── Brand ─── */
 const NAVY = "#0B1F3A";
@@ -1381,7 +1382,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
     lines.push("Me gustaría agendar un diagnóstico estratégico personalizado.");
 
     const msg = lines.join("\n");
-    window.open(`https://wa.me/523346766178?text=${encodeURIComponent(msg)}`, "_blank");
+    const waUrl = `https://wa.me/523346766178?text=${encodeURIComponent(msg)}`;
+    sendCtaClick({ cta: "gps-diagnostico-whatsapp", location: "/gps", destination: waUrl });
+    window.open(waUrl, "_blank");
   }
 
   return (
