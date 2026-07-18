@@ -223,3 +223,92 @@ curl -X POST "https://[DOMINIO]/api/admin/run-pipeline?token=$TOKEN"
 ```
 
 Si una llamada devuelve `503 Admin API disabled`, falta `ADMIN_TOKEN` en el entorno de Render. Si devuelve `401`, el token no coincide.
+
+---
+
+## Endpoints — ANALYTICS (lectura)
+
+Métricas internas del portal. Todo agregado; no hay datos personales sensibles fuera de los que el usuario mismo escribe en el GPS. Úsalos para cerrar el loop entre lo que publicas y las conversiones que generas.
+
+| Método | Ruta | Función |
+|---|---|---|
+| `GET` | `/analytics/summary?days=30` | Totales + breakdowns (leads por fuente, diagnósticos por perfil, top CTAs y páginas) |
+| `GET` | `/analytics/diagnostics?limit=100&profile=explorador` | Últimos envíos del GPS Estratégico |
+| `GET` | `/analytics/cta-clicks?limit=100&cta=diag-bottom-whatsapp` | Últimos clicks en CTAs (WhatsApp, etc.) |
+
+### Estructura de `summary`
+
+```jsonc
+{
+  "windowDays": 30,
+  "since": "2026-06-18T…Z",
+  "leads":       { "total": 84, "window": 12, "bySource":  [{"fuente":"cumbre-digital","count":7}, …] },
+  "diagnostics": { "total": 210, "window": 41, "completedWindow": 14,
+                   "completionRate": 0.34,
+                   "byProfile":  [{"profile":"constructor","count":18}, …] },
+  "ctaClicks":   { "total": 620, "window": 118,
+                   "topCtas":       [{"cta":"diag-bottom-whatsapp","count":26}, …],
+                   "topLocations":  [{"location":"/diagnostico","count":42}, …] }
+}
+```
+
+### Nomenclatura de CTAs
+
+Los IDs siguen el patrón `{página}-{ubicación}-{acción}`:
+
+| Prefijo | Página |
+|---|---|
+| `home-…` | `/` |
+| `diag-…` | `/diagnostico` |
+| `membresia-…` | `/membresia` |
+| `visa-e2-…` | `/visa-e2` |
+| `news-article-…` | `/news/{slug}` |
+| `propiedades-…` | `/activos-disponibles` |
+| `perfil-…` | `/perfil` |
+| `gps-…` | `/gps` |
+| `nuevohome-…` | `/tu-ruta` |
+| `footer-…`, `floating-…` | Componentes globales |
+
+---
+
+## Growth loop — objetivo mensual de leads
+
+**Meta actual**: 30 leads calificados / mes (ajusta según lo que confirme Edmundo). Un "lead calificado" = fila nueva en `ca_leads` **o** diagnóstico GPS con `completed=true`.
+
+Cada ejecución del loop:
+
+1. **Leer estado**
+   - `GET /analytics/summary?days=7` y `?days=30`.
+   - Extrae: `leads.window`, `diagnostics.completedWindow`, `diagnostics.completionRate`, `ctaClicks.topCtas`, `ctaClicks.topLocations`, `diagnostics.byProfile`.
+
+2. **Diagnóstico rápido**
+   - ¿Vamos por debajo del ritmo para llegar a la meta (leads/día × 30)?
+   - ¿Qué perfil (`explorador` / `constructor` / `patrimonial`) domina los diagnósticos completados?
+   - ¿Qué CTA convierte más? ¿Qué CTA aparece mucho pero no convierte?
+   - ¿Qué página (`topLocations`) atrae más clicks?
+
+3. **Decidir acción**  (elige 2–3 por corrida)
+   - **Si el perfil `X` domina** → publica 2 blog posts + 3 notas nuevas orientadas específicamente a decisiones de ese perfil (visa/estructura/mercado según corresponda).
+   - **Si `topLocations` tiene una página con muchos clicks pero pocos diagnósticos completados** → escribe un blog post que amplíe el tema de esa página y enlace explícitamente al GPS Estratégico (`/diagnostico`).
+   - **Si `topCtas` muestra un CTA con muchos clicks pero pocos leads** → probablemente el mensaje pre-poblado de WhatsApp puede mejorarse; deja una nota en un blog post interno o crea un artículo con lenguaje más aterrizado a esa audiencia.
+   - **Si estamos por debajo del ritmo** → sube el volumen: dispara `POST /run-pipeline` para producir noticias frescas y programa 3–5 posts sociales (`POST /social/publish`) que ruteen tráfico al portal.
+
+4. **Publicar**
+   - Blog posts con `category` que empate el perfil dominante (ej. `constructor` → `llc-negocios`, `bienes-raices`).
+   - Cada blog post debe incluir un CTA explícito a `/diagnostico` o a `/membresia` — así el click queda registrado automáticamente en `ca_cta_clicks`.
+   - Cada post social debe incluir el link directo a la nota / blog publicado; el redirect de tracking los captura si pasas por un link marcado.
+
+5. **Registrar la decisión**
+   - Añade un blog post `draft` con `tags: ["growth-loop-log"]` que contenga: qué señal encontraste, qué publicaste, qué esperas mover. Sirve como memoria del loop entre corridas — en la siguiente iteración lee esos drafts para no repetir hipótesis.
+
+**Frecuencia sugerida**: 1 corrida diaria (o cada 12 h en semana intensa). No pases del volumen editorial: máximo 3 notas + 1 blog post + 5 posts sociales por corrida para no saturar al usuario ni al calendario de Metricool.
+
+### Ejemplo curl para arrancar
+
+```bash
+TOKEN="[ADMIN_TOKEN]"
+curl "https://[DOMINIO]/api/admin/analytics/summary?days=30&token=$TOKEN"
+curl "https://[DOMINIO]/api/admin/analytics/summary?days=7&token=$TOKEN"
+```
+
+Con esos dos JSONs tienes todo lo que necesitas para razonar sobre la siguiente acción.
