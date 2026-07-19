@@ -12,6 +12,7 @@ import { NOT_ADMIN_ERR_MSG } from "@shared/const";
 import bcrypt from "bcryptjs";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
+import { forwardLeadToCms } from "./_core/cmsLead";
 
 // Helper: create CMS session cookie using the SDK's signSession
 // The SDK verifySession expects { openId, appId, name } in the JWT payload
@@ -365,6 +366,14 @@ export const appRouter = router({
           throw new TRPCError({ code: "CONFLICT", message: "Este email ya esta suscrito" });
         }
         await db.createNewsSubscriber(input.email, input.name, input.categories);
+        // Best-effort copy to the central CMS so the lead enters the CRM pipeline
+        forwardLeadToCms({
+          email: input.email,
+          name: input.name,
+          interests: input.categories.filter(c => c !== "all"),
+          formSlug: "newsletter",
+          consent: true,
+        });
         return { success: true, message: "Verifica tu email para confirmar la suscripcion" };
       }),
     // Public: verify subscription

@@ -20,6 +20,9 @@ export const ENV = {
   pexelsApiKey: process.env.PEXELS_API_KEY ?? "",
   // Admin REST API token for the external editor agent (OpenClaw / Yael)
   adminToken: process.env.ADMIN_TOKEN ?? "",
+  // Central CMS (Community Management Services) public lead API
+  cmsApiUrl: process.env.CMS_API_URL ?? "",
+  cmsApiKey: process.env.CMS_API_KEY ?? "",
   // Metricool — social distribution, multi-brand.
   // 3 brands supported: comprando-america, edmundo-trevino, theusmarketer.
   metricoolApiKey: process.env.METRICOOL_API_KEY ?? "",
