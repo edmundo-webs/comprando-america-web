@@ -13,6 +13,7 @@ import { adminRouter } from "../routes/admin";
 import { botMetaMiddleware } from "../routes/bot-meta";
 import { seoRouter } from "../routes/seo";
 import { trackRouter } from "../routes/track";
+import { healthRouter } from "../routes/health";
 import { ensureAnalyticsTables } from "./ensureAnalyticsTables";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -45,6 +46,10 @@ async function startServer() {
   initializeRssScheduler();
   // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
+
+  // Public health endpoint for uptime monitors (UptimeRobot etc.).
+  // Mounted before /api/admin so /api/health always stays public.
+  app.use(healthRouter);
 
   // Admin REST API for the external editor agent (OpenClaw / Yael).
   // Mounted before the catch-all so it owns /api/admin/*.
