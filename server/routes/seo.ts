@@ -32,6 +32,7 @@ const STATIC_URLS: Array<{ loc: string; priority: string; changefreq: string }> 
   { loc: "/tierra-estrategica", priority: "0.8", changefreq: "monthly" },
   { loc: "/renta-garantizada", priority: "0.8", changefreq: "monthly" },
   { loc: "/activos-disponibles", priority: "0.8", changefreq: "monthly" },
+  { loc: "/llc", priority: "0.9", changefreq: "monthly" },
   { loc: "/formacion", priority: "0.7", changefreq: "monthly" },
   { loc: "/expansion-internacional-empresas", priority: "0.7", changefreq: "monthly" },
   { loc: "/podcast", priority: "0.6", changefreq: "monthly" },

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
@@ -131,23 +130,27 @@ export default function EstructuraInversion() {
         </div>
       </section>
 
-      {/* ═══ 3. QUÉ INCLUYE — navy ═══ */}
+      {/* ═══ 3. PREGUNTAS CLAVE — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
           <FadeIn>
             <div className="text-center mb-12">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Nuestro Acompañamiento</p>
-              <h2 className="text-3xl md:text-4xl text-white">Qué incluye nuestro servicio de estructuración</h2>
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Antes de Constituir</p>
+              <h2 className="text-3xl md:text-4xl text-white">Las preguntas que esta revisión ayuda a responder</h2>
+              <p className="text-slate-400 mt-4 max-w-xl mx-auto text-base">
+                Una estructura de inversión se define respondiendo las preguntas correctas, no eligiendo un tipo de entidad por popularidad.
+              </p>
             </div>
           </FadeIn>
 
           <div className="max-w-3xl mx-auto space-y-4">
             {[
-              { icon: Scale, text: "Definición de estructura adecuada (LLC, C-Corp, S-Corp) según el propósito de inversión." },
-              { icon: Building2, text: "Selección del estado correcto (Delaware, Florida, Texas u otros, según caso)." },
-              { icon: FileCheck, text: "Documentación: Articles/Certificate, EIN, Operating Agreement y cumplimiento." },
-              { icon: DollarSign, text: "Planeación fiscal y contable inicial (setup correcto para operar sin sorpresas).", exclusive: true },
-              { icon: Shield, text: "Estrategia migratoria (si aplica) evaluada con aliados legales, sin promesas ni atajos.", exclusive: true },
+              { icon: Scale, text: "¿Qué quiero hacer? Operar, invertir, expandir, migrar o una combinación de estas.", exclusive: false },
+              { icon: Building2, text: "¿Qué activos, socios u operaciones estarán involucrados?", exclusive: false },
+              { icon: FileCheck, text: "¿Qué riesgos necesito separar de mi patrimonio personal?", exclusive: false },
+              { icon: Shield, text: "¿Una sola entidad es suficiente o necesito varias?", exclusive: false },
+              { icon: DollarSign, text: "¿Qué profesionales deben intervenir: abogado, contador, asesor fiscal?", exclusive: true },
+              { icon: Scale, text: "¿Cuál es el siguiente paso lógico según mi perfil y capital disponible?", exclusive: true },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.05}>
                 <div className={`flex items-start gap-4 rounded-xl p-6 transition-all ${item.exclusive ? "bg-[#0F2847] border border-primary/40 hover:border-primary/60" : "bg-[#0F2847] border border-[#1E3A5F] hover:border-blue-500/30"}`}>
@@ -232,9 +235,10 @@ export default function EstructuraInversion() {
               <h2 className="text-3xl md:text-4xl text-white text-center mb-12">Preguntas frecuentes</h2>
               <Accordion type="single" collapsible className="space-y-4">
                 {[
-                  { q: "¿Cuánto cuesta crear una empresa en Estados Unidos?", a: "Depende del estado, tipo de entidad y servicios necesarios (registro, agente registrado, cumplimiento, contabilidad y asesoría legal). En nuestra club de inversión, el objetivo es estructurar bien desde el inicio para evitar costos repetidos. Nuestro servicio de apertura de LLC tiene un costo base de $1,500 dólares por entidad registrada." },
-                  { q: "¿Qué se necesita para abrir una empresa en Estados Unidos?", a: "Los requisitos varían por entidad y estado. Normalmente se requiere identificación, agente registrado y documentación de constitución; además, es clave definir propósito y estructura de la entidad antes de registrarla. Nosotros te guiamos en el proceso completo." },
-                  { q: "¿Cuáles son los tipos de empresas en Estados Unidos?", a: "LLC, S-Corp y C-Corp. La elección depende de riesgo, operación, estrategia fiscal y objetivos de inversión. Cada estructura tiene implicaciones diferentes en términos de responsabilidad personal, impuestos y flexibilidad operativa." },
+                  { q: "¿Cuándo necesito más que una LLC?", a: "Cuando participan varios socios, cuando se recibirá inversión de terceros, cuando hay múltiples activos o propiedades, cuando existe una empresa activa en otro país relacionada, o cuando se evalúa una visa vinculada a la operación. En esos casos, una revisión de estructura antes de constituir evita problemas posteriores." },
+                  { q: "¿Cuáles son los tipos de entidades más usados en inversión?", a: "LLC, S-Corp, C-Corp, series LLC y holdings. La elección depende del propósito: operar, invertir, proteger patrimonio, incorporar socios o escalar internacionalmente. Cada estructura tiene implicaciones distintas en responsabilidad, impuestos y flexibilidad." },
+                  { q: "¿Por qué no basta con abrir una LLC sin revisión previa?", a: "Una LLC creada sin considerar el número de socios, la naturaleza de los activos, la estrategia fiscal y los objetivos a largo plazo puede limitar decisiones posteriores: atraer inversión, transferir activos, escalar o reorganizarse. La revisión previa cuesta mucho menos que corregir después." },
+                  { q: "¿Necesito vivir en Estados Unidos para tener una estructura allá?", a: "No. Una LLC o holding en EE.UU. puede ser administrada de forma remota desde cualquier país. Lo importante es que la estructura esté correctamente registrada, cumpla sus obligaciones fiscales y tenga el soporte profesional adecuado." },
                 ].map((faq, i) => (
                   <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl px-6">
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5">{faq.q}</AccordionTrigger>
@@ -247,36 +251,43 @@ export default function EstructuraInversion() {
         </div>
       </section>
 
-      {/* ═══ 6. SOLO LLC — ☀️ BLANCO ═══ */}
+      {/* ═══ 6. DOS RUTAS — ☀️ BLANCO ═══ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">¿Solo necesitas abrir tu empresa en Estados Unidos?</h2>
-              <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
-                Si tu objetivo por ahora es crear tu LLC para operar o facturar en Estados Unidos, puedes hacerlo directamente. Te ayudamos a estructurarla correctamente desde el inicio.
-              </p>
-              <div className="grid sm:grid-cols-2 gap-3 mb-10">
-                {[
-                  "Registro de LLC en Texas o Florida",
-                  "EIN (número fiscal federal)",
-                  "Registered Agent incluido",
-                  "Introducción bancaria",
-                  "Acompañamiento en español",
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <p className="text-[#374151]">{item}</p>
-                  </div>
-                ))}
-              </div>
-              <a href="/estructura-empresarial-en-estados-unidos">
-                <Button className="bg-[#0B1F3A] hover:bg-[#0E2544] text-white px-8 py-6 text-base gap-2">
-                  Crear mi LLC <ArrowRight className="w-4 h-4" />
-                </Button>
-              </a>
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <h2 className="text-2xl md:text-3xl text-[#0B1F3A] font-bold">¿Cuál es tu siguiente paso?</h2>
+              <p className="text-[#6B7280] mt-3">Elige la ruta que corresponde a donde estás ahora.</p>
             </div>
           </FadeIn>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <FadeIn>
+              <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 h-full flex flex-col">
+                <h3 className="text-[#0B1F3A] font-bold text-lg mb-3">Mi caso requiere una revisión estratégica</h3>
+                <p className="text-[#6B7280] text-sm leading-relaxed flex-1 mb-6">
+                  Tengo socios, múltiples activos, capital de terceros, una empresa en otro país o evalúo una visa vinculada a la operación.
+                </p>
+                <a href="https://comprandoamerica.com/gps">
+                  <Button className="w-full bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-5">
+                    Evaluar mi perfil <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 h-full flex flex-col">
+                <h3 className="text-[#0B1F3A] font-bold text-lg mb-3">Solo necesito constituir una LLC</h3>
+                <p className="text-[#6B7280] text-sm leading-relaxed flex-1 mb-6">
+                  Quiero operar, facturar o tener presencia en EE.UU. Mi caso es sencillo y ya tengo claridad sobre lo que necesito.
+                </p>
+                <a href="/estructura-empresarial-en-estados-unidos">
+                  <Button variant="outline" className="w-full border-gray-300 text-[#374151] hover:bg-gray-100 gap-2 rounded-xl py-5">
+                    Formar mi LLC <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 

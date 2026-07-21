@@ -25,7 +25,6 @@ import Podcast from "./pages/Podcast";
 import News from "./pages/News";
 import NewsArticle from "./pages/NewsArticle";
 import RutaInmobiliaria from "./pages/RutaInmobiliaria";
-import LLC from "./pages/LLC";
 import Perfil from "./pages/Perfil";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -77,7 +76,7 @@ function Router() {
       <Route path="/recursos" component={Recursos} />
       <Route path="/estructura-empresarial-en-estados-unidos" component={EstructuraEmpresarial} />
       <Route path="/visa-e2-inversion-en-estados-unidos" component={VisaE2} />
-      <Route path="/llc" component={LLC} />
+      <Route path="/llc"><Redirect to="/estructura-empresarial-en-estados-unidos" /></Route>
       <Route path="/perfil" component={Perfil} />
       <Route path="/terminos" component={TermsAndConditions} />
       <Route path="/privacidad" component={PrivacyPolicy} />

@@ -66,6 +66,7 @@ async function startServer() {
   app.use(seoRouter);
 
   // 301 permanent redirects for renamed routes
+  app.get("/llc", (_req, res) => res.redirect(301, "/estructura-empresarial-en-estados-unidos"));
   app.get("/fondo", (_req, res) => res.redirect(301, "/tierra-estrategica"));
   app.get("/vc-8", (_req, res) => res.redirect(301, "/renta-garantizada"));
   app.get("/propiedades", (_req, res) => res.redirect(301, "/activos-disponibles"));
