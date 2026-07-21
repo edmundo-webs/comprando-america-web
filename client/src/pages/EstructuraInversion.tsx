@@ -146,13 +146,20 @@ export default function EstructuraInversion() {
               { icon: Scale, text: "Definición de estructura adecuada (LLC, C-Corp, S-Corp) según el propósito de inversión." },
               { icon: Building2, text: "Selección del estado correcto (Delaware, Florida, Texas u otros, según caso)." },
               { icon: FileCheck, text: "Documentación: Articles/Certificate, EIN, Operating Agreement y cumplimiento." },
-              { icon: DollarSign, text: "Planeación fiscal y contable inicial (setup correcto para operar sin sorpresas)." },
-              { icon: Shield, text: "Estrategia migratoria (si aplica) evaluada con aliados legales, sin promesas ni atajos." },
+              { icon: DollarSign, text: "Planeación fiscal y contable inicial (setup correcto para operar sin sorpresas).", exclusive: true },
+              { icon: Shield, text: "Estrategia migratoria (si aplica) evaluada con aliados legales, sin promesas ni atajos.", exclusive: true },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.05}>
-                <div className="flex items-start gap-4 bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6 hover:border-blue-500/30 transition-all">
+                <div className={`flex items-start gap-4 rounded-xl p-6 transition-all ${item.exclusive ? "bg-[#0F2847] border border-primary/40 hover:border-primary/60" : "bg-[#0F2847] border border-[#1E3A5F] hover:border-blue-500/30"}`}>
                   <item.icon className="w-6 h-6 text-blue-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-slate-300 leading-relaxed">{item.text}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-slate-300 leading-relaxed">{item.text}</p>
+                    {item.exclusive && (
+                      <span className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-1 rounded-full text-xs font-bold tracking-wide bg-primary/10 border border-primary/30 text-primary">
+                        ★ Exclusivo para miembros
+                      </span>
+                    )}
+                  </div>
                 </div>
               </FadeIn>
             ))}
