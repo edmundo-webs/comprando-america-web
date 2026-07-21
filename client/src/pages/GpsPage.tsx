@@ -1506,25 +1506,29 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
           {/* Profile description */}
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", lineHeight: 1.75, marginBottom: "28px", maxWidth: "520px" }}>{perfil.descripcion}</p>
 
-          {/* CTA button */}
+          {/* CTA block */}
           {!showCriterio ? (
-            <>
-              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", textAlign: "center", marginBottom: "10px" }}>
-                Confírmalo para afinar tu diagnóstico con 3 preguntas más y ver tu ruta completa.
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+              style={{ width: "100%", background: "linear-gradient(135deg, #0D2040 0%, #0F2847 100%)", border: `1.5px solid ${GOLD}40`, borderRadius: "16px", padding: "24px", textAlign: "center" as const }}>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}90`, textTransform: "uppercase" as const, margin: "0 0 10px" }}>Tu diagnóstico no está completo</p>
+              <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "18px", fontWeight: 700, color: "#fff", margin: "0 0 8px", lineHeight: 1.35 }}>
+                Afina tu perfil con 3 preguntas clave
               </p>
-              <motion.button
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#8FA5C0", lineHeight: 1.6, margin: "0 0 20px" }}>
+                Responder tarda menos de 60 segundos y te dará una ruta de inversión mucho más precisa para tu situación actual.
+              </p>
+              <button
                 onClick={() => setShowCriterio(true)}
-                style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                Esto describe mi situación <IconRight color="#fff" />
-              </motion.button>
-            </>
+                style={{ width: "100%", padding: "15px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "10px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                Afinar mi diagnóstico <IconRight color="#fff" />
+              </button>
+            </motion.div>
           ) : (
             <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 18px", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.4)", borderRadius: "10px" }}>
               <div style={{ width: "18px", height: "18px", borderRadius: "50%", background: "rgba(16,185,129,0.3)", border: "1px solid rgba(16,185,129,0.6)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <IconCheck color="rgb(16,185,129)" size={10} />
               </div>
-              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "rgb(16,185,129)" }}>Confirmado — continúa tu diagnóstico</span>
+              <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 600, color: "rgb(16,185,129)" }}>Perfil afinado — continúa tu diagnóstico</span>
             </div>
           )}
         </div>
