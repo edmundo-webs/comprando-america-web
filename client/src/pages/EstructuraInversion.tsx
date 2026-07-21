@@ -149,8 +149,8 @@ export default function EstructuraInversion() {
               { icon: Building2, text: "¿Qué activos, socios u operaciones estarán involucrados?", exclusive: false },
               { icon: FileCheck, text: "¿Qué riesgos necesito separar de mi patrimonio personal?", exclusive: false },
               { icon: Shield, text: "¿Una sola entidad es suficiente o necesito varias?", exclusive: false },
-              { icon: DollarSign, text: "¿Qué profesionales deben intervenir: abogado, contador, asesor fiscal?", exclusive: true },
-              { icon: Scale, text: "¿Cuál es el siguiente paso lógico según mi perfil y capital disponible?", exclusive: true },
+              { icon: DollarSign, text: "¿Qué profesionales deben intervenir: abogado, contador, asesor fiscal?", exclusive: false },
+              { icon: Scale, text: "¿Cuál es el siguiente paso lógico según mi perfil y capital disponible?", exclusive: false },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.05}>
                 <div className={`flex items-start gap-4 rounded-xl p-6 transition-all ${item.exclusive ? "bg-[#0F2847] border border-primary/40 hover:border-primary/60" : "bg-[#0F2847] border border-[#1E3A5F] hover:border-blue-500/30"}`}>
