@@ -265,7 +265,9 @@ const VEHICLE_DATA: VehicleEntry[] = [
 
 function rankVehicles(params: { objetivo: string; participacion: string; capital: string; prioridades: string[] }) {
   const userCapital = CAPITAL_MAP[params.capital] ?? 0;
-  return VEHICLE_DATA.map(v => {
+  return VEHICLE_DATA
+    .filter(v => v.id !== "membresia")
+    .map(v => {
     let score = 0;
     if (v.objetivos.includes(params.objetivo)) score += 30;
     if (v.ticketMin === 0 || userCapital >= v.ticketMin) score += 25;
@@ -580,7 +582,8 @@ function Screen2({ onNext }: { onNext: (id: string) => void }) {
 
 /* ─── SCREEN 3 — Horizonte (clarificado) ─── */
 function Screen3({ onNext }: { onNext: (v: string) => void }) {
-  const [sel, setSel] = useState(1);
+  const [sel, setSel] = useState<number | null>(null);
+  const [touched, setTouched] = useState(false);
   return (
     <div style={{ position: "relative", minHeight: "100dvh", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", padding: "88px 24px 120px", overflow: "hidden" }}>
       <CinematicPhotoBg src={PHOTOS.realEstate} intensity={0.09} />
@@ -599,12 +602,12 @@ function Screen3({ onNext }: { onNext: (v: string) => void }) {
         {/* Slider */}
         <div style={{ position: "relative", paddingBottom: "50px" }}>
           <div style={{ height: "4px", background: NAVY_BORDER, borderRadius: "2px", margin: "0 18px" }}>
-            <div style={{ position: "absolute", left: "18px", top: 0, height: "4px", borderRadius: "2px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, width: `${(sel / (SLIDER_POINTS.length - 1)) * 100}%`, transition: "width 0.3s" }} />
+            <div style={{ position: "absolute", left: "18px", top: 0, height: "4px", borderRadius: "2px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, width: `${sel !== null ? (sel / (SLIDER_POINTS.length - 1)) * 100 : 0}%`, transition: "width 0.3s" }} />
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", position: "absolute", top: "-13px", left: "18px", right: "18px" }}>
             {SLIDER_POINTS.map((_, i) => (
-              <button key={i} onClick={() => setSel(i)}
-                style={{ width: "28px", height: "28px", borderRadius: "50%", border: `2px solid ${i <= sel ? GOLD : NAVY_BORDER}`, background: i === sel ? GOLD : i < sel ? "#1A3558" : NAVY_CARD, cursor: "pointer", transition: "all 0.25s", transform: i === sel ? "scale(1.3)" : "scale(1)", boxShadow: i === sel ? `0 0 16px ${GOLD}60` : "none", padding: 0 }} />
+              <button key={i} onClick={() => { setSel(i); setTouched(true); }}
+                style={{ width: "28px", height: "28px", borderRadius: "50%", border: `2px solid ${sel !== null && i <= sel ? GOLD : NAVY_BORDER}`, background: i === sel ? GOLD : sel !== null && i < sel ? "#1A3558" : NAVY_CARD, cursor: "pointer", transition: "all 0.25s", transform: i === sel ? "scale(1.3)" : "scale(1)", boxShadow: i === sel ? `0 0 16px ${GOLD}60` : "none", padding: 0 }} />
             ))}
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: "26px", padding: "0 4px" }}>
@@ -619,11 +622,11 @@ function Screen3({ onNext }: { onNext: (v: string) => void }) {
 
         {/* Selected value display */}
         <div style={{ textAlign: "center", marginBottom: "48px", padding: "20px", background: `${GOLD}10`, border: `1px solid ${GOLD}30`, borderRadius: "12px" }}>
-          <span style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "42px", fontWeight: 700, color: GOLD }}>{SLIDER_POINTS[sel].label}</span>
+          <span style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "42px", fontWeight: 700, color: GOLD }}>{sel !== null ? SLIDER_POINTS[sel].label : "Desliza para elegir"}</span>
           <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#6A8FAF", marginTop: "6px", margin: "6px 0 0" }}>Tu capital permanecerá invertido aproximadamente este tiempo</p>
         </div>
 
-        <GoldBtn onClick={() => onNext(SLIDER_POINTS[sel].label)} style={{ width: "100%" }}>
+        <GoldBtn onClick={() => { if (touched && sel !== null) onNext(SLIDER_POINTS[sel].label); }} disabled={!touched} style={{ width: "100%", opacity: touched ? 1 : 0.5 }}>
           Continuar <IconRight color={NAVY} />
         </GoldBtn>
       </div>
@@ -640,10 +643,10 @@ function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: "600px" }}>
         <StepIndicator current={3} total={5} />
         <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,36px)", fontWeight: 700, color: "#fff", marginBottom: "10px", lineHeight: 1.25 }}>
-          ¿Cuánto capital tienes disponible?
+          ¿Qué rango de inversión te sentirías cómodo evaluar hoy?
         </h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.7 }}>
-          No estamos evaluando tu patrimonio. Estamos mapeando desde dónde empezar para mostrarte solo lo que hoy es posible para ti.
+          El capital disponible no define si calificas. Nos ayuda a evitar recomendar oportunidades que no hagan sentido para tu estrategia.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "36px" }}>
           {OPCIONES_CAPITAL.map((op) => {
@@ -1242,6 +1245,39 @@ function VehicleDrawer({ vehicle, onClose }: { vehicle: (VehicleEntry & { pct: n
   );
 }
 
+/* ─── Social Proof ─── */
+function SocialProofSection() {
+  const STATS = [
+    { value: "40+", label: "Miembros activos que participaron en un Deal Day" },
+    { value: "53+", label: "LLCs estructuradas" },
+    { value: "14+", label: "Visas tramitadas" },
+    { value: "6", label: "Viajes de inspección" },
+  ];
+  return (
+    <div style={{ borderTop: `1px solid ${NAVY_BORDER}`, padding: "56px 24px" }}>
+      <div style={{ maxWidth: "680px", margin: "0 auto" }}>
+        <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(22px,3.5vw,32px)", fontWeight: 700, color: "#fff", marginBottom: "8px" }}>
+          Resultados. Números reales. Equipo real.
+        </h2>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "28px" }}>
+          Con el apoyo de Comprando América hemos logrado:
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))", gap: "16px", marginBottom: "20px" }}>
+          {STATS.map(s => (
+            <div key={s.label}>
+              <div style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "32px", fontWeight: 700, color: GOLD }}>{s.value}</div>
+              <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#8FA5C0" }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#C8D6E8" }}>
+          En los últimos dos años, nuestros miembros han invertido <strong style={{ color: GOLD }}>$3,978,086 USD</strong>.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /* ─── RESULT SCREEN ─── */
 function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCompare }: {
   perfil: (typeof PERFILES)[string];
@@ -1260,7 +1296,6 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   const [composicionCapital, setComposicionCapital] = useState<string | null>(null);
   const [estructuraArea, setEstructuraArea] = useState<string[]>([]);
   const [showCriterio, setShowCriterio] = useState(false);
-  const [operarDelegar, setOperarDelegar] = useState<string | null>(null);
   const [vehiculosView, setVehiculosView] = useState<"perfil" | "todos">("perfil");
   const [selectedColumn, setSelectedColumn] = useState<number | null>(null);
   const [videoExpanded, setVideoExpanded] = useState(false);
@@ -1289,7 +1324,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
   const prioridadesLabels = investorData.prioridades.map(id => OPCIONES_4.find(o => o.id === id)?.label ?? id);
 
-  useEffect(() => { if (patrimonioPct && posicionRiesgo && composicionCapital && operarDelegar) setShowEstructura(true); }, [patrimonioPct, posicionRiesgo, composicionCapital, operarDelegar]);
+  useEffect(() => { if (patrimonioPct && posicionRiesgo && composicionCapital) setShowEstructura(true); }, [patrimonioPct, posicionRiesgo, composicionCapital]);
   useEffect(() => { if (estructuraArea.length > 0) setShowDiag(true); }, [estructuraArea]);
   useEffect(() => { if (diagAnswer) setShowVehiculos(true); }, [diagAnswer]);
 
@@ -1331,13 +1366,12 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
     lines.push("");
 
     // Criterio (solo si respondió)
-    const hayCriterio = patrimonioPct || posicionRiesgo || composicionCapital || operarDelegar || estructuraArea.length > 0;
+    const hayCriterio = patrimonioPct || posicionRiesgo || composicionCapital || estructuraArea.length > 0;
     if (hayCriterio) {
       lines.push("*Mi criterio de inversión:*");
       if (patrimonioPct) lines.push(`  • *Patrimonio a dolarizar:* ${patrimonioPct}`);
       if (posicionRiesgo) lines.push(`  • *Posición de riesgo:* ${posicionRiesgo}`);
       if (composicionCapital) lines.push(`  • *Capital disponible:* ${composicionCapital}`);
-      if (operarDelegar) lines.push(`  • *Prefiero:* ${operarDelegar}`);
       if (estructuraArea.length) {
         lines.push(`  • *Áreas de interés:* ${estructuraArea.map(id => AREA_LABELS[id] ?? id).join(", ")}`);
       }
@@ -1403,11 +1437,22 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
             {perfil.nombre}
           </h1>
           {/* Greeting */}
-          {firstName && (
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "24px" }}>
-              Hola, <span style={{ color: "#fff", fontWeight: 600 }}>{firstName}</span> — esta es tu ruta estratégica.
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "15px", color: "#8FA5C0", marginBottom: "24px" }}>
+            Hemos terminado de analizar tu perfil estratégico{firstName ? `, ${firstName}` : ""}.
+          </p>
+          {/* Razonamiento personalizado */}
+          <div style={{ marginBottom: "24px" }}>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}80`, textTransform: "uppercase" as const }}>
+              Durante el diagnóstico identificamos que
             </p>
-          )}
+            <ul style={{ margin: "10px 0 0", paddingLeft: "20px", listStyle: "disc" }}>
+              {objetivoLabel && <li style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#C8D6E8", marginBottom: "6px", lineHeight: 1.6 }}>Tu objetivo principal es {objetivoLabel.toLowerCase()}</li>}
+              {participacionLabel && <li style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#C8D6E8", marginBottom: "6px", lineHeight: 1.6 }}>Prefieres un rol de "{participacionLabel}" en la gestión</li>}
+              {investorData.horizonte && <li style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#C8D6E8", marginBottom: "6px", lineHeight: 1.6 }}>Tu horizonte de inversión es de {investorData.horizonte}</li>}
+              {prioridadesLabels.length > 0 && <li style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#C8D6E8", lineHeight: 1.6 }}>Priorizas {prioridadesLabels.join(" y ")}</li>}
+            </ul>
+          </div>
+
           {/* fichaData grid compacto */}
           {fichaData.length > 0 && (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "1px", background: `${GOLD}20`, border: `1px solid ${GOLD}30`, borderRadius: "12px", overflow: "hidden", marginBottom: "32px" }}>
@@ -1419,6 +1464,21 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
               ))}
             </div>
           )}
+
+          {/* Grupo Empresarial de Edmundo Treviño */}
+          <div style={{ background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}40`, borderRadius: "14px", padding: "24px", marginBottom: "28px", position: "relative" as const, overflow: "hidden" }}>
+            <div style={{ position: "absolute" as const, top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
+              <img src={LOGO_URL} alt="Comprando América" style={{ height: "22px", width: "auto", objectFit: "contain", opacity: 0.9 }} />
+            </div>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.7, marginBottom: "18px" }}>
+              Antes de invertir, lo más valioso es tener claridad. En el Grupo Empresarial exploramos tus opciones, desarrollamos criterio y estructuramos una ruta para Estados Unidos.
+            </p>
+            <a href="/grupo-empresarial-edmundo"
+              style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 20px", background: `${GOLD}15`, border: `1px solid ${GOLD}50`, borderRadius: "10px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: GOLD, textDecoration: "none" }}>
+              Explorar Grupo Empresarial <IconRight color={GOLD} />
+            </a>
+          </div>
 
           {/* VIDEO EXPANDIBLE */}
           <div
@@ -1544,30 +1604,12 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   )}
                 </AnimatePresence>
 
-                {/* Q4 — operar/delegar, visible si composicionCapital */}
+                {/* Resumen cuando las 3 están respondidas */}
                 <AnimatePresence>
-                  {composicionCapital && (
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginBottom: "24px" }}>
-                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, color: "#C8D6E8", marginBottom: "6px" }}>¿Cómo te imaginas gestionando tu inversión en Estados Unidos?</p>
-                      <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#4A6580", marginBottom: "14px", lineHeight: 1.5 }}>Define qué tan involucrado quieres estar en las decisiones del día a día.</p>
-                      <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px" }}>
-                        {["Quiero estar al frente de cada decisión", "Prefiero supervisar sin operar", "Delego completamente — quiero flujo sin gestión"].map(v => (
-                          <button key={v} onClick={() => setOperarDelegar(operarDelegar === v ? null : v)}
-                            style={{ padding: "9px 16px", background: operarDelegar === v ? GOLD : "transparent", color: operarDelegar === v ? "#fff" : "#8FA5C0", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: operarDelegar === v ? 700 : 500, border: `1px solid ${operarDelegar === v ? GOLD : NAVY_BORDER}`, borderRadius: "24px", cursor: "pointer", transition: "all 0.2s" }}>
-                            {v}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Resumen cuando las 4 están respondidas */}
-                <AnimatePresence>
-                  {patrimonioPct && posicionRiesgo && composicionCapital && operarDelegar && (
+                  {patrimonioPct && posicionRiesgo && composicionCapital && (
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} style={{ marginTop: "8px" }}>
                       <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "8px", marginBottom: "12px" }}>
-                        {[patrimonioPct, posicionRiesgo.split(" — ")[0], composicionCapital, operarDelegar].map(v => (
+                        {[patrimonioPct, posicionRiesgo.split(" — ")[0], composicionCapital, participacionLabel].filter(Boolean).map(v => (
                           <span key={v} style={{ padding: "6px 14px", background: `${GOLD}15`, border: `1px solid ${GOLD}40`, borderRadius: "20px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: GOLD_LIGHT }}>{v}</span>
                         ))}
                       </div>
@@ -1773,19 +1815,21 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                   ))}
                 </div>
 
-                {/* Grupo Empresarial de Edmundo Treviño */}
-                <div style={{ background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}40`, borderRadius: "14px", padding: "24px", marginBottom: "24px", position: "relative" as const, overflow: "hidden" }}>
-                  <div style={{ position: "absolute" as const, top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-                    <img src={LOGO_URL} alt="Comprando América" style={{ height: "22px", width: "auto", objectFit: "contain", opacity: 0.9 }} />
-                  </div>
-                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.7, marginBottom: "18px" }}>
-                    Antes de invertir, lo más valioso es tener claridad. En el Grupo Empresarial exploramos tus opciones, desarrollamos criterio y estructuramos una ruta para Estados Unidos.
-                  </p>
-                  <a href="/grupo-empresarial-edmundo"
-                    style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 20px", background: `${GOLD}15`, border: `1px solid ${GOLD}50`, borderRadius: "10px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: GOLD, textDecoration: "none" }}>
-                    Explorar Grupo Empresarial <IconRight color={GOLD} />
-                  </a>
+                {/* Qué sigue */}
+                <div style={{ marginBottom: "28px" }}>
+                  <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}80`, textTransform: "uppercase" as const, marginBottom: "14px" }}>Qué sigue</p>
+                  {[
+                    "Validar tu estrategia patrimonial",
+                    "Ingresar al Grupo Empresarial",
+                    "Revisar oportunidades compatibles",
+                    "Construir estructura legal y fiscal",
+                    "Evaluar tu inversión específica",
+                  ].map((step, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" }}>
+                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, color: GOLD, flexShrink: 0 }}>Paso {i + 1}</span>
+                      <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#C8D6E8" }}>{step}</span>
+                    </div>
+                  ))}
                 </div>
 
                 {/* CTAs */}
@@ -1799,11 +1843,17 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                     Comparar otra ruta
                   </button>
                 </div>
+                <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#4A6580", textAlign: "center" as const, marginTop: "10px" }}>
+                  Las llamadas estratégicas se asignan conforme a disponibilidad del equipo.
+                </p>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── SOCIAL PROOF ── */}
+      <SocialProofSection />
 
       {/* ── FICHA DE CONFIRMACIÓN ── */}
       <AnimatePresence>
@@ -1851,7 +1901,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                     </div>
                   </div>
                   {/* Tus respuestas */}
-                  {(patrimonioPct || posicionRiesgo || composicionCapital || operarDelegar || estructuraArea.length > 0 || diagAnswer || notas.trim()) && (
+                  {(patrimonioPct || posicionRiesgo || composicionCapital || estructuraArea.length > 0 || diagAnswer || notas.trim()) && (
                     <div style={{ padding: "16px 24px 0" }}>
                       <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", fontWeight: 700, letterSpacing: "0.2em", color: "#4A6580", textTransform: "uppercase" as const, marginBottom: "10px" }}>Tus respuestas</div>
                       <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
@@ -1871,12 +1921,6 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                           <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
                             <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Composición del capital</div>
                             <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{composicionCapital}</div>
-                          </div>
-                        )}
-                        {operarDelegar && (
-                          <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
-                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "3px" }}>Gestión preferida</div>
-                            <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 600, color: "#E8ECF1" }}>{operarDelegar}</div>
                           </div>
                         )}
                         {estructuraArea.length > 0 && (
@@ -1992,7 +2036,7 @@ export default function GpsPage() {
   usePlayfairFont();
   const { enabled: soundEnabled, setEnabled: setSoundEnabled, playForward, playBack } = useTransitionSound();
 
-  // Screens: 1=objetivo, 2=participacion, 3=horizonte, 4=capital, 5=prioridades, 6=loading, 7=preview, 8=contact, 9=result
+  // Screens: 1=objetivo, 2=prioridades, 3=participacion, 4=horizonte, 5=capital, 6=loading, 7=preview, 8=contact, 9=result
   const [screen, setScreen] = useState(1);
   const [objetivo, setObjetivo] = useState<string | null>(null);
   const [participacion, setParticipacion] = useState<string | null>(null);
@@ -2014,7 +2058,7 @@ export default function GpsPage() {
   }
 
   function handleBack() {
-    // 9→8, 8→7, 7→5 (skip loading 6), 6→no back, 5→4, 4→3, 3→2, 2→1
+    // 9→8, 8→7, 7→5 (skip loading 6), 6→no back, 5→4, 4→3, 3→2, 2→1 (new order)
     const prev = screen === 9 ? 8 : screen === 8 ? 7 : screen === 7 ? 5 : screen === 5 ? 4 : screen === 4 ? 3 : screen === 3 ? 2 : 1;
     if (prev === 1) setObjetivo(null);
     goScreen(prev);
@@ -2030,10 +2074,10 @@ export default function GpsPage() {
 
       <AnimatePresence mode="wait">
         {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={id => { setObjetivo(id); goScreen(2); }} /></motion.div>}
-        {screen === 2 && <motion.div key="s2" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen2 onNext={id => { setParticipacion(id); goScreen(3); }} /></motion.div>}
-        {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={v => { setHorizonte(v); goScreen(4); }} /></motion.div>}
-        {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen4Capital onNext={id => { setCapital(id); goScreen(5); }} /></motion.div>}
-        {screen === 5 && <motion.div key="s5" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5Priorities onNext={ids => { setPrioridades(ids); goScreen(6); }} /></motion.div>}
+        {screen === 2 && <motion.div key="s2" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5Priorities onNext={ids => { setPrioridades(ids); goScreen(3); }} /></motion.div>}
+        {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen2 onNext={id => { setParticipacion(id); goScreen(4); }} /></motion.div>}
+        {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={v => { setHorizonte(v); goScreen(5); }} /></motion.div>}
+        {screen === 5 && <motion.div key="s5" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen4Capital onNext={id => { setCapital(id); goScreen(6); }} /></motion.div>}
         {screen === 6 && <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen6Loading onDone={() => goScreen(7)} /></motion.div>}
         {screen === 7 && perfil && <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen7Preview perfil={perfil} rankedVehicles={rankedVehicles} objetivo={objetivo} capital={capital} onContinue={() => goScreen(8)} /></motion.div>}
         {screen === 8 && <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen8Contact onNext={data => { setContactData(data); goScreen(9); }} /></motion.div>}
