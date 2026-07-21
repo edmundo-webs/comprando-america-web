@@ -1465,19 +1465,13 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
             </div>
           )}
 
-          {/* Grupo Empresarial de Edmundo Treviño */}
-          <div style={{ background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}40`, borderRadius: "14px", padding: "24px", marginBottom: "28px", position: "relative" as const, overflow: "hidden" }}>
-            <div style={{ position: "absolute" as const, top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
-              <img src={LOGO_URL} alt="Comprando América" style={{ height: "22px", width: "auto", objectFit: "contain", opacity: 0.9 }} />
-            </div>
-            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.7, marginBottom: "18px" }}>
-              Antes de invertir, lo más valioso es tener claridad. En el Grupo Empresarial exploramos tus opciones, desarrollamos criterio y estructuramos una ruta para Estados Unidos.
+          {/* Grupo Empresarial — contexto sin botón de salida */}
+          <div style={{ background: `linear-gradient(135deg, #081628 0%, #0D2040 100%)`, border: `1.5px solid ${GOLD}40`, borderRadius: "14px", padding: "24px", marginBottom: "28px" }}>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: `${GOLD}80`, textTransform: "uppercase" as const, marginBottom: "10px" }}>Tu punto de partida recomendado</p>
+            <p style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "20px", fontWeight: 700, color: "#fff", marginBottom: "10px" }}>Grupo Empresarial de Edmundo</p>
+            <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#8FA5C0", lineHeight: 1.7, margin: 0 }}>
+              Aquí se construye la estrategia. Desde este espacio se validan oportunidades, estructuras fiscales, aspectos migratorios y decisiones patrimoniales antes de invertir.
             </p>
-            <a href="/grupo-empresarial-edmundo"
-              style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "12px 20px", background: `${GOLD}15`, border: `1px solid ${GOLD}50`, borderRadius: "10px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: GOLD, textDecoration: "none" }}>
-              Explorar Grupo Empresarial <IconRight color={GOLD} />
-            </a>
           </div>
 
           {/* VIDEO EXPANDIBLE */}
@@ -1514,12 +1508,17 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 
           {/* CTA button */}
           {!showCriterio ? (
-            <motion.button
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              onClick={() => setShowCriterio(true)}
-              style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-              Esto describe mi situación <IconRight color="#fff" />
-            </motion.button>
+            <>
+              <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", textAlign: "center", marginBottom: "10px" }}>
+                Confírmalo para afinar tu diagnóstico con 3 preguntas más y ver tu ruta completa.
+              </p>
+              <motion.button
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                onClick={() => setShowCriterio(true)}
+                style={{ width: "100%", padding: "16px 24px", background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "14px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, border: "none", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                Esto describe mi situación <IconRight color="#fff" />
+              </motion.button>
+            </>
           ) : (
             <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "12px 18px", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.4)", borderRadius: "10px" }}>
               <div style={{ width: "18px", height: "18px", borderRadius: "50%", background: "rgba(16,185,129,0.3)", border: "1px solid rgba(16,185,129,0.6)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -1830,6 +1829,10 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                       <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "13px", color: "#C8D6E8" }}>{step}</span>
                     </div>
                   ))}
+                  <a href="/grupo-empresarial-edmundo"
+                    style={{ display: "inline-flex", alignItems: "center", gap: "8px", marginTop: "16px", padding: "12px 20px", background: `${GOLD}15`, border: `1px solid ${GOLD}50`, borderRadius: "10px", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: GOLD, textDecoration: "none" }}>
+                    Explorar Grupo Empresarial <IconRight color={GOLD} />
+                  </a>
                 </div>
 
                 {/* CTAs */}
