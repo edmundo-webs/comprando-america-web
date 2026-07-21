@@ -359,9 +359,9 @@ export default function EstructuraEmpresarial() {
               },
               {
                 icon: Shield,
-                title: "Guía inicial de operación",
-                desc: "Orientación básica sobre los siguientes pasos, cumplimiento y preparación bancaria.",
-                link: "Ver los siguientes pasos",
+                title: "Orientación de cierre",
+                desc: "Al entregar tu expediente, aclaramos las preguntas más comunes sobre los pasos que siguen: cumplimiento, banca y operación.",
+                link: "¿Qué ocurre después?",
                 modal: "guia",
               },
             ].map((item, i) => (
@@ -542,8 +542,7 @@ export default function EstructuraEmpresarial() {
                     "Registered Agent durante el primer año",
                     "Obtención del EIN",
                     "Organización de documentación",
-                    "Guía básica de siguientes pasos",
-                    "Orientación inicial para preparación bancaria",
+                    "Orientación de cierre sobre los pasos que siguen",
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
@@ -630,7 +629,7 @@ export default function EstructuraEmpresarial() {
                   { q: "¿Qué es el EIN?", a: "El Employer Identification Number es el número de identificación fiscal federal de tu empresa. Es necesario para abrir cuentas bancarias, contratar empleados, celebrar contratos y cumplir con obligaciones fiscales ante el IRS." },
                   { q: "¿La cuenta bancaria está incluida?", a: "No. Te entregamos orientación inicial y la documentación necesaria para el proceso bancario, pero la apertura de cuenta es un proceso independiente que depende del banco. Te guiamos en los pasos siguientes." },
                   { q: "¿La LLC me permite obtener una visa?", a: "Una LLC puede formar parte de una operación utilizada dentro de una estrategia migratoria, como la visa E-2. Sin embargo, constituir la empresa por sí sola no crea elegibilidad ni garantiza ninguna visa. Si tu objetivo incluye residencia o visa, conviene revisar la estructura antes de constituir." },
-                  { q: "¿Qué obligaciones continúan después de formar la empresa?", a: "Después del primer año, la LLC genera obligaciones de mantenimiento: renovación del Registered Agent, reportes estatales según el estado, cumplimiento fiscal federal (declaraciones de información), y en algunos casos reportes de beneficiarios (BOI). Te explicamos todo esto en la guía de operación." },
+                  { q: "¿Qué obligaciones continúan después de formar la empresa?", a: "Después del primer año, la LLC genera obligaciones de mantenimiento: renovación del Registered Agent, reportes estatales según el estado, cumplimiento fiscal federal (declaraciones de información), y en algunos casos reportes de beneficiarios (BOI). Al cerrar el proceso, aclaramos las más comunes para que sepas qué esperar." },
                   { q: "¿Puedo incluir socios?", a: "Sí. Si la LLC tendrá más de un miembro, es importante que el Operating Agreement refleje claramente los derechos, responsabilidades y porcentajes de participación de cada socio. Cuando hay socios, conviene revisar la estructura con más detalle antes de constituir." },
                   { q: "¿Cuándo necesito una estructura más avanzada?", a: "Cuando participan varios socios, cuando se recibirá inversión de terceros, cuando hay múltiples propiedades o activos, cuando existe una empresa en otro país relacionada, o cuando se evalúa una visa vinculada a la operación. En esos casos, conviene una revisión de estructura antes de constituir." },
                   { q: "¿Qué pasa después del primer año del Registered Agent?", a: "El Registered Agent debe renovarse anualmente. Al acercarse el vencimiento, te informamos sobre las opciones de renovación. No renovarlo puede causar problemas de estatus de la LLC ante el estado." },
@@ -863,7 +862,7 @@ export default function EstructuraEmpresarial() {
       {/* Documentación */}
       <Modal open={modal === "documentacion"} onClose={closeModal} title="Documentos incluidos en el expediente">
         <ul className="space-y-2">
-          {["Certificate of Formation o Articles of Organization", "Operating Agreement básico", "EIN del IRS", "Confirmation del Registered Agent", "Guía de siguientes pasos organizada"].map((doc, i) => (
+          {["Certificate of Formation o Articles of Organization", "Operating Agreement básico", "EIN del IRS", "Confirmación del Registered Agent"].map((doc, i) => (
             <li key={i} className="flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
               <span>{doc}</span>
@@ -875,16 +874,9 @@ export default function EstructuraEmpresarial() {
 
       {/* Guía */}
       <Modal open={modal === "guia"} onClose={closeModal} title="¿Qué ocurre después de formar la LLC?">
-        <p>La guía de operación inicial cubre los pasos más comunes que siguen a la formación de la LLC:</p>
-        <ul className="list-disc pl-4 space-y-1 text-sm">
-          <li>Preparación para apertura de cuenta bancaria</li>
-          <li>Cumplimiento fiscal inicial (obligaciones ante el IRS)</li>
-          <li>Renovación anual del Registered Agent</li>
-          <li>Reporte anual estatal</li>
-          <li>Consideraciones para facturación y contratos</li>
-          <li>Cuándo considerar contratar un contador o abogado</li>
-        </ul>
-        <p className="text-slate-400 text-sm">La guía orienta los pasos siguientes. Para cumplimiento contable, legal o fiscal recurrente se recomienda trabajar con el especialista correspondiente.</p>
+        <p>Al entregar el expediente, aclaramos las preguntas más comunes que surgen en ese momento: qué sigue con la cuenta bancaria, cuáles son las obligaciones de mantenimiento anuales y cuándo conviene contactar a un contador o abogado.</p>
+        <p>Esta orientación no es un documento entregable ni una asesoría formal. Es la claridad práctica que corresponde al cierre del proceso de constitución.</p>
+        <p className="text-slate-400 text-sm">Para cumplimiento contable, fiscal o legal recurrente, recomendamos trabajar con el especialista correspondiente según el caso.</p>
       </Modal>
 
       {/* Quiz */}
