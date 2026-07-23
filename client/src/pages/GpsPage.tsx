@@ -13,6 +13,22 @@ const NAVY_BORDER = "#1E3A5F";
 
 const LOGO_URL = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438699/comprando-america/logo.png";
 
+/* ─── CRM public lead ingestion ─── */
+const CRM_API_URL = (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
+
+async function postCrmLead(payload: Record<string, unknown>, honeypot: string): Promise<void> {
+  if (honeypot) return; // bot filled the hidden field — skip
+  try {
+    await fetch(`${CRM_API_URL}/api/public/leads`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.warn("[CRM] lead post failed (best-effort):", err);
+  }
+}
+
 const PHOTOS = {
   hero: "https://res.cloudinary.com/dkn4ybzog/image/upload/v1749082671/hero-skyline_c7itvs.jpg",
   business: "https://res.cloudinary.com/dkn4ybzog/image/upload/v1749082671/business-meeting_ij8vxs.jpg",
@@ -889,10 +905,15 @@ const COUNTRY_CODES = [
 
 type ContactData = { nombre: string; countryCode: string; whatsapp: string; email: string };
 
-function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
+function Screen8Contact({ onNext, partialSent, onPartialSent }: {
+  onNext: (data: ContactData) => void;
+  partialSent: boolean;
+  onPartialSent: () => void;
+}) {
   const [form, setForm] = useState<ContactData>({ nombre: "", countryCode: "+52", whatsapp: "", email: "" });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactData, string>>>({});
   const [focused, setFocused] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState("");
   const createLead = trpc.leads.create.useMutation();
   const [submitting, setSubmitting] = useState(false);
 
@@ -908,13 +929,26 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
     const e = validate();
     if (Object.keys(e).length > 0) { setErrors(e); return; }
     setSubmitting(true);
-    // Envío al CRM best-effort — si falla, el WhatsApp tiene toda la información
+    // Envío interno best-effort
     createLead.mutate({
       nombreCompleto: form.nombre.trim(),
       whatsapp: `${form.countryCode} ${form.whatsapp.trim()}`,
       email: form.email.trim(),
       fuente: "gps-diagnostico",
     });
+    // POST al CRM público — partial — solo si no se ha enviado antes
+    if (!partialSent) {
+      postCrmLead({
+        name: form.nombre.trim(),
+        email: form.email.trim(),
+        phone: `${form.countryCode}${form.whatsapp.trim()}`,
+        sourceSlug: "web_ca_gps",
+        sourceUrl: window.location.href,
+        stage: "partial",
+        gpsFicha: null,
+      }, honeypot);
+      onPartialSent();
+    }
     setTimeout(() => onNext(form), 600);
   }
 
@@ -983,6 +1017,11 @@ function Screen8Contact({ onNext }: { onNext: (data: ContactData) => void }) {
             onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
             style={fieldStyle("email", !!errors.email)} />
           {errors.email && <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#E05C5C", marginTop: "5px" }}>{errors.email}</p>}
+        </div>
+
+        {/* Honeypot — invisible para humanos, bots lo llenan */}
+        <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={e => setHoneypot(e.target.value)} />
         </div>
 
         {/* Privacy notice */}
@@ -1287,6 +1326,34 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   onCompare: () => void;
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
+  // POST complete al CRM — se dispara una sola vez al montar
+  useEffect(() => {
+    if (!contactData) return;
+    postCrmLead({
+      name: contactData.nombre.trim(),
+      email: contactData.email.trim(),
+      phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
+      sourceSlug: "web_ca_gps",
+      sourceUrl: window.location.href,
+      stage: "complete",
+      gpsFicha: {
+        objetivo: investorData.objetivo,
+        capital: investorData.capital,
+        rol: investorData.participacion,
+        horizonte: investorData.horizonte,
+        prioridades: investorData.prioridades,
+        rutaRecomendada: perfil.nombre,
+        respuestas: {
+          objetivo: investorData.objetivo,
+          participacion: investorData.participacion,
+          horizonte: investorData.horizonte,
+          capital: investorData.capital,
+          prioridades: investorData.prioridades,
+        },
+      },
+    }, ""); // honeypot vacío — ya validado en Screen8
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [drawerVehicle, setDrawerVehicle] = useState<(VehicleEntry & { score: number; pct: number }) | null>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
   const [diagAnswer, setDiagAnswer] = useState<string | null>(null);
@@ -2051,6 +2118,7 @@ export default function GpsPage() {
   const [capital, setCapital] = useState<string | null>(null);
   const [prioridades, setPrioridades] = useState<string[]>([]);
   const [contactData, setContactData] = useState<ContactData | null>(null);
+  const [partialSent, setPartialSent] = useState(false);
 
   const perfil = objetivo ? PERFILES[objetivo] ?? null : null;
 
@@ -2087,7 +2155,7 @@ export default function GpsPage() {
         {screen === 5 && <motion.div key="s5" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen4Capital onNext={id => { setCapital(id); goScreen(6); }} /></motion.div>}
         {screen === 6 && <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen6Loading onDone={() => goScreen(7)} /></motion.div>}
         {screen === 7 && perfil && <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen7Preview perfil={perfil} rankedVehicles={rankedVehicles} objetivo={objetivo} capital={capital} onContinue={() => goScreen(8)} /></motion.div>}
-        {screen === 8 && <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen8Contact onNext={data => { setContactData(data); goScreen(9); }} /></motion.div>}
+        {screen === 8 && <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen8Contact onNext={data => { setContactData(data); goScreen(9); }} partialSent={partialSent} onPartialSent={() => setPartialSent(true)} /></motion.div>}
         {screen === 9 && perfil && <motion.div key="s9" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} onCompare={() => { setObjetivo(null); goScreen(1); }} /></motion.div>}
       </AnimatePresence>
 
