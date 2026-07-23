@@ -159,6 +159,16 @@ const DIAGNOSTICO_RESPUESTAS: Record<string, string> = {
   nosc: "Eso está bien. Tu siguiente paso es un diagnóstico estratégico donde exploramos juntos tus opciones reales en Estados Unidos, sin compromisos.",
 };
 
+// Labels de las áreas de interés seleccionables en "Estación 3 · Estructura" — reutilizadas
+// en "Tu Ficha GPS Estratégica", el resumen de WhatsApp y el payload de gpsFicha para no re-traducir slugs.
+const AREA_LABELS: Record<string, string> = {
+  "estructura-legal": "Estructura legal y fiscal",
+  "flujo-pasivo": "Flujo pasivo",
+  "bienes-raices": "Bienes raíces",
+  "expansion-empresa": "Expansión de empresa",
+  "visa-residencia": "Visa o residencia",
+};
+
 /* ─── Vehicle data ─── */
 type VehicleEntry = {
   id: string; nombre: string; frase: string; descripcion: string;
@@ -1326,34 +1336,6 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   onCompare: () => void;
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
-  // POST complete al CRM — se dispara una sola vez al montar
-  useEffect(() => {
-    if (!contactData) return;
-    postCrmLead({
-      name: contactData.nombre.trim(),
-      email: contactData.email.trim(),
-      phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
-      sourceSlug: "web_ca_gps",
-      sourceUrl: window.location.href,
-      stage: "complete",
-      gpsFicha: {
-        objetivo: investorData.objetivo,
-        capital: investorData.capital,
-        rol: investorData.participacion,
-        horizonte: investorData.horizonte,
-        prioridades: investorData.prioridades,
-        rutaRecomendada: perfil.nombre,
-        respuestas: {
-          objetivo: investorData.objetivo,
-          participacion: investorData.participacion,
-          horizonte: investorData.horizonte,
-          capital: investorData.capital,
-          prioridades: investorData.prioridades,
-        },
-      },
-    }, ""); // honeypot vacío — ya validado en Screen8
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const [drawerVehicle, setDrawerVehicle] = useState<(VehicleEntry & { score: number; pct: number }) | null>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
   const [diagAnswer, setDiagAnswer] = useState<string | null>(null);
@@ -1384,12 +1366,78 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
     { label: "Horizonte", value: investorData.horizonte ?? "" },
   ].filter(f => f.value);
 
+  const prioridadesLabels = investorData.prioridades.map(id => OPCIONES_4.find(o => o.id === id)?.label ?? id);
+
+  // Construye el mismo contenido —ya formateado en español— que se muestra en "Tu Ficha GPS Estratégica"
+  function buildGpsFicha() {
+    return {
+      rutaTitulo: perfil.nombre,
+      rutaDescripcion: perfil.descripcion,
+      porQueEstaRuta: perfil.porQueEncaja,
+      perfil: {
+        objetivo: objetivoLabel,
+        capital: capitalLabel,
+        rol: participacionLabel,
+        horizonte: investorData.horizonte ?? "",
+        prioridades: prioridadesLabels,
+      },
+      respuestas: {
+        patrimonioADolarizar: patrimonioPct,
+        posicionDeRiesgo: posicionRiesgo,
+        composicionDeCapital: composicionCapital,
+        areasDeInteres: estructuraArea.map(id => AREA_LABELS[id] ?? id),
+        queResolverPrimero: diagAnswer ? (DIAG_OPCIONES.find(o => o.id === diagAnswer)?.label ?? diagAnswer) : null,
+        notasAdicionales: notas.trim() || null,
+      },
+      vehiculosRecomendados: topVehicles.slice(0, 3).map(v => ({
+        nombre: v.nombre,
+        descripcion: v.frase,
+        compatibilidad: v.pct,
+      })),
+    };
+  }
+
+  // Red de seguridad: envía la ficha básica una sola vez al montar, por si el usuario
+  // abandona antes de responder cualquier pregunta de criterio.
+  useEffect(() => {
+    if (!contactData) return;
+    postCrmLead({
+      name: contactData.nombre.trim(),
+      email: contactData.email.trim(),
+      phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
+      sourceSlug: "web_ca_gps",
+      sourceUrl: window.location.href,
+      stage: "complete",
+      gpsFicha: buildGpsFicha(),
+    }, ""); // honeypot vacío — ya validado en Screen8
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Actualiza (upsert por email/teléfono) el mismo contacto con el criterio más reciente.
+  // Debounce de 1500ms para no disparar una petición por cada cambio rápido.
+  useEffect(() => {
+    if (!contactData) return;
+    const hayCriterio = patrimonioPct || posicionRiesgo || composicionCapital || estructuraArea.length > 0 || diagAnswer || notas.trim();
+    if (!hayCriterio) return;
+    const timer = setTimeout(() => {
+      postCrmLead({
+        name: contactData.nombre.trim(),
+        email: contactData.email.trim(),
+        phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
+        sourceSlug: "web_ca_gps",
+        sourceUrl: window.location.href,
+        stage: "complete",
+        gpsFicha: buildGpsFicha(),
+      }, "");
+    }, 1500);
+    return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contactData, patrimonioPct, posicionRiesgo, composicionCapital, estructuraArea, diagAnswer, notas]);
+
   function openConfirm() {
     setShowConfirm(true);
     setTimeout(() => confirmRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }), 80);
   }
-
-  const prioridadesLabels = investorData.prioridades.map(id => OPCIONES_4.find(o => o.id === id)?.label ?? id);
 
   useEffect(() => { if (patrimonioPct && posicionRiesgo && composicionCapital) setShowEstructura(true); }, [patrimonioPct, posicionRiesgo, composicionCapital]);
   useEffect(() => { if (estructuraArea.length > 0) setShowDiag(true); }, [estructuraArea]);
@@ -2001,16 +2049,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
                           <div style={{ background: `${NAVY}90`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "8px", padding: "10px 12px" }}>
                             <div style={{ fontFamily: "'Inter',sans-serif", fontSize: "9px", color: `${GOLD}80`, textTransform: "uppercase" as const, letterSpacing: "0.12em", marginBottom: "6px" }}>Áreas de interés</div>
                             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "5px" }}>
-                              {estructuraArea.map(id => {
-                                const areaLabels: Record<string, string> = {
-                                  "estructura-legal": "Estructura legal y fiscal",
-                                  "flujo-pasivo": "Flujo pasivo",
-                                  "bienes-raices": "Bienes raíces",
-                                  "expansion-empresa": "Expansión de empresa",
-                                  "visa-residencia": "Visa o residencia",
-                                };
-                                return <span key={id} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{areaLabels[id] ?? id}</span>;
-                              })}
+                              {estructuraArea.map(id => (
+                                <span key={id} style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#A8BDD4", background: `${NAVY_BORDER}60`, borderRadius: "4px", padding: "2px 8px" }}>{AREA_LABELS[id] ?? id}</span>
+                              ))}
                             </div>
                           </div>
                         )}
