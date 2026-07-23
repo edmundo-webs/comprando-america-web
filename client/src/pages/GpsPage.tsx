@@ -1338,6 +1338,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
   const [showConfirm, setShowConfirm] = useState(false);
   const [drawerVehicle, setDrawerVehicle] = useState<(VehicleEntry & { score: number; pct: number }) | null>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
+  // Identificador único de esta sesión de quiz — se genera una sola vez al montar y nunca cambia.
+  const quizSessionIdRef = useRef<string | null>(null);
+  if (quizSessionIdRef.current === null) quizSessionIdRef.current = crypto.randomUUID();
   const [diagAnswer, setDiagAnswer] = useState<string | null>(null);
   const [notas, setNotas] = useState("");
   const [patrimonioPct, setPatrimonioPct] = useState<string | null>(null);
@@ -1408,6 +1411,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       sourceSlug: "web_ca_gps",
       sourceUrl: window.location.href,
       stage: "complete",
+      quizSessionId: quizSessionIdRef.current,
       gpsFicha: buildGpsFicha(),
     }, ""); // honeypot vacío — ya validado en Screen8
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1427,6 +1431,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         sourceSlug: "web_ca_gps",
         sourceUrl: window.location.href,
         stage: "complete",
+        quizSessionId: quizSessionIdRef.current,
         gpsFicha: buildGpsFicha(),
       }, "");
     }, 1500);
