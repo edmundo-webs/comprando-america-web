@@ -262,6 +262,51 @@ export default function QuienesSomos() {
         </div>
       </section>
 
+      {/* ═══ COFUNDADORES — navy elevated ═══ */}
+      <section className="bg-[#0A1B33] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-12">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Cofundadores</p>
+              <h2 className="text-3xl md:text-4xl text-white">Quienes construyen Comprando América</h2>
+              <p className="text-slate-400 text-base leading-relaxed mt-4 max-w-2xl mx-auto">
+                Junto a Edmundo, un equipo fundador que aporta bienes raíces, inversión y operación para que invertir en Estados Unidos sea claro y accesible.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+            {[
+              {
+                name: "Joe Faraci",
+                role: "Cofundador · Bienes Raíces e Inversiones",
+                photo: "/team/joe.jpg",
+                desc: "Inversionista inmobiliario con casi tres décadas de experiencia guiando a inversionistas globales hacia propiedades en Estados Unidos. Fundador de Elev8 Wealth.",
+              },
+              {
+                name: "Diego Alcalá",
+                role: "Cofundador · Operaciones y Relación con Inversionistas",
+                photo: "/team/diego.jpg",
+                desc: "Lidera la operación y la relación con los miembros, conectando a la comunidad con las oportunidades y los especialistas correctos.",
+              },
+            ].map((p, i) => (
+              <FadeIn key={p.name} delay={i * 0.1}>
+                <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-2xl p-8 h-full">
+                  <div className="flex items-center gap-4 mb-5">
+                    <img src={p.photo} alt={p.name} className="w-20 h-20 rounded-full object-cover border-2 border-blue-500/20" />
+                    <div>
+                      <h3 className="text-xl font-bold text-white">{p.name}</h3>
+                      <p className="text-blue-400 text-xs font-semibold tracking-[0.15em] uppercase mt-1">{p.role}</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-400 text-sm leading-relaxed">{p.desc}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ═══ ALIADOS — component (navy) ═══ */}
       <AlliesSection />
 
