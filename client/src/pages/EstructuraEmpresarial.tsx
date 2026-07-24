@@ -38,6 +38,22 @@ const CLOVER = {
   florida: "https://link.clover.com/urlshortener/SFHYf2",
 };
 
+/* ─── CRM public lead ingestion ─── */
+const CRM_API_URL = (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
+
+async function postCrmLead(payload: Record<string, unknown>, honeypot: string): Promise<void> {
+  if (honeypot) return; // bot filled the hidden field — skip
+  try {
+    await fetch(`${CRM_API_URL}/api/public/leads`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch (err) {
+    console.warn("[CRM] lead post failed (best-effort):", err);
+  }
+}
+
 function handleCheckout(state: "texas" | "florida") {
   if (typeof window !== "undefined" && (window as any).fbq) {
     (window as any).fbq("track", "InitiateCheckout", { value: 1499, currency: "USD" });
@@ -196,11 +212,35 @@ export default function EstructuraEmpresarial() {
   /* Form */
   const [formData, setFormData] = useState({ name: "", email: "", whatsapp: "", country: "", state: "", objective: "", partners: "", timeline: "" });
   const [formSent, setFormSent] = useState(false);
+  const [formHoneypot, setFormHoneypot] = useState("");
+  const [formSubmitting, setFormSubmitting] = useState(false);
 
   function handleForm(e: React.FormEvent) {
     e.preventDefault();
-    const msg = `Hola, me interesa formar una LLC en ${formData.state || "Estados Unidos"}.\nNombre: ${formData.name}\nPaís: ${formData.country}\nObjetivo: ${formData.objective}\nSocios: ${formData.partners}\nFecha estimada: ${formData.timeline}`;
+    if (formSubmitting) return;
+    setFormSubmitting(true);
+
+    const estadoDeInteres = formData.state || "Estados Unidos";
+    const msg = `Hola, me interesa formar una LLC en ${estadoDeInteres}.\nNombre: ${formData.name}\nPaís: ${formData.country}\nObjetivo: ${formData.objective}\nSocios: ${formData.partners}\nFecha estimada: ${formData.timeline}`;
     openWhatsApp(WHATSAPP_PHONE, msg);
+
+    postCrmLead({
+      sourceSlug: "web_ca_estructura_empresarial",
+      sourceUrl: window.location.href,
+      stage: "complete",
+      introText: `Hola, me interesa formar una LLC en ${estadoDeInteres}.`,
+      formFields: [
+        { label: "Nombre", value: formData.name },
+        { label: "Correo", value: formData.email },
+        { label: "WhatsApp", value: formData.whatsapp },
+        { label: "País", value: formData.country },
+        { label: "Estado de interés", value: formData.state },
+        { label: "Objetivo", value: formData.objective },
+        { label: "Socios", value: formData.partners },
+        { label: "Fecha estimada", value: formData.timeline },
+      ],
+    }, formHoneypot);
+
     setFormSent(true);
   }
 
@@ -719,7 +759,13 @@ export default function EstructuraEmpresarial() {
                         </select>
                       </div>
                     ))}
-                    <Button type="submit" className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-5 font-semibold gap-2 mt-2">
+
+                    {/* Honeypot — invisible para humanos, bots lo llenan */}
+                    <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
+                      <input type="text" name="website" tabIndex={-1} autoComplete="off" value={formHoneypot} onChange={(e) => setFormHoneypot(e.target.value)} />
+                    </div>
+
+                    <Button type="submit" disabled={formSubmitting} className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-5 font-semibold gap-2 mt-2 disabled:opacity-70">
                       <MessageSquare className="w-4 h-4" /> Enviar información
                     </Button>
                   </form>
