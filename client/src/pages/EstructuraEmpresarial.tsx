@@ -2,7 +2,7 @@
  * /estructura-empresarial-en-estados-unidos — URL canónica del servicio LLC
  * /llc redirige aquí con 301 permanente
  */
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
@@ -318,38 +318,42 @@ export default function EstructuraEmpresarial() {
 
               <div className="grid sm:grid-cols-2 gap-3 mb-6">
                 {INTENTS.map((intent, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveIntent(activeIntent === i ? null : i)}
-                    className={`text-left px-5 py-4 rounded-xl border text-sm font-medium transition-all ${
-                      activeIntent === i
-                        ? "bg-primary/10 border-primary/60 text-[#0B1F3A]"
-                        : "bg-white border-gray-200 text-[#374151] hover:border-primary/30"
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      <ChevronRight className={`w-4 h-4 flex-shrink-0 transition-transform ${activeIntent === i ? "rotate-90 text-primary" : "text-gray-400"}`} />
-                      {intent.label}
-                    </span>
-                  </button>
+                  <Fragment key={i}>
+                    <button
+                      onClick={() => setActiveIntent(activeIntent === i ? null : i)}
+                      className={`text-left px-5 py-4 rounded-xl border text-sm font-medium transition-all ${
+                        activeIntent === i
+                          ? "bg-primary/10 border-primary/60 text-[#0B1F3A]"
+                          : "bg-white border-gray-200 text-[#374151] hover:border-primary/30"
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <ChevronRight className={`w-4 h-4 flex-shrink-0 transition-transform ${activeIntent === i ? "rotate-90 text-primary" : "text-gray-400"}`} />
+                        {intent.label}
+                      </span>
+                    </button>
+
+                    {/* Contexto inline: aparece justo debajo del botón seleccionado,
+                        exactamente donde el usuario está mirando (sin scroll automático). */}
+                    <AnimatePresence>
+                      {activeIntent === i && (
+                        <motion.div
+                          className="col-span-2 overflow-hidden"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <div className="bg-white border border-primary/20 rounded-xl p-5 text-[#374151] text-sm leading-relaxed shadow-sm">
+                            <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Contexto para tu caso</p>
+                            {intent.context}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </Fragment>
                 ))}
               </div>
-
-              <AnimatePresence mode="wait">
-                {activeIntent !== null && (
-                  <motion.div
-                    key={activeIntent}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2 }}
-                    className="bg-white border border-primary/20 rounded-xl p-5 text-[#374151] text-sm leading-relaxed shadow-sm"
-                  >
-                    <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Contexto para tu caso</p>
-                    {INTENTS[activeIntent].context}
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           </FadeIn>
         </div>
