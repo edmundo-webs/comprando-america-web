@@ -29,6 +29,8 @@ import {
   AlertTriangle,
   ChevronRight,
   MessageSquare,
+  Compass,
+  UserCheck,
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 
@@ -158,14 +160,61 @@ const INTENTS = [
   },
 ];
 
-/* ─── Strategic quiz ─── */
-const QUIZ_QUESTIONS = [
-  "¿Participarán dos o más personas como socios o co-propietarios de esta empresa?",
-  "¿Planeas recibir inversión de terceros o capital externo en el futuro?",
-  "¿Tienes o planeas tener más de una propiedad, negocio o activo bajo esta misma estructura?",
-  "¿Ya tienes una empresa activa en otro país que se relacionará con esta LLC?",
-  "¿Estás evaluando una visa de inversionista, empresario o residencia vinculada a esta empresa?",
+/* ─── Diagnóstico de estructura de LLC ───
+   Reemplaza el antiguo "Quiz" binario. Solo indaga variables de FORMACIÓN de empresa
+   (operación, socios, empresa previa, objetivo de inversión, claridad de estado).
+   Nunca pregunta capital, ticket ni horizonte — esas variables son exclusivas del GPS.
+   El "Selector de intención" (¿para qué necesitas la empresa?) sigue siendo el primer
+   paso de la página, por lo que aquí no se repite la pregunta de propósito. */
+type DiagQuestion = { q: string; options: string[] };
+const DIAGNOSTIC: DiagQuestion[] = [
+  {
+    q: "¿Dónde vas a operar principalmente tu negocio?",
+    options: ["Estados Unidos", "Mi país actual", "Remoto / digital, sin ubicación fija", "Varios países"],
+  },
+  {
+    q: "¿Cuántos socios o dueños tendrá la empresa?",
+    options: ["Solo yo", "2 socios", "3 o más socios", "Socios más inversionistas externos"],
+  },
+  {
+    q: "¿Ya tienes una empresa activa en otro país relacionada con esta?",
+    options: ["Sí", "No"],
+  },
+  {
+    q: "¿Tu objetivo incluye, a mediano plazo, atraer capital de inversionistas externos o aplicar a una visa de inversionista (E-2)?",
+    options: ["Sí, ya es un objetivo definido", "Tal vez más adelante, aún no lo sé", "No, solo quiero operar o facturar"],
+  },
+  {
+    q: "¿Ya tienes claridad sobre en qué estado te conviene registrar (Texas o Florida) o necesitas orientación?",
+    options: ["Ya sé cuál me conviene", "No estoy seguro"],
+  },
 ];
+
+type DiagResult = "inversion" | "asesor" | "llc";
+
+/* Resultado del diagnóstico. El orden de las reglas importa:
+   1) Objetivo de inversión definido (Q4) tiene prioridad → GPS.
+   2) Inversionistas externos (Q2) o empresa previa en otro país (Q3) → sugerir asesor
+      (inline, sin bloquear el flujo de compra).
+   3) Cualquier otro caso → formación de LLC estándar. */
+function computeDiagResult(answers: (number | null)[]): DiagResult {
+  if (answers[3] === 0) return "inversion"; // "Sí, ya es un objetivo definido"
+  if (answers[1] === 3 || answers[2] === 0) return "asesor"; // socios+inversionistas / empresa previa
+  return "llc";
+}
+
+/* Convierte las respuestas del diagnóstico al formato genérico de formFields del CRM,
+   para que se registren como nota "Datos recibidos del formulario" junto al contacto. */
+function diagFormFields(answers: (number | null)[]) {
+  return DIAGNOSTIC.map((item, i) => ({
+    label: item.q,
+    value: answers[i] != null ? item.options[answers[i]!] : "",
+  })).filter((f) => f.value);
+}
+
+/* Handoff al GPS cuando el usuario ya viene calificado con intención de inversión.
+   El GPS lee estos parámetros para no repetir la pregunta de propósito. */
+const GPS_QUALIFIED_URL = "/gps?ref=llc-diagnostico&intent=inversion";
 
 /* ─── Form fields ─── */
 const STATE_OPTIONS = ["Texas", "Florida", "No estoy seguro"];
@@ -185,27 +234,26 @@ export default function EstructuraEmpresarial() {
   /* Intent selector */
   const [activeIntent, setActiveIntent] = useState<number | null>(null);
 
-  /* Quiz */
-  const [quizStep, setQuizStep] = useState<number>(-1); // -1 = not started
-  const [quizAnswers, setQuizAnswers] = useState<(boolean | null)[]>(Array(QUIZ_QUESTIONS.length).fill(null));
-  const [quizResult, setQuizResult] = useState<"llc" | "estructura" | null>(null);
+  /* Diagnóstico de estructura de LLC */
+  const [diagStep, setDiagStep] = useState<number>(0);
+  const [diagAnswers, setDiagAnswers] = useState<(number | null)[]>(Array(DIAGNOSTIC.length).fill(null));
+  const [diagResult, setDiagResult] = useState<DiagResult | null>(null);
 
-  function startQuiz() {
-    setQuizStep(0);
-    setQuizAnswers(Array(QUIZ_QUESTIONS.length).fill(null));
-    setQuizResult(null);
-    openModal("quiz");
+  function startDiagnostic() {
+    setDiagStep(0);
+    setDiagAnswers(Array(DIAGNOSTIC.length).fill(null));
+    setDiagResult(null);
+    openModal("diagnostico");
   }
 
-  function answerQuiz(answer: boolean) {
-    const next = [...quizAnswers];
-    next[quizStep] = answer;
-    setQuizAnswers(next);
-    if (quizStep < QUIZ_QUESTIONS.length - 1) {
-      setQuizStep(quizStep + 1);
+  function answerDiag(optionIdx: number) {
+    const next = [...diagAnswers];
+    next[diagStep] = optionIdx;
+    setDiagAnswers(next);
+    if (diagStep < DIAGNOSTIC.length - 1) {
+      setDiagStep(diagStep + 1);
     } else {
-      const yesCount = next.filter(Boolean).length;
-      setQuizResult(yesCount >= 2 ? "estructura" : "llc");
+      setDiagResult(computeDiagResult(next));
     }
   }
 
@@ -228,6 +276,9 @@ export default function EstructuraEmpresarial() {
       sourceSlug: "web_ca_estructura_empresarial",
       sourceUrl: window.location.href,
       stage: "complete",
+      // Etiqueta de página de interés (acumulable en el CRM). Esta página es la de LLC,
+      // por lo que siempre etiqueta interes:llc; la ruta de inversión la etiqueta el GPS.
+      tags: ["interes:llc"],
       introText: `Hola, me interesa formar una LLC en ${estadoDeInteres}.`,
       formFields: [
         { label: "Nombre", value: formData.name },
@@ -238,6 +289,8 @@ export default function EstructuraEmpresarial() {
         { label: "Objetivo", value: formData.objective },
         { label: "Socios", value: formData.partners },
         { label: "Fecha estimada", value: formData.timeline },
+        // Si el usuario completó el diagnóstico, adjunta sus respuestas al mismo contacto.
+        ...(diagResult ? diagFormFields(diagAnswers) : []),
       ],
     }, formHoneypot);
 
@@ -560,7 +613,7 @@ export default function EstructuraEmpresarial() {
               <div className="text-center">
                 <Button
                   variant="outline"
-                  onClick={startQuiz}
+                  onClick={startDiagnostic}
                   className="border-gray-300 text-[#374151] hover:bg-gray-100 gap-2 rounded-full px-8 py-5"
                 >
                   Revisar si mi caso necesita otra estructura
@@ -929,46 +982,114 @@ export default function EstructuraEmpresarial() {
         <p className="text-slate-400 text-sm">Para cumplimiento contable, fiscal o legal recurrente, recomendamos trabajar con el especialista correspondiente según el caso.</p>
       </Modal>
 
-      {/* Quiz */}
-      <Modal open={modal === "quiz"} onClose={closeModal} title="Revisión rápida de tu caso">
-        {quizResult === null && quizStep >= 0 && quizStep < QUIZ_QUESTIONS.length && (
+      {/* Diagnóstico de estructura de LLC */}
+      <Modal open={modal === "diagnostico"} onClose={closeModal} title="Diagnóstico de estructura">
+        {diagResult === null && (
           <>
-            <p className="text-slate-400 text-xs mb-4">Pregunta {quizStep + 1} de {QUIZ_QUESTIONS.length}</p>
-            <p className="text-white font-medium mb-6">{QUIZ_QUESTIONS[quizStep]}</p>
-            <div className="flex gap-4">
-              <Button onClick={() => answerQuiz(true)} className="flex-1 bg-primary hover:bg-blue-600 text-white rounded-xl py-4">
-                Sí
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-slate-400 text-xs">Pregunta {diagStep + 1} de {DIAGNOSTIC.length}</p>
+              {diagStep > 0 && (
+                <button onClick={() => setDiagStep(diagStep - 1)} className="text-slate-500 hover:text-white text-xs transition-colors">
+                  ← Anterior
+                </button>
+              )}
+            </div>
+            {/* Barra de progreso */}
+            <div className="h-1 bg-[#1E3A5F] rounded-full mb-6 overflow-hidden">
+              <div className="h-full bg-primary transition-all duration-300" style={{ width: `${((diagStep + 1) / DIAGNOSTIC.length) * 100}%` }} />
+            </div>
+            <p className="text-white font-medium mb-6">{DIAGNOSTIC[diagStep].q}</p>
+            <div className="flex flex-col gap-3">
+              {DIAGNOSTIC[diagStep].options.map((opt, i) => (
+                <button
+                  key={i}
+                  onClick={() => answerDiag(i)}
+                  className={`text-left rounded-xl px-5 py-4 text-sm border transition-all ${
+                    diagAnswers[diagStep] === i
+                      ? "bg-primary/10 border-primary text-white"
+                      : "bg-[#0B1F3A] border-[#1E3A5F] text-slate-300 hover:border-primary/60 hover:text-white"
+                  }`}
+                >
+                  {opt}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Resultado: objetivo de inversión definido → GPS */}
+        {diagResult === "inversion" && (
+          <>
+            <div className="flex items-center gap-2 mb-4">
+              <Compass className="w-6 h-6 text-primary" />
+              <p className="text-white font-semibold">Tu objetivo ya contempla inversión</p>
+            </div>
+            <p>
+              Como tu meta a mediano plazo incluye atraer capital externo o una visa de inversionista,
+              conviene definir primero el <strong className="text-white">vehículo de inversión</strong> correcto,
+              no solo la LLC. Nuestro GPS Estratégico te perfila en menos de 2 minutos — sin volver a
+              preguntarte lo que ya sabemos de tu caso.
+            </p>
+            <a href={GPS_QUALIFIED_URL}>
+              <Button className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
+                Ir a mi GPS de inversión <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button onClick={() => answerQuiz(false)} variant="outline" className="flex-1 border-slate-600 text-white hover:bg-white/10 rounded-xl py-4">
-                No
+            </a>
+            <button
+              onClick={() => { closeModal(); openModal("iniciar"); }}
+              className="text-slate-400 text-sm text-center hover:text-white transition-colors underline underline-offset-2 w-full mt-3"
+            >
+              Prefiero solo formar la LLC por ahora
+            </button>
+          </>
+        )}
+
+        {/* Resultado: inversionistas externos o empresa previa → sugerir asesor (no bloquea) */}
+        {diagResult === "asesor" && (
+          <>
+            <div className="flex items-center gap-2 mb-4">
+              <UserCheck className="w-6 h-6 text-primary" />
+              <p className="text-white font-semibold">Puedes continuar, y además vale la pena una revisión</p>
+            </div>
+            {/* Mismo patrón que el bloque "Contexto para tu caso": tarjeta contextual, inline, sin forzar salida */}
+            <div className="bg-[#0B1F3A] border border-primary/30 rounded-xl p-5 text-slate-300 text-sm leading-relaxed">
+              <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Contexto para tu caso</p>
+              Como tu empresa involucrará inversionistas externos o se relaciona con una empresa que ya tienes
+              en otro país, hablar con un asesor <strong className="text-white">antes de constituir</strong> ayuda
+              a elegir bien la estructura y evitar reorganizarla después. Es una opción adicional — no un requisito.
+            </div>
+            <div className="flex flex-col gap-3 pt-2">
+              <Button
+                onClick={() => { closeModal(); openModal("iniciar"); }}
+                className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full"
+              >
+                Continuar con mi LLC <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => { closeModal(); openWhatsApp(WHATSAPP_PHONE, "Hola, antes de constituir mi LLC quiero revisar mi caso con un asesor. Mi empresa involucra socios/inversionistas externos o una empresa que ya tengo en otro país."); }}
+                className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2"
+              >
+                <MessageSquare className="w-4 h-4" /> Hablar con un asesor primero
               </Button>
             </div>
           </>
         )}
-        {quizResult === "llc" && (
+
+        {/* Resultado: LLC estándar */}
+        {diagResult === "llc" && (
           <>
             <div className="flex items-center gap-2 mb-4">
               <CheckCircle2 className="w-6 h-6 text-primary" />
-              <p className="text-white font-semibold">Una LLC podría ser suficiente</p>
+              <p className="text-white font-semibold">Una LLC estándar encaja con tu caso</p>
             </div>
-            <p>Por lo que nos compartes, tu necesidad parece compatible con el servicio estándar de formación de LLC.</p>
+            <p>
+              Por lo que nos compartes, el servicio de formación de LLC ($1,499) cubre lo que necesitas.
+              Nuestro equipo revisará tu caso antes de iniciar el proceso.
+            </p>
             <Button onClick={() => { closeModal(); openModal("iniciar"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
               Continuar con mi LLC <ArrowRight className="w-4 h-4" />
             </Button>
-          </>
-        )}
-        {quizResult === "estructura" && (
-          <>
-            <div className="flex items-center gap-2 mb-4">
-              <AlertTriangle className="w-6 h-6 text-amber-400" />
-              <p className="text-white font-semibold">Conviene revisar la estructura antes de constituir</p>
-            </div>
-            <p>Tu caso incluye elementos que pueden cambiar la forma de organizar la empresa. Abrir una LLC sin revisar estos puntos podría limitar decisiones posteriores.</p>
-            <a href="/estructura-de-inversion-en-usa">
-              <Button className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
-                Solicitar revisión de estructura <ArrowRight className="w-4 h-4" />
-              </Button>
-            </a>
           </>
         )}
       </Modal>
