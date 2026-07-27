@@ -514,7 +514,7 @@ function JourneyStrip({ screen, objetivo, participacion, horizonte, capital }: {
 }
 
 /* ─── SCREEN 1 — Objetivo ─── */
-function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
+function Screen1({ onSelect, preQualified }: { onSelect: (id: string) => void; preQualified?: boolean }) {
   const [hovered, setHovered] = useState<string | null>(null);
   return (
     <div style={{ position: "relative", width: "100%", minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: NAVY }}>
@@ -533,9 +533,20 @@ function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
           <div style={{ width: "60px", height: "1px", background: `linear-gradient(90deg, ${GOLD}90, transparent)` }} />
         </div>
 
+        {/* Reconocimiento cuando el usuario ya viene calificado desde el diagnóstico de LLC */}
+        {preQualified && (
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${GOLD}18`, border: `1px solid ${GOLD}55`, borderRadius: "20px", padding: "6px 16px", marginBottom: "14px" }}>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: GOLD_LIGHT }}>
+              Vienes de tu diagnóstico de estructura · ya sabemos que buscas invertir
+            </span>
+          </div>
+        )}
+
         {/* Duration indicator */}
         <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "6px 16px", marginBottom: "24px" }}>
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>5 preguntas · Menos de 2 minutos</span>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>
+            {preQualified ? "Ahora definamos tu vehículo de inversión" : "5 preguntas · Menos de 2 minutos"}
+          </span>
         </div>
 
         <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(28px,4.8vw,58px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: "18px", textShadow: "0 4px 32px rgba(0,0,0,0.6)" }}>
@@ -1328,13 +1339,17 @@ function SocialProofSection() {
 }
 
 /* ─── RESULT SCREEN ─── */
-function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCompare }: {
+function ResultScreen({ perfil, contactData, rankedVehicles, investorData, preQualified, onCompare }: {
   perfil: (typeof PERFILES)[string];
   contactData: ContactData | null;
   rankedVehicles: (VehicleEntry & { score: number; pct: number })[];
   investorData: { objetivo: string | null; participacion: string | null; horizonte: string | null; capital: string | null; prioridades: string[] };
+  preQualified?: boolean;
   onCompare: () => void;
 }) {
+  // Etiqueta de página de interés (acumulable en el CRM). El GPS siempre representa interés de
+  // inversión; si además llega pre-calificado desde el diagnóstico de LLC, se conserva el rastro.
+  const crmTags = preQualified ? ["interes:inversion", "origen:llc-diagnostico"] : ["interes:inversion"];
   const [showConfirm, setShowConfirm] = useState(false);
   const [drawerVehicle, setDrawerVehicle] = useState<(VehicleEntry & { score: number; pct: number }) | null>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
@@ -1411,6 +1426,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       sourceSlug: "web_ca_gps",
       sourceUrl: window.location.href,
       stage: "complete",
+      tags: crmTags,
       quizSessionId: quizSessionIdRef.current,
       gpsFicha: buildGpsFicha(),
     }, ""); // honeypot vacío — ya validado en Screen8
@@ -1431,6 +1447,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         sourceSlug: "web_ca_gps",
         sourceUrl: window.location.href,
         stage: "complete",
+        tags: crmTags,
         quizSessionId: quizSessionIdRef.current,
         gpsFicha: buildGpsFicha(),
       }, "");
@@ -2158,6 +2175,14 @@ export default function GpsPage() {
 
   // Screens: 1=objetivo, 2=prioridades, 3=participacion, 4=horizonte, 5=capital, 6=loading, 7=preview, 8=contact, 9=result
   const [screen, setScreen] = useState(1);
+  // El usuario llega pre-calificado desde el diagnóstico de estructura de LLC (intención de
+  // inversión ya definida). Se usa para reconocer el contexto sin repetir la pregunta de propósito
+  // y para etiquetar el lead como interes:inversion en el CRM.
+  const [preQualified] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const p = new URLSearchParams(window.location.search);
+    return p.get("ref") === "llc-diagnostico" || p.get("intent") === "inversion";
+  });
   const [objetivo, setObjetivo] = useState<string | null>(null);
   const [participacion, setParticipacion] = useState<string | null>(null);
   const [horizonte, setHorizonte] = useState<string | null>(null);
@@ -2194,7 +2219,7 @@ export default function GpsPage() {
       <FlowTopBar screen={screen} totalScreens={9} onBack={handleBack} />
 
       <AnimatePresence mode="wait">
-        {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={id => { setObjetivo(id); goScreen(2); }} /></motion.div>}
+        {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={id => { setObjetivo(id); goScreen(2); }} preQualified={preQualified} /></motion.div>}
         {screen === 2 && <motion.div key="s2" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5Priorities onNext={ids => { setPrioridades(ids); goScreen(3); }} /></motion.div>}
         {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen2 onNext={id => { setParticipacion(id); goScreen(4); }} /></motion.div>}
         {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={v => { setHorizonte(v); goScreen(5); }} /></motion.div>}
@@ -2202,7 +2227,7 @@ export default function GpsPage() {
         {screen === 6 && <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen6Loading onDone={() => goScreen(7)} /></motion.div>}
         {screen === 7 && perfil && <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen7Preview perfil={perfil} rankedVehicles={rankedVehicles} objetivo={objetivo} capital={capital} onContinue={() => goScreen(8)} /></motion.div>}
         {screen === 8 && <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen8Contact onNext={data => { setContactData(data); goScreen(9); }} partialSent={partialSent} onPartialSent={() => setPartialSent(true)} /></motion.div>}
-        {screen === 9 && perfil && <motion.div key="s9" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} onCompare={() => { setObjetivo(null); goScreen(1); }} /></motion.div>}
+        {screen === 9 && perfil && <motion.div key="s9" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} preQualified={preQualified} onCompare={() => { setObjetivo(null); goScreen(1); }} /></motion.div>}
       </AnimatePresence>
 
       <JourneyStrip screen={screen} objetivo={objetivo} participacion={participacion} horizonte={horizonte} capital={capital} />
