@@ -22,6 +22,9 @@ Mover tareas entre secciones conforme avanzan.
 
 ## ✅ Completado
 - [x] Migrar DiagnosticoPage al sitio principal con ruta `/diagnostico`
+- [x] Conexión de `/estructura-de-inversion-en-usa` al CRM (diagnóstico interactivo + formulario)
+- [x] Centralización de `postCrmLead` en `client/src/lib/crm.ts` (deuda técnica: ya no está duplicado)
+- [x] Selector de intención cruzado entre las dos páginas de estructura (LLC e Inversión)
 
 ---
-*Última actualización: 24 mayo 2026*
+*Última actualización: 28 julio 2026*
