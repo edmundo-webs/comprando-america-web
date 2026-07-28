@@ -35,7 +35,7 @@ const PROFILES: Profile[] = [
     enfoque: "Rendimiento (Cash on Cash)",
     resultado: "Primer Activo en Estados Unidos",
     bullets: [
-      "Decide si necesitas LLC o no (ahorra miles en impuestos)",
+      "Decide si necesitas LLC o no (con claridad sobre tu estructura fiscal)",
       "Mercado seleccionado por análisis: Texas o Florida",
       "Deal Day: acceso a propiedades fuera del mercado",
       "Administración sin complicaciones desde tu país",
@@ -86,7 +86,7 @@ const ROADMAP_STEPS = [
     id: "A",
     label: "Cimiento",
     desc: "Estructura Legal & Fiscal",
-    detail: "Decidimos juntos si necesitas LLC, cómo proteger tus activos y cómo pagar menos impuestos desde el día uno.",
+    detail: "Exploramos junto a profesionales certificados si necesitas una LLC, cómo proteger tus activos y cómo optimizar tu carga fiscal desde el día uno.",
     icon: "⚖️",
   },
   {

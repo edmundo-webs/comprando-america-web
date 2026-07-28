@@ -92,7 +92,7 @@ const enfoque = [
 const pilares = [
   { n: 1, title: "Criterio de Inversión", desc: "Decidimos con proceso, no con emoción." },
   { n: 2, title: "Curación Estratégica", desc: "Descartamos la mayoría. Protegemos capital." },
-  { n: 3, title: "Acompañamiento Integral", desc: "Legal, fiscal, bancaria y migratoria desde el inicio." },
+  { n: 3, title: "Acompañamiento Integral", desc: "Con aliados legales, fiscales, bancarios y migratorios desde el inicio." },
   { n: 4, title: "Comunidad Ejecutora", desc: "Empresarios tomando acción comparten experiencia." },
   { n: 5, title: "Velocidad de Activación", desc: "Inversión en 60–90 días cuando hay encaje." },
   { n: 6, title: "Transferencia Patrimonial", desc: "Diversificación con visión de largo plazo." },
@@ -111,7 +111,7 @@ const stats = [
   { value: 53, suffix: "+", label: "LLCs estructuradas" },
   { value: 6, suffix: "", label: "Viajes de inspección" },
   { value: 7, suffix: "", label: "Eventos presenciales" },
-  { value: 14, suffix: "+", label: "Visas tramitadas" },
+  { value: 14, suffix: "+", label: "Visas apoyadas" },
   { value: 7, suffix: "", label: "Visas en proceso" },
 ];
 
@@ -228,8 +228,8 @@ export default function Membresia() {
               </h1>
               <p className="text-lg md:text-xl text-slate-300 leading-relaxed mb-10 max-w-2xl">
                 Comunidad exclusiva para inversionistas con capacidad real que
-                buscan oportunidades filtradas con acompañamiento legal,
-                migratorio y estratégico.
+                buscan oportunidades filtradas con acompañamiento estratégico
+                y expertos legales y migratorios aliados.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Button

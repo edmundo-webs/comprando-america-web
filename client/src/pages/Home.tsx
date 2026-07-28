@@ -132,7 +132,7 @@ const PAGE_SEO = {
         name: "¿Cómo invertir en Estados Unidos desde México?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Con Comprando América puedes estructurar tu inversión desde $100,000 USD a través de una LLC con acompañamiento legal, fiscal y estratégico.",
+          text: "Con Comprando América puedes estructurar tu inversión desde $100,000 USD a través de una LLC con acompañamiento estratégico y conexión a abogados y contadores certificados.",
         },
       },
       {
