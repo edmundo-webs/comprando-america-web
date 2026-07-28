@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { AnimatePresence, motion } from "framer-motion";
 import { sendCtaClick } from "@/lib/tracking";
+import { postCrmLead } from "@/lib/crm";
+import { trackPageVisit } from "@/lib/journey";
 
 /* ─── Brand ─── */
 const NAVY = "#0B1F3A";
@@ -13,21 +15,7 @@ const NAVY_BORDER = "#1E3A5F";
 
 const LOGO_URL = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438699/comprando-america/logo.png";
 
-/* ─── CRM public lead ingestion ─── */
-const CRM_API_URL = (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
-
-async function postCrmLead(payload: Record<string, unknown>, honeypot: string): Promise<void> {
-  if (honeypot) return; // bot filled the hidden field — skip
-  try {
-    await fetch(`${CRM_API_URL}/api/public/leads`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-  } catch (err) {
-    console.warn("[CRM] lead post failed (best-effort):", err);
-  }
-}
+/* ─── CRM public lead ingestion — centralizado en lib/crm ─── */
 
 const PHOTOS = {
   hero: "https://res.cloudinary.com/dkn4ybzog/image/upload/v1749082671/hero-skyline_c7itvs.jpg",
@@ -964,7 +952,7 @@ function Screen8Contact({ onNext, partialSent, onPartialSent }: {
         email: form.email.trim(),
         phone: `${form.countryCode}${form.whatsapp.trim()}`,
         sourceSlug: "web_ca_gps",
-        sourceUrl: window.location.href,
+        hito: "diagnostico_parcial",
         stage: "partial",
         gpsFicha: null,
       }, honeypot);
@@ -1424,7 +1412,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, preQu
       email: contactData.email.trim(),
       phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
       sourceSlug: "web_ca_gps",
-      sourceUrl: window.location.href,
+      hito: "diagnostico_completo",
       stage: "complete",
       tags: crmTags,
       quizSessionId: quizSessionIdRef.current,
@@ -1445,7 +1433,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, preQu
         email: contactData.email.trim(),
         phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
         sourceSlug: "web_ca_gps",
-        sourceUrl: window.location.href,
+        hito: "diagnostico_completo",
         stage: "complete",
         tags: crmTags,
         quizSessionId: quizSessionIdRef.current,
@@ -2171,6 +2159,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, preQu
 /* ─── MAIN EXPORT ─── */
 export default function GpsPage() {
   usePlayfairFont();
+  useEffect(() => { trackPageVisit("gps"); }, []);
   const { enabled: soundEnabled, setEnabled: setSoundEnabled, playForward, playBack } = useTransitionSound();
 
   // Screens: 1=objetivo, 2=prioridades, 3=participacion, 4=horizonte, 5=capital, 6=loading, 7=preview, 8=contact, 9=result

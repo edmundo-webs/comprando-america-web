@@ -2,11 +2,14 @@
  * /estructura-empresarial-en-estados-unidos — URL canónica del servicio LLC
  * /llc redirige aquí con 301 permanente
  */
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
 import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
+import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
+import { trackPageVisit, getJourney } from "@/lib/journey";
+import EstructuraIntentSelector from "@/components/EstructuraIntentSelector";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,22 +42,6 @@ const CLOVER = {
   texas: "https://www.clover.com/pay-widgets/b3f65360-1554-4b11-9175-f415a63ff74a",
   florida: "https://link.clover.com/urlshortener/SFHYf2",
 };
-
-/* ─── CRM public lead ingestion ─── */
-const CRM_API_URL = (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
-
-async function postCrmLead(payload: Record<string, unknown>, honeypot: string): Promise<void> {
-  if (honeypot) return; // bot filled the hidden field — skip
-  try {
-    await fetch(`${CRM_API_URL}/api/public/leads`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-  } catch (err) {
-    console.warn("[CRM] lead post failed (best-effort):", err);
-  }
-}
 
 function handleCheckout(state: "texas" | "florida") {
   if (typeof window !== "undefined" && (window as any).fbq) {
@@ -247,6 +234,11 @@ export default function EstructuraEmpresarial() {
   }
 
   function answerDiag(optionIdx: number) {
+    // Registra el inicio del diagnóstico una sola vez (primera respuesta del árbol).
+    if (diagStep === 0 && !diagStartedPosted) {
+      setDiagStartedPosted(true);
+      postCrmLead({ sourceSlug: "web_ca_llc", hito: "diagnostico_iniciado", stage: "partial", tags: ["interes:llc"] }, "");
+    }
     const next = [...diagAnswers];
     next[diagStep] = optionIdx;
     setDiagAnswers(next);
@@ -263,6 +255,41 @@ export default function EstructuraEmpresarial() {
   const [formHoneypot, setFormHoneypot] = useState("");
   const [formSubmitting, setFormSubmitting] = useState(false);
 
+  /* Continuidad entre guías: si el mismo visitante ya revisó la guía de inversión,
+     lo reconocemos en vez de tratarlo como un lead nuevo. */
+  const [visitedInversion, setVisitedInversion] = useState(false);
+  const [knownName, setKnownName] = useState<string | null>(null);
+  const [diagStartedPosted, setDiagStartedPosted] = useState(false);
+
+  useEffect(() => {
+    trackPageVisit("llc");
+    const visitedOther = getJourney().some((e) => e.page === "inversion");
+    if (!visitedOther) return;
+    setVisitedInversion(true);
+    const saved = getSavedContact();
+    if (saved) {
+      setKnownName(saved.name || null);
+      setFormData((prev) => ({
+        ...prev,
+        name: prev.name || saved.name || "",
+        email: prev.email || saved.email || "",
+        whatsapp: prev.whatsapp || saved.phone || "",
+      }));
+    }
+    // Marca en el CRM que es la misma persona explorando ambas rutas, no dos leads.
+    postCrmLead(
+      {
+        ...(saved ? { name: saved.name, email: saved.email, phone: saved.phone } : {}),
+        sourceSlug: "web_ca_llc",
+        hito: "cruce_de_pagina",
+        stage: "partial",
+        tags: ["interes:llc"],
+      },
+      "",
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function handleForm(e: React.FormEvent) {
     e.preventDefault();
     if (formSubmitting) return;
@@ -273,8 +300,13 @@ export default function EstructuraEmpresarial() {
     openWhatsApp(WHATSAPP_PHONE, msg);
 
     postCrmLead({
-      sourceSlug: "web_ca_estructura_empresarial",
-      sourceUrl: window.location.href,
+      name: formData.name,
+      email: formData.email,
+      phone: formData.whatsapp,
+      sourceSlug: "web_ca_llc",
+      // Si el usuario completó el diagnóstico, es un cierre de diagnóstico; si llenó el
+      // formulario sin diagnosticar, se registra como parcial.
+      hito: diagResult ? "diagnostico_completo" : "diagnostico_parcial",
       stage: "complete",
       // Etiqueta de página de interés (acumulable en el CRM). Esta página es la de LLC,
       // por lo que siempre etiqueta interes:llc; la ruta de inversión la etiqueta el GPS.
@@ -293,6 +325,11 @@ export default function EstructuraEmpresarial() {
         ...(diagResult ? diagFormFields(diagAnswers) : []),
       ],
     }, formHoneypot);
+
+    // Recuerda el contacto para pre-llenar la otra guía sin volver a pedir todo.
+    if (!formHoneypot) {
+      saveContact({ name: formData.name.trim(), email: formData.email.trim(), phone: formData.whatsapp.trim() });
+    }
 
     setFormSent(true);
   }
@@ -348,6 +385,9 @@ export default function EstructuraEmpresarial() {
                   No sé qué estructura necesito
                 </Button>
               </div>
+
+              {/* Selector de intención cruzado — resuelve la indecisión desde el primer scroll */}
+              <EstructuraIntentSelector currentPage="llc" onOpenDiagnostic={startDiagnostic} className="mb-10 max-w-2xl" />
 
               <div className="flex flex-wrap gap-6 text-slate-400 text-sm">
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> Registro estatal incluido</span>
@@ -781,6 +821,9 @@ export default function EstructuraEmpresarial() {
                 ) : (
                   <form onSubmit={handleForm} className="space-y-4">
                     <h3 className="text-white font-semibold mb-6">Cuéntanos sobre tu caso</h3>
+                    {knownName && (
+                      <p className="text-slate-400 text-sm -mt-4 mb-2">¿Sigues siendo tú, {knownName.split(" ")[0]}? Dejamos tus datos listos; corrige lo que haga falta.</p>
+                    )}
                     {[
                       { label: "Nombre", key: "name", type: "text", placeholder: "Tu nombre completo" },
                       { label: "Correo", key: "email", type: "email", placeholder: "correo@ejemplo.com" },
@@ -984,6 +1027,11 @@ export default function EstructuraEmpresarial() {
 
       {/* Diagnóstico de estructura de LLC */}
       <Modal open={modal === "diagnostico"} onClose={closeModal} title="Diagnóstico de estructura">
+        {visitedInversion && (
+          <div className="bg-[#0B1F3A] border border-primary/30 rounded-xl p-4 mb-5 text-slate-300 text-sm leading-relaxed">
+            Vimos que también revisaste la guía de estructura de inversión. Vamos directo a lo que falta por resolver de este lado.
+          </div>
+        )}
         {diagResult === null && (
           <>
             <div className="flex items-center justify-between mb-4">
