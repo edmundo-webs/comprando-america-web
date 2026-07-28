@@ -30,6 +30,7 @@ import {
 import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
 import { trackPageVisit, getJourney } from "@/lib/journey";
 import EstructuraIntentSelector from "@/components/EstructuraIntentSelector";
+import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 
 const WA_MSG = "Hola, me interesa estructurar mi vehículo de inversión en Estados Unidos.";
 
@@ -304,7 +305,7 @@ export default function EstructuraInversion() {
         <div className="container relative z-10">
           <FadeIn>
             <div className="max-w-3xl">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">Asesoría Legal & Fiscal</p>
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">Estrategia de Inversión</p>
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                 Estructura tu Vehículo de <span className="gradient-text-primary">Inversión en Estados Unidos</span> con Claridad y Estrategia
               </h1>
@@ -334,6 +335,8 @@ export default function EstructuraInversion() {
 
               {/* Selector de intención cruzado — resuelve la indecisión desde el primer scroll */}
               <EstructuraIntentSelector currentPage="inversion" onOpenDiagnostic={openDiagnostic} className="mt-8 max-w-2xl" />
+
+              <AdvisoryDisclaimer variant="inline" className="mt-6 max-w-2xl" />
             </div>
           </FadeIn>
         </div>
@@ -560,6 +563,8 @@ export default function EstructuraInversion() {
                   </Button>
                 </a>
               </div>
+
+              <AdvisoryDisclaimer variant="box" className="mt-12 text-left" />
             </div>
           </FadeIn>
         </div>
@@ -705,6 +710,10 @@ export default function EstructuraInversion() {
               </Button>
             </div>
           </>
+        )}
+
+        {step === "result" && (
+          <AdvisoryDisclaimer variant="inline" className="mt-2 pt-4 border-t border-[#1E3A5F]" />
         )}
       </Modal>
 

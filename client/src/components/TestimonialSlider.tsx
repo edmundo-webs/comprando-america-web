@@ -56,8 +56,8 @@ const TESTIMONIALS: Testimonial[] = [
     id: "6",
     name: "Mariana",
     city: "Bogotá",
-    results: ["Expansión internacional", "Asesoría legal completa"],
-    quote: "Como empresaria buscaba expandir mi negocio a Estados Unidos. Comprando América me proporcionó la estructura legal y el networking necesario para hacerlo de forma segura.",
+    results: ["Expansión internacional", "Red de abogados certificados"],
+    quote: "Como empresaria buscaba expandir mi negocio a Estados Unidos. Comprando América me ayudó con la estructura y el networking con abogados y contadores certificados para hacerlo de forma segura.",
     avatar: "M"
   }
 ];

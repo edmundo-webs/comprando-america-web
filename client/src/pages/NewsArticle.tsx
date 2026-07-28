@@ -16,7 +16,7 @@ import {
 const CTA_CONFIG: Record<string, { title: string; description: string; buttonText: string; link: string; icon: React.ReactNode }> = {
   "visas-migracion": {
     title: "¿Estás considerando migrar a Estados Unidos?",
-    description: "En Comprando América te asesoramos con el proceso de Visa E-2 de inversionista. Nuestro equipo de expertos te guía paso a paso para que logres tu objetivo de vivir y trabajar legalmente en Estados Unidos.",
+    description: "En Comprando América compartimos experiencia sobre el proceso de Visa E-2 de inversionista y te conectamos con abogados certificados que llevan tu caso, para que avances con acompañamiento profesional hacia tu objetivo de vivir y trabajar legalmente en Estados Unidos.",
     buttonText: "Conoce la Visa E-2",
     link: "/visa-e2-inversionista-usa",
     icon: <Plane className="w-6 h-6" />,

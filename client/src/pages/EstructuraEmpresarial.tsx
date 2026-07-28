@@ -10,6 +10,7 @@ import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
 import { trackPageVisit, getJourney } from "@/lib/journey";
 import EstructuraIntentSelector from "@/components/EstructuraIntentSelector";
+import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -873,6 +874,13 @@ export default function EstructuraEmpresarial() {
               </div>
             </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* ── Aviso de cumplimiento ── */}
+      <section className="bg-[#0B1F3A] pb-16">
+        <div className="container">
+          <AdvisoryDisclaimer variant="box" className="max-w-3xl mx-auto" />
         </div>
       </section>
 

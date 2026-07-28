@@ -194,7 +194,7 @@ const RUTAS = [
     problema:
       "Evalúo una ruta migratoria real hacia Estados Unidos vinculada a una inversión o a la operación de un negocio.",
     orienta:
-      "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación con asesoría legal especializada.",
+      "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación, con el acompañamiento de abogados y contadores certificados.",
     href: "/visa-e2-inversion-en-estados-unidos",
   },
   {
