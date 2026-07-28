@@ -58,7 +58,7 @@ const ramas = [
 
 const expertos = [
   { name: "Joe Faraci", role: "Inversionista en Bienes Raíces", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png", bio: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos." },
-  { name: "Tomás Resendez", role: "Abogado de Inmigración", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674490/tts-news/eyuxiu9xuevkwulfcf2j.jpg", bio: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe, garantiza asesoramiento legal claro y preciso." },
+  { name: "Tomás Resendez", role: "Abogado de Inmigración", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674490/tts-news/eyuxiu9xuevkwulfcf2j.jpg", bio: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe, ofrece asesoramiento legal claro y preciso." },
   { name: "Daniel Palacios", role: "Contador CPA y Fiscalista", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439319/comprando-america/szrwwapkIJnWAmaW.png", bio: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos." },
   { name: "Aubrey Dwyer", role: "Abogada Corporativa", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439190/comprando-america/TehgUNVHXbrssxsK.jpg", bio: "Especializada en apertura de empresas, contratos y trademarks. Graduada de la Facultad de Derecho de la Universidad de Oklahoma." },
   { name: "Destiny Bounds", role: "Abogada Corporativa y PI", photo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439307/comprando-america/pdCooMLqOfvqVFar.avif", bio: "Fundadora de Bounds Law LLC, especializada en derecho corporativo y propiedad intelectual. Autora y conferencista nacional." },
@@ -1285,7 +1285,7 @@ export default function CirculoCercano() {
                   {[
                     { n: 1, title: "Criterio de Inversión", desc: "Decidimos con proceso, no con emoción." },
                     { n: 2, title: "Curación Estratégica", desc: "Descartamos la mayoría. Protegemos capital." },
-                    { n: 3, title: "Acompañamiento Integral", desc: "Legal, fiscal, bancaria y migratoria desde el inicio." },
+                    { n: 3, title: "Acompañamiento Integral", desc: "Conexión con especialistas legales, fiscales, bancarios y migratorios desde el inicio." },
                     { n: 4, title: "Comunidad Ejecutora", desc: "Empresarios tomando acción comparten experiencia." },
                     { n: 5, title: "Velocidad de Activación", desc: "Inversión en 60–90 días cuando hay encaje." },
                     { n: 6, title: "Transferencia Patrimonial", desc: "Diversificación con visión de largo plazo." },

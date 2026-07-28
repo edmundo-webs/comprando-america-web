@@ -106,7 +106,7 @@ export default function QuienesSomos() {
                   {[
                     "Acceso a oportunidades validadas y estructuradas",
                     "Educación ejecutiva y formación estratégica",
-                    "Acompañamiento legal, fiscal y migratorio",
+                    "Conexión con aliados legales, fiscales y migratorios",
                     "Red de contactos y co-inversión activa",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
@@ -152,7 +152,7 @@ export default function QuienesSomos() {
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
-              { icon: Globe, title: "Oportunidades validadas", desc: "Selección rigurosa de negocios con potencial, rentabilidad comprobada y estructura legal lista." },
+              { icon: Globe, title: "Oportunidades validadas", desc: "Selección rigurosa de negocios con potencial, historial de desempeño verificado y estructura legal lista." },
               { icon: Briefcase, title: "Educación ejecutiva", desc: "Capacitación dirigida para comprender la dinámica del mercado estadounidense." },
               { icon: Shield, title: "Acompañamiento integral", desc: "Alianzas con firmas legales, fiscales y migratorias especializadas." },
               { icon: Users, title: "Red de co-inversión", desc: "Comunidad activa de empresarios para colaborar y compartir conocimiento." },

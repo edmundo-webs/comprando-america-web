@@ -253,7 +253,7 @@ export default function Home2Page() {
     {
       icon: Globe,
       name: "Ruta Migratoria",
-      description: "Estrategia + estructura + acompañamiento legal migratorio.",
+      description: "Estrategia + estructura + conexión con la red legal migratoria.",
     },
     {
       icon: Search,

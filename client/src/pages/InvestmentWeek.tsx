@@ -592,13 +592,13 @@ export default function InvestmentWeek() {
                   </div>
                   <p className="text-[11px] font-semibold text-blue-400 tracking-[0.2em] uppercase mb-2 font-mono">Programa Section 8</p>
                   <h3 className="text-xl font-bold text-white mb-3 leading-snug">
-                    Casas unifamiliares con renta garantizada por el gobierno federal
+                    Casas unifamiliares con renta respaldada por el gobierno federal
                   </h3>
                   <p className="text-slate-400 text-sm leading-relaxed mb-6">
                     El programa HUD Section 8 paga directamente al propietario. Flujo constante, inquilinos certificados y propiedades en zonas de alta demanda en Florida.
                   </p>
                   <div className="flex flex-wrap gap-2 mb-6">
-                    {["Renta garantizada HUD", "Casas unifamiliares", "Florida"].map((tag, i) => (
+                    {["Renta respaldada por HUD", "Casas unifamiliares", "Florida"].map((tag, i) => (
                       <span key={i} className="text-[11px] bg-white/5 border border-white/10 text-slate-400 px-2.5 py-1 rounded-full">{tag}</span>
                     ))}
                   </div>

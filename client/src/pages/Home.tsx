@@ -132,7 +132,7 @@ const PAGE_SEO = {
         name: "¿Cómo invertir en Estados Unidos desde México?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Con Comprando América puedes estructurar tu inversión desde $100,000 USD a través de una LLC con acompañamiento legal, fiscal y estratégico.",
+          text: "Con Comprando América puedes estructurar tu inversión desde $100,000 USD a través de una LLC con acompañamiento estratégico y conexión a abogados y contadores certificados.",
         },
       },
       {
@@ -194,7 +194,7 @@ const RUTAS = [
     problema:
       "Evalúo una ruta migratoria real hacia Estados Unidos vinculada a una inversión o a la operación de un negocio.",
     orienta:
-      "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación con asesoría legal especializada.",
+      "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación, con el acompañamiento de abogados y contadores certificados.",
     href: "/visa-e2-inversion-en-estados-unidos",
   },
   {

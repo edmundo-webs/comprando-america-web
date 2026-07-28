@@ -85,7 +85,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* Aviso de cumplimiento — global, todas las páginas */}
+        <p className="text-white/30 text-xs leading-relaxed mt-12 pt-8 border-t border-white/5 max-w-4xl">
+          Comprando América no es un despacho legal, contable ni migratorio y no ofrece asesoría legal, fiscal o
+          migratoria. Compartimos recomendaciones y experiencias con fines orientativos; cuando tu caso lo requiere,
+          te conectamos con abogados y contadores públicos certificados (CPA), quienes brindan la asesoría oficial.
+        </p>
+
+        <div className="mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/30 text-sm">
             © {new Date().getFullYear()} Comprando América. Todos los derechos reservados.
           </p>

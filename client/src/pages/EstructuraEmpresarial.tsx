@@ -2,7 +2,7 @@
  * /estructura-empresarial-en-estados-unidos — URL canónica del servicio LLC
  * /llc redirige aquí con 301 permanente
  */
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
@@ -10,6 +10,7 @@ import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
 import { trackPageVisit, getJourney } from "@/lib/journey";
 import EstructuraIntentSelector from "@/components/EstructuraIntentSelector";
+import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -260,12 +261,17 @@ export default function EstructuraEmpresarial() {
   const [visitedInversion, setVisitedInversion] = useState(false);
   const [knownName, setKnownName] = useState<string | null>(null);
   const [diagStartedPosted, setDiagStartedPosted] = useState(false);
+  // El diagnóstico capta los datos personales (comparte formData con el formulario final,
+  // para no pedir los mismos datos dos veces). Se envía un solo lead completo.
+  const [diagLeadPosted, setDiagLeadPosted] = useState(false);
+  // Identificador único de esta sesión en la página: el diagnóstico y el formulario final
+  // lo comparten para que el CRM actualice la MISMA nota en vez de crear una duplicada.
+  const submissionIdRef = useRef<string | null>(null);
+  if (submissionIdRef.current === null) submissionIdRef.current = crypto.randomUUID();
 
   useEffect(() => {
     trackPageVisit("llc");
-    const visitedOther = getJourney().some((e) => e.page === "inversion");
-    if (!visitedOther) return;
-    setVisitedInversion(true);
+    // Pre-llena el contacto si ya lo conocemos (del diagnóstico, de la otra guía o de una visita previa).
     const saved = getSavedContact();
     if (saved) {
       setKnownName(saved.name || null);
@@ -276,19 +282,51 @@ export default function EstructuraEmpresarial() {
         whatsapp: prev.whatsapp || saved.phone || "",
       }));
     }
-    // Marca en el CRM que es la misma persona explorando ambas rutas, no dos leads.
-    postCrmLead(
-      {
-        ...(saved ? { name: saved.name, email: saved.email, phone: saved.phone } : {}),
-        sourceSlug: "web_ca_llc",
-        hito: "cruce_de_pagina",
-        stage: "partial",
-        tags: ["interes:llc"],
-      },
-      "",
-    );
+    // Si además ya revisó la guía de inversión, lo marcamos como el mismo contacto (no dos leads).
+    if (getJourney().some((e) => e.page === "inversion")) {
+      setVisitedInversion(true);
+      postCrmLead(
+        {
+          ...(saved ? { name: saved.name, email: saved.email, phone: saved.phone } : {}),
+          sourceSlug: "web_ca_llc",
+          hito: "cruce_de_pagina",
+          stage: "partial",
+          tags: ["interes:llc"],
+        },
+        "",
+      );
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /* Envía UN lead completo con el contacto capturado en el diagnóstico + las respuestas
+     del árbol. No bloquea el flujo de compra: se dispara al continuar y una sola vez. */
+  function finishDiagnosticLead() {
+    if (diagLeadPosted) return;
+    setDiagLeadPosted(true);
+    postCrmLead(
+      {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.whatsapp,
+        sourceSlug: "web_ca_llc",
+        hito: "diagnostico_completo",
+        stage: "complete",
+        tags: ["interes:llc"],
+        submissionId: submissionIdRef.current,
+        formFields: [
+          { label: "Nombre", value: formData.name },
+          { label: "Correo", value: formData.email },
+          { label: "WhatsApp", value: formData.whatsapp },
+          ...diagFormFields(diagAnswers),
+        ],
+      },
+      formHoneypot,
+    );
+    if (!formHoneypot && (formData.name || formData.email || formData.whatsapp)) {
+      saveContact({ name: formData.name.trim(), email: formData.email.trim(), phone: formData.whatsapp.trim() });
+    }
+  }
 
   function handleForm(e: React.FormEvent) {
     e.preventDefault();
@@ -311,6 +349,8 @@ export default function EstructuraEmpresarial() {
       // Etiqueta de página de interés (acumulable en el CRM). Esta página es la de LLC,
       // por lo que siempre etiqueta interes:llc; la ruta de inversión la etiqueta el GPS.
       tags: ["interes:llc"],
+      // Mismo submissionId que el diagnóstico: el CRM actualiza la nota existente.
+      submissionId: submissionIdRef.current,
       introText: `Hola, me interesa formar una LLC en ${estadoDeInteres}.`,
       formFields: [
         { label: "Nombre", value: formData.name },
@@ -333,6 +373,33 @@ export default function EstructuraEmpresarial() {
 
     setFormSent(true);
   }
+
+  /* Campos de contacto dentro del diagnóstico. Escriben en el MISMO formData que el
+     formulario final, así que lo capturado aquí ya queda pre-llenado allá (y viceversa). */
+  const contactFieldsBlock = (
+    <div className="space-y-3">
+      {[
+        { key: "name", type: "text", label: "Nombre", placeholder: "Tu nombre completo" },
+        { key: "email", type: "email", label: "Correo", placeholder: "correo@ejemplo.com" },
+        { key: "whatsapp", type: "tel", label: "WhatsApp", placeholder: "+52 555 000 0000" },
+      ].map((f) => (
+        <div key={f.key}>
+          <label className="text-slate-400 text-xs block mb-1">{f.label}</label>
+          <input
+            type={f.type}
+            placeholder={f.placeholder}
+            value={(formData as any)[f.key]}
+            onChange={(e) => setFormData({ ...formData, [f.key]: e.target.value })}
+            className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
+          />
+        </div>
+      ))}
+      {/* Honeypot — invisible para humanos, bots lo llenan */}
+      <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" value={formHoneypot} onChange={(e) => setFormHoneypot(e.target.value)} />
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
@@ -820,10 +887,18 @@ export default function EstructuraEmpresarial() {
                   </div>
                 ) : (
                   <form onSubmit={handleForm} className="space-y-4">
-                    <h3 className="text-white font-semibold mb-6">Cuéntanos sobre tu caso</h3>
-                    {knownName && (
+                    <h3 className="text-white font-semibold mb-6">
+                      {diagResult ? "Confirma tus datos" : "Cuéntanos sobre tu caso"}
+                    </h3>
+                    {/* Si ya hizo el diagnóstico, no repetimos las preguntas que ya respondió. */}
+                    {diagResult ? (
+                      <p className="text-slate-400 text-sm -mt-4 mb-2">
+                        Ya tenemos las respuestas de tu diagnóstico. Solo confirma tus datos de contacto
+                        {knownName ? `, ${knownName.split(" ")[0]}` : ""}.
+                      </p>
+                    ) : knownName ? (
                       <p className="text-slate-400 text-sm -mt-4 mb-2">¿Sigues siendo tú, {knownName.split(" ")[0]}? Dejamos tus datos listos; corrige lo que haga falta.</p>
-                    )}
+                    ) : null}
                     {[
                       { label: "Nombre", key: "name", type: "text", placeholder: "Tu nombre completo" },
                       { label: "Correo", key: "email", type: "email", placeholder: "correo@ejemplo.com" },
@@ -841,12 +916,16 @@ export default function EstructuraEmpresarial() {
                         />
                       </div>
                     ))}
-                    {[
-                      { label: "Estado de interés", key: "state", options: STATE_OPTIONS },
-                      { label: "Objetivo principal", key: "objective", options: OBJECTIVE_OPTIONS },
-                      { label: "Número de socios", key: "partners", options: PARTNER_OPTIONS },
-                      { label: "Fecha estimada para comenzar", key: "timeline", options: TIMELINE_OPTIONS },
-                    ].map((field) => (
+                    {(diagResult
+                      // El diagnóstico ya cubrió estado, objetivo y socios: solo falta la fecha.
+                      ? [{ label: "Fecha estimada para comenzar", key: "timeline", options: TIMELINE_OPTIONS }]
+                      : [
+                          { label: "Estado de interés", key: "state", options: STATE_OPTIONS },
+                          { label: "Objetivo principal", key: "objective", options: OBJECTIVE_OPTIONS },
+                          { label: "Número de socios", key: "partners", options: PARTNER_OPTIONS },
+                          { label: "Fecha estimada para comenzar", key: "timeline", options: TIMELINE_OPTIONS },
+                        ]
+                    ).map((field) => (
                       <div key={field.key}>
                         <label className="text-slate-400 text-xs block mb-1">{field.label}</label>
                         <select
@@ -873,6 +952,13 @@ export default function EstructuraEmpresarial() {
               </div>
             </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* ── Aviso de cumplimiento ── */}
+      <section className="bg-[#0B1F3A] pb-16">
+        <div className="container">
+          <AdvisoryDisclaimer variant="box" className="max-w-3xl mx-auto" />
         </div>
       </section>
 
@@ -1078,13 +1164,19 @@ export default function EstructuraEmpresarial() {
               no solo la LLC. Nuestro GPS Estratégico te perfila en menos de 2 minutos — sin volver a
               preguntarte lo que ya sabemos de tu caso.
             </p>
-            <a href={GPS_QUALIFIED_URL}>
+            <div className="pt-2">
+              <p className="text-slate-400 text-sm mb-3">
+                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos para guardar tu diagnóstico.` : "Déjanos tus datos para guardar tu diagnóstico y darle seguimiento."}
+              </p>
+              {contactFieldsBlock}
+            </div>
+            <a href={GPS_QUALIFIED_URL} onClick={finishDiagnosticLead}>
               <Button className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
                 Ir a mi GPS de inversión <ArrowRight className="w-4 h-4" />
               </Button>
             </a>
             <button
-              onClick={() => { closeModal(); openModal("iniciar"); }}
+              onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }}
               className="text-slate-400 text-sm text-center hover:text-white transition-colors underline underline-offset-2 w-full mt-3"
             >
               Prefiero solo formar la LLC por ahora
@@ -1106,16 +1198,22 @@ export default function EstructuraEmpresarial() {
               en otro país, hablar con un asesor <strong className="text-white">antes de constituir</strong> ayuda
               a elegir bien la estructura y evitar reorganizarla después. Es una opción adicional — no un requisito.
             </div>
+            <div className="pt-2">
+              <p className="text-slate-400 text-sm mb-3">
+                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos para guardar tu diagnóstico.` : "Déjanos tus datos para guardar tu diagnóstico y darle seguimiento."}
+              </p>
+              {contactFieldsBlock}
+            </div>
             <div className="flex flex-col gap-3 pt-2">
               <Button
-                onClick={() => { closeModal(); openModal("iniciar"); }}
+                onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }}
                 className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full"
               >
                 Continuar con mi LLC <ArrowRight className="w-4 h-4" />
               </Button>
               <Button
                 variant="outline"
-                onClick={() => { closeModal(); openWhatsApp(WHATSAPP_PHONE, "Hola, antes de constituir mi LLC quiero revisar mi caso con un asesor. Mi empresa involucra socios/inversionistas externos o una empresa que ya tengo en otro país."); }}
+                onClick={() => { finishDiagnosticLead(); closeModal(); openWhatsApp(WHATSAPP_PHONE, "Hola, antes de constituir mi LLC quiero revisar mi caso con un asesor. Mi empresa involucra socios/inversionistas externos o una empresa que ya tengo en otro país."); }}
                 className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2"
               >
                 <MessageSquare className="w-4 h-4" /> Hablar con un asesor primero
@@ -1135,7 +1233,13 @@ export default function EstructuraEmpresarial() {
               Por lo que nos compartes, el servicio de formación de LLC ($1,499) cubre lo que necesitas.
               Nuestro equipo revisará tu caso antes de iniciar el proceso.
             </p>
-            <Button onClick={() => { closeModal(); openModal("iniciar"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
+            <div className="pt-2">
+              <p className="text-slate-400 text-sm mb-3">
+                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos para guardar tu diagnóstico.` : "Déjanos tus datos para guardar tu diagnóstico y darle seguimiento."}
+              </p>
+              {contactFieldsBlock}
+            </div>
+            <Button onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
               Continuar con mi LLC <ArrowRight className="w-4 h-4" />
             </Button>
           </>
