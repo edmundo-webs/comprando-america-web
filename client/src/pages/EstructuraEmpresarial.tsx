@@ -2,7 +2,7 @@
  * /estructura-empresarial-en-estados-unidos — URL canónica del servicio LLC
  * /llc redirige aquí con 301 permanente
  */
-import { Fragment, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
@@ -31,7 +31,6 @@ import {
   Users,
   BookOpen,
   AlertTriangle,
-  ChevronRight,
   MessageSquare,
   Compass,
   UserCheck,
@@ -120,42 +119,24 @@ function ContextLink({ onClick, children }: { onClick: () => void; children: Rea
   );
 }
 
-/* ─── Intent options ─── */
-const INTENTS = [
-  {
-    label: "Prestar servicios o facturar",
-    context: "Una LLC puede ayudarte a separar tu actividad comercial de tus operaciones personales y establecer una entidad para celebrar contratos o recibir ingresos.",
-  },
-  {
-    label: "Iniciar una operación",
-    context: "Puedes usar una LLC para iniciar operaciones comerciales en Estados Unidos, contratar, tener presencia legal y facturar a clientes locales o internacionales.",
-  },
-  {
-    label: "Comprar una propiedad o activo",
-    context: "La LLC puede servir como vehículo de propiedad, pero conviene revisar el tipo de activo, el número de participantes y la estrategia de salida antes de constituirla.",
-  },
-  {
-    label: "Vender productos",
-    context: "Una LLC te permite vender productos en Estados Unidos con estructura legal clara, recolección de impuestos y cuentas bancarias en dólares.",
-  },
-  {
-    label: "Crear presencia para mi empresa actual",
-    context: "Es importante distinguir entre crear una LLC independiente y establecer una subsidiaria o extensión de una empresa existente en otro país. Son rutas distintas.",
-  },
-  {
-    label: "Todavía no estoy seguro",
-    context: "No hay problema. Puedes comenzar el proceso y nuestro equipo revisará contigo cuál es el uso más adecuado antes de constituir.",
-  },
-];
-
 /* ─── Diagnóstico de estructura de LLC ───
-   Reemplaza el antiguo "Quiz" binario. Solo indaga variables de FORMACIÓN de empresa
-   (operación, socios, empresa previa, objetivo de inversión, claridad de estado).
-   Nunca pregunta capital, ticket ni horizonte — esas variables son exclusivas del GPS.
-   El "Selector de intención" (¿para qué necesitas la empresa?) sigue siendo el primer
-   paso de la página, por lo que aquí no se repite la pregunta de propósito. */
+   Único punto de entrada para la duda "no sé qué necesito": consolida el antiguo modal
+   binario y el selector de intención en un solo árbol. Solo indaga variables de FORMACIÓN
+   de empresa (situación, operación, socios, empresa previa, objetivo de inversión, estado).
+   Nunca pregunta capital, ticket ni horizonte — esas variables son exclusivas del GPS. */
 type DiagQuestion = { q: string; options: string[] };
 const DIAGNOSTIC: DiagQuestion[] = [
+  {
+    q: "¿Qué describe mejor tu situación?",
+    options: [
+      "Quiero prestar servicios o facturar",
+      "Quiero iniciar una operación",
+      "Quiero comprar una propiedad o activo",
+      "Quiero vender productos",
+      "Quiero dar presencia a mi empresa actual",
+      "Todavía no estoy seguro",
+    ],
+  },
   {
     q: "¿Dónde vas a operar principalmente tu negocio?",
     options: ["Estados Unidos", "Mi país actual", "Remoto / digital, sin ubicación fija", "Varios países"],
@@ -173,31 +154,57 @@ const DIAGNOSTIC: DiagQuestion[] = [
     options: ["Sí, ya es un objetivo definido", "Tal vez más adelante, aún no lo sé", "No, solo quiero operar o facturar"],
   },
   {
-    q: "¿Ya tienes claridad sobre en qué estado te conviene registrar (Texas o Florida) o necesitas orientación?",
-    options: ["Ya sé cuál me conviene", "No estoy seguro"],
+    q: "¿En qué estado de Estados Unidos vas a operar o tienes tu residencia principal?",
+    options: ["Texas", "Florida", "Otro estado", "No estoy seguro"],
   },
 ];
 
-type DiagResult = "inversion" | "asesor" | "llc";
+/* Índices con nombre — evita números mágicos si el árbol vuelve a reordenarse. */
+const Q_SITUACION = 0;
+const Q_SOCIOS = 2;
+const Q_EMPRESA_PREVIA = 3;
+const Q_OBJETIVO_INVERSION = 4;
+const Q_ESTADO = 5;
+const OPT_OTRO_ESTADO = 2; // índice de "Otro estado" en la pregunta de estado
+
+/* Contexto por situación — proviene del antiguo selector de intención de la página.
+   No se pierde: se muestra en la pantalla de resultado como "Contexto para tu caso". */
+const SITUACION_CONTEXT: string[] = [
+  "Una LLC puede ayudarte a separar tu actividad comercial de tus operaciones personales y establecer una entidad para celebrar contratos o recibir ingresos.",
+  "Puedes usar una LLC para iniciar operaciones comerciales en Estados Unidos, contratar, tener presencia legal y facturar a clientes locales o internacionales.",
+  "La LLC puede servir como vehículo de propiedad, pero conviene revisar el tipo de activo, el número de participantes y la estrategia de salida antes de constituirla.",
+  "Una LLC te permite vender productos en Estados Unidos con estructura legal clara, recolección de impuestos y cuentas bancarias en dólares.",
+  "Es importante distinguir entre crear una LLC independiente y establecer una subsidiaria o extensión de una empresa existente en otro país. Son rutas distintas.",
+  "No hay problema. Puedes comenzar el proceso y nuestro equipo revisará contigo cuál es el uso más adecuado antes de constituir.",
+];
+
+type DiagResult = "inversion" | "asesor" | "llc" | "otro_estado";
 
 /* Resultado del diagnóstico. El orden de las reglas importa:
-   1) Objetivo de inversión definido (Q4) tiene prioridad → GPS.
-   2) Inversionistas externos (Q2) o empresa previa en otro país (Q3) → sugerir asesor
+   1) Estado fuera de Texas/Florida → derivación al equipo por WhatsApp.
+   2) Objetivo de inversión definido → GPS.
+   3) Inversionistas externos o empresa previa en otro país → sugerir asesor
       (inline, sin bloquear el flujo de compra).
-   3) Cualquier otro caso → formación de LLC estándar. */
+   4) Cualquier otro caso → formación de LLC estándar. */
 function computeDiagResult(answers: (number | null)[]): DiagResult {
-  if (answers[3] === 0) return "inversion"; // "Sí, ya es un objetivo definido"
-  if (answers[1] === 3 || answers[2] === 0) return "asesor"; // socios+inversionistas / empresa previa
+  if (answers[Q_ESTADO] === OPT_OTRO_ESTADO) return "otro_estado";
+  if (answers[Q_OBJETIVO_INVERSION] === 0) return "inversion"; // "Sí, ya es un objetivo definido"
+  if (answers[Q_SOCIOS] === 3 || answers[Q_EMPRESA_PREVIA] === 0) return "asesor";
   return "llc";
 }
 
 /* Convierte las respuestas del diagnóstico al formato genérico de formFields del CRM,
    para que se registren como nota "Datos recibidos del formulario" junto al contacto. */
-function diagFormFields(answers: (number | null)[]) {
-  return DIAGNOSTIC.map((item, i) => ({
-    label: item.q,
-    value: answers[i] != null ? item.options[answers[i]!] : "",
-  })).filter((f) => f.value);
+function diagFormFields(answers: (number | null)[], otroEstadoTexto?: string) {
+  return DIAGNOSTIC.map((item, i) => {
+    const base = answers[i] != null ? item.options[answers[i]!] : "";
+    // En la pregunta de estado, anexa el estado escrito a mano cuando eligió "Otro estado".
+    const value =
+      i === Q_ESTADO && answers[i] === OPT_OTRO_ESTADO && otroEstadoTexto?.trim()
+        ? `${base} (${otroEstadoTexto.trim()})`
+        : base;
+    return { label: item.q, value };
+  }).filter((f) => f.value);
 }
 
 /* Handoff al GPS cuando el usuario ya viene calificado con intención de inversión.
@@ -205,7 +212,40 @@ function diagFormFields(answers: (number | null)[]) {
 const GPS_QUALIFIED_URL = "/gps?ref=llc-diagnostico&intent=inversion";
 
 /* ─── Form fields ─── */
-const STATE_OPTIONS = ["Texas", "Florida", "No estoy seguro"];
+const OTRO_ESTADO = "Otro estado";
+const STATE_OPTIONS = ["Texas", "Florida", OTRO_ESTADO, "No estoy seguro"];
+
+/* ─── Ficha unificada ───
+   Un solo builder, dos destinos: el mensaje precargado de WhatsApp y las notas del CRM.
+   Así el asesor en WhatsApp y el registro del CRM dicen exactamente lo mismo. */
+type FichaValues = {
+  name: string; email: string; whatsapp: string; country: string;
+  state: string; otherStateText: string; objective: string; partners: string; timeline: string;
+};
+
+function fichaFields(form: FichaValues): { label: string; value: string }[] {
+  const estado = form.state === OTRO_ESTADO && form.otherStateText.trim()
+    ? `${form.state} (${form.otherStateText.trim()})`
+    : form.state;
+  return [
+    { label: "Nombre", value: form.name },
+    { label: "Correo", value: form.email },
+    { label: "WhatsApp", value: form.whatsapp },
+    { label: "País de residencia", value: form.country },
+    { label: "Estado de interés", value: estado },
+    { label: "Objetivo principal", value: form.objective },
+    { label: "Número de socios", value: form.partners },
+    { label: "Fecha estimada para comenzar", value: form.timeline },
+  ];
+}
+
+function buildFicha(form: FichaValues): string {
+  return [
+    "Cuéntanos sobre tu caso — Nuevo prospecto LLC",
+    "",
+    ...fichaFields(form).map((f) => `${f.label}: ${f.value}`),
+  ].join("\n");
+}
 const OBJECTIVE_OPTIONS = ["Prestar servicios o facturar", "Iniciar una operación", "Comprar una propiedad", "Vender productos", "Crear presencia empresarial", "Otro"];
 const PARTNER_OPTIONS = ["Solo yo", "2 personas", "3 o más", "No estoy seguro"];
 const TIMELINE_OPTIONS = ["En las próximas 2 semanas", "Este mes", "En los próximos 3 meses", "Solo estoy explorando"];
@@ -216,21 +256,18 @@ export default function EstructuraEmpresarial() {
   const openModal = (id: string) => setModal(id);
   const closeModal = () => setModal(null);
 
-  /* "No sé qué estructura" modal */
-  const [noSabeResult, setNoSabeResult] = useState<"llc" | "estructura" | null>(null);
-
-  /* Intent selector */
-  const [activeIntent, setActiveIntent] = useState<number | null>(null);
-
-  /* Diagnóstico de estructura de LLC */
+  /* Diagnóstico de estructura de LLC — único punto de entrada para la duda */
   const [diagStep, setDiagStep] = useState<number>(0);
   const [diagAnswers, setDiagAnswers] = useState<(number | null)[]>(Array(DIAGNOSTIC.length).fill(null));
   const [diagResult, setDiagResult] = useState<DiagResult | null>(null);
+  // Estado escrito a mano cuando elige "Otro estado" en la pregunta de estado.
+  const [otroEstado, setOtroEstado] = useState("");
 
   function startDiagnostic() {
     setDiagStep(0);
     setDiagAnswers(Array(DIAGNOSTIC.length).fill(null));
     setDiagResult(null);
+    setOtroEstado("");
     openModal("diagnostico");
   }
 
@@ -243,6 +280,12 @@ export default function EstructuraEmpresarial() {
     const next = [...diagAnswers];
     next[diagStep] = optionIdx;
     setDiagAnswers(next);
+    // Al elegir "Otro estado" no avanzamos: primero pedimos cuál estado (campo inline).
+    if (diagStep === Q_ESTADO && optionIdx === OPT_OTRO_ESTADO) return;
+    // Sincroniza la respuesta de estado con el formulario, para no volver a preguntarla abajo.
+    if (diagStep === Q_ESTADO) {
+      setFormData((prev) => ({ ...prev, state: DIAGNOSTIC[Q_ESTADO].options[optionIdx] }));
+    }
     if (diagStep < DIAGNOSTIC.length - 1) {
       setDiagStep(diagStep + 1);
     } else {
@@ -250,8 +293,15 @@ export default function EstructuraEmpresarial() {
     }
   }
 
+  /* Confirma "Otro estado" con el texto escrito y cierra el árbol. */
+  function confirmOtroEstado() {
+    if (!otroEstado.trim()) return;
+    setFormData((prev) => ({ ...prev, state: OTRO_ESTADO, otherStateText: otroEstado.trim() }));
+    setDiagResult(computeDiagResult(diagAnswers));
+  }
+
   /* Form */
-  const [formData, setFormData] = useState({ name: "", email: "", whatsapp: "", country: "", state: "", objective: "", partners: "", timeline: "" });
+  const [formData, setFormData] = useState<FichaValues>({ name: "", email: "", whatsapp: "", country: "", state: "", otherStateText: "", objective: "", partners: "", timeline: "" });
   const [formSent, setFormSent] = useState(false);
   const [formHoneypot, setFormHoneypot] = useState("");
   const [formSubmitting, setFormSubmitting] = useState(false);
@@ -304,21 +354,23 @@ export default function EstructuraEmpresarial() {
   function finishDiagnosticLead() {
     if (diagLeadPosted) return;
     setDiagLeadPosted(true);
+    // La rama "otro_estado" se deriva al equipo: se marca con su propio tag e hito.
+    const esOtroEstado = diagResult === "otro_estado";
     postCrmLead(
       {
         name: formData.name,
         email: formData.email,
         phone: formData.whatsapp,
         sourceSlug: "web_ca_llc",
-        hito: "diagnostico_completo",
+        hito: esOtroEstado ? "llamada_solicitada" : "diagnostico_completo",
         stage: "complete",
-        tags: ["interes:llc"],
+        tags: esOtroEstado ? ["interes:llc", "derivado_despacho_asociado"] : ["interes:llc"],
         submissionId: submissionIdRef.current,
+        // Misma ficha que se precarga en WhatsApp — un solo builder, dos destinos.
+        notes: { ficha: buildFicha(formData) },
         formFields: [
-          { label: "Nombre", value: formData.name },
-          { label: "Correo", value: formData.email },
-          { label: "WhatsApp", value: formData.whatsapp },
-          ...diagFormFields(diagAnswers),
+          ...fichaFields(formData).filter((f) => f.value),
+          ...diagFormFields(diagAnswers, formData.otherStateText),
         ],
       },
       formHoneypot,
@@ -333,9 +385,9 @@ export default function EstructuraEmpresarial() {
     if (formSubmitting) return;
     setFormSubmitting(true);
 
-    const estadoDeInteres = formData.state || "Estados Unidos";
-    const msg = `Hola, me interesa formar una LLC en ${estadoDeInteres}.\nNombre: ${formData.name}\nPaís: ${formData.country}\nObjetivo: ${formData.objective}\nSocios: ${formData.partners}\nFecha estimada: ${formData.timeline}`;
-    openWhatsApp(WHATSAPP_PHONE, msg);
+    // Misma ficha en WhatsApp y en el CRM — un solo builder, dos destinos.
+    const ficha = buildFicha(formData);
+    openWhatsApp(WHATSAPP_PHONE, ficha);
 
     postCrmLead({
       name: formData.name,
@@ -348,21 +400,14 @@ export default function EstructuraEmpresarial() {
       stage: "complete",
       // Etiqueta de página de interés (acumulable en el CRM). Esta página es la de LLC,
       // por lo que siempre etiqueta interes:llc; la ruta de inversión la etiqueta el GPS.
-      tags: ["interes:llc"],
+      tags: formData.state === OTRO_ESTADO ? ["interes:llc", "derivado_despacho_asociado"] : ["interes:llc"],
       // Mismo submissionId que el diagnóstico: el CRM actualiza la nota existente.
       submissionId: submissionIdRef.current,
-      introText: `Hola, me interesa formar una LLC en ${estadoDeInteres}.`,
+      notes: { ficha },
       formFields: [
-        { label: "Nombre", value: formData.name },
-        { label: "Correo", value: formData.email },
-        { label: "WhatsApp", value: formData.whatsapp },
-        { label: "País", value: formData.country },
-        { label: "Estado de interés", value: formData.state },
-        { label: "Objetivo", value: formData.objective },
-        { label: "Socios", value: formData.partners },
-        { label: "Fecha estimada", value: formData.timeline },
+        ...fichaFields(formData).filter((f) => f.value),
         // Si el usuario completó el diagnóstico, adjunta sus respuestas al mismo contacto.
-        ...(diagResult ? diagFormFields(diagAnswers) : []),
+        ...(diagResult ? diagFormFields(diagAnswers, formData.otherStateText) : []),
       ],
     }, formHoneypot);
 
@@ -373,6 +418,16 @@ export default function EstructuraEmpresarial() {
 
     setFormSent(true);
   }
+
+  /* Contexto de la situación elegida en la pregunta 1 — contenido que antes vivía en el
+     selector de intención de la página. Se muestra en la pantalla de resultado. */
+  const situacionIdx = diagAnswers[Q_SITUACION];
+  const situacionContextBlock = situacionIdx != null ? (
+    <div className="bg-[#0B1F3A] border border-primary/20 rounded-xl p-4 text-slate-300 text-sm leading-relaxed">
+      <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Contexto para tu caso</p>
+      {SITUACION_CONTEXT[situacionIdx]}
+    </div>
+  ) : null;
 
   /* Campos de contacto dentro del diagnóstico. Escriben en el MISMO formData que el
      formulario final, así que lo capturado aquí ya queda pre-llenado allá (y viceversa). */
@@ -427,8 +482,9 @@ export default function EstructuraEmpresarial() {
                 <span className="text-primary">con claridad desde el inicio</span>
               </h1>
               <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
-                Constituimos tu empresa, obtenemos su EIN y te entregamos una guía clara para que puedas
-                comenzar a operar en Estados Unidos sin convertir el proceso en un trámite confuso.
+                Registro estatal, EIN y Registered Agent por un año. Si aún no sabes en qué estado
+                conviene constituir o si tu caso necesita otra estructura, el diagnóstico lo resuelve
+                en un par de minutos.
               </p>
 
               {/* Price */}
@@ -446,7 +502,7 @@ export default function EstructuraEmpresarial() {
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => { setNoSabeResult(null); openModal("nosabe"); }}
+                  onClick={startDiagnostic}
                   className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base rounded-full"
                 >
                   No sé qué estructura necesito
@@ -460,59 +516,6 @@ export default function EstructuraEmpresarial() {
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> Registro estatal incluido</span>
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> EIN federal</span>
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> Registered Agent 1 año</span>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          2. SELECTOR DE INTENCIÓN
-      ══════════════════════════════════════════ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-24">
-        <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-bold text-[#0B1F3A] mb-2">¿Para qué necesitas la empresa?</h2>
-              <p className="text-[#6B7280] mb-8 text-sm">Selecciona la opción que mejor describe tu situación.</p>
-
-              <div className="grid sm:grid-cols-2 gap-3 mb-6">
-                {INTENTS.map((intent, i) => (
-                  <Fragment key={i}>
-                    <button
-                      onClick={() => setActiveIntent(activeIntent === i ? null : i)}
-                      className={`text-left px-5 py-4 rounded-xl border text-sm font-medium transition-all ${
-                        activeIntent === i
-                          ? "bg-primary/10 border-primary/60 text-[#0B1F3A]"
-                          : "bg-white border-gray-200 text-[#374151] hover:border-primary/30"
-                      }`}
-                    >
-                      <span className="flex items-center gap-2">
-                        <ChevronRight className={`w-4 h-4 flex-shrink-0 transition-transform ${activeIntent === i ? "rotate-90 text-primary" : "text-gray-400"}`} />
-                        {intent.label}
-                      </span>
-                    </button>
-
-                    {/* Contexto inline: aparece justo debajo del botón seleccionado,
-                        exactamente donde el usuario está mirando (sin scroll automático). */}
-                    <AnimatePresence>
-                      {activeIntent === i && (
-                        <motion.div
-                          className="col-span-2 overflow-hidden"
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <div className="bg-white border border-primary/20 rounded-xl p-5 text-[#374151] text-sm leading-relaxed shadow-sm">
-                            <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Contexto para tu caso</p>
-                            {intent.context}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </Fragment>
-                ))}
               </div>
             </div>
           </FadeIn>
@@ -936,6 +939,16 @@ export default function EstructuraEmpresarial() {
                           <option value="">Seleccionar…</option>
                           {field.options.map((o) => <option key={o} value={o}>{o}</option>)}
                         </select>
+                        {/* Mismo campo de texto libre que en el diagnóstico, para no duplicar lógica */}
+                        {field.key === "state" && formData.state === OTRO_ESTADO && (
+                          <input
+                            type="text"
+                            value={formData.otherStateText}
+                            onChange={(e) => setFormData({ ...formData, otherStateText: e.target.value })}
+                            placeholder="¿Cuál estado? California, Nueva York, etc."
+                            className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors mt-2"
+                          />
+                        )}
                       </div>
                     ))}
 
@@ -974,42 +987,6 @@ export default function EstructuraEmpresarial() {
       {/* ══════════════════════════════════════════
           MODALS
       ══════════════════════════════════════════ */}
-
-      {/* No sé qué estructura necesito */}
-      <Modal open={modal === "nosabe"} onClose={closeModal} title="No sé qué estructura necesito">
-        {noSabeResult === null && (
-          <>
-            <p>Una LLC puede ser suficiente cuando buscas comenzar una operación, prestar servicios, facturar o mantener una inversión sencilla.</p>
-            <p>Tu caso puede requerir una revisión previa cuando existen socios, varias propiedades, capital de terceros, una operación en otro país, objetivos migratorios o necesidades patrimoniales más amplias.</p>
-            <div className="flex flex-col gap-3 pt-2">
-              <Button onClick={() => { setNoSabeResult("llc"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full">
-                Mi caso es sencillo: continuar con LLC <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button variant="outline" onClick={() => { setNoSabeResult("estructura"); }} className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full">
-                Necesito revisar mi estructura
-              </Button>
-            </div>
-          </>
-        )}
-        {noSabeResult === "llc" && (
-          <>
-            <p>Perfecto. Puedes comenzar con el servicio de formación de LLC y nuestro equipo revisará tu caso antes de iniciar el proceso.</p>
-            <Button onClick={() => { closeModal(); openModal("iniciar"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-2">
-              Iniciar mi LLC <ArrowRight className="w-4 h-4" />
-            </Button>
-          </>
-        )}
-        {noSabeResult === "estructura" && (
-          <>
-            <p>Tu caso puede tener elementos que conviene revisar antes de constituir. Te recomendamos comenzar con una revisión de estructura de inversión.</p>
-            <a href="/estructura-de-inversion-en-usa">
-              <Button className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-2">
-                Revisar mi estructura de inversión <ArrowRight className="w-4 h-4" />
-              </Button>
-            </a>
-          </>
-        )}
-      </Modal>
 
       {/* Iniciar */}
       <Modal open={modal === "iniciar"} onClose={closeModal} title="¿En qué estado quieres constituir tu LLC?">
@@ -1073,7 +1050,7 @@ export default function EstructuraEmpresarial() {
       {/* Registered Agent */}
       <Modal open={modal === "registered-agent"} onClose={closeModal} title="¿Qué es el Registered Agent?">
         <p>El Registered Agent es la persona o entidad designada para recibir documentos legales, notificaciones oficiales y correspondencia del gobierno en nombre de la LLC.</p>
-        <p>Todos los estados de EE.UU. exigen que cada LLC tenga un Registered Agent con dirección física en el estado donde está registrada.</p>
+        <p>Todos los estados de Estados Unidos exigen que cada LLC tenga un Registered Agent con dirección física en el estado donde está registrada.</p>
         <p>El servicio incluye un año de Registered Agent. Después del primer año debe renovarse.</p>
       </Modal>
 
@@ -1084,7 +1061,7 @@ export default function EstructuraEmpresarial() {
         <ul className="list-disc pl-4 space-y-1">
           <li>Abrir cuentas bancarias empresariales</li>
           <li>Contratar empleados</li>
-          <li>Celebrar contratos con clientes en EE.UU.</li>
+          <li>Celebrar contratos con clientes en Estados Unidos</li>
           <li>Cumplir obligaciones fiscales ante el IRS</li>
           <li>Solicitar crédito empresarial</li>
         </ul>
@@ -1148,6 +1125,56 @@ export default function EstructuraEmpresarial() {
                 </button>
               ))}
             </div>
+
+            {/* "Otro estado": pide cuál antes de continuar al resultado */}
+            {diagStep === Q_ESTADO && diagAnswers[Q_ESTADO] === OPT_OTRO_ESTADO && (
+              <div className="mt-4">
+                <label className="text-slate-400 text-xs block mb-1">¿Cuál estado?</label>
+                <input
+                  type="text"
+                  autoFocus
+                  value={otroEstado}
+                  onChange={(e) => setOtroEstado(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); confirmOtroEstado(); } }}
+                  placeholder="California, Nueva York, etc."
+                  className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
+                />
+                <Button
+                  onClick={confirmOtroEstado}
+                  disabled={!otroEstado.trim()}
+                  className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-3 disabled:opacity-50"
+                >
+                  Continuar <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Resultado: estado fuera de Texas/Florida → derivación al equipo por WhatsApp */}
+        {diagResult === "otro_estado" && (
+          <>
+            <div className="flex items-center gap-2 mb-4">
+              <MapPin className="w-6 h-6 text-primary" />
+              <p className="text-white font-semibold">Tu caso requiere constituir en {formData.otherStateText || "otro estado"}</p>
+            </div>
+            <p>
+              Nuestro servicio en línea cubre Texas y Florida. Para constituir en{" "}
+              <strong className="text-white">{formData.otherStateText || "otro estado"}</strong> te conectamos
+              por WhatsApp con nuestro equipo, que coordina esa formación directamente contigo.
+            </p>
+            <div className="pt-2">
+              <p className="text-slate-400 text-sm mb-3">
+                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos y te contactamos.` : "Déjanos tus datos y te contactamos para coordinar."}
+              </p>
+              {contactFieldsBlock}
+            </div>
+            <Button
+              onClick={() => { finishDiagnosticLead(); closeModal(); openWhatsApp(WHATSAPP_PHONE, buildFicha(formData)); }}
+              className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4"
+            >
+              <MessageSquare className="w-4 h-4" /> Coordinar por WhatsApp
+            </Button>
           </>
         )}
 
@@ -1233,6 +1260,7 @@ export default function EstructuraEmpresarial() {
               Por lo que nos compartes, el servicio de formación de LLC ($1,499) cubre lo que necesitas.
               Nuestro equipo revisará tu caso antes de iniciar el proceso.
             </p>
+            {situacionContextBlock}
             <div className="pt-2">
               <p className="text-slate-400 text-sm mb-3">
                 {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos para guardar tu diagnóstico.` : "Déjanos tus datos para guardar tu diagnóstico y darle seguimiento."}

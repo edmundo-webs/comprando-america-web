@@ -25,6 +25,9 @@ Mover tareas entre secciones conforme avanzan.
 - [x] Conexión de `/estructura-de-inversion-en-usa` al CRM (diagnóstico interactivo + formulario)
 - [x] Centralización de `postCrmLead` en `client/src/lib/crm.ts` (deuda técnica: ya no está duplicado)
 - [x] Selector de intención cruzado entre las dos páginas de estructura (LLC e Inversión)
+- [x] Consolidación de los 3 mecanismos de "no sé qué necesito" en un solo diagnóstico (LLC)
+- [x] Corrección de la pregunta de estado y nueva rama de derivación a despacho asociado
+- [x] Ficha unificada WhatsApp + CRM para las ramas de resultado del diagnóstico de LLC
 
 ---
 *Última actualización: 28 julio 2026*
