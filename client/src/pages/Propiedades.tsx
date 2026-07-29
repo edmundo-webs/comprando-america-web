@@ -4,14 +4,15 @@ import Footer from "@/components/Footer";
 import { sendCtaClick } from "@/lib/tracking";
 
 /* ── Palette ── */
-const NAVY        = "#0B1F3A";
-const NAVY_CARD   = "#0F2847";
-const NAVY_DARK   = "#091A30";
+const NAVY = "#0B1F3A";
+const NAVY_CARD = "#0F2847";
+const NAVY_DARK = "#091A30";
 const NAVY_BORDER = "#1E3A5F";
-const BLUE        = "#2563EB";
-const BLUE_LIGHT  = "#3B82F6";
-const GOLD        = "#C9A84C"; // solo para métricas financieras
-const GOLD_LIGHT  = "#E2C06E";
+const BLUE = "#2563EB";
+const BLUE_LIGHT = "#3B82F6";
+const GOLD = "#C9A84C"; // solo para métricas financieras
+const GOLD_LIGHT = "#E2C06E";
+const GRAY = "#5A7A9A";
 
 /* ── Data ── */
 type Deal = {
@@ -34,6 +35,7 @@ type Deal = {
   cap: number;
   detalles: string[];
   zillow?: string;
+  vendida?: boolean;
 };
 
 const FOTO_POS: Record<number, string> = { 1:"center center",2:"center center",3:"center center",4:"center center",5:"center top",6:"center center" };
@@ -71,6 +73,7 @@ const DEALS: Deal[] = [
     beds: 3, baths: 1.5, sqft: 960, ano: 1951, lote: 5967,
     renta: 1200, ingresoAnual: 14400, gastos: 5400, noi: 9000, cap: 8,
     detalles: ["Precio $15,700 por debajo del Zestimate","3 recámaras / 1.5 baños","Calefacción de aire forzado","Exterior de vinyl (bajo mantenimiento)","Casa unifamiliar sin HOA"],
+    vendida: true,
   },
   {
     id: 5, ubicacion: "St. Petersburg, FL", tipo: "Casa Unifamiliar", precio: 320000, listPrice: 359000, savings: 39000,
@@ -78,6 +81,7 @@ const DEALS: Deal[] = [
     renta: 2500, ingresoAnual: 30000, gastos: 11200, noi: 18800, cap: 6,
     detalles: ["Cocina remodelada","Gabinetes blancos shaker","Encimera de madera butcher block","Lista para rentar de inmediato"],
     zillow: "https://www.zillow.com/homedetails/3028-9th-ave-n-saint-petersburg-fl-33713/47077263_zpid/",
+    vendida: true,
   },
   {
     id: 6, ubicacion: "St. Petersburg, FL", tipo: "Casa Unifamiliar", precio: 325000, listPrice: 425000, savings: 100000,
@@ -90,6 +94,8 @@ const DEALS: Deal[] = [
 
 const usd = (n: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+
+const usdCompact = (n: number) => `$${Math.round(n / 1000)}K`;
 
 /* ── DealCard ── */
 type Tab = "roi" | "detalles" | null;
@@ -252,8 +258,47 @@ function DealCard({ d }: { d: Deal }) {
   );
 }
 
+/* ── SoldCard — compact card for "Recién Vendidas" ── */
+function SoldCard({ d }: { d: Deal }) {
+  return (
+    <div style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "16px", overflow: "hidden", display: "flex", flexDirection: "column", opacity: 0.75 }}>
+      <div style={{ position: "relative", height: "160px", overflow: "hidden", background: NAVY_DARK }}>
+        <img src={FOTOS[d.id]} alt={`Propiedad #${d.id} ${d.ubicacion}`}
+          style={{ width: "100%", height: "100%", objectFit: FOTO_FIT[d.id], objectPosition: FOTO_POS[d.id], display: "block", filter: "grayscale(85%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "rgba(11,31,58,0.55)" }} />
+        <span style={{ position: "absolute", top: "10px", left: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#fff", background: GRAY, borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.06em" }}>
+          #{d.id} · {d.tipo}
+        </span>
+        <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 800, color: "#fff", background: "#8A93A0", borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.08em" }}>
+          VENDIDA
+        </span>
+      </div>
+      <div style={{ padding: "14px 16px 16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "8px" }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5A7A9A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>{d.ubicacion}</span>
+        </div>
+        <p style={{ fontFamily: "'Space Grotesk',monospace", fontSize: "20px", fontWeight: 800, color: "#8FA5C0", lineHeight: 1 }}>
+          {usd(d.precio)}
+        </p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", marginTop: "3px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+          Vendida a precio de inversionista
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /* ── Page ── */
 export default function Propiedades() {
+  const activeDeals = DEALS.filter(d => !d.vendida);
+  const soldDeals = DEALS.filter(d => d.vendida);
+
+  const capRates = activeDeals.map(d => d.cap);
+  const minCap = Math.min(...capRates);
+  const maxCap = Math.max(...capRates);
+  const minPrice = Math.min(...activeDeals.map(d => d.precio));
+
   const handleContacto = () => {
     const msg = encodeURIComponent("Hola, me interesan las propiedades disponibles en Comprando América. ¿Pueden enviarme más información?");
     const waUrl = `https://wa.me/523346766178?text=${msg}`;
@@ -299,9 +344,9 @@ export default function Propiedades() {
         {/* Stats bar — gold for the numbers */}
         <div style={{ maxWidth: "800px", margin: "48px auto 0", display: "grid", gridTemplateColumns: "repeat(3,1fr)", borderTop: `1px solid ${NAVY_BORDER}`, borderBottom: `1px solid ${NAVY_BORDER}` }}>
           {[
-            { num: "6", suffix: " propiedades", label: "Disponibles ahora" },
-            { num: "6–8", suffix: "%", label: "Cap Rate promedio" },
-            { num: "$90K", suffix: "+", label: "Desde" },
+            { num: String(activeDeals.length), suffix: activeDeals.length === 1 ? " propiedad" : " propiedades", label: "Disponibles ahora" },
+            { num: minCap === maxCap ? `${minCap}` : `${minCap}–${maxCap}`, suffix: "%", label: "Cap Rate promedio" },
+            { num: usdCompact(minPrice), suffix: "+", label: "Desde" },
           ].map(({ num, suffix, label }, i) => (
             <div key={i} style={{ padding: "20px 16px", textAlign: "center", borderRight: i < 2 ? `1px solid ${NAVY_BORDER}` : "none" }}>
               <p style={{ fontFamily: "'Space Grotesk',monospace", fontSize: "22px", fontWeight: 800, color: GOLD, marginBottom: "2px" }}>
@@ -316,8 +361,23 @@ export default function Propiedades() {
       {/* ── Grid ── */}
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "48px 24px 80px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))", gap: "20px" }}>
-          {DEALS.map(d => <DealCard key={d.id} d={d} />)}
+          {activeDeals.map(d => <DealCard key={d.id} d={d} />)}
         </div>
+
+        {/* ── Recién Vendidas ── */}
+        {soldDeals.length > 0 && (
+          <div style={{ marginTop: "56px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+              <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: GRAY }} />
+              <h2 style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", color: GRAY, textTransform: "uppercase" }}>
+                Recién Vendidas
+              </h2>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: "16px" }}>
+              {soldDeals.map(d => <SoldCard key={d.id} d={d} />)}
+            </div>
+          </div>
+        )}
 
         {/* ── CTA Banner ── */}
         <div style={{ marginTop: "64px", background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "48px 32px", textAlign: "center", position: "relative", overflow: "hidden" }}>
