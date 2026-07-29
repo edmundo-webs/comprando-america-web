@@ -28,6 +28,10 @@ Mover tareas entre secciones conforme avanzan.
 - [x] Consolidación de los 3 mecanismos de "no sé qué necesito" en un solo diagnóstico (LLC)
 - [x] Corrección de la pregunta de estado y nueva rama de derivación a despacho asociado
 - [x] Ficha unificada WhatsApp + CRM para las ramas de resultado del diagnóstico de LLC
+- [x] Punto de entrada único de dos puertas (compra directa / diagnóstico integral) en ambas guías de estructura
+- [x] Contenido educativo embebido en los pasos del diagnóstico, en lugar de entrega de PDF
+- [x] Reglas de descalificación: estado no cubierto (con referido) y capital menor al mínimo
+- [x] Personalización condicionada a señal real y reciente (ventana de continuidad)
 
 ---
 *Última actualización: 28 julio 2026*

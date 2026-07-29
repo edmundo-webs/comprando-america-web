@@ -2,14 +2,13 @@
  * /estructura-empresarial-en-estados-unidos — URL canónica del servicio LLC
  * /llc redirige aquí con 301 permanente
  */
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
-import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
-import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
+import { postCrmLead, getSavedContact } from "@/lib/crm";
 import { trackPageVisit, visitedRecently } from "@/lib/journey";
-import EstructuraIntentSelector from "@/components/EstructuraIntentSelector";
+import EstructuraFlow from "@/components/EstructuraFlow";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -31,9 +30,6 @@ import {
   Users,
   BookOpen,
   AlertTriangle,
-  MessageSquare,
-  Compass,
-  UserCheck,
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 
@@ -119,230 +115,19 @@ function ContextLink({ onClick, children }: { onClick: () => void; children: Rea
   );
 }
 
-/* ─── Diagnóstico de estructura de LLC ───
-   Único punto de entrada para la duda "no sé qué necesito": consolida el antiguo modal
-   binario y el selector de intención en un solo árbol. Solo indaga variables de FORMACIÓN
-   de empresa (situación, operación, socios, empresa previa, objetivo de inversión, estado).
-   Nunca pregunta capital, ticket ni horizonte — esas variables son exclusivas del GPS. */
-type DiagQuestion = { q: string; options: string[] };
-const DIAGNOSTIC: DiagQuestion[] = [
-  {
-    q: "¿Qué describe mejor tu situación?",
-    options: [
-      "Quiero prestar servicios o facturar",
-      "Quiero iniciar una operación",
-      "Quiero comprar una propiedad o activo",
-      "Quiero vender productos",
-      "Quiero dar presencia a mi empresa actual",
-      "Todavía no estoy seguro",
-    ],
-  },
-  {
-    q: "¿Dónde vas a operar principalmente tu negocio?",
-    options: ["Estados Unidos", "Mi país actual", "Remoto / digital, sin ubicación fija", "Varios países"],
-  },
-  {
-    q: "¿Cuántos socios o dueños tendrá la empresa?",
-    options: ["Solo yo", "2 socios", "3 o más socios", "Socios más inversionistas externos"],
-  },
-  {
-    q: "¿Ya tienes una empresa activa en otro país relacionada con esta?",
-    options: ["Sí", "No"],
-  },
-  {
-    q: "¿Tu objetivo incluye, a mediano plazo, atraer capital de inversionistas externos o aplicar a una visa de inversionista (E-2)?",
-    options: ["Sí, ya es un objetivo definido", "Tal vez más adelante, aún no lo sé", "No, solo quiero operar o facturar"],
-  },
-  {
-    q: "¿En qué estado de Estados Unidos vas a operar o tienes tu residencia principal?",
-    options: ["Texas", "Florida", "Otro estado", "No estoy seguro"],
-  },
-];
-
-/* Índices con nombre — evita números mágicos si el árbol vuelve a reordenarse. */
-const Q_SITUACION = 0;
-const Q_SOCIOS = 2;
-const Q_EMPRESA_PREVIA = 3;
-const Q_OBJETIVO_INVERSION = 4;
-const Q_ESTADO = 5;
-const OPT_OTRO_ESTADO = 2; // índice de "Otro estado" en la pregunta de estado
-
-/* Contexto por situación — proviene del antiguo selector de intención de la página.
-   No se pierde: se muestra en la pantalla de resultado como "Contexto para tu caso". */
-const SITUACION_CONTEXT: string[] = [
-  "Una LLC puede ayudarte a separar tu actividad comercial de tus operaciones personales y establecer una entidad para celebrar contratos o recibir ingresos.",
-  "Puedes usar una LLC para iniciar operaciones comerciales en Estados Unidos, contratar, tener presencia legal y facturar a clientes locales o internacionales.",
-  "La LLC puede servir como vehículo de propiedad, pero conviene revisar el tipo de activo, el número de participantes y la estrategia de salida antes de constituirla.",
-  "Una LLC te permite vender productos en Estados Unidos con estructura legal clara, recolección de impuestos y cuentas bancarias en dólares.",
-  "Es importante distinguir entre crear una LLC independiente y establecer una subsidiaria o extensión de una empresa existente en otro país. Son rutas distintas.",
-  "No hay problema. Puedes comenzar el proceso y nuestro equipo revisará contigo cuál es el uso más adecuado antes de constituir.",
-];
-
-type DiagResult = "inversion" | "asesor" | "llc" | "otro_estado";
-
-/* Resultado del diagnóstico. El orden de las reglas importa:
-   1) Estado fuera de Texas/Florida → derivación al equipo por WhatsApp.
-   2) Objetivo de inversión definido → GPS.
-   3) Inversionistas externos o empresa previa en otro país → sugerir asesor
-      (inline, sin bloquear el flujo de compra).
-   4) Cualquier otro caso → formación de LLC estándar. */
-function computeDiagResult(answers: (number | null)[]): DiagResult {
-  if (answers[Q_ESTADO] === OPT_OTRO_ESTADO) return "otro_estado";
-  if (answers[Q_OBJETIVO_INVERSION] === 0) return "inversion"; // "Sí, ya es un objetivo definido"
-  if (answers[Q_SOCIOS] === 3 || answers[Q_EMPRESA_PREVIA] === 0) return "asesor";
-  return "llc";
-}
-
-/* Convierte las respuestas del diagnóstico al formato genérico de formFields del CRM,
-   para que se registren como nota "Datos recibidos del formulario" junto al contacto. */
-function diagFormFields(answers: (number | null)[], otroEstadoTexto?: string) {
-  return DIAGNOSTIC.map((item, i) => {
-    const base = answers[i] != null ? item.options[answers[i]!] : "";
-    // En la pregunta de estado, anexa el estado escrito a mano cuando eligió "Otro estado".
-    const value =
-      i === Q_ESTADO && answers[i] === OPT_OTRO_ESTADO && otroEstadoTexto?.trim()
-        ? `${base} (${otroEstadoTexto.trim()})`
-        : base;
-    return { label: item.q, value };
-  }).filter((f) => f.value);
-}
-
-/* Handoff al GPS cuando el usuario ya viene calificado con intención de inversión.
-   El GPS lee estos parámetros para no repetir la pregunta de propósito. */
-const GPS_QUALIFIED_URL = "/gps?ref=llc-diagnostico&intent=inversion";
-
-/* ─── Form fields ─── */
-const OTRO_ESTADO = "Otro estado";
-const STATE_OPTIONS = ["Texas", "Florida", OTRO_ESTADO, "No estoy seguro"];
-
-/* ─── Ficha unificada ───
-   Un solo builder, dos destinos: el mensaje precargado de WhatsApp y las notas del CRM.
-   Así el asesor en WhatsApp y el registro del CRM dicen exactamente lo mismo. */
-type FichaValues = {
-  name: string; email: string; whatsapp: string; country: string;
-  state: string; otherStateText: string; objective: string; partners: string; timeline: string;
-};
-
-/* Estado tal como se menciona en el saludo: si eligió "Otro estado", usa el que escribió. */
-function estadoDeInteres(form: FichaValues): string {
-  if (form.state === OTRO_ESTADO) return form.otherStateText.trim() || OTRO_ESTADO;
-  return form.state;
-}
-
-function fichaFields(form: FichaValues): { label: string; value: string }[] {
-  const estado = form.state === OTRO_ESTADO && form.otherStateText.trim()
-    ? `${form.state} (${form.otherStateText.trim()})`
-    : form.state;
-  return [
-    { label: "Nombre", value: form.name },
-    { label: "Correo", value: form.email },
-    { label: "WhatsApp", value: form.whatsapp },
-    { label: "País", value: form.country },
-    { label: "Estado de interés", value: estado },
-    { label: "Objetivo", value: form.objective },
-    { label: "Socios", value: form.partners },
-    { label: "Fecha estimada", value: form.timeline },
-  ];
-}
-
-/* Mensaje único para WhatsApp y para las notas del CRM: saludo con el estado de interés,
-   una línea de contexto opcional según la rama, y los campos capturados (omite vacíos
-   para que el asesor no reciba etiquetas en blanco). */
-function buildFicha(form: FichaValues, contexto?: string): string {
-  const estado = estadoDeInteres(form);
-  const filled = fichaFields(form).filter((f) => f.value.trim());
-  return [
-    `Hola, me interesa formar una LLC en: ${estado || "Estados Unidos"}`,
-    ...(contexto ? ["", contexto] : []),
-    ...(filled.length ? ["", ...filled.map((f) => `${f.label}: ${f.value}`)] : []),
-  ].join("\n");
-}
-const OBJECTIVE_OPTIONS = ["Prestar servicios o facturar", "Iniciar una operación", "Comprar una propiedad", "Vender productos", "Crear presencia empresarial", "Otro"];
-const PARTNER_OPTIONS = ["Solo yo", "2 personas", "3 o más", "No estoy seguro"];
-const TIMELINE_OPTIONS = ["En las próximas 2 semanas", "Este mes", "En los próximos 3 meses", "Solo estoy explorando"];
-
 export default function EstructuraEmpresarial() {
   /* Modals */
   const [modal, setModal] = useState<string | null>(null);
   const openModal = (id: string) => setModal(id);
   const closeModal = () => setModal(null);
 
-  /* Diagnóstico de estructura de LLC — único punto de entrada para la duda */
-  const [diagStep, setDiagStep] = useState<number>(0);
-  const [diagAnswers, setDiagAnswers] = useState<(number | null)[]>(Array(DIAGNOSTIC.length).fill(null));
-  const [diagResult, setDiagResult] = useState<DiagResult | null>(null);
-  // Estado escrito a mano cuando elige "Otro estado" en la pregunta de estado.
-  const [otroEstado, setOtroEstado] = useState("");
-
-  function startDiagnostic() {
-    setDiagStep(0);
-    setDiagAnswers(Array(DIAGNOSTIC.length).fill(null));
-    setDiagResult(null);
-    setOtroEstado("");
-    openModal("diagnostico");
-  }
-
-  function answerDiag(optionIdx: number) {
-    // Registra el inicio del diagnóstico una sola vez (primera respuesta del árbol).
-    if (diagStep === 0 && !diagStartedPosted) {
-      setDiagStartedPosted(true);
-      postCrmLead({ sourceSlug: "web_ca_llc", hito: "diagnostico_iniciado", stage: "partial", tags: ["interes:llc"] }, "");
-    }
-    const next = [...diagAnswers];
-    next[diagStep] = optionIdx;
-    setDiagAnswers(next);
-    // Al elegir "Otro estado" no avanzamos: primero pedimos cuál estado (campo inline).
-    if (diagStep === Q_ESTADO && optionIdx === OPT_OTRO_ESTADO) return;
-    // Sincroniza la respuesta de estado con el formulario, para no volver a preguntarla abajo.
-    if (diagStep === Q_ESTADO) {
-      setFormData((prev) => ({ ...prev, state: DIAGNOSTIC[Q_ESTADO].options[optionIdx] }));
-    }
-    if (diagStep < DIAGNOSTIC.length - 1) {
-      setDiagStep(diagStep + 1);
-    } else {
-      setDiagResult(computeDiagResult(next));
-    }
-  }
-
-  /* Confirma "Otro estado" con el texto escrito y cierra el árbol. */
-  function confirmOtroEstado() {
-    if (!otroEstado.trim()) return;
-    setFormData((prev) => ({ ...prev, state: OTRO_ESTADO, otherStateText: otroEstado.trim() }));
-    setDiagResult(computeDiagResult(diagAnswers));
-  }
-
-  /* Form */
-  const [formData, setFormData] = useState<FichaValues>({ name: "", email: "", whatsapp: "", country: "", state: "", otherStateText: "", objective: "", partners: "", timeline: "" });
-  const [formSent, setFormSent] = useState(false);
-  const [formHoneypot, setFormHoneypot] = useState("");
-  const [formSubmitting, setFormSubmitting] = useState(false);
-
-  /* Continuidad entre guías: si el mismo visitante ya revisó la guía de inversión,
-     lo reconocemos en vez de tratarlo como un lead nuevo. */
+  /* Continuidad entre guías — personalización solo con señal real y reciente.
+     El pre-llenado del contacto lo maneja EstructuraFlow con el dato guardado localmente. */
   const [visitedInversion, setVisitedInversion] = useState(false);
-  const [knownName, setKnownName] = useState<string | null>(null);
-  const [diagStartedPosted, setDiagStartedPosted] = useState(false);
-  // El diagnóstico capta los datos personales (comparte formData con el formulario final,
-  // para no pedir los mismos datos dos veces). Se envía un solo lead completo.
-  const [diagLeadPosted, setDiagLeadPosted] = useState(false);
-  // Identificador único de esta sesión en la página: el diagnóstico y el formulario final
-  // lo comparten para que el CRM actualice la MISMA nota en vez de crear una duplicada.
-  const submissionIdRef = useRef<string | null>(null);
-  if (submissionIdRef.current === null) submissionIdRef.current = crypto.randomUUID();
 
   useEffect(() => {
     trackPageVisit("llc");
-    // Pre-llena el contacto si ya lo conocemos (del diagnóstico, de la otra guía o de una visita previa).
     const saved = getSavedContact();
-    if (saved) {
-      setKnownName(saved.name || null);
-      setFormData((prev) => ({
-        ...prev,
-        name: prev.name || saved.name || "",
-        email: prev.email || saved.email || "",
-        whatsapp: prev.whatsapp || saved.phone || "",
-      }));
-    }
     // El mensaje de continuidad solo aplica si la visita a la otra guía es RECIENTE:
     // una visita de hace semanas no es "la misma exploración" y se sentía falsa.
     if (visitedRecently("inversion")) {
@@ -360,167 +145,6 @@ export default function EstructuraEmpresarial() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  /* Envía UN lead completo con el contacto capturado en el diagnóstico + las respuestas
-     del árbol. No bloquea el flujo de compra: se dispara al continuar y una sola vez. */
-  function finishDiagnosticLead() {
-    if (diagLeadPosted) return;
-    setDiagLeadPosted(true);
-    // La rama "otro_estado" se deriva al equipo: se marca con su propio tag e hito.
-    const esOtroEstado = diagResult === "otro_estado";
-    postCrmLead(
-      {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.whatsapp,
-        sourceSlug: "web_ca_llc",
-        hito: esOtroEstado ? "llamada_solicitada" : "diagnostico_completo",
-        stage: "complete",
-        tags: esOtroEstado ? ["interes:llc", "derivado_despacho_asociado"] : ["interes:llc"],
-        submissionId: submissionIdRef.current,
-        // Misma ficha que se precarga en WhatsApp — un solo builder, dos destinos.
-        notes: { ficha: buildFicha(formData) },
-        formFields: [
-          ...fichaFields(formData).filter((f) => f.value),
-          ...diagFormFields(diagAnswers, formData.otherStateText),
-        ],
-      },
-      formHoneypot,
-    );
-    if (!formHoneypot && (formData.name || formData.email || formData.whatsapp)) {
-      saveContact({ name: formData.name.trim(), email: formData.email.trim(), phone: formData.whatsapp.trim() });
-    }
-  }
-
-  /* Única salida a WhatsApp de la página: siempre precarga la ficha completa (nunca un
-     mensaje suelto) y registra el mismo string en el CRM. `contexto` agrega la línea que
-     explica de qué rama viene el prospecto. */
-  function contactarPorWhatsApp(opts: { contexto?: string; hito: string; extraTags?: string[] }) {
-    const ficha = buildFicha(formData, opts.contexto);
-    openWhatsApp(WHATSAPP_PHONE, ficha);
-    postCrmLead(
-      {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.whatsapp,
-        sourceSlug: "web_ca_llc",
-        hito: opts.hito,
-        stage: "complete",
-        tags: ["interes:llc", ...(opts.extraTags ?? [])],
-        submissionId: submissionIdRef.current,
-        notes: { ficha },
-        formFields: [
-          ...fichaFields(formData).filter((f) => f.value),
-          ...diagFormFields(diagAnswers, formData.otherStateText),
-        ],
-      },
-      formHoneypot,
-    );
-    if (!formHoneypot && (formData.name || formData.email || formData.whatsapp)) {
-      saveContact({ name: formData.name.trim(), email: formData.email.trim(), phone: formData.whatsapp.trim() });
-    }
-  }
-
-  function handleForm(e: React.FormEvent) {
-    e.preventDefault();
-    if (formSubmitting) return;
-    setFormSubmitting(true);
-
-    // Misma ficha en WhatsApp y en el CRM — un solo builder, dos destinos.
-    const ficha = buildFicha(formData);
-    openWhatsApp(WHATSAPP_PHONE, ficha);
-
-    postCrmLead({
-      name: formData.name,
-      email: formData.email,
-      phone: formData.whatsapp,
-      sourceSlug: "web_ca_llc",
-      // Si el usuario completó el diagnóstico, es un cierre de diagnóstico; si llenó el
-      // formulario sin diagnosticar, se registra como parcial.
-      hito: diagResult ? "diagnostico_completo" : "diagnostico_parcial",
-      stage: "complete",
-      // Etiqueta de página de interés (acumulable en el CRM). Esta página es la de LLC,
-      // por lo que siempre etiqueta interes:llc; la ruta de inversión la etiqueta el GPS.
-      tags: formData.state === OTRO_ESTADO ? ["interes:llc", "derivado_despacho_asociado"] : ["interes:llc"],
-      // Mismo submissionId que el diagnóstico: el CRM actualiza la nota existente.
-      submissionId: submissionIdRef.current,
-      notes: { ficha },
-      formFields: [
-        ...fichaFields(formData).filter((f) => f.value),
-        // Si el usuario completó el diagnóstico, adjunta sus respuestas al mismo contacto.
-        ...(diagResult ? diagFormFields(diagAnswers, formData.otherStateText) : []),
-      ],
-    }, formHoneypot);
-
-    // Recuerda el contacto para pre-llenar la otra guía sin volver a pedir todo.
-    if (!formHoneypot) {
-      saveContact({ name: formData.name.trim(), email: formData.email.trim(), phone: formData.whatsapp.trim() });
-    }
-
-    setFormSent(true);
-  }
-
-  /* Contexto de la situación elegida en la pregunta 1 — contenido que antes vivía en el
-     selector de intención de la página. Se muestra en la pantalla de resultado. */
-  const situacionIdx = diagAnswers[Q_SITUACION];
-  const situacionContextBlock = situacionIdx != null ? (
-    <div className="bg-[#0B1F3A] border border-primary/20 rounded-xl p-4 text-slate-300 text-sm leading-relaxed">
-      <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Contexto para tu caso</p>
-      {SITUACION_CONTEXT[situacionIdx]}
-    </div>
-  ) : null;
-
-  /* Campos de contacto dentro del diagnóstico. Escriben en el MISMO formData que el
-     formulario final, así que lo capturado aquí ya queda pre-llenado allá (y viceversa). */
-  const contactFieldsBlock = (
-    <div className="space-y-3">
-      {[
-        { key: "name", type: "text", label: "Nombre", placeholder: "Tu nombre completo" },
-        { key: "email", type: "email", label: "Correo", placeholder: "correo@ejemplo.com" },
-        { key: "whatsapp", type: "tel", label: "WhatsApp", placeholder: "+52 555 000 0000" },
-        { key: "country", type: "text", label: "País de residencia", placeholder: "México, Colombia, etc." },
-      ].map((f) => (
-        <div key={f.key}>
-          <label className="text-slate-400 text-xs block mb-1">{f.label}</label>
-          <input
-            type={f.type}
-            placeholder={f.placeholder}
-            value={(formData as any)[f.key]}
-            onChange={(e) => setFormData({ ...formData, [f.key]: e.target.value })}
-            className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
-          />
-        </div>
-      ))}
-      {/* Fecha estimada: cierra la ficha aquí mismo, sin obligar a bajar al formulario */}
-      <div>
-        <label className="text-slate-400 text-xs block mb-1">Fecha estimada para comenzar</label>
-        <select
-          value={formData.timeline}
-          onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-          className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-primary/50 transition-colors"
-        >
-          <option value="">Seleccionar…</option>
-          {TIMELINE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-        </select>
-      </div>
-      {/* Honeypot — invisible para humanos, bots lo llenan */}
-      <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
-        <input type="text" name="website" tabIndex={-1} autoComplete="off" value={formHoneypot} onChange={(e) => setFormHoneypot(e.target.value)} />
-      </div>
-    </div>
-  );
-
-  /* Botón de llamada de orientación: abre WhatsApp con la ficha completa ya precargada,
-     para que el setter no tenga que volver a preguntar lo que ya respondió el diagnóstico. */
-  const llamadaOrientacionBtn = (contexto: string, extraTags?: string[]) => (
-    <Button
-      variant="outline"
-      onClick={() => { closeModal(); contactarPorWhatsApp({ contexto, hito: "llamada_solicitada", extraTags }); }}
-      className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2"
-    >
-      <MessageSquare className="w-4 h-4" /> Solicitar llamada de orientación
-    </Button>
-  );
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
@@ -559,24 +183,15 @@ export default function EstructuraEmpresarial() {
                 <span className="text-slate-400 text-sm">pago único</span>
               </div>
 
-              <div className="flex flex-wrap gap-4 mb-10">
-                <Button
-                  onClick={() => openModal("iniciar")}
-                  className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 rounded-full shadow-lg shadow-blue-600/25 font-semibold"
-                >
-                  Iniciar mi LLC <ArrowRight className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={startDiagnostic}
-                  className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base rounded-full"
-                >
-                  No sé qué estructura necesito
-                </Button>
-              </div>
-
-              {/* Selector de intención cruzado — resuelve la indecisión desde el primer scroll */}
-              <EstructuraIntentSelector currentPage="llc" onOpenDiagnostic={startDiagnostic} className="mb-10 max-w-2xl" />
+              {/* Continuidad: solo con señal real y reciente (ver lib/journey) */}
+              {visitedInversion && (
+                <p className="text-slate-400 text-sm mb-4 max-w-2xl">
+                  Vimos que hace un momento revisaste la guía de estructura de inversión. Retomamos desde aquí.
+                </p>
+              )}
+              {/* Punto de entrada único — dos puertas. Reemplaza los dos CTA paralelos
+                  y la tarjeta de 3 opciones que estaba duplicada en ambas páginas. */}
+              <EstructuraFlow sourceSlug="web_ca_llc" onCheckout={handleCheckout} className="mb-10 max-w-2xl" />
 
               <div className="flex flex-wrap gap-6 text-slate-400 text-sm">
                 <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> Registro estatal incluido</span>
@@ -787,13 +402,14 @@ export default function EstructuraEmpresarial() {
               </div>
 
               <div className="text-center">
-                <Button
-                  variant="outline"
-                  onClick={startDiagnostic}
-                  className="border-gray-300 text-[#374151] hover:bg-gray-100 gap-2 rounded-full px-8 py-5"
-                >
-                  Revisar si mi caso necesita otra estructura
-                </Button>
+                <a href="#entrada-estructura">
+                  <Button
+                    variant="outline"
+                    className="border-gray-300 text-[#374151] hover:bg-gray-100 gap-2 rounded-full px-8 py-5"
+                  >
+                    Revisar si mi caso necesita otra estructura
+                  </Button>
+                </a>
               </div>
             </div>
           </FadeIn>
@@ -919,116 +535,21 @@ export default function EstructuraEmpresarial() {
       </section>
 
       {/* ══════════════════════════════════════════
-          10. CIERRE + FORMULARIO
+          10. CIERRE
       ══════════════════════════════════════════ */}
       <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-start">
+          <div className="max-w-2xl mx-auto text-center">
             <FadeIn>
-              <div>
-                <h2 className="text-3xl md:text-4xl text-white font-bold mb-4">Tu empresa debe comenzar con claridad</h2>
-                <p className="text-slate-400 leading-relaxed mb-8">
-                  Cuando una LLC corresponde a tu objetivo, el proceso no tiene por qué ser complicado. Te ayudamos a
-                  constituirla en Texas o Florida, organizar su documentación y entender los pasos que continúan.
-                </p>
-                <div className="text-4xl font-bold text-white mb-2">USD 1,499</div>
-                <p className="text-slate-500 text-sm mb-8">Pago único por la formación de la LLC y los servicios incluidos.</p>
-                <div className="flex flex-col gap-3">
-                  <Button onClick={() => handleCheckout("texas")} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-full py-5 font-semibold shadow-lg shadow-blue-600/20">
-                    Comenzar la formación de mi LLC <ArrowRight className="w-4 h-4" />
-                  </Button>
-                  <a href="/estructura-de-inversion-en-usa" className="text-slate-400 text-sm text-center hover:text-white transition-colors underline underline-offset-2">
-                    Primero quiero revisar mi estructura
-                  </a>
-                </div>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.1}>
-              <div className="bg-[#0F2847] border border-[#1E3A5F] rounded-2xl p-8">
-                {formSent ? (
-                  <div className="text-center py-6">
-                    <CheckCircle2 className="w-12 h-12 text-primary mx-auto mb-4" />
-                    <h3 className="text-white font-semibold text-lg mb-3">Información recibida</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">
-                      Antes de iniciar, revisaremos que el servicio corresponda a tu necesidad y te indicaremos los siguientes pasos.
-                    </p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleForm} className="space-y-4">
-                    <h3 className="text-white font-semibold mb-6">
-                      {diagResult ? "Confirma tus datos" : "Cuéntanos sobre tu caso"}
-                    </h3>
-                    {/* Si ya hizo el diagnóstico, no repetimos las preguntas que ya respondió. */}
-                    {diagResult ? (
-                      <p className="text-slate-400 text-sm -mt-4 mb-2">
-                        Ya tenemos las respuestas de tu diagnóstico. Solo confirma tus datos de contacto
-                        {knownName ? `, ${knownName.split(" ")[0]}` : ""}.
-                      </p>
-                    ) : knownName ? (
-                      <p className="text-slate-400 text-sm -mt-4 mb-2">¿Sigues siendo tú, {knownName.split(" ")[0]}? Dejamos tus datos listos; corrige lo que haga falta.</p>
-                    ) : null}
-                    {[
-                      { label: "Nombre", key: "name", type: "text", placeholder: "Tu nombre completo" },
-                      { label: "Correo", key: "email", type: "email", placeholder: "correo@ejemplo.com" },
-                      { label: "WhatsApp", key: "whatsapp", type: "tel", placeholder: "+52 555 000 0000" },
-                      { label: "País de residencia", key: "country", type: "text", placeholder: "México, Colombia, etc." },
-                    ].map((field) => (
-                      <div key={field.key}>
-                        <label className="text-slate-400 text-xs block mb-1">{field.label}</label>
-                        <input
-                          type={field.type}
-                          placeholder={field.placeholder}
-                          value={(formData as any)[field.key]}
-                          onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                          className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
-                        />
-                      </div>
-                    ))}
-                    {(diagResult
-                      // El diagnóstico ya cubrió estado, objetivo y socios: solo falta la fecha.
-                      ? [{ label: "Fecha estimada para comenzar", key: "timeline", options: TIMELINE_OPTIONS }]
-                      : [
-                          { label: "Estado de interés", key: "state", options: STATE_OPTIONS },
-                          { label: "Objetivo principal", key: "objective", options: OBJECTIVE_OPTIONS },
-                          { label: "Número de socios", key: "partners", options: PARTNER_OPTIONS },
-                          { label: "Fecha estimada para comenzar", key: "timeline", options: TIMELINE_OPTIONS },
-                        ]
-                    ).map((field) => (
-                      <div key={field.key}>
-                        <label className="text-slate-400 text-xs block mb-1">{field.label}</label>
-                        <select
-                          value={(formData as any)[field.key]}
-                          onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                          className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-primary/50 transition-colors"
-                        >
-                          <option value="">Seleccionar…</option>
-                          {field.options.map((o) => <option key={o} value={o}>{o}</option>)}
-                        </select>
-                        {/* Mismo campo de texto libre que en el diagnóstico, para no duplicar lógica */}
-                        {field.key === "state" && formData.state === OTRO_ESTADO && (
-                          <input
-                            type="text"
-                            value={formData.otherStateText}
-                            onChange={(e) => setFormData({ ...formData, otherStateText: e.target.value })}
-                            placeholder="¿Cuál estado? California, Nueva York, etc."
-                            className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors mt-2"
-                          />
-                        )}
-                      </div>
-                    ))}
-
-                    {/* Honeypot — invisible para humanos, bots lo llenan */}
-                    <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
-                      <input type="text" name="website" tabIndex={-1} autoComplete="off" value={formHoneypot} onChange={(e) => setFormHoneypot(e.target.value)} />
-                    </div>
-
-                    <Button type="submit" disabled={formSubmitting} className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-5 font-semibold gap-2 mt-2 disabled:opacity-70">
-                      <MessageSquare className="w-4 h-4" /> Enviar información
-                    </Button>
-                  </form>
-                )}
-              </div>
+              <h2 className="text-3xl md:text-4xl text-white font-bold mb-4">Tu empresa debe comenzar con claridad</h2>
+              <p className="text-slate-400 leading-relaxed mb-8">
+                Cuando una LLC corresponde a tu objetivo, el proceso no tiene por qué ser complicado. Te ayudamos a
+                constituirla en Texas o Florida, organizar su documentación y entender los pasos que continúan.
+              </p>
+              <div className="text-4xl font-bold text-white mb-2">USD 1,499</div>
+              <p className="text-slate-500 text-sm mb-10">Pago único por la formación de la LLC y los servicios incluidos.</p>
+              {/* Misma puerta de entrada del hero — un solo mecanismo en toda la página */}
+              <EstructuraFlow sourceSlug="web_ca_llc" onCheckout={handleCheckout} className="text-left" anchorId="entrada-estructura" />
             </FadeIn>
           </div>
         </div>
@@ -1053,24 +574,6 @@ export default function EstructuraEmpresarial() {
       {/* ══════════════════════════════════════════
           MODALS
       ══════════════════════════════════════════ */}
-
-      {/* Iniciar */}
-      <Modal open={modal === "iniciar"} onClose={closeModal} title="¿En qué estado quieres constituir tu LLC?">
-        <div className="grid gap-4">
-          <button onClick={() => { closeModal(); handleCheckout("texas"); }} className="bg-[#0B1F3A] border border-primary/40 hover:border-primary text-white rounded-xl p-5 text-left transition-all">
-            <p className="font-semibold mb-1">Texas</p>
-            <p className="text-slate-400 text-sm">Ideal para operaciones comerciales, servicios y presencia empresarial.</p>
-          </button>
-          <button onClick={() => { closeModal(); handleCheckout("florida"); }} className="bg-[#0B1F3A] border border-primary/40 hover:border-primary text-white rounded-xl p-5 text-left transition-all">
-            <p className="font-semibold mb-1">Florida</p>
-            <p className="text-slate-400 text-sm">Ideal para bienes raíces, negocios digitales y conexión con Latinoamérica.</p>
-          </button>
-          <button onClick={() => { closeModal(); contactarPorWhatsApp({ contexto: "No estoy seguro de qué estado me conviene. ¿Me pueden orientar?", hito: "llamada_solicitada" }); }} className="bg-[#0B1F3A] border border-[#1E3A5F] hover:border-primary/40 text-slate-400 hover:text-white rounded-xl p-5 text-left transition-all">
-            <p className="font-semibold mb-1">No estoy seguro</p>
-            <p className="text-sm">Habla con el equipo antes de elegir.</p>
-          </button>
-        </div>
-      </Modal>
 
       {/* Comparar estados */}
       <Modal open={modal === "comparar-estados"} onClose={closeModal} title="Texas vs Florida — Comparación operativa">
@@ -1154,202 +657,6 @@ export default function EstructuraEmpresarial() {
         <p className="text-slate-400 text-sm">Para cumplimiento contable, fiscal o legal recurrente, recomendamos trabajar con el especialista correspondiente según el caso.</p>
       </Modal>
 
-      {/* Diagnóstico de estructura de LLC */}
-      <Modal open={modal === "diagnostico"} onClose={closeModal} title="Diagnóstico de estructura">
-        {visitedInversion && (
-          <div className="bg-[#0B1F3A] border border-primary/30 rounded-xl p-4 mb-5 text-slate-300 text-sm leading-relaxed">
-            Vimos que también revisaste la guía de estructura de inversión. Vamos directo a lo que falta por resolver de este lado.
-          </div>
-        )}
-        {diagResult === null && (
-          <>
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-slate-400 text-xs">Pregunta {diagStep + 1} de {DIAGNOSTIC.length}</p>
-              {diagStep > 0 && (
-                <button onClick={() => setDiagStep(diagStep - 1)} className="text-slate-500 hover:text-white text-xs transition-colors">
-                  ← Anterior
-                </button>
-              )}
-            </div>
-            {/* Barra de progreso */}
-            <div className="h-1 bg-[#1E3A5F] rounded-full mb-6 overflow-hidden">
-              <div className="h-full bg-primary transition-all duration-300" style={{ width: `${((diagStep + 1) / DIAGNOSTIC.length) * 100}%` }} />
-            </div>
-            <p className="text-white font-medium mb-6">{DIAGNOSTIC[diagStep].q}</p>
-            <div className="flex flex-col gap-3">
-              {DIAGNOSTIC[diagStep].options.map((opt, i) => (
-                <button
-                  key={i}
-                  onClick={() => answerDiag(i)}
-                  className={`text-left rounded-xl px-5 py-4 text-sm border transition-all ${
-                    diagAnswers[diagStep] === i
-                      ? "bg-primary/10 border-primary text-white"
-                      : "bg-[#0B1F3A] border-[#1E3A5F] text-slate-300 hover:border-primary/60 hover:text-white"
-                  }`}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-
-            {/* "Otro estado": pide cuál antes de continuar al resultado */}
-            {diagStep === Q_ESTADO && diagAnswers[Q_ESTADO] === OPT_OTRO_ESTADO && (
-              <div className="mt-4">
-                <label className="text-slate-400 text-xs block mb-1">¿Cuál estado?</label>
-                <input
-                  type="text"
-                  autoFocus
-                  value={otroEstado}
-                  onChange={(e) => setOtroEstado(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); confirmOtroEstado(); } }}
-                  placeholder="California, Nueva York, etc."
-                  className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
-                />
-                <Button
-                  onClick={confirmOtroEstado}
-                  disabled={!otroEstado.trim()}
-                  className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-3 disabled:opacity-50"
-                >
-                  Continuar <ArrowRight className="w-4 h-4" />
-                </Button>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Resultado: estado fuera de Texas/Florida → derivación al equipo por WhatsApp */}
-        {diagResult === "otro_estado" && (
-          <>
-            <div className="flex items-center gap-2 mb-4">
-              <MapPin className="w-6 h-6 text-primary" />
-              <p className="text-white font-semibold">Tu caso requiere constituir en {formData.otherStateText || "otro estado"}</p>
-            </div>
-            <p>
-              Nuestro servicio en línea cubre Texas y Florida. Para constituir en{" "}
-              <strong className="text-white">{formData.otherStateText || "otro estado"}</strong> te conectamos
-              por WhatsApp con nuestro equipo, que coordina esa formación directamente contigo.
-            </p>
-            <div className="pt-2">
-              <p className="text-slate-400 text-sm mb-3">
-                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos y te contactamos.` : "Déjanos tus datos y te contactamos para coordinar."}
-              </p>
-              {contactFieldsBlock}
-            </div>
-            <Button
-              onClick={() => { closeModal(); contactarPorWhatsApp({ contexto: `Necesito constituir en ${formData.otherStateText || "otro estado"}, fuera de Texas y Florida.`, hito: "llamada_solicitada", extraTags: ["derivado_despacho_asociado"] }); }}
-              className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4"
-            >
-              <MessageSquare className="w-4 h-4" /> Coordinar por WhatsApp
-            </Button>
-          </>
-        )}
-
-        {/* Resultado: objetivo de inversión definido → GPS */}
-        {diagResult === "inversion" && (
-          <>
-            <div className="flex items-center gap-2 mb-4">
-              <Compass className="w-6 h-6 text-primary" />
-              <p className="text-white font-semibold">Tu objetivo ya contempla inversión</p>
-            </div>
-            <p>
-              Como tu meta a mediano plazo incluye atraer capital externo o una visa de inversionista,
-              conviene definir primero el <strong className="text-white">vehículo de inversión</strong> correcto,
-              no solo la LLC. Nuestro GPS Estratégico te perfila en menos de 2 minutos — sin volver a
-              preguntarte lo que ya sabemos de tu caso.
-            </p>
-            <div className="pt-2">
-              <p className="text-slate-400 text-sm mb-3">
-                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos para guardar tu diagnóstico.` : "Déjanos tus datos para guardar tu diagnóstico y darle seguimiento."}
-              </p>
-              {contactFieldsBlock}
-            </div>
-            <a href={GPS_QUALIFIED_URL} onClick={finishDiagnosticLead}>
-              <Button className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
-                Ir a mi GPS de inversión <ArrowRight className="w-4 h-4" />
-              </Button>
-            </a>
-            <div className="mt-3">
-              {llamadaOrientacionBtn("Mi objetivo a mediano plazo incluye atraer capital externo o una visa de inversionista.")}
-            </div>
-            <button
-              onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }}
-              className="text-slate-400 text-sm text-center hover:text-white transition-colors underline underline-offset-2 w-full mt-3"
-            >
-              Prefiero solo formar la LLC por ahora
-            </button>
-          </>
-        )}
-
-        {/* Resultado: inversionistas externos o empresa previa → sugerir asesor (no bloquea) */}
-        {diagResult === "asesor" && (
-          <>
-            <div className="flex items-center gap-2 mb-4">
-              <UserCheck className="w-6 h-6 text-primary" />
-              <p className="text-white font-semibold">Puedes continuar, y además vale la pena una revisión</p>
-            </div>
-            {/* Mismo patrón que el bloque "Contexto para tu caso": tarjeta contextual, inline, sin forzar salida */}
-            <div className="bg-[#0B1F3A] border border-primary/30 rounded-xl p-5 text-slate-300 text-sm leading-relaxed">
-              <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Contexto para tu caso</p>
-              Como tu empresa involucrará inversionistas externos o se relaciona con una empresa que ya tienes
-              en otro país, hablar con un asesor <strong className="text-white">antes de constituir</strong> ayuda
-              a elegir bien la estructura y evitar reorganizarla después. Es una opción adicional — no un requisito.
-            </div>
-            <div className="pt-2">
-              <p className="text-slate-400 text-sm mb-3">
-                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos para guardar tu diagnóstico.` : "Déjanos tus datos para guardar tu diagnóstico y darle seguimiento."}
-              </p>
-              {contactFieldsBlock}
-            </div>
-            <div className="flex flex-col gap-3 pt-2">
-              <Button
-                onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }}
-                className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full"
-              >
-                Continuar con mi LLC <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => { closeModal(); contactarPorWhatsApp({ contexto: "Antes de constituir quiero revisar mi caso con un asesor: mi empresa involucra socios o inversionistas externos, o una empresa que ya tengo en otro país.", hito: "llamada_solicitada" }); }}
-                className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2"
-              >
-                <MessageSquare className="w-4 h-4" /> Hablar con un asesor primero
-              </Button>
-            </div>
-          </>
-        )}
-
-        {/* Resultado: LLC estándar */}
-        {diagResult === "llc" && (
-          <>
-            <div className="flex items-center gap-2 mb-4">
-              <CheckCircle2 className="w-6 h-6 text-primary" />
-              <p className="text-white font-semibold">Una LLC estándar encaja con tu caso</p>
-            </div>
-            <p>
-              Por lo que nos compartes, el servicio de formación de LLC ($1,499) cubre lo que necesitas.
-              Nuestro equipo revisará tu caso antes de iniciar el proceso.
-            </p>
-            {situacionContextBlock}
-            <div className="pt-2">
-              <p className="text-slate-400 text-sm mb-3">
-                {knownName ? `¿Sigues siendo tú, ${knownName.split(" ")[0]}? Confirma tus datos para guardar tu diagnóstico.` : "Déjanos tus datos para guardar tu diagnóstico y darle seguimiento."}
-              </p>
-              {contactFieldsBlock}
-            </div>
-            <Button onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
-              Continuar con mi LLC <ArrowRight className="w-4 h-4" />
-            </Button>
-            <div className="mt-3">
-              {llamadaOrientacionBtn("Quiero una llamada de orientación antes de avanzar con la formación de mi LLC.")}
-            </div>
-          </>
-        )}
-
-        {/* Aviso discreto al pie del resultado */}
-        {diagResult !== null && (
-          <AdvisoryDisclaimer variant="short" className="mt-2 pt-4 border-t border-[#1E3A5F]" />
-        )}
-      </Modal>
     </div>
   );
 }
