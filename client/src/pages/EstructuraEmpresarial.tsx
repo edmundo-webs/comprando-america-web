@@ -223,6 +223,12 @@ type FichaValues = {
   state: string; otherStateText: string; objective: string; partners: string; timeline: string;
 };
 
+/* Estado tal como se menciona en el saludo: si eligió "Otro estado", usa el que escribió. */
+function estadoDeInteres(form: FichaValues): string {
+  if (form.state === OTRO_ESTADO) return form.otherStateText.trim() || OTRO_ESTADO;
+  return form.state;
+}
+
 function fichaFields(form: FichaValues): { label: string; value: string }[] {
   const estado = form.state === OTRO_ESTADO && form.otherStateText.trim()
     ? `${form.state} (${form.otherStateText.trim()})`
@@ -231,19 +237,24 @@ function fichaFields(form: FichaValues): { label: string; value: string }[] {
     { label: "Nombre", value: form.name },
     { label: "Correo", value: form.email },
     { label: "WhatsApp", value: form.whatsapp },
-    { label: "País de residencia", value: form.country },
+    { label: "País", value: form.country },
     { label: "Estado de interés", value: estado },
-    { label: "Objetivo principal", value: form.objective },
-    { label: "Número de socios", value: form.partners },
-    { label: "Fecha estimada para comenzar", value: form.timeline },
+    { label: "Objetivo", value: form.objective },
+    { label: "Socios", value: form.partners },
+    { label: "Fecha estimada", value: form.timeline },
   ];
 }
 
-function buildFicha(form: FichaValues): string {
+/* Mensaje único para WhatsApp y para las notas del CRM: saludo con el estado de interés,
+   una línea de contexto opcional según la rama, y los campos capturados (omite vacíos
+   para que el asesor no reciba etiquetas en blanco). */
+function buildFicha(form: FichaValues, contexto?: string): string {
+  const estado = estadoDeInteres(form);
+  const filled = fichaFields(form).filter((f) => f.value.trim());
   return [
-    "Cuéntanos sobre tu caso — Nuevo prospecto LLC",
-    "",
-    ...fichaFields(form).map((f) => `${f.label}: ${f.value}`),
+    `Hola, me interesa formar una LLC en: ${estado || "Estados Unidos"}`,
+    ...(contexto ? ["", contexto] : []),
+    ...(filled.length ? ["", ...filled.map((f) => `${f.label}: ${f.value}`)] : []),
   ].join("\n");
 }
 const OBJECTIVE_OPTIONS = ["Prestar servicios o facturar", "Iniciar una operación", "Comprar una propiedad", "Vender productos", "Crear presencia empresarial", "Otro"];
@@ -368,6 +379,35 @@ export default function EstructuraEmpresarial() {
         submissionId: submissionIdRef.current,
         // Misma ficha que se precarga en WhatsApp — un solo builder, dos destinos.
         notes: { ficha: buildFicha(formData) },
+        formFields: [
+          ...fichaFields(formData).filter((f) => f.value),
+          ...diagFormFields(diagAnswers, formData.otherStateText),
+        ],
+      },
+      formHoneypot,
+    );
+    if (!formHoneypot && (formData.name || formData.email || formData.whatsapp)) {
+      saveContact({ name: formData.name.trim(), email: formData.email.trim(), phone: formData.whatsapp.trim() });
+    }
+  }
+
+  /* Única salida a WhatsApp de la página: siempre precarga la ficha completa (nunca un
+     mensaje suelto) y registra el mismo string en el CRM. `contexto` agrega la línea que
+     explica de qué rama viene el prospecto. */
+  function contactarPorWhatsApp(opts: { contexto?: string; hito: string; extraTags?: string[] }) {
+    const ficha = buildFicha(formData, opts.contexto);
+    openWhatsApp(WHATSAPP_PHONE, ficha);
+    postCrmLead(
+      {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.whatsapp,
+        sourceSlug: "web_ca_llc",
+        hito: opts.hito,
+        stage: "complete",
+        tags: ["interes:llc", ...(opts.extraTags ?? [])],
+        submissionId: submissionIdRef.current,
+        notes: { ficha },
         formFields: [
           ...fichaFields(formData).filter((f) => f.value),
           ...diagFormFields(diagAnswers, formData.otherStateText),
@@ -999,7 +1039,7 @@ export default function EstructuraEmpresarial() {
             <p className="font-semibold mb-1">Florida</p>
             <p className="text-slate-400 text-sm">Ideal para bienes raíces, negocios digitales y conexión con Latinoamérica.</p>
           </button>
-          <button onClick={() => { closeModal(); openWhatsApp(WHATSAPP_PHONE, "Hola, no estoy seguro de qué estado elegir para mi LLC. ¿Me pueden orientar?"); }} className="bg-[#0B1F3A] border border-[#1E3A5F] hover:border-primary/40 text-slate-400 hover:text-white rounded-xl p-5 text-left transition-all">
+          <button onClick={() => { closeModal(); contactarPorWhatsApp({ contexto: "No estoy seguro de qué estado me conviene. ¿Me pueden orientar?", hito: "llamada_solicitada" }); }} className="bg-[#0B1F3A] border border-[#1E3A5F] hover:border-primary/40 text-slate-400 hover:text-white rounded-xl p-5 text-left transition-all">
             <p className="font-semibold mb-1">No estoy seguro</p>
             <p className="text-sm">Habla con el equipo antes de elegir.</p>
           </button>
@@ -1170,7 +1210,7 @@ export default function EstructuraEmpresarial() {
               {contactFieldsBlock}
             </div>
             <Button
-              onClick={() => { finishDiagnosticLead(); closeModal(); openWhatsApp(WHATSAPP_PHONE, buildFicha(formData)); }}
+              onClick={() => { closeModal(); contactarPorWhatsApp({ contexto: `Necesito constituir en ${formData.otherStateText || "otro estado"}, fuera de Texas y Florida.`, hito: "llamada_solicitada", extraTags: ["derivado_despacho_asociado"] }); }}
               className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4"
             >
               <MessageSquare className="w-4 h-4" /> Coordinar por WhatsApp
@@ -1240,7 +1280,7 @@ export default function EstructuraEmpresarial() {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => { finishDiagnosticLead(); closeModal(); openWhatsApp(WHATSAPP_PHONE, "Hola, antes de constituir mi LLC quiero revisar mi caso con un asesor. Mi empresa involucra socios/inversionistas externos o una empresa que ya tengo en otro país."); }}
+                onClick={() => { closeModal(); contactarPorWhatsApp({ contexto: "Antes de constituir quiero revisar mi caso con un asesor: mi empresa involucra socios o inversionistas externos, o una empresa que ya tengo en otro país.", hito: "llamada_solicitada" }); }}
                 className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2"
               >
                 <MessageSquare className="w-4 h-4" /> Hablar con un asesor primero
