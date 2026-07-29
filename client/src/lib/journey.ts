@@ -23,3 +23,17 @@ export function getJourney(): JourneyEntry[] {
     return [];
   }
 }
+
+/* Ventana de continuidad: solo tratamos el recorrido como "una misma exploración"
+   cuando la visita a la otra página es reciente. Sin esto, una visita de hace
+   semanas seguía disparando el mensaje de continuidad, que se sentía falso. */
+export const CONTINUITY_WINDOW_MIN = 45;
+
+export function visitedRecently(page: string, windowMinutes = CONTINUITY_WINDOW_MIN): boolean {
+  const limite = Date.now() - windowMinutes * 60 * 1000;
+  return getJourney().some((e) => {
+    if (e.page !== page) return false;
+    const t = Date.parse(e.ts);
+    return Number.isFinite(t) && t >= limite;
+  });
+}

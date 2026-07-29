@@ -28,11 +28,9 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
-import { trackPageVisit, getJourney } from "@/lib/journey";
+import { trackPageVisit, visitedRecently } from "@/lib/journey";
 import EstructuraIntentSelector from "@/components/EstructuraIntentSelector";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
-
-const WA_MSG = "Hola, me interesa estructurar mi vehículo de inversión en Estados Unidos.";
 
 /* ─── Modal wrapper (mismo estilo que la guía de LLC) ─── */
 function Modal({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: React.ReactNode }) {
@@ -80,12 +78,71 @@ const INV_Q2_OPTIONS: { label: string; value: "menos" | "mas" }[] = [
   { label: "$100,000 USD o más", value: "mas" },
 ];
 
+const INV_TIMELINE_OPTIONS = [
+  "En las próximas 2 semanas",
+  "Este mes",
+  "En los próximos 3 meses",
+  "Solo estoy explorando",
+];
+
+const INV_OBJETIVO_LABEL: Record<InvObjetivo, string> = {
+  capital: "Tengo capital y quiero estructurar cómo invertirlo",
+  expansion: "Ya tengo una empresa fuera de Estados Unidos y quiero expandirla",
+  visa: "Estoy evaluando una visa ligada a mi inversión",
+  explorando: "Todavía estoy explorando, sin nada decidido",
+};
+
+const INV_CAPITAL_LABEL: Record<string, string> = {
+  menos: "Menos de $100,000 USD",
+  mas: "$100,000 USD o más",
+};
+
+const INV_RESULT_LABEL: Record<InvResult, string> = {
+  calificado: "Califica para revisión de estructura de inversión",
+  capital_insuficiente: "Ticket menor al mínimo de este vehículo",
+  expansion: "Caso de expansión empresarial",
+  visa: "Caso con componente migratorio",
+  explorando: "Explorando, sin nada decidido",
+};
+
+/* ─── Ficha unificada ───
+   Un solo builder alimenta el mensaje precargado de WhatsApp y las notas del CRM, para que
+   el setter reciba el contexto completo y no tenga que repetir las preguntas del diagnóstico. */
+type InvFicha = {
+  name: string; email: string; phone: string; country: string; timeline: string;
+  objetivo: InvObjetivo | null; capital: "menos" | "mas" | null; result: InvResult | null;
+};
+
+function invFichaFields(f: InvFicha): { label: string; value: string }[] {
+  return [
+    { label: "Nombre", value: f.name },
+    { label: "Correo", value: f.email },
+    { label: "WhatsApp", value: f.phone },
+    { label: "País", value: f.country },
+    { label: "Situación", value: f.objetivo ? INV_OBJETIVO_LABEL[f.objetivo] : "" },
+    { label: "Capital disponible", value: f.capital ? INV_CAPITAL_LABEL[f.capital] : "" },
+    { label: "Fecha estimada", value: f.timeline },
+    { label: "Resultado del diagnóstico", value: f.result ? INV_RESULT_LABEL[f.result] : "" },
+  ];
+}
+
+function buildInvFicha(f: InvFicha, contexto?: string): string {
+  const filled = invFichaFields(f).filter((x) => x.value.trim());
+  return [
+    "Hola, me interesa estructurar mi vehículo de inversión en Estados Unidos.",
+    ...(contexto ? ["", contexto] : []),
+    ...(filled.length ? ["", ...filled.map((x) => `${x.label}: ${x.value}`)] : []),
+  ].join("\n");
+}
+
 /* Formulario de contacto del resultado (mismo patrón que la guía de LLC) */
+type InvFormValues = { name: string; email: string; phone: string; country: string; timeline: string };
+
 function InvContactForm({
-  form, setForm, honeypot, setHoneypot, onSubmit, submitting, sent, ctaLabel, knownName,
+  form, setForm, honeypot, setHoneypot, onSubmit, submitting, sent, ctaLabel, knownName, onWhatsApp,
 }: {
-  form: { name: string; email: string; phone: string };
-  setForm: (f: { name: string; email: string; phone: string }) => void;
+  form: InvFormValues;
+  setForm: (f: InvFormValues) => void;
   honeypot: string;
   setHoneypot: (v: string) => void;
   onSubmit: (e: React.FormEvent) => void;
@@ -93,15 +150,23 @@ function InvContactForm({
   sent: boolean;
   ctaLabel: string;
   knownName: string | null;
+  /** Llamada de orientación: abre WhatsApp con la ficha completa ya precargada. */
+  onWhatsApp: () => void;
 }) {
   if (sent) {
     return (
-      <div className="text-center py-4">
-        <CheckCircle2 className="w-10 h-10 text-primary mx-auto mb-3" />
-        <p className="text-white font-semibold mb-2">Información recibida</p>
-        <p className="text-slate-400 text-sm leading-relaxed">
-          Revisaremos tu caso y te contactaremos para coordinar los siguientes pasos.
-        </p>
+      <div className="py-4">
+        <div className="text-center mb-4">
+          <CheckCircle2 className="w-10 h-10 text-primary mx-auto mb-3" />
+          <p className="text-white font-semibold mb-2">Información recibida</p>
+          <p className="text-slate-400 text-sm leading-relaxed">
+            Revisaremos tu caso y te contactaremos para coordinar los siguientes pasos.
+          </p>
+        </div>
+        {/* Atajo: el prospecto puede abrir la conversación con su ficha ya cargada */}
+        <Button onClick={onWhatsApp} variant="outline" className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2">
+          <MessageSquare className="w-4 h-4" /> Solicitar llamada de orientación
+        </Button>
       </div>
     );
   }
@@ -114,12 +179,13 @@ function InvContactForm({
         { key: "name", type: "text", label: "Nombre completo", placeholder: "Tu nombre completo" },
         { key: "email", type: "email", label: "Correo", placeholder: "correo@ejemplo.com" },
         { key: "phone", type: "tel", label: "WhatsApp (con código de país)", placeholder: "+52 555 000 0000" },
+        { key: "country", type: "text", label: "País de residencia", placeholder: "México, Colombia, etc." },
       ].map((f) => (
         <div key={f.key}>
           <label className="text-slate-400 text-xs block mb-1">{f.label}</label>
           <input
             type={f.type}
-            required
+            required={f.key !== "country"}
             placeholder={f.placeholder}
             value={(form as any)[f.key]}
             onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
@@ -127,6 +193,17 @@ function InvContactForm({
           />
         </div>
       ))}
+      <div>
+        <label className="text-slate-400 text-xs block mb-1">Fecha estimada para comenzar</label>
+        <select
+          value={form.timeline}
+          onChange={(e) => setForm({ ...form, timeline: e.target.value })}
+          className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-primary/50 transition-colors"
+        >
+          <option value="">Seleccionar…</option>
+          {INV_TIMELINE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+        </select>
+      </div>
       {/* Honeypot — invisible para humanos */}
       <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
@@ -134,6 +211,10 @@ function InvContactForm({
       <Button type="submit" disabled={submitting} className="w-full bg-primary hover:bg-blue-600 text-white rounded-xl py-4 font-semibold gap-2 mt-1 disabled:opacity-70">
         <MessageSquare className="w-4 h-4" /> {ctaLabel}
       </Button>
+      {/* Salida directa a WhatsApp con toda la ficha, sin esperar el envío del formulario */}
+      <button type="button" onClick={onWhatsApp} className="text-slate-400 text-sm text-center hover:text-white transition-colors underline underline-offset-2 w-full">
+        O solicita una llamada de orientación por WhatsApp
+      </button>
     </form>
   );
 }
@@ -171,7 +252,7 @@ export default function EstructuraInversion() {
   const [diagStartedPosted, setDiagStartedPosted] = useState(false);
 
   /* Formulario de contacto del resultado */
-  const [invForm, setInvForm] = useState({ name: "", email: "", phone: "" });
+  const [invForm, setInvForm] = useState<InvFormValues>({ name: "", email: "", phone: "", country: "", timeline: "" });
   const [invHoneypot, setInvHoneypot] = useState("");
   const [invSent, setInvSent] = useState(false);
   const [invSubmitting, setInvSubmitting] = useState(false);
@@ -182,18 +263,21 @@ export default function EstructuraInversion() {
 
   useEffect(() => {
     trackPageVisit("inversion");
-    const visitedOther = getJourney().some((e) => e.page === "llc");
-    if (!visitedOther) return;
-    setVisitedLlc(true);
+    // Pre-llena el contacto si ya lo conocemos, sin importar de dónde venga.
     const saved = getSavedContact();
     if (saved) {
       setKnownName(saved.name || null);
       setInvForm((prev) => ({
+        ...prev,
         name: prev.name || saved.name || "",
         email: prev.email || saved.email || "",
         phone: prev.phone || saved.phone || "",
       }));
     }
+    // El mensaje de continuidad solo aplica si la visita a la otra guía es RECIENTE:
+    // una visita de hace semanas no es "la misma exploración" y se sentía falsa.
+    if (!visitedRecently("llc")) return;
+    setVisitedLlc(true);
     postCrmLead(
       {
         ...(saved ? { name: saved.name, email: saved.email, phone: saved.phone } : {}),
@@ -253,21 +337,34 @@ export default function EstructuraInversion() {
     reachResult(value === "menos" ? "capital_insuficiente" : "calificado", "capital", value);
   }
 
+  /* Ficha actual — misma fuente para WhatsApp y para el CRM. */
+  const fichaActual = (): InvFicha => ({
+    name: invForm.name, email: invForm.email, phone: invForm.phone,
+    country: invForm.country, timeline: invForm.timeline, objetivo, capital, result,
+  });
+
+  function resultTags(): string[] {
+    switch (result) {
+      case "expansion": return ["interes:inversion", "interes:expansion", "resultado:expansion"];
+      case "visa": return ["interes:inversion", "interes:visa", "resultado:visa"];
+      case "capital_insuficiente": return ["interes:inversion", "resultado:capital_insuficiente"];
+      case "explorando": return ["interes:inversion", "resultado:explorando"];
+      default: return ["interes:inversion", "resultado:calificado"];
+    }
+  }
+
+  function resultNotes(ficha: string): Record<string, unknown> {
+    const notes: Record<string, unknown> = { objetivo, capital, resultado: result, ficha };
+    if (result === "visa") notes.nota = "requiere coordinar con asesor migratorio externo";
+    return notes;
+  }
+
   function handleInvForm(e: React.FormEvent) {
     e.preventDefault();
     if (invSubmitting) return;
     setInvSubmitting(true);
 
-    const tags =
-      result === "expansion"
-        ? ["interes:inversion", "interes:expansion", "resultado:expansion"]
-        : result === "visa"
-        ? ["interes:inversion", "interes:visa", "resultado:visa"]
-        : ["interes:inversion", "resultado:calificado"];
-
-    const notes: Record<string, unknown> = { objetivo, capital, resultado: result };
-    if (result === "visa") notes.nota = "requiere coordinar con asesor migratorio externo";
-
+    const ficha = buildInvFicha(fichaActual());
     postCrmLead(
       {
         name: invForm.name,
@@ -277,8 +374,9 @@ export default function EstructuraInversion() {
         // El resultado calificado solicita agendar orientación; los demás cierran el diagnóstico.
         hito: result === "calificado" ? "llamada_solicitada" : "diagnostico_completo",
         stage: "complete",
-        tags,
-        notes,
+        tags: resultTags(),
+        notes: resultNotes(ficha),
+        formFields: invFichaFields(fichaActual()).filter((f) => f.value.trim()),
       },
       invHoneypot,
     );
@@ -287,6 +385,30 @@ export default function EstructuraInversion() {
       saveContact({ name: invForm.name.trim(), email: invForm.email.trim(), phone: invForm.phone.trim() });
     }
     setInvSent(true);
+  }
+
+  /* Única salida a WhatsApp: siempre precarga la ficha completa (nunca un mensaje suelto)
+     y registra el mismo string en el CRM, para que el setter no repita las preguntas. */
+  function contactarPorWhatsApp(contexto?: string) {
+    const ficha = buildInvFicha(fichaActual(), contexto);
+    openWhatsApp(WHATSAPP_PHONE, ficha);
+    postCrmLead(
+      {
+        name: invForm.name,
+        email: invForm.email,
+        phone: invForm.phone,
+        sourceSlug: "web_ca_inversion",
+        hito: "llamada_solicitada",
+        stage: "complete",
+        tags: resultTags(),
+        notes: resultNotes(ficha),
+        formFields: invFichaFields(fichaActual()).filter((f) => f.value.trim()),
+      },
+      invHoneypot,
+    );
+    if (!invHoneypot && (invForm.name || invForm.email || invForm.phone)) {
+      saveContact({ name: invForm.name.trim(), email: invForm.email.trim(), phone: invForm.phone.trim() });
+    }
   }
 
   return (
@@ -328,7 +450,7 @@ export default function EstructuraInversion() {
                     Evaluar mi perfil <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
-                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
+                <Button variant="outline" onClick={() => contactarPorWhatsApp()} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
                   Hablar con un asesor
                 </Button>
               </div>
@@ -564,7 +686,7 @@ export default function EstructuraInversion() {
                 </a>
               </div>
 
-              <AdvisoryDisclaimer variant="box" className="mt-12 text-left" />
+              <AdvisoryDisclaimer className="mt-12 text-left" />
             </div>
           </FadeIn>
         </div>
@@ -626,7 +748,7 @@ export default function EstructuraInversion() {
               Con ese nivel de capital, vale la pena definir una estructura de inversión pensada para tu caso
               antes de constituir cualquier entidad. Agenda un diagnóstico de estructura para revisarlo a fondo.
             </p>
-            <InvContactForm form={invForm} setForm={setInvForm} honeypot={invHoneypot} setHoneypot={setInvHoneypot} onSubmit={handleInvForm} submitting={invSubmitting} sent={invSent} ctaLabel="Agendar diagnóstico de estructura" knownName={knownName} />
+            <InvContactForm form={invForm} setForm={setInvForm} honeypot={invHoneypot} setHoneypot={setInvHoneypot} onSubmit={handleInvForm} submitting={invSubmitting} sent={invSent} ctaLabel="Agendar diagnóstico de estructura" knownName={knownName} onWhatsApp={() => contactarPorWhatsApp("Quiero agendar un diagnóstico de estructura de inversión.")} />
           </>
         )}
 
@@ -640,7 +762,14 @@ export default function EstructuraInversion() {
               Más que estructurar capital nuevo, tu punto de partida es llevar una empresa que ya opera fuera de
               Estados Unidos hacia este mercado. Déjanos tus datos y revisamos la ruta de expansión que corresponde.
             </p>
-            <InvContactForm form={invForm} setForm={setInvForm} honeypot={invHoneypot} setHoneypot={setInvHoneypot} onSubmit={handleInvForm} submitting={invSubmitting} sent={invSent} ctaLabel="Solicitar orientación" knownName={knownName} />
+            {/* Paso lógico hacia la otra guía: la expansión normalmente arranca con la entidad en Estados Unidos */}
+            <p className="text-slate-400 text-sm">
+              Si ya sabes que el primer paso es constituir la entidad, puedes ir directo a{" "}
+              <a href="/estructura-empresarial-en-estados-unidos" className="text-primary underline underline-offset-2 hover:text-blue-300">
+                la guía de formación de empresa
+              </a>.
+            </p>
+            <InvContactForm form={invForm} setForm={setInvForm} honeypot={invHoneypot} setHoneypot={setInvHoneypot} onSubmit={handleInvForm} submitting={invSubmitting} sent={invSent} ctaLabel="Solicitar orientación" knownName={knownName} onWhatsApp={() => contactarPorWhatsApp("Mi caso es de expansión empresarial hacia Estados Unidos.")} />
           </>
         )}
 
@@ -658,7 +787,7 @@ export default function EstructuraInversion() {
               <p className="font-semibold text-primary mb-1 text-xs uppercase tracking-wider">Importante</p>
               El componente migratorio requiere coordinar con un asesor migratorio externo. Nosotros nos enfocamos en la estructura de inversión.
             </div>
-            <InvContactForm form={invForm} setForm={setInvForm} honeypot={invHoneypot} setHoneypot={setInvHoneypot} onSubmit={handleInvForm} submitting={invSubmitting} sent={invSent} ctaLabel="Solicitar orientación" knownName={knownName} />
+            <InvContactForm form={invForm} setForm={setInvForm} honeypot={invHoneypot} setHoneypot={setInvHoneypot} onSubmit={handleInvForm} submitting={invSubmitting} sent={invSent} ctaLabel="Solicitar orientación" knownName={knownName} onWhatsApp={() => contactarPorWhatsApp("Mi caso incluye un componente migratorio; entiendo que requiere coordinar con un asesor migratorio externo.")} />
           </>
         )}
 
@@ -701,9 +830,15 @@ export default function EstructuraInversion() {
                   Ver activos disponibles <ArrowRight className="w-4 h-4" />
                 </Button>
               </a>
+              {/* Paso lógico hacia la otra guía: con ticket menor, formar la LLC es la vía de menor entrada */}
+              <a href="/estructura-empresarial-en-estados-unidos">
+                <Button variant="outline" className="border-slate-600 text-white hover:bg-white/10 gap-2 rounded-xl py-4 w-full">
+                  Formar una LLC para operar o facturar <ArrowRight className="w-4 h-4" />
+                </Button>
+              </a>
               <Button
                 variant="outline"
-                onClick={() => openWhatsApp(WHATSAPP_PHONE, "Hola, tengo dudas sobre opciones de inversión en Estados Unidos con un ticket menor a $100,000 USD.")}
+                onClick={() => contactarPorWhatsApp("Tengo dudas sobre opciones con un ticket menor a $100,000 USD.")}
                 className="border-slate-600 text-white hover:bg-white/10 gap-2 rounded-xl py-4 w-full"
               >
                 <MessageSquare className="w-4 h-4" /> Tengo dudas, quiero escribir
@@ -713,7 +848,7 @@ export default function EstructuraInversion() {
         )}
 
         {step === "result" && (
-          <AdvisoryDisclaimer variant="inline" className="mt-2 pt-4 border-t border-[#1E3A5F]" />
+          <AdvisoryDisclaimer variant="short" className="mt-2 pt-4 border-t border-[#1E3A5F]" />
         )}
       </Modal>
 

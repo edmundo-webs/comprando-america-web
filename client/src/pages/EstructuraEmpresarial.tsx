@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
 import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
-import { trackPageVisit, getJourney } from "@/lib/journey";
+import { trackPageVisit, visitedRecently } from "@/lib/journey";
 import EstructuraIntentSelector from "@/components/EstructuraIntentSelector";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { motion, AnimatePresence } from "framer-motion";
@@ -343,8 +343,9 @@ export default function EstructuraEmpresarial() {
         whatsapp: prev.whatsapp || saved.phone || "",
       }));
     }
-    // Si además ya revisó la guía de inversión, lo marcamos como el mismo contacto (no dos leads).
-    if (getJourney().some((e) => e.page === "inversion")) {
+    // El mensaje de continuidad solo aplica si la visita a la otra guía es RECIENTE:
+    // una visita de hace semanas no es "la misma exploración" y se sentía falsa.
+    if (visitedRecently("inversion")) {
       setVisitedInversion(true);
       postCrmLead(
         {
@@ -477,6 +478,7 @@ export default function EstructuraEmpresarial() {
         { key: "name", type: "text", label: "Nombre", placeholder: "Tu nombre completo" },
         { key: "email", type: "email", label: "Correo", placeholder: "correo@ejemplo.com" },
         { key: "whatsapp", type: "tel", label: "WhatsApp", placeholder: "+52 555 000 0000" },
+        { key: "country", type: "text", label: "País de residencia", placeholder: "México, Colombia, etc." },
       ].map((f) => (
         <div key={f.key}>
           <label className="text-slate-400 text-xs block mb-1">{f.label}</label>
@@ -489,11 +491,35 @@ export default function EstructuraEmpresarial() {
           />
         </div>
       ))}
+      {/* Fecha estimada: cierra la ficha aquí mismo, sin obligar a bajar al formulario */}
+      <div>
+        <label className="text-slate-400 text-xs block mb-1">Fecha estimada para comenzar</label>
+        <select
+          value={formData.timeline}
+          onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
+          className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-primary/50 transition-colors"
+        >
+          <option value="">Seleccionar…</option>
+          {TIMELINE_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+        </select>
+      </div>
       {/* Honeypot — invisible para humanos, bots lo llenan */}
       <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" value={formHoneypot} onChange={(e) => setFormHoneypot(e.target.value)} />
       </div>
     </div>
+  );
+
+  /* Botón de llamada de orientación: abre WhatsApp con la ficha completa ya precargada,
+     para que el setter no tenga que volver a preguntar lo que ya respondió el diagnóstico. */
+  const llamadaOrientacionBtn = (contexto: string, extraTags?: string[]) => (
+    <Button
+      variant="outline"
+      onClick={() => { closeModal(); contactarPorWhatsApp({ contexto, hito: "llamada_solicitada", extraTags }); }}
+      className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2"
+    >
+      <MessageSquare className="w-4 h-4" /> Solicitar llamada de orientación
+    </Button>
   );
 
   return (
@@ -1011,7 +1037,7 @@ export default function EstructuraEmpresarial() {
       {/* ── Aviso de cumplimiento ── */}
       <section className="bg-[#0B1F3A] pb-16">
         <div className="container">
-          <AdvisoryDisclaimer variant="box" className="max-w-3xl mx-auto" />
+          <AdvisoryDisclaimer className="max-w-3xl mx-auto" />
         </div>
       </section>
 
@@ -1242,6 +1268,9 @@ export default function EstructuraEmpresarial() {
                 Ir a mi GPS de inversión <ArrowRight className="w-4 h-4" />
               </Button>
             </a>
+            <div className="mt-3">
+              {llamadaOrientacionBtn("Mi objetivo a mediano plazo incluye atraer capital externo o una visa de inversionista.")}
+            </div>
             <button
               onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }}
               className="text-slate-400 text-sm text-center hover:text-white transition-colors underline underline-offset-2 w-full mt-3"
@@ -1310,7 +1339,15 @@ export default function EstructuraEmpresarial() {
             <Button onClick={() => { finishDiagnosticLead(); closeModal(); openModal("iniciar"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mt-4">
               Continuar con mi LLC <ArrowRight className="w-4 h-4" />
             </Button>
+            <div className="mt-3">
+              {llamadaOrientacionBtn("Quiero una llamada de orientación antes de avanzar con la formación de mi LLC.")}
+            </div>
           </>
+        )}
+
+        {/* Aviso discreto al pie del resultado */}
+        {diagResult !== null && (
+          <AdvisoryDisclaimer variant="short" className="mt-2 pt-4 border-t border-[#1E3A5F]" />
         )}
       </Modal>
     </div>
