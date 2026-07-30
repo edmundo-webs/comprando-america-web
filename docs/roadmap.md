@@ -10,6 +10,11 @@ Mover tareas entre secciones conforme avanzan.
 - [ ] Analizar y estructurar CMS_ComprandoAmerica
 
 ## 🟡 Media Prioridad
+- [ ] **Página por estado (Texas / Florida)** — destino natural de los argumentos que salieron del
+      bloque "Texas o Florida" de la página de LLC, que ahora solo explica el criterio de decisión.
+      Los cuatro argumentos siguen guardados en `ESTADO_INFO[estado].argumentos` (`lib/diagnostico.ts`):
+      ecosistema empresarial sólido, comunidad latina activa, fuerte conexión con Latinoamérica y
+      mercado inmobiliario activo. Su lugar es después de que el diagnóstico rutea, no antes de decidir.
 - [ ] Revisar y optimizar SEO en páginas principales (meta tags, OG tags)
 - [ ] Mejorar velocidad de carga (lazy loading de imágenes, code splitting)
 - [ ] Asegurar que el sitio sea completamente responsivo en móvil

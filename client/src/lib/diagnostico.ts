@@ -25,22 +25,31 @@ export type Urgencia = "listo" | "1-2-meses" | "investigando";
    diagnóstico): se ofrece referido a un proveedor externo que sí lo cubre. */
 export const ESTADOS_CUBIERTOS = ["Texas", "Florida"] as const;
 
-/* Descripciones de estado, reubicadas desde la sección "Texas o Florida" de la
-   página de LLC. Se muestran junto a cada opción, donde se toma la decisión. */
-export const ESTADO_INFO: Record<string, { desc: string; puntos: string[] }> = {
+/* ─── Copy del estado — fuente única ───
+   Lo usan la sección "Texas o Florida" de la página (componente
+   EstadoTexasFlorida) y el paso de estado del diagnóstico. Si cambia, cambia en
+   los dos lugares a la vez: no debe haber dos versiones de este criterio. */
+export const ESTADO_INFO: Record<string, { desc: string; argumentos: string[] }> = {
   Texas: {
-    desc: "Puede tener sentido cuando la operación, presencia comercial, clientes, personal o administración estarán principalmente en Texas.",
-    puntos: ["Sin impuesto estatal sobre la renta", "Ecosistema empresarial sólido", "Comunidad latina activa", "Ideal para operaciones comerciales"],
+    desc: "Cuando la operación, los clientes, el personal o la administración van a estar en suelo texano.",
+    /* `argumentos` NO se muestra al elegir el estado: a esa altura la persona
+       decide dónde ocurre su operación, no qué estado es "mejor". Su lugar es la
+       página de cada estado, después de que el diagnóstico rutea. */
+    argumentos: ["Ecosistema empresarial sólido", "Comunidad latina activa", "Ideal para operaciones comerciales"],
   },
   Florida: {
-    desc: "Puede tener sentido cuando la actividad, propiedades, mercado o presencia principal se encontrarán en Florida.",
-    puntos: ["Sin impuesto estatal sobre la renta", "Fuerte conexión con Latinoamérica", "Mercado inmobiliario activo", "Ideal para negocios digitales y bienes raíces"],
+    desc: "Cuando el mercado, las propiedades o la presencia principal van a estar allá.",
+    argumentos: ["Fuerte conexión con Latinoamérica", "Mercado inmobiliario activo", "Ideal para negocios digitales y bienes raíces"],
   },
 };
 
-/* Encabezado de la pregunta de estado — reubicado desde la misma sección. */
+/* Premisa de la decisión de estado. */
 export const ESTADO_HEADER =
-  "No elegimos el estado por popularidad. Lo elegimos con base en dónde y cómo funcionará la empresa.";
+  "El estado no se elige por sus ventajas. Se elige por dónde ocurre realmente la operación.";
+
+/* Lo único que los dos estados comparten y que sí conviene decir de entrada,
+   porque es la creencia que más gente trae equivocada. */
+export const ESTADO_SIN_IMPUESTO = "Ninguno de los dos cobra impuesto estatal sobre la renta.";
 
 /* "Antes de contratar": señales de que conviene revisar la estructura. Se usa como
    autochequeo en la rama Operar, antes de dejar pasar a checkout. Une el bloque
