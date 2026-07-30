@@ -1,12 +1,17 @@
 /*
- * Motor del diagnóstico integral de estructura — compartido por
+ * Preguntas y contenido del diagnóstico de estructura — compartido por
  * /estructura-empresarial-en-estados-unidos y /estructura-de-inversion-en-usa.
+ * La lógica de recomendación vive en `lib/motorRuta.ts` (Motor de Recomendación
+ * de Ruta): este archivo solo define qué se pregunta y con qué apoyo educativo.
  *
- * Reemplaza los dos CTA paralelos del hero y la tarjeta de 3 opciones que estaba
- * duplicada en ambas páginas, por un único punto de entrada de dos puertas:
+ * Un único punto de entrada de dos puertas:
  *   - "directo": el usuario ya sabe que quiere su LLC. Solo se le pregunta el estado.
- *     Se mantiene austero a propósito: ninguna pregunta de calificación extra.
- *   - "diagnostico": objetivo → claridad → diagnóstico por rama → calificación económica.
+ *     Se mantiene austero a propósito: ninguna pregunta adicional.
+ *   - "diagnostico": objetivo → preguntas por rama → horizonte → resultado por capas.
+ *
+ * El sistema no aprueba ni rechaza a nadie: clasifica necesidades y recomienda
+ * rutas. Por eso aquí no hay reglas de exclusión — el estado, el capital o la
+ * falta de proyecto cambian la ruta recomendada, no el derecho a una respuesta.
  *
  * El contenido educativo NO se redacta de nuevo ni se envía como PDF: se reubica el
  * que ya existe en ambas páginas como apoyo contextual dentro de cada paso.
@@ -14,10 +19,10 @@
 
 export type Objetivo = "operar" | "invertir" | "visa" | "explorando";
 export type Urgencia = "listo" | "1-2-meses" | "investigando";
-export type Descalificacion = "estado" | "capital";
 
 /* ─── Puerta 1: compra directa ───
-   Solo estado. "Otro estado" descalifica del checkout (alcance real del servicio). */
+   Solo estado. "Otro estado" queda fuera del alcance del checkout en línea (no del
+   diagnóstico): se ofrece referido a un proveedor externo que sí lo cubre. */
 export const ESTADOS_CUBIERTOS = ["Texas", "Florida"] as const;
 
 /* Descripciones de estado, reubicadas desde la sección "Texas o Florida" de la
@@ -92,8 +97,11 @@ export const VISA_ACLARACION =
 export const SOCIOS_ACLARACION =
   "Si la LLC tendrá más de un miembro, es importante que el Operating Agreement refleje claramente los derechos, responsabilidades y porcentajes de participación de cada socio. Cuando hay socios, conviene revisar la estructura con más detalle antes de constituir.";
 
-/* Bloque de elegibilidad de la guía de inversión — filtro de entrada de la rama Invertir. */
-export const INVERSION_MINIMO = "Disponible para miembros con capacidad de inversión desde $100,000 USD.";
+/* Contexto de la pregunta de capital en la rama Invertir. El monto es una señal
+   para ubicar el tipo de oportunidades, nunca un requisito de acceso: se combina
+   siempre con la intención, el proyecto y la participación buscada. */
+export const INVERSION_CONTEXTO =
+  "Las oportunidades que analizamos dentro del Grupo Empresarial suelen partir de $100,000 USD. Nos ayuda a ubicar tu ruta, no a decidirla: el monto por sí solo no define la recomendación.";
 
 export const INVERSION_ERRORES = [
   "Elegir estructura legal sin entender implicaciones fiscales y de riesgo.",
@@ -142,7 +150,7 @@ export const OBJETIVO_OPCIONES: { value: Objetivo; label: string; contexto: stri
   },
 ];
 
-/* ─── Calificación económica (paso final, común a todas las ramas) ─── */
+/* ─── Horizonte / urgencia (paso final, común a todas las ramas) ─── */
 export const URGENCIA_OPCIONES: { value: Urgencia; label: string; desc: string }[] = [
   { value: "listo", label: "Sí, en las próximas 2 o 3 semanas", desc: "Continuamos al cierre y los siguientes pasos." },
   { value: "1-2-meses", label: "En 1 o 2 meses", desc: "Te damos seguimiento cuando se acerque tu fecha." },
@@ -207,11 +215,47 @@ const P_SOCIOS_EXTRANJEROS: Pregunta = {
 const P_CAPITAL: Pregunta = {
   id: "capital",
   label: "Rango de inversión",
-  q: "¿Tu capacidad de inversión es mayor a $100,000 USD?",
-  help: INVERSION_MINIMO,
+  q: "¿Con cuánto capital estás trabajando hoy?",
+  help: INVERSION_CONTEXTO,
   options: [
-    { value: "mas", label: "Sí, $100,000 USD o más" },
-    { value: "menos", label: "Todavía no, es menor a $100,000 USD" },
+    { value: "mas", label: "$100,000 USD o más" },
+    { value: "menos", label: "Menos de $100,000 USD" },
+    { value: "no", label: "Todavía no tengo el capital disponible" },
+  ],
+};
+
+/* ─── Rama Invertir: las dos preguntas que el capital no responde ───
+   Una persona con capital suficiente puede seguir sin saber en qué invertir ni
+   con qué nivel de participación. Esas dos definiciones — no el monto — son las
+   que determinan si conviene una estructura o una conversación patrimonial. */
+const P_INVERSION_DEFINIDA: Pregunta = {
+  id: "inversionDefinida",
+  label: "Inversión identificada",
+  q: "¿Ya tienes identificado en qué quieres invertir?",
+  options: [
+    { value: "especifico", label: "Sí, ya tengo una oportunidad o proyecto específico" },
+    {
+      value: "categoria",
+      label: "Tengo definida la categoría, pero todavía comparo opciones",
+      desc: "Bienes raíces, adquisición de negocios, fondos, franquicia u operación propia.",
+    },
+    { value: "no-se", label: "Quiero invertir, pero aún no sé en qué" },
+    { value: "poner-a-trabajar", label: "Solo quiero poner mi capital a trabajar" },
+    { value: "conocer-oportunidades", label: "Quiero conocer oportunidades antes de decidir" },
+  ],
+};
+
+const P_PARTICIPACION: Pregunta = {
+  id: "participacion",
+  label: "Participación buscada",
+  q: "¿Cómo quieres participar en la inversión?",
+  help: "De esto depende si necesitas una empresa operativa, un vehículo de tenencia o ninguna estructura propia todavía.",
+  options: [
+    { value: "operar", label: "Quiero operar directamente el negocio o proyecto" },
+    { value: "decisiones", label: "Quiero participar en decisiones, pero no en la operación diaria" },
+    { value: "pasiva", label: "Prefiero una inversión completamente pasiva" },
+    { value: "socio-operador", label: "Tendré un socio u operador" },
+    { value: "no-se", label: "Todavía no lo sé" },
   ],
 };
 
@@ -238,6 +282,71 @@ const P_TIPO_VISA: Pregunta = {
   ],
 };
 
+/* ─── Rama Visa: la variable que más pesa ───
+   Sin proyecto no hay estrategia migratoria que sostener, y la LLC standalone no
+   lo resuelve. Cuando falta, la ruta correcta es el Grupo Empresarial, donde sí
+   existen proyectos ya estructurados con opción de aplicar a visa. */
+const P_PROYECTO_VISA: Pregunta = {
+  id: "proyectoVisa",
+  label: "Proyecto que sostiene la estrategia migratoria",
+  q: "¿Ya tienes definido el negocio o proyecto que sostendría la estrategia migratoria?",
+  help: "Una LLC por sí sola no crea un proyecto elegible para visa. El proyecto es la variable que más pesa en este caso.",
+  options: [
+    { value: "si", label: "Sí, el negocio o proyecto ya está definido" },
+    { value: "parcial", label: "Tengo la idea, pero todavía no está definida" },
+    { value: "no", label: "Todavía no tengo un proyecto" },
+  ],
+};
+
+/* ─── Microdiagnóstico exploratorio (E1-E2-E3) ───
+   Para quien sigue sin tenerlo claro. Antes solo se le preguntaba el horizonte,
+   con lo que el diagnóstico terminaba sin nada que recomendar. Son tres preguntas,
+   no una rama: si después de ellas no se identifica un caso claro, no se insiste. */
+const P_EXPLORA_MOTIVO: Pregunta = {
+  id: "exploraMotivo",
+  label: "Motivo por el que investiga una LLC",
+  q: "¿Qué te hizo comenzar a investigar una LLC?",
+  options: [
+    { value: "negocio", label: "Quiero iniciar o expandir un negocio" },
+    { value: "visa", label: "Estoy evaluando una visa" },
+    { value: "invertir", label: "Quiero invertir o comprar activos" },
+    { value: "cuenta-dolares", label: "Quiero abrir una cuenta o cobrar en dólares" },
+    { value: "historial", label: "Quiero construir historial empresarial" },
+    { value: "recomendacion", label: "Alguien me recomendó abrirla" },
+    { value: "redes", label: "Vi información en redes y quiero entenderla" },
+  ],
+};
+
+const P_EXPLORA_DUDA: Pregunta = {
+  id: "exploraDuda",
+  label: "Duda principal",
+  q: "¿Qué es lo que todavía no tienes claro?",
+  options: [
+    { value: "necesito-llc", label: "Si realmente necesito una LLC" },
+    { value: "actividad", label: "Qué actividad o proyecto desarrollar" },
+    { value: "estado", label: "En qué estado abrirla" },
+    { value: "impuestos", label: "Cómo se relaciona con impuestos" },
+    { value: "visa", label: "Cómo se relaciona con una visa" },
+    { value: "credito-banca", label: "Cómo se relaciona con crédito o banca" },
+    { value: "que-primero", label: "Qué debería hacer primero" },
+  ],
+};
+
+const P_EXPLORA_EXPECTATIVA: Pregunta = {
+  id: "exploraExpectativa",
+  label: "Expectativa al abrir la empresa",
+  q: "¿Qué esperas conseguir al abrir una empresa?",
+  options: [
+    { value: "operar", label: "Empezar a operar" },
+    { value: "estructura-futuro", label: "Tener una estructura lista para el futuro" },
+    { value: "visa", label: "Obtener una visa" },
+    { value: "credito", label: "Acceder a crédito" },
+    { value: "banco", label: "Abrir una cuenta bancaria" },
+    { value: "activos", label: "Comprar o invertir en activos" },
+    { value: "no-se", label: "Todavía no lo sé" },
+  ],
+};
+
 /* Rama Explorando: en vez de una pregunta de claridad, una pregunta de ruta.
    Según lo que revele, continúa por el diagnóstico de Operar o de Invertir. */
 const P_RUTA_EXPLORANDO: Pregunta = {
@@ -251,20 +360,56 @@ const P_RUTA_EXPLORANDO: Pregunta = {
   ],
 };
 
-/* Pasos por rama. El paso de urgencia se agrega al final en el componente. */
-export function pasosDeRama(objetivo: Objetivo, rutaExplorando?: string): Pregunta[] {
+const PASOS_OPERAR = [P_ESTADO, P_ACTIVIDAD, P_SOCIOS, P_SOCIOS_EXTRANJEROS];
+const PASOS_INVERTIR = [P_CAPITAL, P_INVERSION_DEFINIDA, P_PARTICIPACION];
+const PASOS_VISA = [P_CAPITAL_VISA, P_TIPO_VISA, P_PROYECTO_VISA];
+const PASOS_EXPLORA = [P_EXPLORA_MOTIVO, P_EXPLORA_DUDA, P_EXPLORA_EXPECTATIVA];
+
+function pasosPorRama(rama: "operar" | "invertir" | "visa"): Pregunta[] {
+  if (rama === "operar") return PASOS_OPERAR;
+  if (rama === "invertir") return PASOS_INVERTIR;
+  return PASOS_VISA;
+}
+
+/* Pasos por rama. El paso de horizonte se agrega al final en el componente.
+   "Explorando" no es una rama propia: es una reclasificación. Si el usuario revela
+   la ruta, hereda ese diagnóstico completo; si sigue sin tenerla clara, contesta el
+   microdiagnóstico E1-E3 y, cuando este revela una intención clara, se le reasigna
+   a la rama correspondiente (Motor de Recomendación de Ruta → ramaDesdeExploracion). */
+export function pasosDeRama(objetivo: Objetivo, respuestas: Record<string, string> = {}): Pregunta[] {
   switch (objetivo) {
     case "operar":
-      return [P_ESTADO, P_ACTIVIDAD, P_SOCIOS, P_SOCIOS_EXTRANJEROS];
+      return PASOS_OPERAR;
     case "invertir":
-      return [P_CAPITAL];
+      return PASOS_INVERTIR;
     case "visa":
-      return [P_CAPITAL_VISA, P_TIPO_VISA];
-    case "explorando":
-      // Primero revela la ruta; luego hereda el diagnóstico de esa rama.
-      if (rutaExplorando === "operar") return [P_RUTA_EXPLORANDO, P_ESTADO, P_ACTIVIDAD, P_SOCIOS, P_SOCIOS_EXTRANJEROS];
-      if (rutaExplorando === "invertir") return [P_RUTA_EXPLORANDO, P_CAPITAL];
+      return PASOS_VISA;
+    case "explorando": {
+      if (respuestas.rutaExplorando === "operar") return [P_RUTA_EXPLORANDO, ...PASOS_OPERAR];
+      if (respuestas.rutaExplorando === "invertir") return [P_RUTA_EXPLORANDO, ...PASOS_INVERTIR];
+      if (respuestas.rutaExplorando === "no-seguro") {
+        const micro = [P_RUTA_EXPLORANDO, ...PASOS_EXPLORA];
+        /* Las preguntas de la rama reasignada se agregan al final, en cuanto E1
+           revela la intención: así el contador de pasos deja de moverse pronto y
+           el orden de las preguntas sigue siendo E1 → E2 → E3 → rama. */
+        const reasignada = ramaReasignadaExploracion(respuestas);
+        if (reasignada) return [...micro, ...pasosPorRama(reasignada)];
+        return micro;
+      }
       return [P_RUTA_EXPLORANDO];
+    }
+  }
+}
+
+/* Intención clara revelada por E1 → rama a la que se reasigna. Duplica a propósito
+   la lectura de `motorRuta.ramaDesdeExploracion` para que la lista de pasos no
+   dependa del motor de recomendación (y el motor no dependa de los pasos). */
+function ramaReasignadaExploracion(respuestas: Record<string, string>): "operar" | "invertir" | "visa" | null {
+  switch (respuestas.exploraMotivo) {
+    case "negocio": return "operar";
+    case "visa": return "visa";
+    case "invertir": return "invertir";
+    default: return null;
   }
 }
 
@@ -275,16 +420,11 @@ export function preguntaAplica(p: Pregunta, respuestas: Record<string, string>):
   return true;
 }
 
-/* ─── Descalificación ───
-   Estado no cubierto (rama Operar) y capital insuficiente (rama Invertir). */
-export function evaluarDescalificacion(
-  objetivo: Objetivo,
-  respuestas: Record<string, string>,
-): Descalificacion | null {
-  const rutaEfectiva = objetivo === "explorando" ? respuestas.rutaExplorando : objetivo;
-  if (rutaEfectiva === "operar" && respuestas.estado === "otro") return "estado";
-  if (rutaEfectiva === "invertir" && respuestas.capital === "menos") return "capital";
-  return null;
+/* ─── Alcance del checkout en línea ───
+   No es una regla de exclusión del diagnóstico: solo indica si la constitución se
+   puede cerrar en línea. Fuera de Texas y Florida referimos a un proveedor externo. */
+export function fueraDeAlcanceCheckout(respuestas: Record<string, string>): boolean {
+  return respuestas.estado === "otro";
 }
 
 /* ─── Ficha para el setter ───
@@ -298,9 +438,8 @@ export function fichaCampos(args: {
   urgencia: Urgencia | null;
   estadoSolicitado?: string;
   pasosCompletados: number;
-  descalificacion: Descalificacion | null;
 }): { label: string; value: string }[] {
-  const { contacto, objetivo, respuestas, urgencia, estadoSolicitado, pasosCompletados, descalificacion } = args;
+  const { contacto, objetivo, respuestas, urgencia, estadoSolicitado, pasosCompletados } = args;
 
   const objetivoLabel = objetivo ? OBJETIVO_OPCIONES.find((o) => o.value === objetivo)?.label ?? objetivo : "";
   const urgenciaLabel = urgencia ? URGENCIA_OPCIONES.find((u) => u.value === urgencia)?.label ?? urgencia : "";
@@ -330,21 +469,20 @@ export function fichaCampos(args: {
   if (respuestas.socios) campos.push({ label: "Tiene socios", value: respuestas.socios === "si" ? "Sí" : "No" });
   if (respuestas.sociosExtranjeros) campos.push({ label: "Socios extranjeros", value: respuestas.sociosExtranjeros === "si" ? "Sí" : "No" });
   if (respuestas.capital) {
-    const fuente = objetivo === "visa" ? P_CAPITAL_VISA : P_CAPITAL;
+    // La rama Visa usa su propia redacción de la pregunta de capital (también
+    // cuando se llegó a ella por reasignación desde "Explorando").
+    const fuente = respuestas.tipoVisa || objetivo === "visa" ? P_CAPITAL_VISA : P_CAPITAL;
     const c = fuente.options.find((o) => o.value === respuestas.capital);
     campos.push({ label: "Rango de inversión", value: c?.label ?? respuestas.capital });
   }
-  if (respuestas.tipoVisa) {
-    const v = P_TIPO_VISA.options.find((o) => o.value === respuestas.tipoVisa);
-    campos.push({ label: "Tipo de visa objetivo", value: v?.label ?? respuestas.tipoVisa });
+  /* Preguntas nuevas: se reportan con la etiqueta de la opción elegida, para que el
+     equipo lea la respuesta literal y no un código. */
+  for (const p of [P_TIPO_VISA, P_PROYECTO_VISA, P_INVERSION_DEFINIDA, P_PARTICIPACION, ...PASOS_EXPLORA]) {
+    const valor = respuestas[p.id];
+    if (!valor) continue;
+    campos.push({ label: p.label, value: p.options.find((o) => o.value === valor)?.label ?? valor });
   }
-  if (urgenciaLabel) campos.push({ label: "Urgencia", value: urgenciaLabel });
-  if (descalificacion) {
-    campos.push({
-      label: "Descalificación",
-      value: descalificacion === "estado" ? "Estado no cubierto" : "Capital menor al mínimo",
-    });
-  }
+  if (urgenciaLabel) campos.push({ label: "Horizonte declarado", value: urgenciaLabel });
   campos.push({ label: "Pasos completados del diagnóstico", value: String(pasosCompletados) });
 
   return campos.filter((c) => c.value.trim());

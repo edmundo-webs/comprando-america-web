@@ -502,7 +502,7 @@ function JourneyStrip({ screen, objetivo, participacion, horizonte, capital }: {
 }
 
 /* ─── SCREEN 1 — Objetivo ─── */
-function Screen1({ onSelect, preQualified }: { onSelect: (id: string) => void; preQualified?: boolean }) {
+function Screen1({ onSelect, desdeDiagnostico }: { onSelect: (id: string) => void; desdeDiagnostico?: boolean }) {
   const [hovered, setHovered] = useState<string | null>(null);
   return (
     <div style={{ position: "relative", width: "100%", minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: NAVY }}>
@@ -521,8 +521,8 @@ function Screen1({ onSelect, preQualified }: { onSelect: (id: string) => void; p
           <div style={{ width: "60px", height: "1px", background: `linear-gradient(90deg, ${GOLD}90, transparent)` }} />
         </div>
 
-        {/* Reconocimiento cuando el usuario ya viene calificado desde el diagnóstico de LLC */}
-        {preQualified && (
+        {/* Reconocimiento cuando el usuario llega desde el diagnóstico de estructura */}
+        {desdeDiagnostico && (
           <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${GOLD}18`, border: `1px solid ${GOLD}55`, borderRadius: "20px", padding: "6px 16px", marginBottom: "14px" }}>
             <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: GOLD_LIGHT }}>
               Vienes de tu diagnóstico de estructura · ya sabemos que buscas invertir
@@ -533,7 +533,7 @@ function Screen1({ onSelect, preQualified }: { onSelect: (id: string) => void; p
         {/* Duration indicator */}
         <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "6px 16px", marginBottom: "24px" }}>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>
-            {preQualified ? "Ahora definamos tu vehículo de inversión" : "5 preguntas · Menos de 2 minutos"}
+            {desdeDiagnostico ? "Ahora definamos tu vehículo de inversión" : "5 preguntas · Menos de 2 minutos"}
           </span>
         </div>
 
@@ -671,7 +671,7 @@ function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
           ¿Qué rango de inversión te sentirías cómodo evaluar hoy?
         </h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.7 }}>
-          El capital disponible no define si calificas. Nos ayuda a evitar recomendar oportunidades que no hagan sentido para tu estrategia.
+          El capital disponible no define tu ruta por sí solo. Nos ayuda a evitar recomendar oportunidades que no hagan sentido para tu estrategia.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "36px" }}>
           {OPCIONES_CAPITAL.map((op) => {
@@ -1327,17 +1327,17 @@ function SocialProofSection() {
 }
 
 /* ─── RESULT SCREEN ─── */
-function ResultScreen({ perfil, contactData, rankedVehicles, investorData, preQualified, onCompare }: {
+function ResultScreen({ perfil, contactData, rankedVehicles, investorData, desdeDiagnostico, onCompare }: {
   perfil: (typeof PERFILES)[string];
   contactData: ContactData | null;
   rankedVehicles: (VehicleEntry & { score: number; pct: number })[];
   investorData: { objetivo: string | null; participacion: string | null; horizonte: string | null; capital: string | null; prioridades: string[] };
-  preQualified?: boolean;
+  desdeDiagnostico?: boolean;
   onCompare: () => void;
 }) {
   // Etiqueta de página de interés (acumulable en el CRM). El GPS siempre representa interés de
-  // inversión; si además llega pre-calificado desde el diagnóstico de LLC, se conserva el rastro.
-  const crmTags = preQualified ? ["interes:inversion", "origen:llc-diagnostico"] : ["interes:inversion"];
+  // inversión; si además llega desde el diagnóstico de estructura, se conserva el rastro.
+  const crmTags = desdeDiagnostico ? ["interes:inversion", "origen:llc-diagnostico"] : ["interes:inversion"];
   const [showConfirm, setShowConfirm] = useState(false);
   const [drawerVehicle, setDrawerVehicle] = useState<(VehicleEntry & { score: number; pct: number }) | null>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
@@ -2164,10 +2164,10 @@ export default function GpsPage() {
 
   // Screens: 1=objetivo, 2=prioridades, 3=participacion, 4=horizonte, 5=capital, 6=loading, 7=preview, 8=contact, 9=result
   const [screen, setScreen] = useState(1);
-  // El usuario llega pre-calificado desde el diagnóstico de estructura de LLC (intención de
-  // inversión ya definida). Se usa para reconocer el contexto sin repetir la pregunta de propósito
-  // y para etiquetar el lead como interes:inversion en el CRM.
-  const [preQualified] = useState(() => {
+  // El usuario llega desde el diagnóstico de estructura con la intención de inversión ya
+  // definida. Se usa para reconocer el contexto sin repetir la pregunta de propósito y para
+  // etiquetar el lead como interes:inversion en el CRM. No implica ninguna aprobación previa.
+  const [desdeDiagnostico] = useState(() => {
     if (typeof window === "undefined") return false;
     const p = new URLSearchParams(window.location.search);
     return p.get("ref") === "llc-diagnostico" || p.get("intent") === "inversion";
@@ -2208,7 +2208,7 @@ export default function GpsPage() {
       <FlowTopBar screen={screen} totalScreens={9} onBack={handleBack} />
 
       <AnimatePresence mode="wait">
-        {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={id => { setObjetivo(id); goScreen(2); }} preQualified={preQualified} /></motion.div>}
+        {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={id => { setObjetivo(id); goScreen(2); }} desdeDiagnostico={desdeDiagnostico} /></motion.div>}
         {screen === 2 && <motion.div key="s2" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5Priorities onNext={ids => { setPrioridades(ids); goScreen(3); }} /></motion.div>}
         {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen2 onNext={id => { setParticipacion(id); goScreen(4); }} /></motion.div>}
         {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={v => { setHorizonte(v); goScreen(5); }} /></motion.div>}
@@ -2216,7 +2216,7 @@ export default function GpsPage() {
         {screen === 6 && <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen6Loading onDone={() => goScreen(7)} /></motion.div>}
         {screen === 7 && perfil && <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen7Preview perfil={perfil} rankedVehicles={rankedVehicles} objetivo={objetivo} capital={capital} onContinue={() => goScreen(8)} /></motion.div>}
         {screen === 8 && <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen8Contact onNext={data => { setContactData(data); goScreen(9); }} partialSent={partialSent} onPartialSent={() => setPartialSent(true)} /></motion.div>}
-        {screen === 9 && perfil && <motion.div key="s9" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} preQualified={preQualified} onCompare={() => { setObjetivo(null); goScreen(1); }} /></motion.div>}
+        {screen === 9 && perfil && <motion.div key="s9" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} desdeDiagnostico={desdeDiagnostico} onCompare={() => { setObjetivo(null); goScreen(1); }} /></motion.div>}
       </AnimatePresence>
 
       <JourneyStrip screen={screen} objetivo={objetivo} participacion={participacion} horizonte={horizonte} capital={capital} />
