@@ -4,29 +4,49 @@
  * duplicada en ambas páginas.
  *
  * Dos puertas mutuamente excluyentes:
- *   1. Compra directa — solo estado, austera a propósito. Sin preguntas de
- *      calificación ni desvíos hacia inversión.
- *   2. Diagnóstico integral — objetivo → claridad → diagnóstico por rama →
- *      calificación económica, con el contenido educativo embebido en cada paso.
+ *   1. Compra directa — solo estado, austera a propósito. Sin preguntas extra
+ *      ni desvíos hacia inversión.
+ *   2. Diagnóstico integral — objetivo → preguntas por rama → horizonte →
+ *      resultado por capas, con el contenido educativo embebido en cada paso.
+ *
+ * El resultado se entrega en capas (ver lib/motorRuta.ts):
+ *   Capa A — visible para todos, antes de pedir contacto.
+ *   Capa B — ampliación después de capturar contacto.
+ *   Capa C — interno, solo al CRM. Nunca se renderiza.
+ *
+ * El diagnóstico no aprueba ni rechaza a nadie: siempre entrega una ruta. La
+ * única frontera que existe es de alcance del servicio en línea (Texas/Florida),
+ * y se resuelve con un referido, no con una salida sin respuesta.
  *
  * "Solo quiero mi LLC" es una salida válida y sin fricción en cualquier punto.
  */
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, X, CheckCircle2, XCircle, ShoppingCart, Compass, MessageSquare, AlertTriangle, MapPin } from "lucide-react";
+import { ArrowRight, X, CheckCircle2, XCircle, ShoppingCart, Compass, MessageSquare, AlertTriangle, MapPin, Target, ListChecks } from "lucide-react";
 import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import {
-  type Objetivo, type Urgencia, type Descalificacion, type Pregunta, type FichaContacto,
+  type Objetivo, type Urgencia, type Pregunta, type FichaContacto,
   OBJETIVO_OPCIONES, URGENCIA_OPCIONES, ESTADO_INFO, SENALES_OTRA_ESTRUCTURA, SENALES_NOTA,
   INCLUYE, NO_INCLUYE, CONFIRMACION_FAQ, INVERSION_ERRORES, INVERSION_PREGUNTAS_CLAVE,
-  EXPLORANDO_RESUMEN, pasosDeRama, preguntaAplica, evaluarDescalificacion,
+  EXPLORANDO_RESUMEN, pasosDeRama, preguntaAplica,
   fichaCampos, origenCampos, buildFichaTexto,
 } from "@/lib/diagnostico";
+import { type Cta, type Retroalimentacion, recomendarRuta, ramaEfectiva, capaCCampos } from "@/lib/motorRuta";
 
-type Fase = "directo" | "confirmar" | "objetivo" | "preguntas" | "urgencia" | "cierre" | "descalificado";
+/* "resultado" = Capa A · "ampliado" = Capa B · "fuera-de-alcance" solo aplica al
+   checkout en línea, no al diagnóstico. */
+type Fase = "directo" | "confirmar" | "objetivo" | "preguntas" | "urgencia" | "resultado" | "cierre" | "ampliado" | "fuera-de-alcance";
+
+const GRUPO_EMPRESARIAL_URL = "/grupo-empresarial-edmundo";
+
+const RETRO_OPCIONES: { value: Retroalimentacion; label: string }[] = [
+  { value: "si", label: "Sí, quiero avanzar" },
+  { value: "parcial", label: "Parcialmente, necesito aclarar algo" },
+  { value: "no", label: "No, mi caso es diferente" },
+];
 
 const SALUDO = "Hola, vengo del diagnóstico de estructura de Comprando América.";
 
@@ -90,11 +110,11 @@ export default function EstructuraFlow({
   const [respuestas, setRespuestas] = useState<Record<string, string>>({});
   const [estadoSolicitado, setEstadoSolicitado] = useState("");
   const [urgencia, setUrgencia] = useState<Urgencia | null>(null);
-  const [descalificacion, setDescalificacion] = useState<Descalificacion | null>(null);
   const [idx, setIdx] = useState(0);
   const [pasos, setPasos] = useState(0);
   const [enviado, setEnviado] = useState(false);
   const [honeypot, setHoneypot] = useState("");
+  const [retro, setRetro] = useState<Retroalimentacion | null>(null);
 
   const [contacto, setContacto] = useState<FichaContacto>({ name: "", email: "", phone: "", country: "" });
   /* Personalización solo con señal real: dato guardado por el propio usuario en este navegador. */
@@ -115,13 +135,25 @@ export default function EstructuraFlow({
     setContacto((p) => ({ ...p, name: p.name || saved.name || "", email: p.email || saved.email || "", phone: p.phone || saved.phone || "" }));
   }, []);
 
+  /* ─── Motor de Recomendación de Ruta ───
+     Se recalcula con cada respuesta; solo se muestra a partir de la Capa A. */
+  const rec = useMemo(
+    () => (objetivo ? recomendarRuta({ objetivo, respuestas, urgencia }) : null),
+    [objetivo, respuestas, urgencia],
+  );
+
   /* ─── CRM ─── */
+  /* Capa A/B declaradas por el usuario + Capa C interna (nivel, banderas, guion). */
   function campos() {
     return [
-      ...fichaCampos({ contacto, objetivo, respuestas, urgencia, estadoSolicitado, pasosCompletados: pasos, descalificacion }),
+      ...fichaCampos({ contacto, objetivo, respuestas, urgencia, estadoSolicitado, pasosCompletados: pasos }),
+      ...(rec ? capaCCampos(rec, retro) : []),
       ...origenCampos(),
     ];
   }
+
+  /* Etiquetas de ruta para el CRM — nunca se muestran en pantalla. */
+  const tagsRuta = () => (rec ? [`nivel-ruta:${rec.routeLevel}`, `rama:${rec.rama}`, ...(rec.varianteNivel3 ? [`variante:${rec.varianteNivel3}`] : [])] : []);
 
   function evento(hito: string, extra?: { stage?: "partial" | "complete"; tags?: string[]; nota?: string }) {
     const lista = campos();
@@ -155,28 +187,36 @@ export default function EstructuraFlow({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, pasos, objetivo, respuestas, urgencia]);
 
-  /* Registra la descalificación al llegar a la pantalla, no solo si el usuario actúa.
-     Así queda el motivo aunque abandone ahí mismo. */
-  const descalifRegistradaRef = useRef<Descalificacion | null>(null);
+  /* Registra el resultado al llegar a la Capa A, no solo si el usuario actúa.
+     Así queda la ruta recomendada aunque abandone en esa pantalla. */
+  const resultadoRegistradoRef = useRef(false);
   useEffect(() => {
-    if (fase !== "descalificado" || !descalificacion) return;
-    if (descalifRegistradaRef.current === descalificacion) return;
-    descalifRegistradaRef.current = descalificacion;
-    evento(descalificacion === "estado" ? "descalificado_estado" : "descalificado_capital", {
-      tags: [`descalificado:${descalificacion}`],
-    });
+    if (fase !== "resultado" || !rec || resultadoRegistradoRef.current) return;
+    resultadoRegistradoRef.current = true;
+    evento("resultado_mostrado", { tags: tagsRuta() });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fase, descalificacion]);
+  }, [fase, rec]);
+
+  /* Fuera del alcance del checkout en línea (puerta de compra directa). */
+  const alcanceRegistradoRef = useRef(false);
+  useEffect(() => {
+    if (fase !== "fuera-de-alcance" || alcanceRegistradoRef.current) return;
+    alcanceRegistradoRef.current = true;
+    evento("estado_fuera_de_alcance", { tags: ["alcance:fuera-de-texas-florida"] });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fase]);
 
   /* ─── Puertas ─── */
   function abrirDirecto() {
     setFase("directo");
     setObjetivo(null);
     setRespuestas({});
-    setDescalificacion(null);
     setEstadoSolicitado("");
     setPasos(0);
     setEnviado(false);
+    setRetro(null);
+    resultadoRegistradoRef.current = false;
+    alcanceRegistradoRef.current = false;
     completadoRef.current = false;
     iniciadoRef.current = false;
     setOpen(true);
@@ -187,25 +227,29 @@ export default function EstructuraFlow({
     setObjetivo(null);
     setRespuestas({});
     setUrgencia(null);
-    setDescalificacion(null);
     setEstadoSolicitado("");
     setIdx(0);
     setPasos(0);
     setEnviado(false);
+    setRetro(null);
+    resultadoRegistradoRef.current = false;
+    alcanceRegistradoRef.current = false;
     completadoRef.current = false;
     iniciadoRef.current = false;
     setOpen(true);
   }
 
-  /* ─── Compra directa: solo estado ─── */
+  /* ─── Elección de estado para el checkout ───
+     Se usa en la puerta directa y también cuando el resultado del diagnóstico
+     llega a constituir sin que se haya preguntado el estado (rama Invertir).
+     Conserva las respuestas del diagnóstico para no perder la ficha. */
   function elegirEstadoDirecto(v: string) {
+    setRespuestas((prev) => ({ ...prev, estado: v }));
     if (v === "otro") {
-      setRespuestas({ estado: "otro" });
-      setDescalificacion("estado");
-      setFase("descalificado");
+      alcanceRegistradoRef.current = false;
+      setFase("fuera-de-alcance");
       return;
     }
-    setRespuestas({ estado: v });
     setFase("confirmar");
   }
 
@@ -217,8 +261,10 @@ export default function EstructuraFlow({
     onCheckout(estado);
   }
 
-  /* ─── Diagnóstico integral ─── */
-  const listaPasos: Pregunta[] = objetivo ? pasosDeRama(objetivo, respuestas.rutaExplorando).filter((p) => preguntaAplica(p, respuestas)) : [];
+  /* ─── Diagnóstico integral ───
+     La lista de pasos se recalcula con cada respuesta: la rama "Explorando" puede
+     reasignar al usuario a otra rama y agregar sus preguntas al final. */
+  const listaPasos: Pregunta[] = objetivo ? pasosDeRama(objetivo, respuestas).filter((p) => preguntaAplica(p, respuestas)) : [];
   const preguntaActual = listaPasos[idx];
 
   function elegirObjetivo(v: Objetivo) {
@@ -239,43 +285,70 @@ export default function EstructuraFlow({
     setFase("preguntas");
   }
 
+  /* Ninguna respuesta interrumpe el diagnóstico: ni el estado, ni el capital, ni la
+     falta de proyecto. Todas cambian la ruta recomendada, y el usuario siempre
+     llega al resultado. */
   function responder(v: string) {
     const next = { ...respuestas, [preguntaActual.id]: v };
     setRespuestas(next);
-    const nuevosPasos = pasos + 1;
-    setPasos(nuevosPasos);
+    setPasos(pasos + 1);
 
-    // Estado no cubierto: pide cuál antes de descalificar, para poder referir.
-    if (preguntaActual.id === "estado" && v === "otro") {
-      setDescalificacion("estado");
-      setFase("descalificado");
-      return;
-    }
-    // Capital insuficiente: no pasa al perfilador, se le ofrece la ruta de operar.
-    const desc = evaluarDescalificacion(objetivo!, next);
-    if (desc === "capital") {
-      setDescalificacion("capital");
-      setFase("descalificado");
-      return;
-    }
-
-    const lista = pasosDeRama(objetivo!, next.rutaExplorando).filter((p) => preguntaAplica(p, next));
-    if (idx + 1 < lista.length) {
-      setIdx(idx + 1);
-      evento("diagnostico_paso_completado");
-    } else {
-      evento("diagnostico_paso_completado");
-      setFase("urgencia");
-    }
+    const lista = pasosDeRama(objetivo!, next).filter((p) => preguntaAplica(p, next));
+    evento("diagnostico_paso_completado");
+    if (idx + 1 < lista.length) setIdx(idx + 1);
+    else setFase("urgencia");
   }
 
   function elegirUrgencia(v: Urgencia) {
     setUrgencia(v);
     setPasos(pasos + 1);
-    setFase("cierre");
+    /* Capa A antes de pedir contacto: primero la claridad, después los datos. */
+    setFase("resultado");
   }
 
-  /* Cierre: envía la ficha completa. La rama invertir calificada pasa al perfilador. */
+  /* ─── Ejecución del CTA recomendado (Capa B) ─── */
+  function ejecutarCta(cta: Cta) {
+    switch (cta.action) {
+      case "checkout":
+        setFase("confirmar");
+        return;
+      case "estado":
+        // Nivel 1 sin estado declarado (p. ej. rama Invertir): falta esa decisión.
+        setFase("directo");
+        return;
+      case "grupo":
+        completadoRef.current = true;
+        evento("grupo_empresarial_solicitado", { stage: "complete", tags: [...tagsRuta(), "ruta:grupo-empresarial"] });
+        setOpen(false);
+        window.location.href = GRUPO_EMPRESARIAL_URL;
+        return;
+      default:
+        porWhatsApp(cta.contexto, "orientacion_solicitada");
+    }
+  }
+
+  /* Retroalimentación sobre el resultado — calidad de datos y prioridad de seguimiento. */
+  function responderRetro(v: Retroalimentacion) {
+    setRetro(v);
+    const lista = [
+      ...fichaCampos({ contacto, objetivo, respuestas, urgencia, estadoSolicitado, pasosCompletados: pasos }),
+      ...(rec ? capaCCampos(rec, v) : []),
+      ...origenCampos(),
+    ];
+    postCrmLead(
+      {
+        name: contacto.name, email: contacto.email, phone: contacto.phone,
+        sourceSlug, hito: "retroalimentacion_resultado", stage: "complete",
+        tags: [tagInteres, ...tagsRuta(), `retroalimentacion:${v}`],
+        submissionId: submissionIdRef.current,
+        notes: { ficha: buildFichaTexto(lista, SALUDO), pasosCompletados: pasos },
+        formFields: lista,
+      },
+      honeypot,
+    );
+  }
+
+  /* Cierre: envía la ficha completa (incluida la Capa C) y abre la Capa B. */
   function enviarCierre(e: React.FormEvent) {
     e.preventDefault();
     if (enviado) return;
@@ -285,7 +358,7 @@ export default function EstructuraFlow({
       {
         name: contacto.name, email: contacto.email, phone: contacto.phone,
         sourceSlug, hito: "diagnostico_completado", stage: "complete",
-        tags: [tagInteres, `objetivo:${objetivo}`, ...(urgencia ? [`urgencia:${urgencia}`] : [])],
+        tags: [tagInteres, `objetivo:${objetivo}`, ...tagsRuta(), ...(urgencia ? [`urgencia:${urgencia}`] : [])],
         submissionId: submissionIdRef.current,
         notes: { ficha: buildFichaTexto(lista, SALUDO), pasosCompletados: pasos },
         formFields: lista,
@@ -296,6 +369,7 @@ export default function EstructuraFlow({
       saveContact({ name: contacto.name.trim(), email: contacto.email.trim(), phone: contacto.phone.trim() });
     }
     setEnviado(true);
+    setFase("ampliado");
   }
 
   /* Salida a WhatsApp con la ficha completa — el setter no repregunta. */
@@ -307,7 +381,7 @@ export default function EstructuraFlow({
       {
         name: contacto.name, email: contacto.email, phone: contacto.phone,
         sourceSlug, hito, stage: "complete",
-        tags: [tagInteres, ...(objetivo ? [`objetivo:${objetivo}`] : []), ...(descalificacion ? [`descalificado:${descalificacion}`] : [])],
+        tags: [tagInteres, ...(objetivo ? [`objetivo:${objetivo}`] : []), ...tagsRuta()],
         submissionId: submissionIdRef.current,
         notes: { ficha: buildFichaTexto(lista, SALUDO, contexto), pasosCompletados: pasos },
         formFields: lista,
@@ -320,9 +394,10 @@ export default function EstructuraFlow({
     setOpen(false);
   }
 
-  const rutaEfectiva = objetivo === "explorando" ? respuestas.rutaExplorando : objetivo;
+  /* Rama efectiva: la declarada, o la que reveló el camino de exploración. */
+  const rutaEfectiva = objetivo ? ramaEfectiva(objetivo, respuestas) : null;
 
-  /* Campos de contacto — compartidos por el cierre y las descalificaciones. */
+  /* Campos de contacto — compartidos por el cierre y la pantalla de alcance. */
   const camposContacto = (soloCorreo = false) => (
     <div className="space-y-3">
       {knownName && (
@@ -357,7 +432,8 @@ export default function EstructuraFlow({
 
   const tituloModal =
     fase === "directo" || fase === "confirmar" ? "Iniciar mi LLC"
-    : fase === "descalificado" ? "Antes de continuar"
+    : fase === "fuera-de-alcance" ? "Antes de continuar"
+    : fase === "resultado" || fase === "ampliado" ? "Tu resultado"
     : "Diagnóstico de estructura";
 
   return (
@@ -522,7 +598,7 @@ export default function EstructuraFlow({
           </>
         )}
 
-        {/* ═══ Paso 4 — calificación económica ═══ */}
+        {/* ═══ Último paso de preguntas — horizonte ═══ */}
         {fase === "urgencia" && (
           <>
             <div className="h-1 bg-[#1E3A5F] rounded-full overflow-hidden">
@@ -543,63 +619,220 @@ export default function EstructuraFlow({
           </>
         )}
 
-        {/* ═══ Cierre ═══ */}
-        {fase === "cierre" && (
+        {/* ═══ Capa A — resultado visible para todos, antes de pedir contacto ═══ */}
+        {fase === "resultado" && rec && (
           <>
-            {enviado ? (
-              <div className="py-2">
-                <div className="text-center mb-4">
-                  <CheckCircle2 className="w-10 h-10 text-primary mx-auto mb-3" />
-                  <p className="text-white font-semibold mb-2">
-                    {urgencia === "investigando" ? "Avance guardado" : "Información recibida"}
-                  </p>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    {urgencia === "investigando"
-                      ? "Puedes volver a esta página y continuar donde quedaste. El contenido está aquí, no te enviamos nada aparte."
-                      : urgencia === "1-2-meses"
-                      ? "Te damos seguimiento cuando se acerque tu fecha estimada."
-                      : "Revisaremos tu caso y te indicaremos los siguientes pasos."}
-                  </p>
+            <div className="h-1 bg-[#1E3A5F] rounded-full overflow-hidden">
+              <div className="h-full bg-primary" style={{ width: "100%" }} />
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-start gap-2">
+                <Target className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-slate-500 text-[11px] font-bold tracking-wider uppercase">Tu objetivo</p>
+                  <p className="text-slate-300 text-sm leading-relaxed">{rec.objetivoTexto}</p>
                 </div>
-                {/* Invertir calificado: el paso lógico es el perfilador */}
-                {rutaEfectiva === "invertir" && (
-                  <a href="/gps?ref=diagnostico-estructura&intent=inversion">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mb-3">
-                      Continuar al perfilador de inversión <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </a>
-                )}
-                {rutaEfectiva === "operar" && respuestas.estado && respuestas.estado !== "otro" && respuestas.estado !== "no-seguro" && (
-                  <Button onClick={() => { setFase("confirmar"); }} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full mb-3">
-                    Continuar con mi LLC en {respuestas.estado} <ArrowRight className="w-4 h-4" />
-                  </Button>
-                )}
-                <Button onClick={() => porWhatsApp()} variant="outline" className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2">
-                  <MessageSquare className="w-4 h-4" /> Solicitar llamada de orientación
-                </Button>
               </div>
-            ) : (
-              <form onSubmit={enviarCierre} className="space-y-3">
-                <p className="text-white font-medium">
-                  {urgencia === "investigando" ? "Guardamos tu avance" : "Últimos datos y listo"}
-                </p>
-                <p className="text-slate-400 text-sm">
-                  {urgencia === "investigando"
-                    ? "Déjanos tu correo para que puedas continuar después desde donde quedaste."
-                    : "Con esto el equipo llega a la conversación con tu caso ya leído."}
-                </p>
-                {camposContacto(urgencia === "investigando")}
-                <Button type="submit" className="bg-primary hover:bg-blue-600 text-white rounded-xl py-4 w-full font-semibold gap-2">
-                  {urgencia === "investigando" ? "Guardar mi avance" : "Enviar mi diagnóstico"} <ArrowRight className="w-4 h-4" />
-                </Button>
-              </form>
+              <div className="flex items-start gap-2">
+                <Compass className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-slate-500 text-[11px] font-bold tracking-wider uppercase">Tu perfil orientativo</p>
+                  <p className="text-slate-300 text-sm leading-relaxed">{rec.perfil}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* La ruta recomendada, sin porcentajes de viabilidad y sin la receta técnica */}
+            <div className="bg-[#0B1F3A] border border-primary/30 rounded-xl p-4 space-y-2">
+              <p className="text-primary text-[11px] font-bold tracking-wider uppercase">Tu ruta recomendada</p>
+              <p className="text-white font-semibold leading-snug">{rec.mensajeNivel}</p>
+              <p className="text-slate-400 text-sm leading-relaxed">{rec.parrafo}</p>
+            </div>
+
+            {rec.hallazgo && (
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-slate-500 text-[11px] font-bold tracking-wider uppercase">Hallazgo principal</p>
+                  <p className="text-slate-300 text-sm leading-relaxed">{rec.hallazgo}</p>
+                </div>
+              </div>
             )}
+
+            <div>
+              <p className="text-slate-500 text-[11px] font-bold tracking-wider uppercase mb-2">Ruta general</p>
+              <ol className="space-y-1.5">
+                {rec.rutaGeneral.map((paso, i) => (
+                  <li key={paso} className="flex items-start gap-2">
+                    <span className="text-primary text-xs font-bold mt-0.5">{i + 1}.</span>
+                    <span className="text-slate-400 text-xs leading-relaxed">{paso}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <Button onClick={() => setFase("cierre")} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full font-semibold">
+              {rec.cta.label} <ArrowRight className="w-4 h-4" />
+            </Button>
+            {rec.ctaSecundario && (
+              <button onClick={() => setFase("cierre")} className="text-slate-400 text-sm hover:text-white transition-colors underline underline-offset-2 w-full">
+                {rec.ctaSecundario.label}
+              </button>
+            )}
+            <p className="text-slate-500 text-xs leading-relaxed">
+              En el siguiente paso te mostramos el detalle: qué favorece tu caso, qué conviene revisar y el material que corresponde.
+            </p>
             <AdvisoryDisclaimer variant="short" className="pt-3 border-t border-[#1E3A5F]" />
           </>
         )}
 
-        {/* ═══ Descalificaciones ═══ */}
-        {fase === "descalificado" && descalificacion === "estado" && (
+        {/* ═══ Captura de contacto — entre la Capa A y la Capa B ═══ */}
+        {fase === "cierre" && (
+          <form onSubmit={enviarCierre} className="space-y-3">
+            <p className="text-white font-medium">
+              {urgencia === "investigando" ? "Guardamos tu avance" : "Últimos datos y listo"}
+            </p>
+            <p className="text-slate-400 text-sm">
+              {urgencia === "investigando"
+                ? "Déjanos tus datos para ver el detalle de tu resultado y poder continuar después desde donde quedaste."
+                : "Con esto ves el detalle de tu resultado y el equipo llega a la conversación con tu caso ya leído."}
+            </p>
+            {/* Estado fuera de Texas y Florida: el diagnóstico sigue, solo necesitamos saber cuál */}
+            {respuestas.estado === "otro" && (
+              <div>
+                <label className="text-slate-400 text-xs block mb-1">¿En qué estado necesitas constituir?</label>
+                <input
+                  type="text"
+                  value={estadoSolicitado}
+                  onChange={(e) => setEstadoSolicitado(e.target.value)}
+                  placeholder="California, Nueva York, etc."
+                  className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
+                />
+              </div>
+            )}
+            {camposContacto()}
+            <Button type="submit" className="bg-primary hover:bg-blue-600 text-white rounded-xl py-4 w-full font-semibold gap-2">
+              Ver el detalle de mi resultado <ArrowRight className="w-4 h-4" />
+            </Button>
+            <AdvisoryDisclaimer variant="short" className="pt-3 border-t border-[#1E3A5F]" />
+          </form>
+        )}
+
+        {/* ═══ Capa B — ampliación después de capturar contacto ═══ */}
+        {fase === "ampliado" && rec && (
+          <>
+            <div className="flex items-start gap-2">
+              <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-white font-semibold">{rec.mensajeNivel}</p>
+                <p className="text-slate-400 text-xs leading-relaxed mt-1">
+                  {urgencia === "investigando"
+                    ? "Guardamos tu avance: puedes volver a esta página y continuar donde quedaste."
+                    : urgencia === "1-2-meses"
+                    ? "Te damos seguimiento cuando se acerque tu fecha estimada."
+                    : "Revisaremos tu caso y te indicaremos los siguientes pasos."}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <p className="text-primary text-[11px] font-bold tracking-wider uppercase mb-2">Lo que favorece tu caso</p>
+              {rec.factores.map((f) => (
+                <div key={f} className="flex items-start gap-2 mb-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
+                  <span className="text-slate-300 text-xs leading-relaxed">{f}</span>
+                </div>
+              ))}
+            </div>
+
+            {rec.temasPendientes.length > 0 && (
+              <div>
+                <p className="text-amber-400/90 text-[11px] font-bold tracking-wider uppercase mb-2">Temas pendientes</p>
+                <p className="text-slate-400 text-xs leading-relaxed mb-2">
+                  Identificamos {rec.temasPendientes.length}{" "}
+                  {rec.temasPendientes.length === 1 ? "elemento que conviene revisar" : "elementos que conviene revisar"} antes de constituir:
+                </p>
+                {rec.temasPendientes.map((t) => (
+                  <div key={t} className="flex items-start gap-2 mb-1.5">
+                    <ListChecks className="w-3.5 h-3.5 text-slate-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-slate-400 text-xs leading-relaxed">{t}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="bg-[#0B1F3A] border border-[#1E3A5F] rounded-xl p-4">
+              <p className="text-slate-500 text-[11px] font-bold tracking-wider uppercase mb-1.5">Por qué esta recomendación</p>
+              <p className="text-slate-400 text-xs leading-relaxed">{rec.motivo}</p>
+            </div>
+
+            {/* Recursos educativos: el material que corresponde a los pendientes detectados */}
+            <div className="border-t border-[#1E3A5F] pt-3 space-y-2">
+              <p className="text-slate-500 text-[11px] font-bold tracking-wider uppercase">Material que conviene leer</p>
+              {rec.recursos.map((r) => (
+                <details key={r.q} className="text-xs">
+                  <summary className="text-slate-400 cursor-pointer hover:text-white transition-colors">{r.q}</summary>
+                  <p className="text-slate-500 mt-1 leading-relaxed">{r.a}</p>
+                </details>
+              ))}
+            </div>
+
+            <div className="flex flex-col gap-3 pt-1">
+              <Button onClick={() => ejecutarCta(rec.cta)} className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full font-semibold">
+                {rec.cta.label} <ArrowRight className="w-4 h-4" />
+              </Button>
+              {rec.ctaSecundario && (
+                <Button onClick={() => ejecutarCta(rec.ctaSecundario!)} variant="outline" className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2">
+                  {rec.ctaSecundario.label} <ArrowRight className="w-4 h-4" />
+                </Button>
+              )}
+              {rec.cta.action !== "whatsapp" && (
+                <Button onClick={() => porWhatsApp()} variant="outline" className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2">
+                  <MessageSquare className="w-4 h-4" /> Solicitar llamada de orientación
+                </Button>
+              )}
+              {rutaEfectiva === "invertir" && (
+                <a href="/gps?ref=diagnostico-estructura&intent=inversion" className="text-primary text-xs font-semibold underline underline-offset-2 hover:text-blue-300 transition-colors text-center">
+                  Continuar al perfilador de inversión →
+                </a>
+              )}
+            </div>
+
+            {/* Retroalimentación: calidad de datos y prioridad de seguimiento (Capa C) */}
+            <div className="border-t border-[#1E3A5F] pt-3">
+              {retro ? (
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  {retro === "no"
+                    ? "Gracias. Revisaremos tu caso a mano: si el diagnóstico no lo refleja, la conversación empieza por ahí."
+                    : "Gracias, lo tomamos en cuenta para la conversación."}
+                </p>
+              ) : (
+                <>
+                  <p className="text-white text-sm font-medium mb-2">¿Esta recomendación refleja tu situación?</p>
+                  <div className="flex flex-col gap-2">
+                    {RETRO_OPCIONES.map((o) => (
+                      <button
+                        key={o.value}
+                        onClick={() => responderRetro(o.value)}
+                        className="text-left rounded-lg px-4 py-2.5 border border-[#1E3A5F] bg-[#0B1F3A] text-slate-300 text-xs hover:border-primary/60 hover:text-white transition-all"
+                      >
+                        {o.label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <AdvisoryDisclaimer variant="short" className="pt-3 border-t border-[#1E3A5F]" />
+          </>
+        )}
+
+        {/* ═══ Alcance del checkout en línea ═══
+            No es una salida del diagnóstico: el servicio en línea abre en Texas y
+            Florida, y para el resto referimos a un proveedor que sí lo cubre. */}
+        {fase === "fuera-de-alcance" && (
           <>
             <div className="flex items-center gap-2">
               <MapPin className="w-6 h-6 text-amber-400" />
@@ -622,41 +855,12 @@ export default function EstructuraFlow({
             </div>
             {camposContacto()}
             <Button
-              onClick={() => porWhatsApp(`Necesito constituir en ${estadoSolicitado.trim() || "un estado fuera de Texas y Florida"}.`, "descalificado_estado")}
+              onClick={() => porWhatsApp(`Necesito constituir en ${estadoSolicitado.trim() || "un estado fuera de Texas y Florida"}.`, "referido_estado_solicitado")}
               disabled={!estadoSolicitado.trim()}
               className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full disabled:opacity-50"
             >
               <MessageSquare className="w-4 h-4" /> Quiero el referido
             </Button>
-            <AdvisoryDisclaimer variant="short" className="pt-3 border-t border-[#1E3A5F]" />
-          </>
-        )}
-
-        {fase === "descalificado" && descalificacion === "capital" && (
-          <>
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-6 h-6 text-amber-400" />
-              <p className="text-white font-semibold">Hoy no calificas para el club de inversión</p>
-            </div>
-            <p>
-              Seremos claros: la estructura de inversión requiere una capacidad desde $100,000 USD. Eso no cierra
-              la puerta — puedes estructurar tu LLC para operar mientras construyes capital, y volver cuando estés listo.
-            </p>
-            <div className="flex flex-col gap-3 pt-1">
-              <Button
-                onClick={() => { setDescalificacion(null); setObjetivo("operar"); setRespuestas({}); setIdx(0); setFase("preguntas"); }}
-                className="bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4 w-full"
-              >
-                Estructurar mi LLC para operar <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button
-                onClick={() => porWhatsApp("Mi capacidad de inversión es menor a $100,000 USD y quiero orientación sobre por dónde empezar.", "descalificado_capital")}
-                variant="outline"
-                className="border-slate-600 text-white hover:bg-white/10 rounded-xl py-4 w-full gap-2"
-              >
-                <MessageSquare className="w-4 h-4" /> Quiero orientación
-              </Button>
-            </div>
             <AdvisoryDisclaimer variant="short" className="pt-3 border-t border-[#1E3A5F]" />
           </>
         )}
