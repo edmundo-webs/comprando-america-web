@@ -23,7 +23,7 @@
  */
 import {
   type Objetivo, type Urgencia,
-  ESTADO_HEADER, ESTADO_INFO, INVERSION_ERRORES, NO_INCLUYE,
+  ESTADO_HEADER, ESTADO_INFO, ESTADO_SIN_IMPUESTO, INVERSION_ERRORES, NO_INCLUYE,
   SENALES_NOTA, SOCIOS_ACLARACION, VISA_ACLARACION, EXPLORANDO_RESUMEN,
 } from "./diagnostico";
 
@@ -495,7 +495,10 @@ function recursosDe(rama: Rama, r: Record<string, string>, banderas: string[]): 
   const add = (q: string, a: string) => { if (!out.some((o) => o.q === q)) out.push({ q, a }); };
 
   if (banderas.includes("F2") || banderas.includes("F3") || !r.estado) {
-    add("¿Cómo se elige el estado?", `${ESTADO_HEADER} ${ESTADO_INFO.Texas.desc} ${ESTADO_INFO.Florida.desc}`);
+    add(
+      "¿Cómo se elige el estado?",
+      `${ESTADO_HEADER} ${ESTADO_SIN_IMPUESTO} Texas: ${ESTADO_INFO.Texas.desc.toLowerCase()} Florida: ${ESTADO_INFO.Florida.desc.toLowerCase()}`,
+    );
   }
   if (banderas.includes("F4") || banderas.includes("F5") || banderas.includes("F6")) {
     add("¿Qué cambia cuando hay socios u operador?", SOCIOS_ACLARACION);

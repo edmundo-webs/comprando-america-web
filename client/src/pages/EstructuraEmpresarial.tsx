@@ -9,6 +9,7 @@ import { useInView } from "@/hooks/useInView";
 import { postCrmLead, getSavedContact } from "@/lib/crm";
 import { trackPageVisit, visitedRecently } from "@/lib/journey";
 import EstructuraFlow, { type EstructuraFlowHandle } from "@/components/EstructuraFlow";
+import EstadoTexasFlorida from "@/components/EstadoTexasFlorida";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -277,68 +278,7 @@ export default function EstructuraEmpresarial() {
       </section>
 
       {/* ══════════════════════════════════════════
-          4. TEXAS O FLORIDA
-      ══════════════════════════════════════════ */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-10">
-                <p className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-3 font-mono">Estado</p>
-                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] font-bold">Texas o Florida</h2>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6 mb-8">
-                {[
-                  {
-                    state: "Texas",
-                    desc: "Puede tener sentido cuando la operación, presencia comercial, clientes, personal o administración estarán principalmente en Texas.",
-                    points: ["Sin impuesto estatal sobre la renta", "Ecosistema empresarial sólido", "Comunidad latina activa", "Ideal para operaciones comerciales"],
-                    checkout: "texas" as const,
-                  },
-                  {
-                    state: "Florida",
-                    desc: "Puede tener sentido cuando la actividad, propiedades, mercado o presencia principal se encontrarán en Florida.",
-                    points: ["Sin impuesto estatal sobre la renta", "Fuerte conexión con Latinoamérica", "Mercado inmobiliario activo", "Ideal para negocios digitales y bienes raíces"],
-                    checkout: "florida" as const,
-                  },
-                ].map((item) => (
-                  <div key={item.state} className="bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8">
-                    <h3 className="text-2xl font-bold text-[#0B1F3A] mb-3">{item.state}</h3>
-                    <p className="text-[#6B7280] text-sm mb-5 leading-relaxed">{item.desc}</p>
-                    <div className="space-y-2 mb-6">
-                      {item.points.map((p, i) => (
-                        <div key={i} className="flex items-center gap-2 text-sm text-[#374151]">
-                          <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                          {p}
-                        </div>
-                      ))}
-                    </div>
-                    <Button onClick={() => handleCheckout(item.checkout)} className="w-full bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-4">
-                      Iniciar LLC en {item.state} <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-
-              <div className="text-center">
-                <p className="text-[#6B7280] text-sm mb-4 italic">
-                  No elegimos el estado por popularidad. Lo elegimos con base en dónde y cómo funcionará la empresa.
-                </p>
-                <Button variant="outline" onClick={() => openModal("comparar-estados")} className="border-gray-300 text-[#374151] hover:bg-gray-100 gap-2 rounded-full">
-                  Comparar Texas y Florida
-                </Button>
-                <p className="text-[#9CA3AF] text-xs mt-4 max-w-xl mx-auto">
-                  La selección del estado no constituye asesoría fiscal o legal especializada. Cuando el caso tiene implicaciones más amplias, se recomendará consultar al especialista correspondiente.
-                </p>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          5. PROCESO
+          4. PROCESO
       ══════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
@@ -379,7 +319,7 @@ export default function EstructuraEmpresarial() {
       </section>
 
       {/* ══════════════════════════════════════════
-          6. FILTRO ESTRATÉGICO
+          5. FILTRO ESTRATÉGICO
       ══════════════════════════════════════════ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
@@ -425,7 +365,7 @@ export default function EstructuraEmpresarial() {
       </section>
 
       {/* ══════════════════════════════════════════
-          7. ALCANCES Y LÍMITES
+          6. ALCANCES Y LÍMITES
       ══════════════════════════════════════════ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
         <div className="container">
@@ -480,7 +420,7 @@ export default function EstructuraEmpresarial() {
       </section>
 
       {/* ══════════════════════════════════════════
-          8. AUTORIDAD
+          7. AUTORIDAD
       ══════════════════════════════════════════ */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
@@ -510,7 +450,7 @@ export default function EstructuraEmpresarial() {
       </section>
 
       {/* ══════════════════════════════════════════
-          9. FAQ
+          8. FAQ
       ══════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
@@ -522,7 +462,7 @@ export default function EstructuraEmpresarial() {
                 {[
                   { q: "¿Un extranjero puede ser propietario de una LLC?", a: "Sí. No se requiere ciudadanía, visa ni residencia. Solo se necesita un pasaporte válido y un Registered Agent en el estado donde se constituye la LLC." },
                   { q: "¿Necesito vivir en Estados Unidos?", a: "No. Puedes constituir y operar una LLC de forma remota desde cualquier país. Muchos empresarios latinoamericanos operan empresas en Estados Unidos sin residir allí." },
-                  { q: "¿Cuál es la diferencia entre una LLC en Texas y Florida?", a: "Ambos estados no tienen impuesto estatal sobre la renta. Texas es favorable para operaciones comerciales y tiene un ecosistema empresarial sólido. Florida es preferida para bienes raíces, negocios digitales y por su conexión con Latinoamérica. La elección depende de dónde estará el centro de tu operación." },
+                  { q: "¿Cuál es la diferencia entre una LLC en Texas y Florida?", a: "Ambos estados no tienen impuesto estatal sobre la renta. Texas es favorable para operaciones comerciales y tiene un ecosistema empresarial sólido. Florida es preferida para bienes raíces, negocios digitales y por su conexión con Latinoamérica. La elección depende de dónde estará el centro de tu operación.", modal: "comparar-estados" },
                   { q: "¿Qué es el EIN?", a: "El Employer Identification Number es el número de identificación fiscal federal de tu empresa. Es necesario para abrir cuentas bancarias, contratar empleados, celebrar contratos y cumplir con obligaciones fiscales ante el IRS." },
                   { q: "¿La cuenta bancaria está incluida?", a: "No. Te entregamos orientación inicial y la documentación necesaria para el proceso bancario, pero la apertura de cuenta es un proceso independiente que depende del banco. Te guiamos en los pasos siguientes." },
                   { q: "¿La LLC me permite obtener una visa?", a: "Una LLC puede formar parte de una operación utilizada dentro de una estrategia migratoria, como la visa E-2. Sin embargo, constituir la empresa por sí sola no crea elegibilidad ni garantiza ninguna visa. Si tu objetivo incluye residencia o visa, conviene revisar la estructura antes de constituir." },
@@ -533,7 +473,10 @@ export default function EstructuraEmpresarial() {
                 ].map((faq, i) => (
                   <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl px-6">
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5 text-sm">{faq.q}</AccordionTrigger>
-                    <AccordionContent className="text-slate-400 leading-relaxed pb-5 text-sm">{faq.a}</AccordionContent>
+                    <AccordionContent className="text-slate-400 leading-relaxed pb-5 text-sm">
+                      {faq.a}
+                      {faq.modal && <ContextLink onClick={() => openModal(faq.modal)}>Ver la comparación operativa</ContextLink>}
+                    </AccordionContent>
                   </AccordionItem>
                 ))}
               </Accordion>
@@ -541,6 +484,13 @@ export default function EstructuraEmpresarial() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════
+          9. TEXAS O FLORIDA
+          Después de las preguntas frecuentes y antes del cierre: a esta altura la
+          persona ya entendió el servicio, y lo que falta es el criterio de estado.
+      ══════════════════════════════════════════ */}
+      <EstadoTexasFlorida />
 
       {/* ══════════════════════════════════════════
           10. CIERRE
