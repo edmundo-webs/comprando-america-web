@@ -20,7 +20,7 @@
  *
  * "Solo quiero mi LLC" es una salida válida y sin fricción en cualquier punto.
  */
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, X, CheckCircle2, XCircle, ShoppingCart, Compass, MessageSquare, AlertTriangle, MapPin, Target, ListChecks } from "lucide-react";
@@ -41,6 +41,9 @@ import { type Cta, type Retroalimentacion, recomendarRuta, ramaEfectiva, capaCCa
 type Fase = "directo" | "confirmar" | "objetivo" | "preguntas" | "urgencia" | "resultado" | "cierre" | "ampliado" | "fuera-de-alcance";
 
 const GRUPO_EMPRESARIAL_URL = "/grupo-empresarial-edmundo";
+
+/** Permite que un disparador externo (el CTA fijo móvil) abra el diagnóstico. */
+export type EstructuraFlowHandle = { abrirDiagnostico: () => void };
 
 const RETRO_OPCIONES: { value: Retroalimentacion; label: string }[] = [
   { value: "si", label: "Sí, quiero avanzar" },
@@ -96,6 +99,8 @@ export default function EstructuraFlow({
   className = "",
   anchorId,
   variant = "dos-puertas",
+  ref,
+  onOpenChange,
 }: {
   /** "web_ca_llc" | "web_ca_inversion" — de qué página viene el lead. */
   sourceSlug: string;
@@ -111,6 +116,14 @@ export default function EstructuraFlow({
    * Las dos puertas siguen existiendo en ambos casos.
    */
   variant?: "dos-puertas" | "diagnostico-primero";
+  /** Handle opcional para abrir el diagnóstico desde fuera del componente. */
+  ref?: React.Ref<EstructuraFlowHandle>;
+  /**
+   * Avisa cuando el modal se abre o se cierra. La página lo usa para esconder su
+   * CTA fijo de móvil: el modal vive dentro de un contenedor animado, así que su
+   * z-index no alcanza a un elemento fijo de la página y quedaría encima.
+   */
+  onOpenChange?: (abierto: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [fase, setFase] = useState<Fase>("objetivo");
@@ -142,6 +155,15 @@ export default function EstructuraFlow({
     setKnownName(saved.name || null);
     setContacto((p) => ({ ...p, name: p.name || saved.name || "", email: p.email || saved.email || "", phone: p.phone || saved.phone || "" }));
   }, []);
+
+  /* El CTA fijo de móvil vive fuera de este componente y necesita abrir el
+     diagnóstico de esta misma instancia (el modal es fixed: da igual el scroll). */
+  useImperativeHandle(ref, () => ({ abrirDiagnostico }));
+
+  useEffect(() => {
+    onOpenChange?.(open);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   /* ─── Motor de Recomendación de Ruta ───
      Se recalcula con cada respuesta; solo se muestra a partir de la Capa A. */

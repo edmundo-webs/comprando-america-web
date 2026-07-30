@@ -2,13 +2,13 @@
  * /estructura-empresarial-en-estados-unidos — URL canónica del servicio LLC
  * /llc redirige aquí con 301 permanente
  */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
 import { postCrmLead, getSavedContact } from "@/lib/crm";
 import { trackPageVisit, visitedRecently } from "@/lib/journey";
-import EstructuraFlow from "@/components/EstructuraFlow";
+import EstructuraFlow, { type EstructuraFlowHandle } from "@/components/EstructuraFlow";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -125,6 +125,11 @@ export default function EstructuraEmpresarial() {
      El pre-llenado del contacto lo maneja EstructuraFlow con el dato guardado localmente. */
   const [visitedInversion, setVisitedInversion] = useState(false);
 
+  /* El CTA fijo de móvil abre el diagnóstico de la entrada del hero, y se esconde
+     mientras el flujo está abierto para no quedar encima del modal. */
+  const entradaHero = useRef<EstructuraFlowHandle>(null);
+  const [flujoAbierto, setFlujoAbierto] = useState(false);
+
   useEffect(() => {
     trackPageVisit("llc");
     const saved = getSavedContact();
@@ -194,10 +199,12 @@ export default function EstructuraEmpresarial() {
               {/* Mismo punto de entrada de dos puertas de toda la página, con el diagnóstico
                   al frente: aquí la decisión todavía no está tomada. */}
               <EstructuraFlow
+                ref={entradaHero}
                 sourceSlug="web_ca_llc"
                 onCheckout={handleCheckout}
                 className="max-w-2xl"
                 variant="diagnostico-primero"
+                onOpenChange={setFlujoAbierto}
               />
             </div>
           </FadeIn>
@@ -550,7 +557,7 @@ export default function EstructuraEmpresarial() {
               <div className="text-4xl font-bold text-white mb-2">USD 1,499</div>
               <p className="text-slate-500 text-sm mb-10">Pago único por la formación de la LLC y los servicios incluidos.</p>
               {/* Misma puerta de entrada del hero — un solo mecanismo en toda la página */}
-              <EstructuraFlow sourceSlug="web_ca_llc" onCheckout={handleCheckout} className="text-left" anchorId="entrada-estructura" />
+              <EstructuraFlow sourceSlug="web_ca_llc" onCheckout={handleCheckout} className="text-left" anchorId="entrada-estructura" onOpenChange={setFlujoAbierto} />
             </FadeIn>
           </div>
         </div>
@@ -563,10 +570,18 @@ export default function EstructuraEmpresarial() {
         </div>
       </section>
 
-      {/* ── Sticky mobile CTA ── */}
-      <div className="fixed bottom-0 left-0 right-0 md:hidden bg-[#0B1F3A] border-t border-[#1E3A5F] p-4 z-40">
-        <button onClick={() => handleCheckout("texas")} className="w-full bg-primary hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all text-sm">
-          Iniciar mi LLC — $1,499 USD
+      {/* ── CTA fijo en móvil ──
+          Antes saltaba al checkout de Texas sin preguntar el estado, incluso a quien
+          iba a operar en Florida. Ahora abre el diagnóstico; la compra directa sigue
+          a un toque desde dentro ("Solo quiero mi LLC" está en cada paso). */}
+      {/* El pr- deja libre la esquina donde flota el botón de WhatsApp (bottom-6 right-6),
+          que antes tapaba el final de la etiqueta. */}
+      <div className={`fixed bottom-0 left-0 right-0 bg-[#0B1F3A] border-t border-[#1E3A5F] p-4 pr-[92px] z-40 ${flujoAbierto ? "hidden" : "md:hidden"}`}>
+        <button
+          onClick={() => entradaHero.current?.abrirDiagnostico()}
+          className="w-full bg-primary hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition-all text-sm inline-flex items-center justify-center gap-2"
+        >
+          Hacer el diagnóstico <ArrowRight className="w-4 h-4" />
         </button>
       </div>
 
