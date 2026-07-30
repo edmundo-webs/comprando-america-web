@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { trpc } from "@/lib/trpc";
+import { postCrmLead } from "@/lib/crm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { toast } from "sonner";
+
+/* ─── Destinos post-registro ─── */
+const WHATSAPP_GRUPO = "https://chat.whatsapp.com/HIeLRj58zBsBweJuPjp2uN";
+const YOUTUBE_CANAL = "https://www.youtube.com/@ComprandoAmerica";
 
 /* ─── Design tokens ─── */
 const NAVY      = "#0B1F3A";
@@ -415,31 +420,73 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
     nombreCompleto: "", countryCode: "+52", whatsapp: "", email: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const registerMutation = trpc.leads.create.useMutation({
-    onSuccess: () => {
-      setSubmitted(true);
-      toast.success("¡Registro exitoso! Te esperamos el 22 de agosto.");
-      setTimeout(() => { window.location.href = "https://chat.whatsapp.com/HIeLRj58zBsBweJuPjp2uN"; }, 1500);
-    },
-    onError: (err) => { toast.error(err.message || "Ocurrió un error. Intenta de nuevo."); },
-  });
+  const registerMutation = trpc.leads.create.useMutation();
 
   const scrollToForm = () =>
     document.getElementById(registroId)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (enviando) return;
     if (!formData.nombreCompleto.trim()) { toast.error("Por favor ingresa tu nombre completo."); return; }
     if (!formData.whatsapp.trim())       { toast.error("Por favor ingresa tu número de WhatsApp."); return; }
     if (!formData.email.includes("@"))   { toast.error("Por favor ingresa un correo electrónico válido."); return; }
-    registerMutation.mutate({
-      nombreCompleto: formData.nombreCompleto.trim(),
-      whatsapp: `${formData.countryCode.replace("CA", "")} ${formData.whatsapp.trim()}`,
-      email: formData.email.trim(),
-      fuente,
-    });
+
+    const nombreCompleto = formData.nombreCompleto.trim();
+    const email = formData.email.trim();
+    const lada = formData.countryCode.replace("CA", "");
+    const numero = formData.whatsapp.trim();
+
+    setEnviando(true);
+    // El lead se manda a dos destinos independientes: la tabla `ca_leads` del
+    // sitio (vía tRPC) y el CRM público. Si uno de los dos está caído el
+    // registro del visitante NO se pierde, y solo mostramos error si fallan
+    // ambos — antes un 500 de la base tiraba el registro completo.
+    const [dbOk, crmOk] = await Promise.all([
+      registerMutation
+        .mutateAsync({ nombreCompleto, whatsapp: `${lada} ${numero}`, email, fuente })
+        .then(() => true)
+        .catch((err) => { console.error("[cumbre] no se pudo guardar en ca_leads:", err); return false; }),
+      postCrmLead(
+        {
+          name: nombreCompleto,
+          email,
+          phone: `${lada}${numero}`,
+          sourceSlug: "web_ca_cumbre",
+          hito: "registro_cumbre",
+          stage: "partial",
+          tags: [`fuente:${fuente}`],
+        },
+        "",
+      ),
+    ]);
+    setEnviando(false);
+
+    if (!dbOk && !crmOk) {
+      // Nunca mostramos el mensaje crudo del backend al visitante.
+      toast.error("No pudimos completar tu registro. Revisa tu conexión e inténtalo de nuevo.");
+      return;
+    }
+
+    setSubmitted(true);
+    toast.success("¡Registro exitoso! Te esperamos el 22 de agosto.");
+    setTimeout(() => { window.location.href = WHATSAPP_GRUPO; }, 1500);
   };
+
+  // Red de seguridad contra el submit nativo del formulario: si por cualquier
+  // motivo el handler delegado de React no llegara a correr, este listener
+  // nativo evita que el navegador recargue la página y borre lo que el
+  // visitante escribió. handleSubmit ya hace preventDefault por su cuenta.
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+    const blockNativeSubmit = (ev: Event) => ev.preventDefault();
+    form.addEventListener("submit", blockNativeSubmit);
+    return () => form.removeEventListener("submit", blockNativeSubmit);
+  }, [submitted]);
 
   return (
     <div style={{ fontFamily: FB, background: NAVY_DEEP, color: "#fff", overflowX: "hidden" }}>
@@ -987,7 +1034,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               <p style={{ color: OFF_WHITE, marginBottom: 8 }}>Te esperamos el sábado 22 de agosto.</p>
               <p style={{ color: SLATE, fontSize: "0.85rem", marginBottom: 28 }}>Uniéndote al grupo de WhatsApp en un momento…</p>
               <a
-                href="https://chat.whatsapp.com/HIeLRj58zBsBweJuPjp2uN"
+                href={WHATSAPP_GRUPO}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   background: "#25D366", color: "#fff", fontWeight: 600,
@@ -1000,6 +1047,28 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
                 </svg>
                 Unirme al grupo de WhatsApp
               </a>
+              {/* El día del evento la transmisión es por YouTube: dejamos el
+                  canal a la vista para que se suscriban desde ya. El redirect
+                  automático sigue siendo únicamente el grupo de WhatsApp. */}
+              <div style={{ marginTop: 18 }}>
+                <a
+                  href={YOUTUBE_CANAL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    color: OFF_WHITE, fontWeight: 500,
+                    padding: "10px 20px", borderRadius: 40,
+                    border: `1px solid ${DIVIDER}`,
+                    textDecoration: "none", fontSize: "0.85rem",
+                  }}
+                >
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="#FF0000">
+                    <path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.5A3.02 3.02 0 0 0 .5 6.19C0 8.08 0 12 0 12s0 3.92.5 5.81a3.02 3.02 0 0 0 2.12 2.14c1.88.5 9.38.5 9.38.5s7.5 0 9.38-.5a3.02 3.02 0 0 0 2.12-2.14C24 15.92 24 12 24 12s0-3.92-.5-5.81zM9.55 15.57V8.43L15.82 12l-6.27 3.57z"/>
+                  </svg>
+                  Suscribirme al canal de YouTube
+                </a>
+              </div>
             </div>
           ) : (
             <div style={{
@@ -1008,7 +1077,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               borderRadius: 8, padding: "40px 44px",
               maxWidth: 500, margin: "0 auto", textAlign: "left",
             }}>
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+              <form ref={formRef} onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 {/* Nombre */}
                 <div>
                   <label style={{ display: "block", fontFamily: FB, fontSize: "0.8rem", color: SLATE, marginBottom: 8, letterSpacing: "0.05em" }}>
@@ -1094,18 +1163,18 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
 
                 <button
                   type="submit"
-                  disabled={registerMutation.isPending}
+                  disabled={enviando}
                   className="cd-btn"
                   style={{
                     background: GOLD, color: NAVY, fontFamily: FB, fontWeight: 700,
                     fontSize: "0.88rem", letterSpacing: "0.1em",
                     padding: "16px", borderRadius: 3, border: "none",
-                    cursor: "pointer", transition: "background 0.2s ease",
-                    width: "100%", opacity: registerMutation.isPending ? 0.7 : 1,
+                    cursor: enviando ? "wait" : "pointer", transition: "background 0.2s ease",
+                    width: "100%", opacity: enviando ? 0.7 : 1,
                     textTransform: "uppercase",
                   }}
                 >
-                  {registerMutation.isPending ? (
+                  {enviando ? (
                     <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
                       <span style={{
                         width: 14, height: 14,

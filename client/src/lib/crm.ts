@@ -57,12 +57,17 @@ export interface CrmLeadPayload {
   [key: string]: unknown;
 }
 
-export async function postCrmLead(payload: CrmLeadPayload, honeypot: string): Promise<void> {
-  if (honeypot) return; // bot llenó el campo oculto — omitir
+/**
+ * Envía el lead al CRM. Nunca lanza: devuelve `true` solo si el CRM confirmó
+ * que lo guardó, para que quien lo llame pueda decidir si el registro del
+ * visitante quedó realmente asegurado en algún destino.
+ */
+export async function postCrmLead(payload: CrmLeadPayload, honeypot: string): Promise<boolean> {
+  if (honeypot) return false; // bot llenó el campo oculto — omitir
   const visitorId = getVisitorId();
   const journey = getJourney();
   try {
-    await fetch(`${CRM_API_URL}/api/public/leads`, {
+    const res = await fetch(`${CRM_API_URL}/api/public/leads`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -73,7 +78,13 @@ export async function postCrmLead(payload: CrmLeadPayload, honeypot: string): Pr
         ...parseUtm(),
       }),
     });
+    if (!res.ok) {
+      console.warn("[CRM] lead post rechazado:", res.status, await res.text().catch(() => ""));
+      return false;
+    }
+    return true;
   } catch (err) {
     console.warn("[CRM] lead post failed (best-effort):", err);
+    return false;
   }
 }
