@@ -95,6 +95,7 @@ export default function EstructuraFlow({
   onCheckout,
   className = "",
   anchorId,
+  variant = "dos-puertas",
 }: {
   /** "web_ca_llc" | "web_ca_inversion" — de qué página viene el lead. */
   sourceSlug: string;
@@ -103,6 +104,13 @@ export default function EstructuraFlow({
   className?: string;
   /** Ancla opcional. Solo una instancia por página debe declararla (ids únicos). */
   anchorId?: string;
+  /**
+   * Jerarquía de la entrada. "dos-puertas" las presenta como equivalentes.
+   * "diagnostico-primero" pone el diagnóstico al frente y deja la compra directa
+   * como salida discreta: para heros que abren con una pregunta, no con una oferta.
+   * Las dos puertas siguen existiendo en ambos casos.
+   */
+  variant?: "dos-puertas" | "diagnostico-primero";
 }) {
   const [open, setOpen] = useState(false);
   const [fase, setFase] = useState<Fase>("objetivo");
@@ -438,8 +446,32 @@ export default function EstructuraFlow({
 
   return (
     <>
-      {/* ─── Dos puertas ─── */}
+      {/* ─── Entrada ─── */}
       <div id={anchorId} className={`scroll-mt-24 ${className}`}>
+        {variant === "diagnostico-primero" ? (
+          /* El diagnóstico es la acción principal; comprar directo sigue a un clic. */
+          <div className="max-w-xl">
+            <button
+              onClick={abrirDiagnostico}
+              className="text-left bg-primary hover:bg-blue-600 rounded-2xl p-6 transition-all shadow-lg shadow-blue-600/20 w-full"
+            >
+              <Compass className="w-6 h-6 text-white mb-3" />
+              <p className="text-white font-semibold mb-1">Hacer el diagnóstico</p>
+              <p className="text-blue-100/80 text-sm leading-relaxed">
+                Unas preguntas sobre tu caso y te decimos qué ruta corresponde hoy — incluso si esa ruta no es una LLC.
+              </p>
+              <span className="inline-flex items-center gap-1 text-white text-sm font-semibold mt-3">
+                Comenzar <ArrowRight className="w-4 h-4" />
+              </span>
+            </button>
+            <button
+              onClick={abrirDirecto}
+              className="text-slate-400 text-sm hover:text-white transition-colors underline underline-offset-4 mt-4 inline-flex items-center gap-1"
+            >
+              Ya sé que quiero mi LLC, ir directo al proceso <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        ) : (
         <div className="grid sm:grid-cols-2 gap-4">
           <button
             onClick={abrirDirecto}
@@ -465,6 +497,7 @@ export default function EstructuraFlow({
             </span>
           </button>
         </div>
+        )}
       </div>
 
       <FlowModal open={open} onClose={cerrar} title={tituloModal}>

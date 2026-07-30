@@ -167,20 +167,22 @@ export default function EstructuraEmpresarial() {
               <p className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-6 font-mono">
                 Estructura Empresarial · Texas & Florida
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-[1.1] mb-6 font-bold">
-                Abre tu LLC en Texas o Florida{" "}
-                <span className="text-primary">con claridad desde el inicio</span>
+              {/* El hero abre con la pregunta, no con la oferta: quien llega aquí todavía
+                  está decidiendo. El precio y lo que incluye el servicio viven más abajo,
+                  en las secciones que corresponden. */}
+              <h1 className="text-3xl md:text-4xl lg:text-5xl text-white leading-[1.15] mb-6 font-bold">
+                Hay una pregunta que casi nadie se hace antes de abrir una empresa en Estados Unidos:{" "}
+                <span className="text-primary">¿realmente necesitas una?</span>
               </h1>
-              <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
-                Registro estatal, EIN y Registered Agent por un año. Si aún no sabes en qué estado
-                conviene constituir o si tu caso necesita otra estructura, el diagnóstico lo resuelve
-                en un par de minutos.
-              </p>
-
-              {/* Price */}
-              <div className="inline-flex items-baseline gap-2 mb-8">
-                <span className="text-4xl font-bold text-white">USD 1,499</span>
-                <span className="text-slate-400 text-sm">pago único</span>
+              <div className="space-y-4 mb-8 max-w-2xl">
+                <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
+                  Miles de empresarios comienzan buscando una LLC. Muy pocos comienzan preguntándose si
+                  esa es realmente la estructura correcta para el proyecto que quieren construir.
+                </p>
+                <p className="text-slate-300 text-lg md:text-xl leading-relaxed">
+                  En Comprando América desarrollamos un diagnóstico para ayudarte a responder esa
+                  pregunta antes de tomar una decisión.
+                </p>
               </div>
 
               {/* Continuidad: solo con señal real y reciente (ver lib/journey) */}
@@ -189,15 +191,14 @@ export default function EstructuraEmpresarial() {
                   Vimos que hace un momento revisaste la guía de estructura de inversión. Retomamos desde aquí.
                 </p>
               )}
-              {/* Punto de entrada único — dos puertas. Reemplaza los dos CTA paralelos
-                  y la tarjeta de 3 opciones que estaba duplicada en ambas páginas. */}
-              <EstructuraFlow sourceSlug="web_ca_llc" onCheckout={handleCheckout} className="mb-10 max-w-2xl" />
-
-              <div className="flex flex-wrap gap-6 text-slate-400 text-sm">
-                <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> Registro estatal incluido</span>
-                <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> EIN federal</span>
-                <span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-primary" /> Registered Agent 1 año</span>
-              </div>
+              {/* Mismo punto de entrada de dos puertas de toda la página, con el diagnóstico
+                  al frente: aquí la decisión todavía no está tomada. */}
+              <EstructuraFlow
+                sourceSlug="web_ca_llc"
+                onCheckout={handleCheckout}
+                className="max-w-2xl"
+                variant="diagnostico-primero"
+              />
             </div>
           </FadeIn>
         </div>
