@@ -59,6 +59,12 @@ export const REGISTRO_FUERA_DEL_ESTADO = {
     "Registrar en un estado distinto al que operas no elimina obligaciones: las duplica, porque el estado donde realmente operas te va a exigir registrarte de todas formas. Hay casos donde constituir en otro estado tiene sentido —estructuras con varios socios, ciertos vehículos de inversión, planeación patrimonial— pero son la excepción y se identifican antes de constituir, no después.",
   ],
 
+  /** Resumen visible de la sección educativa, antes de expandir el análisis.
+      Es manejo de objeción, no contenido informativo: responde la creencia en un
+      párrafo y el resto queda a un clic. */
+  seccionEducativaResumen:
+    "Tienen usos legítimos, pero casi siempre para otro problema. La razón es que la obligación fiscal sigue a la actividad, no al estado de registro: si constituyes en Wyoming y operas en Texas, Texas te va a exigir registrarte también. Terminas con dos registros, dos agentes y dos calendarios de cumplimiento — y sin ahorro, porque el federal se paga igual y el estatal se determina por dónde operas.",
+
   /** Sección educativa de la página, con la aritmética completa. */
   seccionEducativa: [
     "Este es el punto que casi nunca aparece en los videos. Donde operas, tienes clientes, personal o propiedades, hay nexo fiscal — y el estado donde presentaste el papel no lo cambia.",
@@ -73,6 +79,8 @@ export const REGISTRO_FUERA_DEL_ESTADO = {
 export const ESTADOS_POPULARES = {
   eyebrow: "Estados",
   titulo: "¿Y Wyoming, Delaware o Nevada?",
+  /* Primer párrafo del análisis completo, dentro del bloque expandible. No va
+     junto al resumen: si se muestran los dos, la sección vuelve a crecer. */
   intro:
     "Es la pregunta que más nos hacen, y viene casi siempre del mismo lugar: contenido en redes que presenta esos estados como la decisión inteligente por defecto. Vale la pena responderla con calma, porque la respuesta corta —“depende”— no le sirve a nadie.",
   bloques: [
