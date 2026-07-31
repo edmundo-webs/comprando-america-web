@@ -10,6 +10,8 @@ import { postCrmLead, getSavedContact } from "@/lib/crm";
 import { trackPageVisit, visitedRecently } from "@/lib/journey";
 import EstructuraFlow, { type EstructuraFlowHandle } from "@/components/EstructuraFlow";
 import EstadoTexasFlorida from "@/components/EstadoTexasFlorida";
+import EstadosPopulares from "@/components/EstadosPopulares";
+import { type Faq, FAQ_ESTADOS_PRIORITARIAS, FAQ_ESTADOS_SUGERIDAS } from "@/lib/estados";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -47,6 +49,24 @@ function handleCheckout(state: "texas" | "florida") {
   window.location.href = CLOVER[state];
 }
 
+/* ─── Preguntas frecuentes ───
+   Las de estado van al inicio (mayor volumen de búsqueda) y las sugeridas al
+   final. Las respuestas admiten varios párrafos. */
+const FAQS: Faq[] = [
+  ...FAQ_ESTADOS_PRIORITARIAS,
+  { q: "¿Un extranjero puede ser propietario de una LLC?", a: "Sí. No se requiere ciudadanía, visa ni residencia. Solo se necesita un pasaporte válido y un Registered Agent en el estado donde se constituye la LLC." },
+  { q: "¿Necesito vivir en Estados Unidos?", a: "No. Puedes constituir y operar una LLC de forma remota desde cualquier país. Muchos empresarios latinoamericanos operan empresas en Estados Unidos sin residir allí." },
+  { q: "¿Cuál es la diferencia entre una LLC en Texas y Florida?", a: "Ambos estados no tienen impuesto estatal sobre la renta. Texas es favorable para operaciones comerciales y tiene un ecosistema empresarial sólido. Florida es preferida para bienes raíces, negocios digitales y por su conexión con Latinoamérica. La elección depende de dónde estará el centro de tu operación.", modal: "comparar-estados" },
+  { q: "¿Qué es el EIN?", a: "El Employer Identification Number es el número de identificación fiscal federal de tu empresa. Es necesario para abrir cuentas bancarias, contratar empleados, celebrar contratos y cumplir con obligaciones fiscales ante el IRS." },
+  { q: "¿La cuenta bancaria está incluida?", a: "No. Te entregamos orientación inicial y la documentación necesaria para el proceso bancario, pero la apertura de cuenta es un proceso independiente que depende del banco. Te guiamos en los pasos siguientes." },
+  { q: "¿La LLC me permite obtener una visa?", a: "Una LLC puede formar parte de una operación utilizada dentro de una estrategia migratoria, como la visa E-2. Sin embargo, constituir la empresa por sí sola no crea elegibilidad ni garantiza ninguna visa. Si tu objetivo incluye residencia o visa, conviene revisar la estructura antes de constituir." },
+  { q: "¿Qué obligaciones continúan después de formar la empresa?", a: "Después del primer año, la LLC genera obligaciones de mantenimiento: renovación del Registered Agent, reportes estatales según el estado, cumplimiento fiscal federal (declaraciones de información), y en algunos casos reportes de beneficiarios (BOI). Al cerrar el proceso, aclaramos las más comunes para que sepas qué esperar." },
+  { q: "¿Puedo incluir socios?", a: "Sí. Si la LLC tendrá más de un miembro, es importante que el Operating Agreement refleje claramente los derechos, responsabilidades y porcentajes de participación de cada socio. Cuando hay socios, conviene revisar la estructura con más detalle antes de constituir." },
+  { q: "¿Cuándo necesito una estructura más avanzada?", a: "Cuando participan varios socios, cuando se recibirá inversión de terceros, cuando hay múltiples propiedades o activos, cuando existe una empresa en otro país relacionada, o cuando se evalúa una visa vinculada a la operación. En esos casos, conviene una revisión de estructura antes de constituir." },
+  { q: "¿Qué pasa después del primer año del Registered Agent?", a: "El Registered Agent debe renovarse anualmente. Al acercarse el vencimiento, te informamos sobre las opciones de renovación. No renovarlo puede causar problemas de estatus de la LLC ante el estado." },
+  ...FAQ_ESTADOS_SUGERIDAS,
+];
+
 /* ─── SEO ─── */
 const PAGE_SEO = {
   title: "Crear una LLC en Texas o Florida | Comprando América",
@@ -57,6 +77,11 @@ const PAGE_SEO = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: [
+      ...FAQ_ESTADOS_PRIORITARIAS.map((faq) => ({
+        "@type": "Question",
+        name: faq.q,
+        acceptedAnswer: { "@type": "Answer", text: typeof faq.a === "string" ? faq.a : faq.a.join(" ") },
+      })),
       { "@type": "Question", name: "¿Un extranjero puede ser propietario de una LLC?", acceptedAnswer: { "@type": "Answer", text: "Sí. No se requiere ciudadanía, visa ni residencia. Solo pasaporte y un Registered Agent." } },
       { "@type": "Question", name: "¿Cuánto cuesta formar una LLC en Texas o Florida?", acceptedAnswer: { "@type": "Answer", text: "El servicio de Comprando América tiene un costo de $1,499 USD, pago único, e incluye registro estatal, Registered Agent por un año, EIN y documentación organizada." } },
       { "@type": "Question", name: "¿Qué es el EIN?", acceptedAnswer: { "@type": "Answer", text: "Es el Employer Identification Number: el número de identificación fiscal federal de la empresa. Es necesario para abrir cuentas bancarias, contratar y cumplir obligaciones fiscales." } },
@@ -320,8 +345,11 @@ export default function EstructuraEmpresarial() {
 
       {/* ══════════════════════════════════════════
           5. FILTRO ESTRATÉGICO
+          Junto con 5b forma una secuencia editorial: la LLC no siempre es la
+          respuesta → los estados famosos tampoco lo son. Mismo fondo y menos
+          padding entre las dos para que no parezcan dos secciones repetidas.
       ══════════════════════════════════════════ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
+      <section className="bg-[#F5F7FA] pt-20 md:pt-28 pb-10 md:pb-12">
         <div className="container">
           <FadeIn>
             <div className="max-w-4xl mx-auto">
@@ -363,6 +391,12 @@ export default function EstructuraEmpresarial() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════
+          5b. ESTADOS POPULARES
+          Continúa la sección anterior. El contraste lo restablece la 6.
+      ══════════════════════════════════════════ */}
+      <EstadosPopulares />
 
       {/* ══════════════════════════════════════════
           6. ALCANCES Y LÍMITES
@@ -459,23 +493,14 @@ export default function EstructuraEmpresarial() {
               <p className="text-primary text-xs font-bold tracking-[0.3em] uppercase mb-3 font-mono text-center">FAQ</p>
               <h2 className="text-3xl md:text-4xl text-white font-bold text-center mb-12">Preguntas frecuentes</h2>
               <Accordion type="single" collapsible className="space-y-4">
-                {[
-                  { q: "¿Un extranjero puede ser propietario de una LLC?", a: "Sí. No se requiere ciudadanía, visa ni residencia. Solo se necesita un pasaporte válido y un Registered Agent en el estado donde se constituye la LLC." },
-                  { q: "¿Necesito vivir en Estados Unidos?", a: "No. Puedes constituir y operar una LLC de forma remota desde cualquier país. Muchos empresarios latinoamericanos operan empresas en Estados Unidos sin residir allí." },
-                  { q: "¿Cuál es la diferencia entre una LLC en Texas y Florida?", a: "Ambos estados no tienen impuesto estatal sobre la renta. Texas es favorable para operaciones comerciales y tiene un ecosistema empresarial sólido. Florida es preferida para bienes raíces, negocios digitales y por su conexión con Latinoamérica. La elección depende de dónde estará el centro de tu operación.", modal: "comparar-estados" },
-                  { q: "¿Qué es el EIN?", a: "El Employer Identification Number es el número de identificación fiscal federal de tu empresa. Es necesario para abrir cuentas bancarias, contratar empleados, celebrar contratos y cumplir con obligaciones fiscales ante el IRS." },
-                  { q: "¿La cuenta bancaria está incluida?", a: "No. Te entregamos orientación inicial y la documentación necesaria para el proceso bancario, pero la apertura de cuenta es un proceso independiente que depende del banco. Te guiamos en los pasos siguientes." },
-                  { q: "¿La LLC me permite obtener una visa?", a: "Una LLC puede formar parte de una operación utilizada dentro de una estrategia migratoria, como la visa E-2. Sin embargo, constituir la empresa por sí sola no crea elegibilidad ni garantiza ninguna visa. Si tu objetivo incluye residencia o visa, conviene revisar la estructura antes de constituir." },
-                  { q: "¿Qué obligaciones continúan después de formar la empresa?", a: "Después del primer año, la LLC genera obligaciones de mantenimiento: renovación del Registered Agent, reportes estatales según el estado, cumplimiento fiscal federal (declaraciones de información), y en algunos casos reportes de beneficiarios (BOI). Al cerrar el proceso, aclaramos las más comunes para que sepas qué esperar." },
-                  { q: "¿Puedo incluir socios?", a: "Sí. Si la LLC tendrá más de un miembro, es importante que el Operating Agreement refleje claramente los derechos, responsabilidades y porcentajes de participación de cada socio. Cuando hay socios, conviene revisar la estructura con más detalle antes de constituir." },
-                  { q: "¿Cuándo necesito una estructura más avanzada?", a: "Cuando participan varios socios, cuando se recibirá inversión de terceros, cuando hay múltiples propiedades o activos, cuando existe una empresa en otro país relacionada, o cuando se evalúa una visa vinculada a la operación. En esos casos, conviene una revisión de estructura antes de constituir." },
-                  { q: "¿Qué pasa después del primer año del Registered Agent?", a: "El Registered Agent debe renovarse anualmente. Al acercarse el vencimiento, te informamos sobre las opciones de renovación. No renovarlo puede causar problemas de estatus de la LLC ante el estado." },
-                ].map((faq, i) => (
+                {FAQS.map((faq, i) => (
                   <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl px-6">
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5 text-sm">{faq.q}</AccordionTrigger>
                     <AccordionContent className="text-slate-400 leading-relaxed pb-5 text-sm">
-                      {faq.a}
-                      {faq.modal && <ContextLink onClick={() => openModal(faq.modal)}>Ver la comparación operativa</ContextLink>}
+                      {typeof faq.a === "string"
+                        ? faq.a
+                        : faq.a.map((p) => <p key={p} className="mb-3 last:mb-0">{p}</p>)}
+                      {faq.modal && <ContextLink onClick={() => openModal(faq.modal!)}>Ver la comparación operativa</ContextLink>}
                     </AccordionContent>
                   </AccordionItem>
                 ))}

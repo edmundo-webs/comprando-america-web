@@ -5,12 +5,12 @@
  * elige. Quien ya sabe dónde ocurre su operación llega al estado por el
  * diagnóstico o por la compra directa, donde esa decisión sí se toma.
  *
- * El copy vive en `lib/diagnostico.ts` porque el paso de estado del diagnóstico
- * usa exactamente el mismo criterio: una sola fuente, sin versiones divergiendo.
+ * El copy vive en `lib/estados.ts` porque el paso de estado del diagnóstico usa
+ * exactamente el mismo criterio: una sola fuente, sin versiones divergiendo.
  * Los argumentos por estado (ecosistema, comunidad latina, mercado inmobiliario)
  * no van aquí: su lugar es la página de cada estado, después de rutear.
  */
-import { ESTADO_HEADER, ESTADO_INFO, ESTADO_SIN_IMPUESTO } from "@/lib/diagnostico";
+import { ESTADO_HEADER, ESTADO_INFO, ESTADO_SIN_IMPUESTO } from "@/lib/estados";
 
 export default function EstadoTexasFlorida() {
   return (
