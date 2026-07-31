@@ -37,7 +37,6 @@ import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
 import DiagnosticoPage from "./pages/DiagnosticoPage";
 import Home2Page from "./pages/Home2Page";
 import CumbreDigital from "./pages/CumbreDigital";
-import CumbreDigital2 from "./pages/CumbreDigital2";
 import Leads from "./pages/admin/Leads";
 import Analytics from "./pages/admin/Analytics";
 import NuevoHome from "./pages/NuevoHome";
@@ -83,7 +82,6 @@ function Router() {
       <Route path="/disclaimers" component={Disclaimers} />
       <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path="/cumbre-digital" component={CumbreDigital} />
-      <Route path="/cumbre-digital-2" component={CumbreDigital2} />
       <Route path="/renta-garantizada" component={Section8} />
       <Route path="/activos-disponibles" component={Propiedades} />
       <Route path="/tierra-estrategica" component={FondoVictoryCapital} />
@@ -91,6 +89,7 @@ function Router() {
       <Route path="/vc-8"><Redirect to="/renta-garantizada" /></Route>
       <Route path="/propiedades"><Redirect to="/activos-disponibles" /></Route>
       <Route path="/fondo"><Redirect to="/tierra-estrategica" /></Route>
+      <Route path="/cumbre-digital-2"><Redirect to="/cumbre-digital" /></Route>
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
       <Route path="/arquitectura-patrimonial" component={ArquitecturaPatrimonial} />
       <Route path="/inicio" component={Inicio} />
