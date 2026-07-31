@@ -128,9 +128,9 @@ describe("bloques inline", () => {
   });
 
   it("el bloque del modal no tiene su propia copia del argumento de estado", () => {
-    /* Una sola fuente en lib/estados.ts: la versión corta es la de este bloque. */
-    expect(BLOQUE_ESTADOS_MENCIONADOS.parrafos).toBe(REGISTRO_FUERA_DEL_ESTADO.corta);
-    expect(REGISTRO_FUERA_DEL_ESTADO.corta.length).toBe(4);
+    /* Una sola fuente en lib/estados.ts: la versión de la superficie "modal". */
+    expect(BLOQUE_ESTADOS_MENCIONADOS.parrafos).toBe(REGISTRO_FUERA_DEL_ESTADO.modal);
+    expect(REGISTRO_FUERA_DEL_ESTADO.modal.length).toBe(4);
   });
 
   it("solo digital, visa sin abogado e ITIN tienen su bloque", () => {
