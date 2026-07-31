@@ -29,11 +29,12 @@ import { postCrmLead, saveContact, getSavedContact } from "@/lib/crm";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import {
   type Objetivo, type Urgencia, type Pregunta, type FichaContacto,
-  OBJETIVO_OPCIONES, URGENCIA_OPCIONES, ESTADO_INFO, SENALES_OTRA_ESTRUCTURA, SENALES_NOTA,
+  OBJETIVO_OPCIONES, URGENCIA_OPCIONES, SENALES_OTRA_ESTRUCTURA, SENALES_NOTA,
   INCLUYE, NO_INCLUYE, CONFIRMACION_FAQ, INVERSION_ERRORES, INVERSION_PREGUNTAS_CLAVE,
   EXPLORANDO_RESUMEN, pasosDeRama, preguntaAplica,
   fichaCampos, origenCampos, buildFichaTexto,
 } from "@/lib/diagnostico";
+import { ESTADO_INFO } from "@/lib/estados";
 import { type Cta, type Retroalimentacion, recomendarRuta, ramaEfectiva, capaCCampos } from "@/lib/motorRuta";
 
 /* "resultado" = Capa A · "ampliado" = Capa B · "fuera-de-alcance" solo aplica al

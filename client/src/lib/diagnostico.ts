@@ -17,6 +17,8 @@
  * que ya existe en ambas páginas como apoyo contextual dentro de cada paso.
  */
 
+import { ESTADO_HEADER, ESTADO_INFO } from "./estados";
+
 export type Objetivo = "operar" | "invertir" | "visa" | "explorando";
 export type Urgencia = "listo" | "1-2-meses" | "investigando";
 
@@ -24,32 +26,6 @@ export type Urgencia = "listo" | "1-2-meses" | "investigando";
    Solo estado. "Otro estado" queda fuera del alcance del checkout en línea (no del
    diagnóstico): se ofrece referido a un proveedor externo que sí lo cubre. */
 export const ESTADOS_CUBIERTOS = ["Texas", "Florida"] as const;
-
-/* ─── Copy del estado — fuente única ───
-   Lo usan la sección "Texas o Florida" de la página (componente
-   EstadoTexasFlorida) y el paso de estado del diagnóstico. Si cambia, cambia en
-   los dos lugares a la vez: no debe haber dos versiones de este criterio. */
-export const ESTADO_INFO: Record<string, { desc: string; argumentos: string[] }> = {
-  Texas: {
-    desc: "Cuando la operación, los clientes, el personal o la administración van a estar en suelo texano.",
-    /* `argumentos` NO se muestra al elegir el estado: a esa altura la persona
-       decide dónde ocurre su operación, no qué estado es "mejor". Su lugar es la
-       página de cada estado, después de que el diagnóstico rutea. */
-    argumentos: ["Ecosistema empresarial sólido", "Comunidad latina activa", "Ideal para operaciones comerciales"],
-  },
-  Florida: {
-    desc: "Cuando el mercado, las propiedades o la presencia principal van a estar allá.",
-    argumentos: ["Fuerte conexión con Latinoamérica", "Mercado inmobiliario activo", "Ideal para negocios digitales y bienes raíces"],
-  },
-};
-
-/* Premisa de la decisión de estado. */
-export const ESTADO_HEADER =
-  "El estado no se elige por sus ventajas. Se elige por dónde ocurre realmente la operación.";
-
-/* Lo único que los dos estados comparten y que sí conviene decir de entrada,
-   porque es la creencia que más gente trae equivocada. */
-export const ESTADO_SIN_IMPUESTO = "Ninguno de los dos cobra impuesto estatal sobre la renta.";
 
 /* "Antes de contratar": señales de que conviene revisar la estructura. Se usa como
    autochequeo en la rama Operar, antes de dejar pasar a checkout. Une el bloque

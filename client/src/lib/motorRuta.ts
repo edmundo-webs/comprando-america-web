@@ -23,9 +23,10 @@
  */
 import {
   type Objetivo, type Urgencia,
-  ESTADO_HEADER, ESTADO_INFO, ESTADO_SIN_IMPUESTO, INVERSION_ERRORES, NO_INCLUYE,
+  INVERSION_ERRORES, NO_INCLUYE,
   SENALES_NOTA, SOCIOS_ACLARACION, VISA_ACLARACION, EXPLORANDO_RESUMEN,
 } from "./diagnostico";
+import { ESTADO_HEADER, ESTADO_INFO, ESTADO_SIN_IMPUESTO } from "./estados";
 
 export type RouteLevel = 1 | 2 | 3 | 4;
 export type VisibilityTier = "A" | "B" | "C";
