@@ -43,6 +43,20 @@ const COUNTRY_CODES = [
   { code: "+1CA", label: "🇨🇦 Canadá (+1)" },
 ];
 
+/* ─── Datos del evento ───
+   El evento arranca 9:00 AM de México (22 ago 2026). Los horarios de cada
+   conversación en CONVERSATIONS están expresados en hora de Houston, que ese
+   día va una hora adelante de Ciudad de México. */
+const HORARIOS_PAIS = [
+  { pais: "México",                    hora: "9:00 AM" },
+  { pais: "Houston · Texas",           hora: "10:00 AM" },
+  { pais: "Colombia, Perú y Ecuador",  hora: "10:00 AM" },
+  { pais: "Miami · Nueva York",        hora: "11:00 AM" },
+  { pais: "Chile",                     hora: "11:00 AM" },
+  { pais: "Argentina",                 hora: "12:00 PM" },
+  { pais: "España",                    hora: "5:00 PM" },
+];
+
 /* ─── Speaker data ─── */
 const PHOTOS = {
   edmundo: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675101/tts-news/n1gic0tylj2r8b4gscrf.jpg",
@@ -52,60 +66,65 @@ const PHOTOS = {
   edmundoDiego06: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675101/tts-news/kfoeo1dlbkugilwhidl3.jpg",
 };
 
-/* ─── Conversations data ─── */
+/* ─── Conversations data ───
+   Títulos, ponentes y la línea del problema que resuelve cada bloque vienen
+   del brief de la Cumbre. Los horarios no se modifican. */
 const CONVERSATIONS = [
   {
     hora: "10:00 AM", num: "01",
     speakers: [{ photo: PHOTOS.edmundo, name: "Edmundo Treviño" }],
-    titulo: "De la Incertidumbre a la Oportunidad",
-    sub: "Cómo construir tu próximo movimiento en Estados Unidos",
-    desc: "Comprender cómo se crean las oportunidades reales en Estados Unidos.",
-    bullets: ["Identificar tendencias.", "Detectar oportunidades estratégicas.", "Pensar con visión de largo plazo."],
+    titulo: "Apertura + creación de oportunidades desde Estados Unidos",
+    sub: "Por qué las mejores oportunidades no aparecen: se construyen, y qué hace falta para empezar a crearlas.",
+    desc: "La mayoría espera encontrar la oportunidad correcta. Los empresarios que ya operan en Estados Unidos la construyen, y lo hacen tomando ciertas decisiones en cierto orden.",
+    bullets: ["Entender cómo se construye una oportunidad.", "Reconocer el orden que sostiene las decisiones.", "Ubicar tu punto de partida real."],
     badges: ["Empresarios", "Inversionistas"],
   },
   {
     hora: "11:00 AM", num: "02",
     speakers: [{ photo: PHOTOS.tomas, name: "Tomás Reséndez", photoPos: "top center" }],
-    titulo: "Vivir, Invertir y Expandirte en Estados Unidos",
-    sub: "Las rutas reales para construir tu futuro",
-    desc: "Conocer las rutas reales disponibles para empresarios e inversionistas que buscan construir su futuro en Estados Unidos.",
-    bullets: ["Comprender rutas disponibles.", "Evaluar opciones según objetivos.", "Relacionar migración y patrimonio."],
-    badges: ["Migración", "Patrimonio", "Inversionistas"],
+    titulo: "Opciones migratorias reales para inversionistas (entorno 2026)",
+    sub: "Comprender cuándo una visa tiene sentido para un proyecto… y cuándo no, en el entorno migratorio actual.",
+    desc: "Muchos buscan la visa antes de definir el negocio. Esta conversación ordena la relación entre proyecto empresarial y ruta migratoria en el entorno de 2026.",
+    bullets: ["Distinguir las rutas que existen hoy.", "Ver cuándo una visa sostiene un proyecto.", "Reconocer cuándo conviene esperar."],
+    badges: ["Migración", "Inversionistas"],
   },
   {
     hora: "12:00 PM", num: "03",
     speakers: [{ photo: PHOTOS.edmundoDiego03, name: "Edmundo Treviño · Diego Alcalá" }],
-    titulo: "Pensar Como Inversionista",
-    sub: "El criterio detrás de las buenas decisiones",
-    desc: "Desarrollar el criterio que usan los inversionistas experimentados para evaluar oportunidades antes de comprometer capital.",
-    bullets: ["Evaluar oportunidades.", "Reducir riesgos.", "Proteger patrimonio."],
+    titulo: "Oportunidades de inversión en Estados Unidos (I)",
+    sub: "Cómo analizar una oportunidad más allá del rendimiento esperado.",
+    desc: "El rendimiento es lo primero que se mira y casi nunca lo que define el resultado. Aquí se revisa qué más conviene leer antes de comprometer capital.",
+    bullets: ["Leer la oportunidad completa, no solo el número.", "Identificar los riesgos que no se anuncian.", "Comparar opciones con un mismo criterio."],
     badges: ["Inversionistas", "Patrimonio"],
   },
   {
     hora: "1:00 PM", num: "04",
-    speakers: [{ photo: null, name: "Por confirmar" }],
-    titulo: "El Factor que Acelera Resultados",
-    sub: "Lo que los empresarios exitosos hacen diferente",
-    desc: "Aprender directamente de alguien que ya tomó las decisiones difíciles y construyó patrimonio en otro país.",
-    bullets: ["Aprender de experiencias reales.", "Evitar errores costosos.", "Adoptar nuevos marcos mentales."],
-    badges: ["Empresarios"],
+    speakers: [
+      { photo: PHOTOS.tomas, name: "Tomás Reséndez", photoPos: "top center" },
+      { photo: PHOTOS.edmundo, name: "Edmundo Treviño" },
+    ],
+    titulo: "Qué puedes esperar al migrar a Estados Unidos",
+    sub: "Lo que conviene saber antes de mudarse: expectativas reales frente a la idea que solemos tener del proceso.",
+    desc: "Entre la idea del proceso y el proceso hay una distancia que casi nadie anticipa. Esta conversación la nombra con casos concretos.",
+    bullets: ["Anticipar lo que cambia al mudarse.", "Separar la expectativa de la realidad.", "Preparar a la familia y al negocio."],
+    badges: ["Migración", "Empresarios"],
   },
   {
     hora: "2:00 PM", num: "05",
-    speakers: [{ photo: PHOTOS.edmundoDiego05, name: "Diego Alcalá · Edmundo Treviño" }],
-    titulo: "Del Interés a la Acción",
-    sub: "Casos reales, oportunidades reales y próximos pasos",
-    desc: "Analizar oportunidades reales con criterio, separando lo que genera valor de lo que solo suena bien.",
-    bullets: ["Analizar oportunidades.", "Separar ruido de valor.", "Comprender casos reales."],
+    speakers: [{ photo: PHOTOS.edmundoDiego05, name: "Edmundo Treviño · Diego Alcalá" }],
+    titulo: "Presentación de oportunidades de inversión + casos de éxito",
+    sub: "Qué decisiones tomaron otros empresarios y qué aprendieron durante el proceso.",
+    desc: "Oportunidades concretas, junto con los casos de quienes ya recorrieron el camino — incluyendo lo que hoy harían distinto.",
+    bullets: ["Ver oportunidades analizadas, no promesas.", "Conocer decisiones reales y sus resultados.", "Reconocer errores antes de cometerlos."],
     badges: ["Inversionistas", "Empresarios"],
   },
   {
     hora: "2:45 PM", num: "06",
     speakers: [{ photo: PHOTOS.edmundoDiego06, name: "Edmundo Treviño · Diego Alcalá" }],
-    titulo: "Tu Próximo Gran Paso",
-    sub: "Cómo convertir claridad en acción",
-    desc: "Traducir todo lo aprendido en decisiones concretas: qué conversaciones tener, qué preguntas hacerse y cómo avanzar.",
-    bullets: ["Definir próximos pasos.", "Identificar conversaciones necesarias.", "Construir plan de acción."],
+    titulo: "¿Cómo ser parte de Comprando América?",
+    sub: "Con quién quieres construir ese camino, y cómo continúa el recorrido después de la Cumbre.",
+    desc: "Las decisiones difíciles se sostienen mejor acompañadas. Aquí explicamos cómo sigue el recorrido para quien quiera continuarlo con nosotros.",
+    bullets: ["Entender cómo trabajamos.", "Definir tu siguiente conversación.", "Decidir con quién avanzar."],
     badges: ["Empresarios", "Inversionistas", "Patrimonio"],
   },
 ];
@@ -118,11 +137,10 @@ const CSS = `
 
   .cd-section   { padding: 80px 24px; }
   .cd-wrap      { max-width: 960px; margin: 0 auto; }
-  .cd-grid2     { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-  .cd-grid2c    { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0 40px; align-items: start; }
   .cd-grid4     { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
   .cd-grid5     { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
   .cd-checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .cd-horarios  { display: grid; grid-template-columns: repeat(7, 1fr); gap: 16px; }
 
   /* Flyer grid — 2 cols desktop, gap intencional */
   .cd-flyer-grid {
@@ -177,12 +195,16 @@ const CSS = `
   details > div  { padding: 16px 0 4px; font-size: 0.95rem; color: ${OFF_WHITE}; line-height: 1.75; }
   details[open] summary { color: ${GOLD}; }
 
+  @media (max-width: 1023px) {
+    .cd-horarios { grid-template-columns: repeat(4, 1fr); }
+  }
+
   @media (max-width: 767px) {
     .cd-section   { padding: 48px 20px; }
-    .cd-grid2, .cd-grid2c, .cd-grid4, .cd-grid5,
+    .cd-grid4, .cd-grid5,
     .cd-checklist { grid-template-columns: 1fr !important; gap: 20px; }
+    .cd-horarios  { grid-template-columns: 1fr 1fr !important; gap: 18px 12px; }
     .cd-flyer-grid { grid-template-columns: 1fr !important; gap: 20px; }
-    .cd-vdivider  { display: none !important; }
     .cd-hero-h1   { font-size: 1.7rem !important; }
     .cd-flyer-photo, .cd-flyer-placeholder { height: 220px; }
     .cd-hero-grid { grid-template-columns: 1fr !important; }
@@ -493,7 +515,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       <style>{CSS}</style>
       <SEOHead
         title="Primera Cumbre Digital Comprando América"
-        description="Por primera vez abrimos la Cumbre sin costo y en vivo. Sábado 22 de agosto, 2026. Estrategia, inversión y expansión a Estados Unidos."
+        description="6 horas que podrían ahorrarte años de prueba, error y malas decisiones. Sábado 22 de agosto de 2026, 9:00 AM México, en vivo. Criterio para decidir antes de invertir, abrir empresa o migrar a Estados Unidos."
         path={seoPath}
       />
       <Navbar />
@@ -563,16 +585,17 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               fontWeight: 700, color: "#fff",
               lineHeight: 1.25, marginTop: 0, marginBottom: 16,
             }}>
-              Las decisiones que tomes en Estados Unidos durante los próximos años podrían definir{" "}
-              <span style={{ color: GOLD }}>tu patrimonio durante las próximas décadas.</span>
+              6 horas que podrían ahorrarte{" "}
+              <span style={{ color: GOLD }}>años de prueba, error y malas decisiones.</span>
             </h1>
 
             <p style={{
               fontFamily: FB, fontSize: "0.88rem", color: OFF_WHITE,
               lineHeight: 1.7, marginTop: 0, marginBottom: 20,
             }}>
-              Una mañana intensiva para empresarios e inversionistas que buscan construir, proteger
-              y expandir su patrimonio en Estados Unidos con mayor criterio, contexto y estrategia.
+              Antes de invertir, abrir una empresa o iniciar una ruta migratoria en Estados Unidos,
+              conviene entender qué decisiones tienen mayor impacto en tu patrimonio. Esta Cumbre
+              fue diseñada para ayudarte a construir ese criterio.
             </p>
 
             {/* Value block */}
@@ -586,8 +609,8 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               fontSize: "0.82rem", color: OFF_WHITE, lineHeight: 1.75,
             }}>
               Por primera vez abrimos nuestra Cumbre de Inversiones al público.<br />
-              <span style={{ color: SLATE }}>El mismo nivel de expertos. El mismo nivel de contenido. La misma calidad.</span><br />
-              <span style={{ color: GOLD, fontWeight: 600 }}>Ahora en vivo y sin costo.</span>
+              <span style={{ color: SLATE }}>El mismo nivel de expertos y de contenido que en las ediciones privadas.</span><br />
+              <span style={{ color: GOLD, fontWeight: 600 }}>Claridad y criterio, de la mano de personas que ya invierten y operan en Estados Unidos.</span>
             </div>
 
             {/* Event data */}
@@ -595,15 +618,15 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               {[
                 {
                   icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
-                  text: "22 agosto 2026",
+                  text: "Sábado 22 de agosto de 2026 · 6 horas",
                 },
                 {
                   icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>,
-                  text: "Houston 11 AM · México 10 AM",
+                  text: "9:00 AM México · 10:00 AM Houston y Colombia",
                 },
                 {
                   icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
-                  text: "YouTube + Facebook",
+                  text: "En vivo por YouTube y Facebook",
                 },
               ].map((item, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: "0.8rem", color: SLATE }}>
@@ -637,7 +660,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       </section>
 
       {/* ══════════════════════════════════════════════
-          EL PROBLEMA
+          BLOQUE 2 — ¿POR QUÉ EXISTE ESTA CUMBRE?
       ══════════════════════════════════════════════ */}
       <section className="cd-section" style={{ background: NAVY }}>
         <div className="cd-wrap" style={{ textAlign: "center" }}>
@@ -645,116 +668,184 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
             fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
             color: "#fff", marginBottom: 8, marginTop: 0,
           }}>
-            El problema no es la falta de oportunidades.
+            ¿Por qué existe esta Cumbre?
           </h2>
           <h2 style={{
-            fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
+            fontFamily: FD, fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)",
             color: GOLD, fontStyle: "italic", marginBottom: 32, marginTop: 0,
           }}>
-            Es la falta de claridad.
+            No empiezan por la decisión, empiezan por el trámite.
           </h2>
           <GoldRule />
-          <p style={{
-            fontFamily: FB, fontSize: "1.05rem", color: OFF_WHITE,
-            lineHeight: 1.75, maxWidth: 640, margin: "0 auto",
+          <div style={{ maxWidth: 640, margin: "0 auto" }}>
+            <p style={{
+              fontFamily: FB, fontSize: "1.05rem", color: OFF_WHITE,
+              lineHeight: 1.75, marginTop: 0, marginBottom: 20,
+            }}>
+              Durante años hemos visto a empresarios cometer el mismo error: no empiezan por la
+              decisión, empiezan por el trámite.
+            </p>
+            <p style={{
+              fontFamily: FB, fontSize: "1.05rem", color: OFF_WHITE,
+              lineHeight: 1.75, marginTop: 0, marginBottom: 20,
+            }}>
+              Unos abren una LLC antes de tener un proyecto. Otros buscan una visa antes de definir
+              el negocio. Otros invierten antes de entender la estructura. Y muchos descubren,
+              demasiado tarde, que el problema nunca fue la oportunidad: fue el orden en que
+              tomaron las decisiones.
+            </p>
+            <p style={{
+              fontFamily: FB, fontSize: "1.05rem", color: GOLD,
+              lineHeight: 1.75, marginTop: 0, marginBottom: 0,
+            }}>
+              Esta Cumbre nace precisamente para ayudarte a evitar esos errores.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          BLOQUE 3 — SI ALGUNA VEZ HAS PENSADO…
+      ══════════════════════════════════════════════ */}
+      <section className="cd-section" style={{ background: NAVY_MID }}>
+        <div className="cd-wrap">
+          <h2 style={{
+            fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
+            color: "#fff", textAlign: "center", marginTop: 0, marginBottom: 44,
           }}>
-            La mayoría de los empresarios latinoamericanos que quieren operar en Estados Unidos
-            no carecen de capital ni de ambición. Lo que les falta es contexto: saber qué rutas
-            existen, qué errores evitar, cómo piensan los inversionistas que ya recorrieron ese camino.
-            Esta cumbre no es un curso. Es una conversación honesta entre personas que ya tomaron
-            decisiones difíciles y aprendieron de ellas.
+            Si alguna vez has pensado…
+          </h2>
+          <div className="cd-checklist">
+            {[
+              "Primero abro una LLC y después veo en qué invertir.",
+              "Con una empresa ya puedo sacar la visa.",
+              "Florida siempre conviene más.",
+              "Solo necesito abrir una cuenta bancaria.",
+              "Quiero generar historial empresarial.",
+              "Después resuelvo los impuestos.",
+            ].map((t, i) => (
+              <div key={i} style={{
+                display: "flex", alignItems: "flex-start", gap: 14,
+                marginBottom: 22, fontSize: "0.97rem", color: OFF_WHITE,
+                lineHeight: 1.65, fontStyle: "italic",
+              }}>
+                <GoldCheck />{t}
+              </div>
+            ))}
+          </div>
+          <p style={{
+            fontFamily: FD, fontSize: "clamp(1.2rem, 2.2vw, 1.6rem)",
+            color: GOLD, fontStyle: "italic", textAlign: "center",
+            marginTop: 24, marginBottom: 0,
+          }}>
+            …entonces esta Cumbre fue diseñada para ti.
           </p>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════
-          ANTES / DESPUÉS
+          BLOQUE 4 — LO QUE REALMENTE OBTENDRÁS
       ══════════════════════════════════════════════ */}
-      <section className="cd-section" style={{ background: NAVY_MID }}>
+      <section className="cd-section" style={{ background: NAVY }}>
         <div className="cd-wrap">
-          <div style={{ marginBottom: 48 }}>
-            <Eyebrow>La diferencia que hace un día</Eyebrow>
+          <h2 style={{
+            fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
+            color: "#fff", textAlign: "center", marginTop: 0, marginBottom: 36,
+          }}>
+            Lo que realmente obtendrás
+          </h2>
+          <div style={{ maxWidth: 640, margin: "0 auto 48px", textAlign: "center" }}>
+            {[
+              "No aprenderás únicamente sobre LLC.",
+              "No aprenderás únicamente sobre visas.",
+              "No aprenderás únicamente sobre inversiones.",
+            ].map((t, i) => (
+              <p key={i} style={{
+                fontFamily: FB, fontSize: "1.05rem", color: SLATE,
+                lineHeight: 1.75, marginTop: 0, marginBottom: 6,
+              }}>
+                {t}
+              </p>
+            ))}
+            <div style={{ display: "flex", justifyContent: "center" }}><GoldRule /></div>
+            <p style={{
+              fontFamily: FD, fontSize: "clamp(1.15rem, 2.2vw, 1.5rem)",
+              color: GOLD, lineHeight: 1.5, marginTop: 0, marginBottom: 0,
+            }}>
+              Aprenderás a tomar decisiones con mayor criterio antes de comprometer tiempo,
+              dinero y patrimonio.
+            </p>
           </div>
-          <div className="cd-grid2c">
-            {/* ANTES */}
-            <div>
-              <div style={{ color: SLATE, marginBottom: 16 }}>
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                  <circle cx="12" cy="17" r=".5" fill="currentColor"/>
-                  <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
-                </svg>
-              </div>
-              <div style={{
-                fontSize: "0.68rem", letterSpacing: "0.2em",
-                color: SLATE, textTransform: "uppercase", marginBottom: 16,
+          <div className="cd-grid5">
+            {[
+              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/><line x1="10" y1="17" x2="14" y2="17"/></svg>, title: "Mayor claridad" },
+              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><line x1="12" y1="22" x2="12" y2="12"/><path d="M12 12L7 7"/><path d="M12 12l5-5"/><line x1="7" y1="7" x2="7" y2="2"/><line x1="17" y1="7" x2="17" y2="2"/></svg>, title: "Mejores decisiones" },
+              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><path d="M17 11H7a4 4 0 0 0-4 4v1h18v-1a4 4 0 0 0-4-4z"/><path d="M9 11V7a3 3 0 0 1 6 0v4"/></svg>, title: "Nuevas relaciones" },
+              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><line x1="2" y1="12" x2="22" y2="12"/><path d="M7 19l5-14 5 14"/></svg>, title: "Visión estratégica" },
+              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="18" x2="21" y2="18"/><polyline points="3 6 4 7 6 5"/><polyline points="3 12 4 13 6 11"/><polyline points="3 18 4 19 6 17"/></svg>, title: "Próximos pasos" },
+            ].map((item, i) => (
+              <div key={i} style={{
+                border: `1px solid ${DIVIDER}`, borderRadius: 6,
+                padding: "28px 20px", textAlign: "center",
               }}>
-                Antes de la cumbre
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>{item.icon}</div>
+                <h3 style={{ fontFamily: FD, fontSize: "1.05rem", color: "#fff", margin: 0 }}>{item.title}</h3>
               </div>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {["Información fragmentada y contradictoria", "Incertidumbre sobre qué ruta tomar", "Decisiones basadas en suposiciones", "Sin red de contactos calificados", "Miedo a cometer errores costosos"].map((t, i) => (
-                  <li key={i} style={{
-                    display: "flex", alignItems: "flex-start", gap: 12,
-                    color: SLATE, fontSize: "0.95rem", lineHeight: 1.8, marginBottom: 6,
-                  }}>
-                    <span style={{ flexShrink: 0 }}>—</span>{t}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="cd-vdivider" style={{ background: GOLD, opacity: 0.25, minHeight: 220 }}/>
-
-            {/* DESPUÉS */}
-            <div>
-              <div style={{ color: GOLD, marginBottom: 16 }}>
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill={GOLD}/>
-                </svg>
-              </div>
-              <div style={{
-                fontSize: "0.68rem", letterSpacing: "0.2em",
-                color: GOLD, textTransform: "uppercase", marginBottom: 16,
-              }}>
-                Después de la cumbre
-              </div>
-              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                {["Claridad sobre opciones reales disponibles", "Criterio para evaluar oportunidades", "Contexto de quienes ya recorrieron el camino", "Conexiones con empresarios e inversionistas serios", "Próximos pasos concretos definidos"].map((t, i) => (
-                  <li key={i} style={{
-                    display: "flex", alignItems: "flex-start", gap: 12,
-                    color: OFF_WHITE, fontSize: "0.95rem", lineHeight: 1.8, marginBottom: 6,
-                  }}>
-                    <GoldCheck />{t}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════
-          SECCIÓN DE SPEAKERS — 6 FLYER CARDS
+          BLOQUE 5 — LAS CONVERSACIONES DE LA CUMBRE
+          (agenda, ponentes y horarios se conservan tal cual)
       ══════════════════════════════════════════════ */}
       <section style={{ background: NAVY, padding: "88px 32px" }}>
         <div style={{ maxWidth: 1040, margin: "0 auto" }}>
 
           {/* Section header */}
-          <div style={{ textAlign: "center", marginBottom: 64 }}>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <Eyebrow>Lo que vas a escuchar ese día</Eyebrow>
-            </div>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{
               fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-              color: "#fff", marginTop: 4, marginBottom: 16, lineHeight: 1.2,
+              color: "#fff", marginTop: 4, marginBottom: 10, lineHeight: 1.2,
             }}>
-              Seis conversaciones estratégicas<br />
-              <span style={{ color: GOLD, fontStyle: "italic" }}>que pueden cambiar cómo decides.</span>
+              Estas son las conversaciones<br />
+              <span style={{ color: GOLD, fontStyle: "italic" }}>que tendremos durante la Cumbre.</span>
             </h2>
+            <p style={{ fontSize: "0.85rem", color: SLATE, marginTop: 0, marginBottom: 16 }}>
+              (Bloques de 45 minutos aproximados)
+            </p>
             <p style={{ fontSize: "0.9rem", color: SLATE, maxWidth: 460, margin: "0 auto" }}>
               Empresarios e inversionistas que ya operan en Estados Unidos — no teóricos,
               gente que tomó las decisiones difíciles y aprendió de ellas.
+            </p>
+          </div>
+
+          {/* Horarios por país */}
+          <div style={{
+            border: `1px solid ${DIVIDER}`, borderRadius: 6,
+            padding: "22px 24px", marginBottom: 56,
+            background: "rgba(201,168,76,0.04)",
+          }}>
+            <div style={{
+              fontFamily: FB, fontSize: "0.65rem", letterSpacing: "0.18em",
+              color: GOLD, textTransform: "uppercase", textAlign: "center", marginBottom: 16,
+            }}>
+              Hora de inicio en tu país
+            </div>
+            <div className="cd-horarios">
+              {HORARIOS_PAIS.map((h, i) => (
+                <div key={i} style={{ textAlign: "center" }}>
+                  <div style={{ fontFamily: FD, fontSize: "1.05rem", color: "#fff", lineHeight: 1.2 }}>{h.hora}</div>
+                  <div style={{ fontFamily: FB, fontSize: "0.72rem", color: SLATE, marginTop: 4 }}>{h.pais}</div>
+                </div>
+              ))}
+            </div>
+            <p style={{
+              fontSize: "0.72rem", color: SLATE, textAlign: "center",
+              marginTop: 18, marginBottom: 0,
+            }}>
+              Los horarios de cada conversación se muestran en hora de Houston.
             </p>
           </div>
 
@@ -786,24 +877,31 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       </section>
 
       {/* ══════════════════════════════════════════════
-          ESTA CUMBRE ES PARA TI SI…
+          BLOQUE 6 — ¿QUIÉN OBTENDRÁ MÁS VALOR?
       ══════════════════════════════════════════════ */}
       <section className="cd-section" style={{ background: NAVY }}>
         <div className="cd-wrap">
           <h2 style={{
             fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-            color: "#fff", textAlign: "center", marginTop: 0, marginBottom: 48,
+            color: "#fff", textAlign: "center", marginTop: 0, marginBottom: 12,
           }}>
-            Esta cumbre es para ti si...
+            ¿Quién obtendrá más valor?
           </h2>
+          <p style={{
+            fontFamily: FD, fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
+            color: GOLD, fontStyle: "italic", textAlign: "center",
+            marginTop: 0, marginBottom: 44,
+          }}>
+            Probablemente disfrutarás esta Cumbre si…
+          </p>
           <div className="cd-checklist">
             {[
-              "Tienes patrimonio acumulado y quieres protegerlo o expandirlo a Estados Unidos",
-              "Estás evaluando opciones de inversión o migración pero no tienes claridad de ruta",
-              "Has asistido a eventos o leído sobre el tema pero sientes que te falta contexto real",
-              "Quieres tomar decisiones informadas antes de comprometer tiempo o capital",
-              "Buscas relaciones con personas que están construyendo en el mismo camino",
-              "Prefieres entender el panorama completo antes de dar el siguiente paso",
+              "Estás pensando en invertir en Estados Unidos.",
+              "Quieres abrir una empresa correctamente.",
+              "Buscas una visa basada en un proyecto empresarial.",
+              "Quieres expandir tu negocio.",
+              "Prefieres entender antes de ejecutar.",
+              "Valoras aprender de empresarios que ya operan e invierten en Estados Unidos.",
             ].map((t, i) => (
               <div key={i} style={{
                 display: "flex", alignItems: "flex-start", gap: 14,
@@ -817,32 +915,34 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       </section>
 
       {/* ══════════════════════════════════════════════
-          POR QUÉ COMPRANDO AMÉRICA
+          BLOQUE 7 — LO QUE NO ENCONTRARÁS
       ══════════════════════════════════════════════ */}
       <section className="cd-section" style={{ background: NAVY_MID }}>
         <div className="cd-wrap">
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <Eyebrow>Por qué Comprando América</Eyebrow>
+          <div style={{ textAlign: "center", marginBottom: 40 }}>
             <h2 style={{
               fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
-              color: "#fff", marginTop: 8, marginBottom: 0,
+              color: "#fff", marginTop: 0, marginBottom: 20,
             }}>
-              No es un evento más.<br />
-              <span style={{ color: GOLD, fontStyle: "italic" }}>Es una comunidad con criterio.</span>
+              Lo que NO encontrarás
             </h2>
+            <p style={{
+              fontFamily: FB, fontSize: "1.05rem", color: SLATE,
+              lineHeight: 1.75, maxWidth: 620, margin: "0 auto 24px",
+            }}>
+              No encontrarás promesas de dinero fácil, inversiones «perfectas», visas garantizadas
+              ni soluciones universales.
+            </p>
+            <p style={{
+              fontFamily: FD, fontSize: "clamp(1.15rem, 2.2vw, 1.5rem)",
+              color: GOLD, lineHeight: 1.5, maxWidth: 620, margin: "0 auto",
+            }}>
+              Encontrarás experiencia, casos reales, distintas perspectivas y criterio para
+              tomar mejores decisiones.
+            </p>
           </div>
           <div className="cd-grid4">
             {[
-              {
-                icon: (
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/>
-                    <path d="M5 9l7-6 7 6"/><path d="M3 9l4 8H3"/><path d="M17 9l4 8h-4"/>
-                  </svg>
-                ),
-                title: "Criterio",
-                text: "No hablamos de todo. Hablamos de lo que hemos validado y funciona en el mercado actual.",
-              },
               {
                 icon: (
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -850,7 +950,18 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
                   </svg>
                 ),
                 title: "Experiencia",
-                text: "Nuestros speakers han invertido, migrado y construido en Estados Unidos. No teorizan desde afuera.",
+                text: "Quienes hablan han invertido, migrado y construido en Estados Unidos. No teorizan desde afuera.",
+              },
+              {
+                icon: (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <polygon points="12 2 2 7 2 17 12 22 22 17 22 7 12 2"/>
+                    <polyline points="2 7 12 12 22 7"/>
+                    <line x1="12" y1="12" x2="12" y2="22"/>
+                  </svg>
+                ),
+                title: "Casos reales",
+                text: "Decisiones que otros empresarios ya tomaron, con sus resultados y lo que hoy harían distinto.",
               },
               {
                 icon: (
@@ -861,19 +972,18 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
                     <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                   </svg>
                 ),
-                title: "Comunidad",
-                text: "Las mejores decisiones se toman rodeado de personas que entienden el mismo juego.",
+                title: "Distintas perspectivas",
+                text: "Ninguna decisión sirve para todas las personas. Escucharás más de una forma de leer lo mismo.",
               },
               {
                 icon: (
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <polygon points="12 2 2 7 2 17 12 22 22 17 22 7 12 2"/>
-                    <polyline points="2 7 12 12 22 7"/>
-                    <line x1="12" y1="12" x2="12" y2="22"/>
+                    <line x1="12" y1="3" x2="12" y2="21"/><path d="M5 21h14"/>
+                    <path d="M5 9l7-6 7 6"/><path d="M3 9l4 8H3"/><path d="M17 9l4 8h-4"/>
                   </svg>
                 ),
-                title: "Oportunidades",
-                text: "Seleccionamos oportunidades que hemos analizado. Mostramos opciones concretas, no esperanza.",
+                title: "Criterio",
+                text: "El objetivo no es que salgas con una respuesta, sino con la capacidad de evaluar las tuyas.",
               },
             ].map((p, i) => (
               <div key={i} style={{
@@ -884,70 +994,6 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
                 <div style={{ color: GOLD, display: "flex", justifyContent: "center", marginBottom: 14 }}>{p.icon}</div>
                 <h3 style={{ fontFamily: FD, fontSize: "1.2rem", color: "#fff", marginTop: 0, marginBottom: 8 }}>{p.title}</h3>
                 <p style={{ fontSize: "0.86rem", color: SLATE, lineHeight: 1.7, margin: 0 }}>{p.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════
-          ACCESO
-      ══════════════════════════════════════════════ */}
-      <section className="cd-section" style={{ background: NAVY_DEEP, textAlign: "center" }}>
-        <div className="cd-wrap">
-          <div className="cd-grid2" style={{ gap: 48, alignItems: "center", marginBottom: 32 }}>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.72rem", letterSpacing: "0.18em", color: SLATE, textTransform: "uppercase", marginBottom: 10 }}>Antes</div>
-              <div style={{ fontFamily: FD, fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: SLATE, textDecoration: "line-through" }}>$549 USD</div>
-            </div>
-            <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: "0.72rem", letterSpacing: "0.18em", color: GOLD, textTransform: "uppercase", marginBottom: 10 }}>Ahora</div>
-              <div style={{ fontFamily: FD, fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: GOLD }}>Gratis y en vivo.</div>
-            </div>
-          </div>
-          <div style={{ width: 40, height: 1, background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)`, margin: "0 auto 28px" }}/>
-          <p style={{ fontSize: "0.97rem", color: OFF_WHITE, maxWidth: 480, margin: "0 auto 40px", lineHeight: 1.75 }}>
-            Por primera vez abrimos esta cumbre sin costo.<br />
-            No es una promoción. Es una decisión de acceso.<br />
-            El nivel de contenido y de expertos es exactamente el mismo.
-          </p>
-          <button className="cd-btn" onClick={scrollToForm} style={{
-            background: GOLD, color: NAVY, fontFamily: FB, fontWeight: 700,
-            fontSize: "0.9rem", letterSpacing: "0.1em",
-            padding: "17px 44px", borderRadius: 3, border: "none",
-            cursor: "pointer", transition: "background 0.2s ease",
-            textTransform: "uppercase",
-          }}>
-            Reservar mi lugar sin costo
-          </button>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════
-          LO QUE OBTENDRÁS
-      ══════════════════════════════════════════════ */}
-      <section className="cd-section" style={{ background: NAVY }}>
-        <div className="cd-wrap">
-          <h2 style={{
-            fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
-            color: "#fff", textAlign: "center", marginTop: 0, marginBottom: 44,
-          }}>
-            Al finalizar la cumbre tendrás:
-          </h2>
-          <div className="cd-grid5">
-            {[
-              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><path d="M12 2a7 7 0 0 1 7 7c0 2.38-1.19 4.47-3 5.74V17a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-2.26C6.19 13.47 5 11.38 5 9a7 7 0 0 1 7-7z"/><line x1="9" y1="21" x2="15" y2="21"/><line x1="10" y1="17" x2="14" y2="17"/></svg>, title: "Mayor claridad" },
-              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><line x1="12" y1="22" x2="12" y2="12"/><path d="M12 12L7 7"/><path d="M12 12l5-5"/><line x1="7" y1="7" x2="7" y2="2"/><line x1="17" y1="7" x2="17" y2="2"/></svg>, title: "Mejores decisiones" },
-              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><path d="M17 11H7a4 4 0 0 0-4 4v1h18v-1a4 4 0 0 0-4-4z"/><path d="M9 11V7a3 3 0 0 1 6 0v4"/></svg>, title: "Nuevas relaciones" },
-              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><line x1="2" y1="12" x2="22" y2="12"/><path d="M7 19l5-14 5 14"/></svg>, title: "Visión estratégica" },
-              { icon: <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.2"><line x1="9" y1="12" x2="21" y2="12"/><line x1="9" y1="6" x2="21" y2="6"/><line x1="9" y1="18" x2="21" y2="18"/><polyline points="3 6 4 7 6 5"/><polyline points="3 12 4 13 6 11"/><polyline points="3 18 4 19 6 17"/></svg>, title: "Próximos pasos" },
-            ].map((item, i) => (
-              <div key={i} style={{
-                border: `1px solid ${DIVIDER}`, borderRadius: 6,
-                padding: "28px 20px", textAlign: "center",
-              }}>
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>{item.icon}</div>
-                <h3 style={{ fontFamily: FD, fontSize: "1.05rem", color: "#fff", margin: 0 }}>{item.title}</h3>
               </div>
             ))}
           </div>
@@ -966,11 +1012,12 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
             Preguntas frecuentes
           </h2>
           {[
-            { q: "¿Es realmente gratis?", a: "Completamente. No hay costo de entrada, no hay versión premium del mismo día, no hay trampa. Por primera vez abrimos la cumbre sin costo para empresarios e inversionistas que no pudieron asistir a ediciones anteriores." },
-            { q: "¿Necesito tener dinero para invertir ya?", a: "No. La cumbre está diseñada para quienes están evaluando opciones, quieren entender el panorama o buscan claridad antes de tomar una decisión. El criterio que vas a adquirir tiene valor independientemente de tu momento actual." },
-            { q: "¿Qué pasa si no puedo conectarme en vivo?", a: "La cumbre es en vivo. Si te registras, recibirás recordatorios para que puedas planear tu día con anticipación. Te recomendamos bloquear la mañana del 22 de agosto en tu agenda." },
-            { q: "¿Es una presentación de ventas?", a: "No. Presentamos oportunidades de inversión reales porque eso es lo que hacemos, pero la cumbre es primero y principalmente contenido de valor. El objetivo es que salgas con más claridad y criterio, no con una promesa que no puedas evaluar." },
-            { q: "¿Quiénes son los speakers?", a: "Empresarios e inversionistas que han operado, invertido y construido en Estados Unidos. No son conferencistas profesionales. Son personas con experiencia real en el mercado que están dispuestas a compartir lo que saben." },
+            { q: "¿Cuánto dura y a qué hora empieza?", a: "Son 6 horas, en bloques de 45 minutos aproximados. Empieza a las 9:00 AM de México — 10:00 AM en Houston y Colombia, 11:00 AM en Miami y Nueva York, 12:00 PM en Argentina y 5:00 PM en España." },
+            { q: "¿Tiene algún costo?", a: "No. Por primera vez abrimos la Cumbre al público, con el mismo nivel de expertos y de contenido que en las ediciones privadas." },
+            { q: "¿Necesito tener dinero para invertir ya?", a: "No. La Cumbre está pensada para quienes están evaluando opciones o buscan entender el panorama antes de tomar una decisión. El criterio tiene valor independientemente de tu momento actual." },
+            { q: "¿Qué pasa si no puedo conectarme en vivo?", a: "La Cumbre es en vivo y no hay repetición. Si te registras, recibirás recordatorios para que puedas planear el día con anticipación. Conviene bloquear el sábado 22 de agosto en tu agenda." },
+            { q: "¿Es una presentación de ventas?", a: "No. Presentamos oportunidades de inversión reales porque eso es lo que hacemos, pero la Cumbre es primero y principalmente contenido de valor. El objetivo es que salgas con más criterio, no con una promesa que no puedas evaluar." },
+            { q: "¿Quiénes son los ponentes?", a: "Edmundo Treviño, Tomás Reséndez y Diego Alcalá: empresarios e inversionistas que han operado, invertido y construido en Estados Unidos. No son conferencistas profesionales." },
             { q: "¿Cómo me conecto el día del evento?", a: "Al registrarte recibirás el enlace directo al canal de YouTube y Facebook donde se transmitirá en vivo. También te enviaremos recordatorio por WhatsApp." },
           ].map((faq, i) => (
             <details key={i} style={{ borderBottom: `1px solid ${DIVIDER}` }}>
@@ -991,7 +1038,8 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       </section>
 
       {/* ══════════════════════════════════════════════
-          CTA FINAL + FORMULARIO
+          BLOQUE 8 — CIERRE: CTA + FORMULARIO
+          (formulario, CTA e integraciones sin cambios)
       ══════════════════════════════════════════════ */}
       <section
         id={registroId}
@@ -1007,16 +1055,16 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
             fontFamily: FD, fontSize: "clamp(1.6rem, 3vw, 2.4rem)",
             color: "#fff", marginTop: 0, marginBottom: 8,
           }}>
-            Tu próximo gran paso en Estados Unidos<br />comienza mucho antes de invertir.
+            Antes de comprometer tiempo, dinero y patrimonio,<br />conviene tener el criterio para decidir.
           </h2>
           <h2 style={{
             fontFamily: FD, fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)",
             color: GOLD, fontStyle: "italic", marginTop: 0, marginBottom: 12,
           }}>
-            Comienza con una mejor decisión.
+            Estas 6 horas existen para eso.
           </h2>
           <p style={{ color: SLATE, fontSize: "0.9rem", marginBottom: 48 }}>
-            Regístrate hoy. El 22 de agosto es en vivo y sin repetición.
+            Sábado 22 de agosto de 2026 · 9:00 AM México. En vivo, sin repetición.
           </p>
 
           {submitted ? (
