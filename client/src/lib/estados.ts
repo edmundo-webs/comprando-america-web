@@ -39,16 +39,36 @@ export const ESTADO_HEADER =
 export const ESTADO_SIN_IMPUESTO = "Ninguno de los dos cobra impuesto estatal sobre la renta.";
 
 /* ─── Registrar fuera del estado donde ocurre la operación ───
-   El mismo argumento en tres extensiones, una por superficie. Se edita aquí, no
-   en cada pantalla. */
+   El mismo argumento en tres extensiones, una por superficie: `corta` en el
+   bloque inline del diagnóstico, `media` en la FAQ, `larga` en la sección
+   educativa. Se edita aquí, no en cada pantalla.
+
+   ⚠️ Las tres son intencionales y NINGUNA es duplicado de otra. Comparten
+   afirmaciones porque son el mismo argumento, pero cada superficie llega con un
+   contexto distinto: en el diagnóstico la persona acaba de escribir el nombre de
+   un estado y necesita entender por qué eso se va a revisar; en la FAQ está
+   comparando estados en frío; en la sección educativa está leyendo. Borrar una
+   por parecerse a las otras deja esa superficie sin respuesta.
+
+   Si cambia una afirmación de fondo (el nexo fiscal, la aritmética de los dos
+   registros, la privacidad), cambia en las tres. */
 export const REGISTRO_FUERA_DEL_ESTADO = {
   /**
-   * Versión corta — bloque inline del paso de estado del diagnóstico.
-   * Condensación de las afirmaciones de las versiones media y larga; queda lista
-   * para cuando se implemente ese bloque (spec del diagnóstico, §2.2).
+   * Versión corta — bloque inline del paso de estado del diagnóstico
+   * (spec del diagnóstico, §2.2), cuando el estado capturado en texto libre es
+   * Wyoming, Delaware o Nevada.
+   *
+   * Es la única de las tres que además de la aritmética cubre privacidad y la
+   * infraestructura de agente registrado y dirección: aparece justo cuando la
+   * persona nombró uno de esos estados, y son las dos razones por las que suele
+   * nombrarlos.
    */
-  corta:
-    "Donde ocurre la operación hay nexo fiscal. Registrar en otro estado no elimina obligaciones: las duplica, porque el estado donde operas te va a exigir registrarte de todas formas.",
+  corta: [
+    "Son los estados más mencionados en redes, y no por casualidad: tienen usos legítimos. Pero casi siempre en contextos distintos al de quien está abriendo su primera empresa.",
+    "La razón de fondo es que la obligación fiscal sigue a la actividad, no al estado de registro. Si constituyes en Wyoming y operas en Texas, Texas te va a exigir registrarte también como entidad foránea: dos registros, dos agentes, dos calendarios de cumplimiento — y sin ahorro, porque el impuesto federal se paga igual y el estatal se determina por dónde operas.",
+    "Sobre privacidad: es cierto que esos estados no publican a los miembros. También es cierto que no es la única forma de lograrlo, y que la privacidad frente al registro público no es privacidad frente al IRS ni frente al banco donde abras la cuenta.",
+    "Hay algo práctico además: si no tienes SSN ni ITIN, constituir en cualquier estado requiere que alguien te resuelva agente registrado y dirección. Nosotros lo sostenemos en Texas y Florida. En otros estados necesitas un despacho que lo ofrezca ahí — y si tu caso lo justifica, te decimos con quién.",
+  ],
 
   /** Versión media — FAQ "¿En qué estado debo abrir mi LLC?". */
   media: [

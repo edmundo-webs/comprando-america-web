@@ -33,6 +33,38 @@ export function getSavedContact(): SavedContact | null {
   }
 }
 
+/* ─── Ficha para el equipo ───
+   Mismos campos al CRM y al mensaje de WhatsApp, para que no se repregunte en la
+   llamada lo que la persona ya contestó. */
+export type FichaContacto = { name: string; email: string; phone: string; country: string };
+
+/** Origen del lead: UTM + referrer, como campos de la ficha. */
+export function origenCampos(): { label: string; value: string }[] {
+  if (typeof window === "undefined") return [];
+  const p = new URLSearchParams(window.location.search);
+  const campos = [
+    { label: "utm_source", value: p.get("utm_source") ?? "" },
+    { label: "utm_medium", value: p.get("utm_medium") ?? "" },
+    { label: "utm_campaign", value: p.get("utm_campaign") ?? "" },
+    { label: "utm_content", value: p.get("utm_content") ?? "" },
+    { label: "Referrer", value: typeof document !== "undefined" ? document.referrer : "" },
+  ];
+  return campos.filter((c) => c.value.trim());
+}
+
+/** Mensaje precargado de WhatsApp — mismo contenido que las notas del CRM. */
+export function buildFichaTexto(
+  campos: { label: string; value: string }[],
+  saludo: string,
+  contexto?: string,
+): string {
+  return [
+    saludo,
+    ...(contexto ? ["", contexto] : []),
+    ...(campos.length ? ["", ...campos.map((c) => `${c.label}: ${c.value}`)] : []),
+  ].join("\n");
+}
+
 function parseUtm(): Record<string, string | null> {
   const params = new URLSearchParams(window.location.search);
   return {
