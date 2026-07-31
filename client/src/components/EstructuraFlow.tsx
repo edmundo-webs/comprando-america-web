@@ -25,7 +25,8 @@ import { type FichaContacto, postCrmLead, saveContact, getSavedContact, buildFic
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { FlowModal, OptionButton } from "@/components/FlowModal";
 import DiagnosticoEstructura from "@/components/DiagnosticoEstructura";
-import { ESTADO_INFO, INCLUYE, NO_INCLUYE, CONFIRMACION_FAQ } from "@/lib/formacionLlc";
+import { ESTADO_INFO } from "@/lib/estados";
+import { INCLUYE, NO_INCLUYE, CONFIRMACION_FAQ } from "@/lib/formacionLlc";
 
 type Fase = "directo" | "confirmar" | "fuera-de-alcance";
 

@@ -14,7 +14,11 @@
  * La composición del párrafo de apertura es una biblioteca de fragmentos, no
  * plantillas completas: se ensambla con las respuestas y se recorta a cuatro
  * oraciones como máximo.
+ *
+ * El criterio de estado no se redacta aquí: vive en `lib/estados.ts`, que lo
+ * comparte con la FAQ y la sección educativa de la página.
  */
+import { REGISTRO_FUERA_DEL_ESTADO } from "./estados";
 
 /* ─── Vocabulario ─── */
 export type Objetivo = "operar" | "invertir" | "visa" | "explorando";
@@ -224,14 +228,12 @@ export function alternarDecision(actual: Decision[] | undefined, valor: Decision
    error. Nunca se convierten en modales que bloqueen el paso siguiente. */
 export type BloqueInline = { titulo: string; parrafos: string[] };
 
+/* El argumento no se redacta aquí: es el mismo que la FAQ y la sección educativa,
+   en su versión para este bloque. Vive en `lib/estados.ts` — ver la nota de las
+   tres extensiones antes de editarlo o de creer que alguna es duplicado. */
 export const BLOQUE_ESTADOS_MENCIONADOS: BloqueInline = {
   titulo: "Sobre Wyoming, Delaware y Nevada",
-  parrafos: [
-    "Son los estados más mencionados en redes, y no por casualidad: tienen usos legítimos. Pero casi siempre en contextos distintos al de quien está abriendo su primera empresa.",
-    "La razón de fondo es que la obligación fiscal sigue a la actividad, no al estado de registro. Si constituyes en Wyoming y operas en Texas, Texas te va a exigir registrarte también como entidad foránea: dos registros, dos agentes, dos calendarios de cumplimiento — y sin ahorro, porque el impuesto federal se paga igual y el estatal se determina por dónde operas.",
-    "Sobre privacidad: es cierto que esos estados no publican a los miembros. También es cierto que no es la única forma de lograrlo, y que la privacidad frente al registro público no es privacidad frente al IRS ni frente al banco donde abras la cuenta.",
-    "Hay algo práctico además: si no tienes SSN ni ITIN, constituir en cualquier estado requiere que alguien te resuelva agente registrado y dirección. Nosotros lo sostenemos en Texas y Florida. En otros estados necesitas un despacho que lo ofrezca ahí — y si tu caso lo justifica, te decimos con quién.",
-  ],
+  parrafos: REGISTRO_FUERA_DEL_ESTADO.corta,
 };
 
 export const BLOQUE_SOLO_DIGITAL: BloqueInline = {

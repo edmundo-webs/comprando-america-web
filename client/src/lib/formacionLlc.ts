@@ -1,36 +1,16 @@
 /*
  * Copy del servicio de formación de LLC — fuente única.
  *
- * Lo usan la sección "Texas o Florida" de la página (componente
- * EstadoTexasFlorida) y la pantalla de confirmación previa al pago. Si cambia,
- * cambia en los dos lugares a la vez: no debe haber dos versiones de este
- * criterio.
+ * Lo usa la pantalla de confirmación previa al pago: qué incluye el servicio,
+ * qué no incluye y las dos preguntas que siempre aparecen ahí. Si cambia, cambia
+ * aquí y no en la pantalla.
+ *
+ * El criterio de estado no vive aquí, vive en `lib/estados.ts`: lo comparten el
+ * diagnóstico y las secciones educativas de la página.
  *
  * Las preguntas y la lógica del diagnóstico viven en `lib/diagnosticoEstructura.ts`.
  * Aquí no hay reglas: solo lo que el servicio es y hasta dónde llega.
  */
-
-export const ESTADO_INFO: Record<string, { desc: string; argumentos: string[] }> = {
-  Texas: {
-    desc: "Cuando la operación, los clientes, el personal o la administración van a estar en suelo texano.",
-    /* `argumentos` NO se muestra al elegir el estado: a esa altura la persona
-       decide dónde ocurre su operación, no qué estado es "mejor". Su lugar es la
-       página de cada estado, después de que el diagnóstico rutea. */
-    argumentos: ["Ecosistema empresarial sólido", "Comunidad latina activa", "Ideal para operaciones comerciales"],
-  },
-  Florida: {
-    desc: "Cuando el mercado, las propiedades o la presencia principal van a estar allá.",
-    argumentos: ["Fuerte conexión con Latinoamérica", "Mercado inmobiliario activo", "Ideal para negocios digitales y bienes raíces"],
-  },
-};
-
-/* Premisa de la decisión de estado. */
-export const ESTADO_HEADER =
-  "El estado no se elige por sus ventajas. Se elige por dónde ocurre realmente la operación.";
-
-/* Lo único que los dos estados comparten y que sí conviene decir de entrada,
-   porque es la creencia que más gente trae equivocada. */
-export const ESTADO_SIN_IMPUESTO = "Ninguno de los dos cobra impuesto estatal sobre la renta.";
 
 /* "Qué incluye / qué no incluye" + FAQ de EIN y cuenta bancaria — se muestran en el
    paso de confirmación, justo antes del pago. */

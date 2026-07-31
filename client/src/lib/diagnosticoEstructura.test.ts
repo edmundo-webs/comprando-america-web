@@ -5,11 +5,12 @@
  */
 import { describe, it, expect } from "vitest";
 import {
-  type Respuestas,
-  ALCANCE, DERIVACION, PREGUNTAS, RESULTADO_A, RESULTADO_B, RESULTADO_C,
+  type RazonId, type Respuestas, type Resultado,
+  ALCANCE, BLOQUE_ESTADOS_MENCIONADOS, DERIVACION, PREGUNTAS, RESULTADO_A, RESULTADO_B, RESULTADO_C,
   alternarDecision, bloqueDe, camposDiagnostico, evaluarDiagnostico,
   mencionaEstadoDeRedes, parrafoSituacion, pasosDe,
 } from "./diagnosticoEstructura";
+import { REGISTRO_FUERA_DEL_ESTADO } from "./estados";
 
 /** Caso base que cae limpio en el resultado A. */
 const rutaClara: Respuestas = {
@@ -22,6 +23,47 @@ const rutaClara: Respuestas = {
 };
 
 const resultado = (r: Respuestas) => evaluarDiagnostico(r).resultado;
+
+/* ─── Tabla de resultados de la especificación, entera y en un solo lugar ───
+   Una fila por disparador (§3.1 C · §3.2 B1-B5 · §3.3 A). Si la lógica cambia,
+   aquí se ve cuál disparador dejó de estar cubierto. */
+const TABLA: { id: RazonId | "A" | "C"; caso: string; r: Respuestas; espera: Resultado }[] = [
+  { id: "C", caso: "investigando + explorando", espera: "C",
+    r: { objetivo: "explorando", etapa: "investigando", lugar: "texas", decision: ["solo-yo"] } },
+  { id: "C", caso: "investigando + sin definir dónde", espera: "C",
+    r: { objetivo: "operar", tipoOperacion: "servicios", etapa: "investigando", lugar: "sin-definir", decision: ["solo-yo"] } },
+  { id: "B1", caso: "socios en la decisión", espera: "B", r: { ...rutaClara, decision: ["socios"] } },
+  { id: "B1", caso: "inversionistas externos", espera: "B", r: { ...rutaClara, decision: ["inversionistas"] } },
+  { id: "B2", caso: "invertir con tipo distinto de renta", espera: "B",
+    r: { objetivo: "invertir", tipoInversion: "resguardo", etapa: "facturando", lugar: "florida", decision: ["solo-yo"], documentos: "ssn" } },
+  { id: "B3", caso: "objetivo visa", espera: "B",
+    r: { objetivo: "visa", acompanamiento: "con-abogado", etapa: "facturando", lugar: "texas", decision: ["solo-yo"] } },
+  { id: "B4", caso: "otro estado de EE.UU.", espera: "B", r: { ...rutaClara, lugar: "otro-estado", estadoLibre: "Nevada" } },
+  { id: "B4", caso: "aún no define dónde", espera: "B", r: { ...rutaClara, lugar: "sin-definir" } },
+  { id: "B4", caso: "solo digital", espera: "B", r: { ...rutaClara, lugar: "solo-digital" } },
+  { id: "B5", caso: "capital sin operación", espera: "B", r: { ...rutaClara, etapa: "capital-sin-operacion" } },
+  { id: "A", caso: "operar + facturando + Texas + solo yo", espera: "A", r: rutaClara },
+];
+
+describe("tabla de resultados de la especificación", () => {
+  for (const { id, caso, r, espera } of TABLA) {
+    it(`${id} · ${caso} → resultado ${espera}`, () => {
+      const d = evaluarDiagnostico(r);
+      expect(d.resultado).toBe(espera);
+      if (id !== "A" && id !== "C") {
+        expect(d.disparadores).toContain(id);
+        expect(d.razones.map((x) => x.id)).toContain(id);
+      }
+      if (id === "A" || id === "C") expect(d.disparadores).toEqual(id === "A" ? [] : d.disparadores);
+    });
+  }
+
+  it("los siete disparadores del spec están cubiertos por la tabla", () => {
+    expect(new Set(TABLA.map((f) => f.id))).toEqual(new Set(["A", "B1", "B2", "B3", "B4", "B5", "C"]));
+    /* B4 se dispara con tres respuestas distintas de P4: las tres van en la tabla. */
+    expect(TABLA.filter((f) => f.id === "B4").map((f) => f.r.lugar).sort()).toEqual(["otro-estado", "sin-definir", "solo-digital"]);
+  });
+});
 
 describe("estructura de preguntas", () => {
   it("ninguna pregunta ofrece como opción el estado donde se compra el servicio", () => {
@@ -83,6 +125,12 @@ describe("bloques inline", () => {
   it("el bloque de Wyoming aparece con el estado capturado, no con otro estado cualquiera", () => {
     expect(bloqueDe("lugar", { lugar: "otro-estado", estadoLibre: "Wyoming" })?.titulo).toContain("Wyoming");
     expect(bloqueDe("lugar", { lugar: "otro-estado", estadoLibre: "California" })).toBeNull();
+  });
+
+  it("el bloque del modal no tiene su propia copia del argumento de estado", () => {
+    /* Una sola fuente en lib/estados.ts: la versión corta es la de este bloque. */
+    expect(BLOQUE_ESTADOS_MENCIONADOS.parrafos).toBe(REGISTRO_FUERA_DEL_ESTADO.corta);
+    expect(REGISTRO_FUERA_DEL_ESTADO.corta.length).toBe(4);
   });
 
   it("solo digital, visa sin abogado e ITIN tienen su bloque", () => {
