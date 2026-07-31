@@ -229,11 +229,10 @@ export function alternarDecision(actual: Decision[] | undefined, valor: Decision
 export type BloqueInline = { titulo: string; parrafos: string[] };
 
 /* El argumento no se redacta aquí: es el mismo que la FAQ y la sección educativa,
-   en su versión para este bloque. Vive en `lib/estados.ts` — ver la nota de las
-   tres extensiones antes de editarlo o de creer que alguna es duplicado. */
+   en la versión que corresponde a esta superficie. Vive en `lib/estados.ts`. */
 export const BLOQUE_ESTADOS_MENCIONADOS: BloqueInline = {
   titulo: "Sobre Wyoming, Delaware y Nevada",
-  parrafos: REGISTRO_FUERA_DEL_ESTADO.corta,
+  parrafos: REGISTRO_FUERA_DEL_ESTADO.modal,
 };
 
 export const BLOQUE_SOLO_DIGITAL: BloqueInline = {
