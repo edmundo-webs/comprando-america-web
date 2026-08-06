@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
-  MapPin,
+  Clock,
   CalendarDays,
   CheckCircle2,
   Compass,
@@ -197,7 +197,7 @@ export default function Eventos() {
 
                   <div className="flex flex-wrap gap-4 text-slate-400 text-sm mb-8">
                     <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-blue-400" /> Sábado 22 de agosto, 2026</span>
-                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-blue-400" /> 10 AM–3 PM México · 11 AM–4 PM Houston</span>
+                    <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> 9 AM–3 PM México · 10 AM–4 PM Houston</span>
                   </div>
 
                   <a href="/cumbre-digital">
