@@ -31,7 +31,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Disclaimers from "./pages/Disclaimers";
 import Oportunidades from "./pages/Oportunidades";
 import Eventos from "./pages/Eventos";
-import InvestmentWeek from "./pages/InvestmentWeek";
+// import InvestmentWeek from "./pages/InvestmentWeek"; // ruta oculta — ver /investment-week más abajo
 import Recursos from "./pages/Recursos";
 import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
 import DiagnosticoPage from "./pages/DiagnosticoPage";
@@ -71,7 +71,10 @@ function Router() {
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
       <Route path="/oportunidades-de-inversion-en-estados-unidos" component={Oportunidades} />
       <Route path="/eventos" component={Eventos} />
-      <Route path="/investment-week" component={InvestmentWeek} />
+      {/* /investment-week — oculto hasta confirmar las fechas de la próxima edición.
+          La página se conserva en pages/InvestmentWeek.tsx: para reactivarla, restaurar
+          <Route path="/investment-week" component={InvestmentWeek} /> y su import. */}
+      <Route path="/investment-week"><Redirect to="/eventos" /></Route>
       <Route path="/recursos" component={Recursos} />
       <Route path="/estructura-empresarial-en-estados-unidos" component={EstructuraEmpresarial} />
       <Route path="/visa-e2-inversion-en-estados-unidos" component={VisaE2} />

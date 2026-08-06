@@ -454,23 +454,6 @@ export default function Home() {
 
       {/* ══ Banners eventos ══ */}
       <a
-        href="/investment-week"
-        className="block w-full bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#1D4ED8] hover:from-[#1E40AF] hover:to-[#1E40AF] transition-colors duration-300 group"
-      >
-        <div className="container flex items-center justify-center gap-3 py-3 px-4 text-center">
-          <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
-            Próximo evento
-          </span>
-          <p className="text-white text-sm font-medium">
-            <span className="font-bold">Florida Investment Weekend II</span>
-            {" — "}Terreno real. Propiedades reales. Números reales.
-          </p>
-          <span className="hidden sm:inline-flex items-center gap-1 text-white font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
-            Ver detalles <ArrowRight className="w-3.5 h-3.5" />
-          </span>
-        </div>
-      </a>
-      <a
         href="/cumbre-digital"
         className="block w-full bg-gradient-to-r from-[#0B1F3A] via-[#132D52] to-[#0B1F3A] hover:from-[#061428] hover:to-[#061428] transition-colors duration-300 group border-t border-white/10"
       >
@@ -1077,13 +1060,13 @@ export default function Home() {
               <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-200">
                 <img
                   src={INVEST_WEEK}
-                  alt="Florida Investment Weekend II"
+                  alt="Investment Week"
                   className="w-full h-80 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/50 to-transparent" />
                 <div className="absolute bottom-6 left-6">
                   <span className="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full">
-                    Florida Investment Weekend II
+                    Investment Week
                   </span>
                 </div>
               </div>

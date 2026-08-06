@@ -99,25 +99,6 @@ export default function FondoVictoryCapital() {
       <SEOHead {...PAGE_SEO} />
       <Navbar />
 
-      {/* ═══ BANNER PROMOCIONAL — Florida Investment Weekend II ═══ */}
-      <a
-        href="/investment-week"
-        className="block w-full bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#1D4ED8] hover:from-[#1E40AF] hover:to-[#1E40AF] transition-colors duration-300 group"
-      >
-        <div className="container flex items-center justify-center gap-3 py-3 px-4 text-center">
-          <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
-            Próximo evento
-          </span>
-          <p className="text-white text-sm font-medium">
-            <span className="font-bold">Florida Investment Weekend II</span>
-            {" — "}Terreno real. Propiedades reales. Números reales.
-          </p>
-          <span className="hidden sm:inline-flex items-center gap-1 text-white font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
-            Ver detalles <ArrowRight className="w-3.5 h-3.5" />
-          </span>
-        </div>
-      </a>
-
       {/* ═══ 1. HERO ═══ */}
       <section className="relative min-h-screen flex items-center pt-20 pb-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-[#0B1F3A] via-[#0E2544] to-[#091A30]" />
@@ -193,24 +174,6 @@ export default function FondoVictoryCapital() {
           </FadeIn>
         </div>
       </section>
-
-      {/* ═══ BANNER INVESTMENT WEEK ═══ */}
-      <a href="/investment-week" className="block">
-        <div className="bg-[#2563EB] px-6 py-4 flex items-center justify-between gap-4 hover:brightness-105 transition-all">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">✈️</span>
-            <div>
-              <p className="text-[#0B1F3A] font-bold text-base leading-tight">
-                Viaja a Tampa y conoce las propiedades en persona.
-              </p>
-              <p className="text-[#0B1F3A]/70 text-sm">Investment Week · St. Petersburg, Florida</p>
-            </div>
-          </div>
-          <div className="flex-shrink-0 bg-[#0B1F3A] text-white text-sm font-semibold px-5 py-2.5 rounded-full flex items-center gap-2 whitespace-nowrap">
-            Ver detalles <ArrowRight className="w-4 h-4" />
-          </div>
-        </div>
-      </a>
 
       {/* ═══ 2. EXPLICACIÓN SENCILLA — ☀️ BLANCO ═══ */}
       <section id="como-funciona" className="bg-[#F5F7FA] py-20 md:py-28">
