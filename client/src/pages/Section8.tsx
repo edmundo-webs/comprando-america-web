@@ -261,33 +261,6 @@ export default function Section8() {
         </div>
       </section>
 
-      {/* ══ BANNER — VIAJE A TAMPA ══ */}
-      <a href="/investment-week" className="block group">
-        <div
-          className="relative overflow-hidden"
-          style={{ backgroundColor: GOLD }}
-        >
-          <div className="container py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <span className="text-xl">✈️</span>
-              <div>
-                <p className="font-bold text-[#0B1F3A] text-sm leading-tight">
-                  Viaja a Tampa y conoce las propiedades en persona.
-                </p>
-                <p className="text-[#0B1F3A]/70 text-xs">
-                  Investment Week · St. Petersburg, Florida
-                </p>
-              </div>
-            </div>
-            <span
-              className="flex-shrink-0 flex items-center gap-2 bg-[#0B1F3A] text-white text-xs font-semibold px-4 py-2 rounded-full group-hover:bg-[#091A30] transition-colors"
-            >
-              Ver detalles <ArrowRight className="w-3 h-3" />
-            </span>
-          </div>
-        </div>
-      </a>
-
       {/* ══ BLOQUE 2 — ¿QUÉ ES SECTION 8? ══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container max-w-4xl">

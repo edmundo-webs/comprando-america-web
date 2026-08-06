@@ -28,7 +28,7 @@ const STATIC_URLS: Array<{ loc: string; priority: string; changefreq: string }> 
   { loc: "/bienes-raices-en-usa", priority: "0.8", changefreq: "weekly" },
   { loc: "/ruta-inmobiliaria-en-estados-unidos", priority: "0.7", changefreq: "monthly" },
   { loc: "/eventos", priority: "0.8", changefreq: "weekly" },
-  { loc: "/investment-week", priority: "0.7", changefreq: "monthly" },
+  // /investment-week fuera del sitemap mientras la ruta redirige a /eventos.
   { loc: "/tierra-estrategica", priority: "0.8", changefreq: "monthly" },
   { loc: "/renta-garantizada", priority: "0.8", changefreq: "monthly" },
   { loc: "/activos-disponibles", priority: "0.8", changefreq: "monthly" },
