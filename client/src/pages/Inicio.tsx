@@ -156,7 +156,7 @@ const FREE_CONTENT = [
     icon: Instagram,
     title: "Instagram",
     description: "Contenido detrás de cámaras de nuestros eventos, viajes de inspección y comunidad.",
-    href: null,
+    href: "https://www.instagram.com/edmundotrevino.usa/",
     external: true,
   },
   {
@@ -170,7 +170,7 @@ const FREE_CONTENT = [
     icon: Facebook,
     title: "Facebook",
     description: "Comunidad, transmisiones en vivo y anuncios de próximos eventos.",
-    href: null,
+    href: "https://www.facebook.com/edmundotrevino.usa",
     external: true,
   },
   {

@@ -331,7 +331,7 @@ const PLATFORMS: {
     preview: {
       title: "Instagram",
       desc: "Contenido visual sobre inversión, eventos y comunidad. Casos reales en formato breve.",
-      href: "https://www.instagram.com/comprandoamerica/",
+      href: "https://www.instagram.com/edmundotrevino.usa/",
     },
   },
   {
@@ -341,7 +341,7 @@ const PLATFORMS: {
     preview: {
       title: "Facebook",
       desc: "Comunidad activa de empresarios latinos. Transmisiones en vivo y contenido exclusivo.",
-      href: "https://www.facebook.com/comprandoamerica/",
+      href: "https://www.facebook.com/edmundotrevino.usa",
     },
   },
   {
@@ -351,7 +351,7 @@ const PLATFORMS: {
     preview: {
       title: "Spotify",
       desc: "Escucha el podcast en tu plataforma favorita. Disponible en todos los reproductores.",
-      href: "https://open.spotify.com/show/comprando-america",
+      href: "https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7",
     },
   },
   {
