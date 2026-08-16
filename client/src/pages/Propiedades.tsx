@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { sendCtaClick } from "@/lib/tracking";
 import {
-  cargarPortafolio, capRatePct, ahorroDe,
+  cargarPortafolio, capRatePct, ahorroDe, ETIQUETA_ESTATUS,
   type Propiedad, type PropiedadAbierta,
 } from "@/lib/portafolio";
 
@@ -53,6 +53,10 @@ type Deal = {
   foto?: string;
   fotoFit: "cover" | "contain";
   fotoPos: string;
+  /** Etiqueta del estatus, o null cuando está simplemente disponible. */
+  estatus: string | null;
+  /** Calle y número. Solo llega con sesión de miembro. */
+  direccion?: string | null;
 };
 
 /** Traduce lo que manda el CMS a la forma que ya dibujan las tarjetas. */
@@ -82,6 +86,8 @@ function aDeal(p: PropiedadAbierta): Deal {
     foto: foto?.url,
     fotoFit: foto?.fit ?? "cover",
     fotoPos: foto?.focalPoint ?? "center center",
+    estatus: ETIQUETA_ESTATUS[p.disponibilidad],
+    direccion: p.direccion ?? null,
   };
 }
 
@@ -122,8 +128,17 @@ function DealCard({ d }: { d: Deal }) {
           #{d.id} · {d.tipo}
         </span>
 
+        {/* Estatus: una casa apartada sigue arriba, con su etiqueta. Sacarla
+            de la lista escondería que el portafolio se mueve; dejarla como
+            "disponible" prometería algo que ya no está. */}
+        {d.estatus && (
+          <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 800, color: "#fff", background: "#7C5CBF", borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.06em" }}>
+            {d.estatus}
+          </span>
+        )}
+
         {/* Top-right: savings badge — gold accent */}
-        {d.savings && (
+        {!d.estatus && d.savings && (
           <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: NAVY_DARK, background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, borderRadius: "6px", padding: "3px 10px" }}>
             -{usd(d.savings)} ahorro
           </span>
@@ -142,6 +157,14 @@ function DealCard({ d }: { d: Deal }) {
         <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "10px" }}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5A7A9A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>{d.ubicacion}</span>
+          {/* La dirección exacta solo llega con sesión de miembro: si no está,
+              es porque el servidor no la mandó, no porque se esté ocultando
+              aquí. */}
+          {d.direccion && (
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#C9A84C", marginLeft: "4px" }}>
+              · {d.direccion}
+            </span>
+          )}
         </div>
 
         {/* Price — gold for investor price (financial highlight) */}
@@ -356,6 +379,8 @@ export default function Propiedades() {
   // Las cifras del encabezado solo pueden salir de lo que el visitante puede
   // ver. Calcularlas con las bloqueadas sería filtrar por promedio el precio
   // que la tarjeta se cuidó de no mostrar.
+  const libres    = disponibles.filter(p => p.disponibilidad === "disponible");
+  const apartadas = disponibles.filter(p => p.disponibilidad !== "disponible");
   const abiertas   = disponibles.filter((p): p is PropiedadAbierta => !p.bloqueada);
   const activeDeals = abiertas.map(aDeal);
 
@@ -409,7 +434,10 @@ export default function Propiedades() {
         {/* Stats bar — gold for the numbers */}
         <div style={{ maxWidth: "800px", margin: "48px auto 0", display: "grid", gridTemplateColumns: "repeat(3,1fr)", borderTop: `1px solid ${NAVY_BORDER}`, borderBottom: `1px solid ${NAVY_BORDER}` }}>
           {[
-            { num: String(disponibles.length), suffix: disponibles.length === 1 ? " propiedad" : " propiedades", label: "Disponibles ahora" },
+            // "Disponibles ahora" cuenta solo lo que de verdad se puede
+            // apartar. Incluir las que ya están en trámites o en revisión de
+            // documentos sería prometer inventario que ya tiene comprador.
+            { num: String(libres.length), suffix: libres.length === 1 ? " propiedad" : " propiedades", label: apartadas.length > 0 ? `Disponibles · ${apartadas.length} apartada${apartadas.length === 1 ? "" : "s"}` : "Disponibles ahora" },
             { num: minCap === maxCap ? `${minCap}` : `${minCap}–${maxCap}`, suffix: "%", label: "Cap Rate promedio" },
             { num: usdCompact(minPrice), suffix: "+", label: "Desde" },
           ].map(({ num, suffix, label }, i) => (

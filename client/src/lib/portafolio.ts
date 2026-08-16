@@ -25,6 +25,20 @@ export type Foto = {
 };
 
 /** Lo que llega de una propiedad que el visitante SÍ puede ver completa. */
+/** El recorrido de la propiedad. Solo `vendida` sale de la lista principal. */
+export type Disponibilidad =
+  | "disponible"
+  | "revision_documentos"
+  | "en_tramites"
+  | "vendida";
+
+export const ETIQUETA_ESTATUS: Record<Disponibilidad, string | null> = {
+  disponible: null, // sin etiqueta: es el estado normal
+  revision_documentos: "REVISIÓN DE DOCUMENTOS",
+  en_tramites: "EN TRÁMITES",
+  vendida: "VENDIDA",
+};
+
 export type PropiedadAbierta = {
   bloqueada: false;
   puedeContactar: true;
@@ -34,6 +48,9 @@ export type PropiedadAbierta = {
   tipo: string;
   ciudad: string;
   estado: string;
+  /** Calle y número. Solo llega si hay sesión de miembro. */
+  direccion?: string | null;
+  zip?: string | null;
   precioInversionista: number;
   precioLista: number | null;
   moneda: string;
@@ -51,7 +68,7 @@ export type PropiedadAbierta = {
   capRate: number;
   detalles: string[];
   linkZillow: string | null;
-  disponibilidad: "disponible" | "vendida";
+  disponibilidad: Disponibilidad;
   esPrivada: boolean;
   fotos: Foto[];
 };
@@ -66,7 +83,7 @@ export type PropiedadBloqueada = {
   tipo: string;
   ciudad: string;
   estado: string;
-  disponibilidad: "disponible" | "vendida";
+  disponibilidad: Disponibilidad;
   esPrivada: true;
   fotos: Foto[];
 };
