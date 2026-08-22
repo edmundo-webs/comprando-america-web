@@ -22,6 +22,8 @@ import {
   Youtube,
   Instagram,
   Facebook,
+  Linkedin,
+  Music2,
   Globe,
   Shield,
   TrendingUp,
@@ -33,6 +35,7 @@ import {
   X,
   Monitor,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 /* ─── FadeIn ─── */
 function FadeIn({
@@ -286,16 +289,22 @@ type PlatformId =
   | "articulos"
   | "noticias";
 
+// El icono y su color de marca son lo que el visitante escanea primero: con
+// ocho plataformas juntas, la forma reconocible llega antes que el texto.
 const PLATFORMS: {
   id: PlatformId;
   label: string;
   color: string;
+  icon: LucideIcon;
+  iconColor: string;
   preview: { title: string; desc: string; href: string; videoId?: string };
 }[] = [
   {
     id: "youtube",
     label: "YouTube",
     color: "bg-red-600",
+    icon: Youtube,
+    iconColor: "text-red-500",
     preview: {
       title: "Canal de YouTube",
       desc: "Conversaciones sobre inversión, estructura empresarial y patrimonio en Estados Unidos.",
@@ -307,6 +316,8 @@ const PLATFORMS: {
     id: "podcast",
     label: "Podcast",
     color: "bg-blue-600",
+    icon: Mic,
+    iconColor: "text-blue-400",
     preview: {
       title: "Podcast · Comprando América",
       desc: "Casos reales, expertos en activo y análisis del mercado americano.",
@@ -318,6 +329,8 @@ const PLATFORMS: {
     id: "linkedin",
     label: "LinkedIn",
     color: "bg-[#0077B5]",
+    icon: Linkedin,
+    iconColor: "text-[#4BA3DB]",
     preview: {
       title: "LinkedIn",
       desc: "Reflexiones, análisis y criterio patrimonial. Seguido por empresarios de toda América Latina.",
@@ -328,6 +341,8 @@ const PLATFORMS: {
     id: "instagram",
     label: "Instagram",
     color: "bg-gradient-to-br from-purple-600 to-pink-500",
+    icon: Instagram,
+    iconColor: "text-pink-400",
     preview: {
       title: "Instagram",
       desc: "Contenido visual sobre inversión, eventos y comunidad. Casos reales en formato breve.",
@@ -338,6 +353,8 @@ const PLATFORMS: {
     id: "facebook",
     label: "Facebook",
     color: "bg-[#1877F2]",
+    icon: Facebook,
+    iconColor: "text-[#4E9BFF]",
     preview: {
       title: "Facebook",
       desc: "Comunidad activa de empresarios latinos. Transmisiones en vivo y contenido exclusivo.",
@@ -348,6 +365,8 @@ const PLATFORMS: {
     id: "spotify",
     label: "Spotify",
     color: "bg-green-600",
+    icon: Music2,
+    iconColor: "text-green-400",
     preview: {
       title: "Spotify",
       desc: "Escucha el podcast en tu plataforma favorita. Disponible en todos los reproductores.",
@@ -358,6 +377,8 @@ const PLATFORMS: {
     id: "articulos",
     label: "Artículos",
     color: "bg-indigo-600",
+    icon: BookOpen,
+    iconColor: "text-indigo-400",
     preview: {
       title: "Blog · Guías estratégicas",
       desc: "Análisis escritos por el equipo sobre inversión, estructura legal y patrimonio en EE.UU.",
@@ -368,6 +389,8 @@ const PLATFORMS: {
     id: "noticias",
     label: "Noticias",
     color: "bg-slate-700",
+    icon: Newspaper,
+    iconColor: "text-slate-300",
     preview: {
       title: "Noticias del mercado",
       desc: "Actualidad del mercado inmobiliario, migración y economía en EE.UU. filtrada para inversionistas.",
@@ -742,24 +765,37 @@ export default function Home() {
           {/* Platform grid */}
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              {PLATFORMS.map((p, i) => (
-                <FadeIn key={p.id} delay={i * 0.04}>
-                  <button
-                    onClick={() =>
-                      setActivePlatform(
-                        activePlatform === p.id ? null : p.id
-                      )
-                    }
-                    className={`w-full rounded-xl px-4 py-3 text-sm font-semibold text-white transition-all border ${
-                      activePlatform === p.id
-                        ? "border-primary/60 bg-primary/10 shadow-lg shadow-blue-600/10"
-                        : "border-[#1E3A5F] bg-[#0F2847] hover:border-blue-500/30"
-                    }`}
-                  >
-                    {p.label}
-                  </button>
-                </FadeIn>
-              ))}
+              {PLATFORMS.map((p, i) => {
+                const Icon = p.icon;
+                const isActive = activePlatform === p.id;
+                return (
+                  <FadeIn key={p.id} delay={i * 0.04}>
+                    <button
+                      onClick={() =>
+                        setActivePlatform(isActive ? null : p.id)
+                      }
+                      aria-expanded={isActive}
+                      className={`w-full flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-semibold text-white transition-all border ${
+                        isActive
+                          ? "border-primary/60 bg-primary/10 shadow-lg shadow-blue-600/10"
+                          : "border-[#1E3A5F] bg-[#0F2847] hover:border-blue-500/30"
+                      }`}
+                    >
+                      <Icon
+                        className={`w-4 h-4 shrink-0 ${p.iconColor}`}
+                        aria-hidden="true"
+                      />
+                      <span className="truncate">{p.label}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 shrink-0 ml-auto text-slate-500 transition-transform ${
+                          isActive ? "rotate-180 text-blue-400" : ""
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </button>
+                  </FadeIn>
+                );
+              })}
             </div>
 
             {/* Inline preview panel */}
