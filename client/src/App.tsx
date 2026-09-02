@@ -31,18 +31,18 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Disclaimers from "./pages/Disclaimers";
 import Oportunidades from "./pages/Oportunidades";
 import Eventos from "./pages/Eventos";
-import InvestmentWeek from "./pages/InvestmentWeek";
+// import InvestmentWeek from "./pages/InvestmentWeek"; // ruta oculta — ver /investment-week más abajo
 import Recursos from "./pages/Recursos";
 import EstructuraEmpresarial from "./pages/EstructuraEmpresarial";
 import DiagnosticoPage from "./pages/DiagnosticoPage";
 import Home2Page from "./pages/Home2Page";
 import CumbreDigital from "./pages/CumbreDigital";
-import CumbreDigital2 from "./pages/CumbreDigital2";
 import Leads from "./pages/admin/Leads";
 import Analytics from "./pages/admin/Analytics";
 import NuevoHome from "./pages/NuevoHome";
 import Membresia2 from "./pages/Membresia2";
 import Section8 from "./pages/Section8";
+import Acceso from "@/pages/Acceso";
 import Propiedades from "./pages/Propiedades";
 import FondoVictoryCapital from "./pages/FondoVictoryCapital";
 import GpsPage from "./pages/GpsPage";
@@ -72,7 +72,10 @@ function Router() {
       <Route path="/ruta-inmobiliaria-en-estados-unidos" component={RutaInmobiliaria} />
       <Route path="/oportunidades-de-inversion-en-estados-unidos" component={Oportunidades} />
       <Route path="/eventos" component={Eventos} />
-      <Route path="/investment-week" component={InvestmentWeek} />
+      {/* /investment-week — oculto hasta confirmar las fechas de la próxima edición.
+          La página se conserva en pages/InvestmentWeek.tsx: para reactivarla, restaurar
+          <Route path="/investment-week" component={InvestmentWeek} /> y su import. */}
+      <Route path="/investment-week"><Redirect to="/eventos" /></Route>
       <Route path="/recursos" component={Recursos} />
       <Route path="/estructura-empresarial-en-estados-unidos" component={EstructuraEmpresarial} />
       <Route path="/visa-e2-inversion-en-estados-unidos" component={VisaE2} />
@@ -83,14 +86,15 @@ function Router() {
       <Route path="/disclaimers" component={Disclaimers} />
       <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path="/cumbre-digital" component={CumbreDigital} />
-      <Route path="/cumbre-digital-2" component={CumbreDigital2} />
       <Route path="/renta-garantizada" component={Section8} />
       <Route path="/activos-disponibles" component={Propiedades} />
+      <Route path="/acceso" component={Acceso} />
       <Route path="/tierra-estrategica" component={FondoVictoryCapital} />
       {/* 301 redirects from old URLs */}
       <Route path="/vc-8"><Redirect to="/renta-garantizada" /></Route>
       <Route path="/propiedades"><Redirect to="/activos-disponibles" /></Route>
       <Route path="/fondo"><Redirect to="/tierra-estrategica" /></Route>
+      <Route path="/cumbre-digital-2"><Redirect to="/cumbre-digital" /></Route>
       <Route path="/grupo-empresarial-edmundo" component={CirculoCercano} />
       <Route path="/arquitectura-patrimonial" component={ArquitecturaPatrimonial} />
       <Route path="/inicio" component={Inicio} />

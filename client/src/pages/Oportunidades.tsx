@@ -44,7 +44,7 @@ const PAGE_SEO = {
         name: "¿Qué tipo de oportunidades ofrece Comprando América?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Bienes raíces, adquisición de negocios, franquicias y rutas migratorias con visa E-2. Cada oportunidad es filtrada con soporte legal y financiero.",
+          text: "Bienes raíces, adquisición de negocios, franquicias y rutas migratorias con visa E-2. Cada oportunidad es filtrada con soporte de aliados legales y financieros.",
         },
       },
       {
@@ -183,7 +183,7 @@ export default function Oportunidades() {
             <FadeIn delay={0.3}>
               <p className="text-slate-300 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl">
                 Comprando América conecta empresarios e inversionistas con oportunidades previamente
-                evaluadas, presentadas en espacios privados con soporte legal y financiero.
+                evaluadas, presentadas en espacios privados con soporte de aliados legales y financieros.
               </p>
             </FadeIn>
 
@@ -558,7 +558,7 @@ export default function Oportunidades() {
                       {[
                         "Capital desde $300,000 USD disponible",
                         "Estrategia de visa E-2 integrada",
-                        "Inversión productiva + residencia legal",
+                        "Inversión productiva enfocada en tu estrategia migratoria",
                       ].map((item, i) => (
                         <div key={i} className="flex items-center gap-2.5">
                           <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-primary" />
@@ -781,7 +781,7 @@ export default function Oportunidades() {
                   { q: "¿Cuál es el monto mínimo de inversión?", a: "El punto de entrada es $100,000 USD. Este monto permite acceder a oportunidades con estructura profesional completa — legal, fiscal y operativa. No es un monto arbitrario: es el nivel donde la diversificación internacional tiene sentido real." },
                   { q: "¿Las oportunidades están garantizadas?", a: "Ninguna inversión tiene garantía de retorno — y quien te diga lo contrario no es confiable. Lo que sí garantizamos es el proceso: cada oportunidad pasa por un filtro riguroso de análisis, estructura y viabilidad antes de ser presentada a la comunidad." },
                   { q: "¿Puedo invertir desde cualquier país?", a: "Sí. Nuestra comunidad incluye empresarios de México, Colombia, Chile, Argentina y otros países de América Latina. La estructura de LLC y la operación en Estados Unidos se puede gestionar de forma remota con el equipo correcto." },
-                  { q: "¿Cómo se seleccionan las oportunidades?", a: "Cada oportunidad es evaluada por nuestro equipo multidisciplinario: análisis financiero, due diligence legal, viabilidad operativa y alineación con los perfiles de nuestros miembros. Solo el 20% de lo que evaluamos llega a ser presentado." },
+                  { q: "¿Cómo se seleccionan las oportunidades?", a: "Cada oportunidad es evaluada por nuestro equipo multidisciplinario: análisis financiero, due diligence legal con especialistas aliados, viabilidad operativa y alineación con los perfiles de nuestros miembros. Solo el 20% de lo que evaluamos llega a ser presentado." },
                 ].map((faq, i) => (
                   <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl px-6">
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5">{faq.q}</AccordionTrigger>

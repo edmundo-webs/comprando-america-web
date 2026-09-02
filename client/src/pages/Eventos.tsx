@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
-  MapPin,
+  Clock,
   CalendarDays,
   CheckCircle2,
   Compass,
@@ -39,7 +39,7 @@ const PAGE_SEO = {
   title: "Eventos y Experiencias para Inversionistas | Comprando Am\u00e9rica",
   description: "Participa en eventos presenciales, viajes de inspecci\u00f3n y encuentros privados para empresarios e inversionistas en Estados Unidos.",
   path: "/eventos",
-  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfQu\u00e9 eventos organiza Comprando Am\u00e9rica?", "acceptedAnswer": {"@type": "Answer", "text": "Cumbres de emprendimiento, Ruta Inmobiliaria, Florida Investment Weekend II, cenas privadas y asambleas mensuales para miembros."}}]},
+  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfQu\u00e9 eventos organiza Comprando Am\u00e9rica?", "acceptedAnswer": {"@type": "Answer", "text": "Cumbres de emprendimiento, la Cumbre Digital, Ruta Inmobiliaria, viajes de inspección en Florida, cenas privadas y asambleas mensuales para miembros."}}]},
 };
 
 /* ─── Photos ─── */
@@ -197,7 +197,7 @@ export default function Eventos() {
 
                   <div className="flex flex-wrap gap-4 text-slate-400 text-sm mb-8">
                     <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-blue-400" /> Sábado 22 de agosto, 2026</span>
-                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-blue-400" /> 10 AM–3 PM México · 11 AM–4 PM Houston</span>
+                    <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> 9 AM–3 PM México · 10 AM–4 PM Houston</span>
                   </div>
 
                   <a href="/cumbre-digital">
@@ -209,50 +209,7 @@ export default function Eventos() {
           </div>
         </section>
 
-        {/* ─── INVESTMENT WEEKEND II — ☀️ blanco ─── */}
-        <section className="bg-[#F5F7FA] py-20 md:py-28">
-          <div className="container">
-            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-              <FadeIn delay={0.1} className="order-2 lg:order-1">
-                <div>
-                  <Globe className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="text-3xl md:text-4xl text-[#0B1F3A] mb-3">Florida Investment Weekend II</h3>
-                  <p className="text-[#4B5563] text-lg leading-relaxed mb-6">Viaje de inspección donde visitamos oportunidades y analizamos proyectos directamente en Estados Unidos.</p>
-
-                  <div className="space-y-3 mb-6">
-                    {["Visitas a propiedades reales en operación", "Analizar inversiones con expertos locales", "Entender estructuras de inversión en sitio", "Tomar decisiones con información directa"].map((item, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                        <p className="text-[#6B7280] text-sm">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-4 text-[#6B7280] text-sm mb-8">
-                    <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Tampa · St. Pete · Clearwater, Florida</span>
-                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-primary" /> 24–27 julio 2026</span>
-                  </div>
-
-                  <a href="/investment-week">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Ver detalles <ArrowRight className="w-4 h-4" /></Button>
-                  </a>
-                </div>
-              </FadeIn>
-
-              <FadeIn className="order-1 lg:order-2">
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
-                  <img src={PHOTOS.investWeek} alt="Florida Investment Weekend II" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-xs font-semibold uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> Julio 2026
-                    </span>
-                  </div>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
+        {/* ─── INVESTMENT WEEKEND II — oculto: edición de julio 2026 ya finalizada ─── */}
 
         {/* ─── RUTA INMOBILIARIA — oculta temporalmente ─── */}
 

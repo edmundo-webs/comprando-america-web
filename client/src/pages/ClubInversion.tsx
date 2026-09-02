@@ -70,7 +70,7 @@ function StatCounter({ value, suffix, label }: { value: number; suffix: string; 
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
   title: "Grupo Empresarial de Edmundo en Estados Unidos | Comprando América",
-  description: "Club privado de inversión para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Acompañamiento legal, fiscal y migratorio.",
+  description: "Club privado de inversión para empresarios latinos. Protege tu patrimonio o migra a Estados Unidos con inversión desde $100,000 USD. Conexión con aliados legales, fiscales y migratorios.",
   path: "/club-de-inversion-en-estados-unidos",
   schema: [
     { "@context": "https://schema.org", "@type": "Product", "name": "Grupo Empresarial de Edmundo Comprando América", "description": "Club privado de inversión para empresarios latinos en Estados Unidos", "brand": { "@type": "Brand", "name": "Comprando América" }, "offers": { "@type": "AggregateOffer", "lowPrice": "10000", "highPrice": "25000", "priceCurrency": "USD" } },
@@ -262,12 +262,12 @@ export default function ClubInversion() {
               {
                 icon: Presentation,
                 title: "Deal Day",
-                desc: "De manera constante analizamos en vivo oportunidades de inversión en Estados Unidos. Cada oportunidad es filtrada por el equipo y presentada con soporte legal y financiero.",
+                desc: "De manera constante analizamos en vivo oportunidades de inversión en Estados Unidos. Cada oportunidad es filtrada por el equipo y presentada con soporte de aliados legales y financieros.",
               },
               {
                 icon: CalendarDays,
                 title: "Sesiones con Expertos",
-                desc: "De manera mensual accedes a nuestras asambleas para resolver dudas específicas sobre inversión, estructuras legales, estrategias fiscales y análisis de proyectos.",
+                desc: "De manera mensual accedes a nuestras asambleas para conversar, con apoyo de expertos aliados, sobre inversión, estructuras legales, estrategias fiscales y análisis de proyectos.",
               },
               {
                 icon: Star,
@@ -346,8 +346,8 @@ export default function ClubInversion() {
           <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
             {[
               { icon: UserCheck, step: "01", title: "Evalúas tu perfil", desc: "Te decimos con claridad si este camino es viable para ti." },
-              { icon: Users, step: "02", title: "Te asignamos equipo", desc: "Abogados, CPA, estrategas. Tu equipo desde el día 1." },
-              { icon: FileCheck, step: "03", title: "Estructuramos", desc: "LLC, cuentas, estrategia fiscal y migratoria diseñadas para ti." },
+              { icon: Users, step: "02", title: "Te conectamos con tu equipo", desc: "Abogados, CPA y estrategas aliados. Tu equipo desde el día 1." },
+              { icon: FileCheck, step: "03", title: "Estructuramos", desc: "LLC, cuentas y estrategia fiscal y migratoria diseñadas junto a expertos aliados." },
               { icon: Rocket, step: "04", title: "Ejecutas con criterio", desc: "Inviertes cuando hay encaje real. Sin presión. Sin carreras." },
             ].map((item, i) => (
               <FadeIn key={i} delay={i * 0.08}>
@@ -379,7 +379,7 @@ export default function ClubInversion() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mb-16">
               <StatCounter value={40} suffix="+" label="Miembros activos" />
               <StatCounter value={53} suffix="+" label="LLCs estructuradas" />
-              <StatCounter value={14} suffix="+" label="Visas tramitadas" />
+              <StatCounter value={14} suffix="+" label="Visas apoyadas" />
               <StatCounter value={6} suffix="" label="Viajes de inspección" />
             </div>
           </FadeIn>

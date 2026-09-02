@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { AnimatePresence, motion } from "framer-motion";
 import { sendCtaClick } from "@/lib/tracking";
+import { postCrmLead } from "@/lib/crm";
+import { trackPageVisit } from "@/lib/journey";
 
 /* ─── Brand ─── */
 const NAVY = "#0B1F3A";
@@ -13,21 +15,7 @@ const NAVY_BORDER = "#1E3A5F";
 
 const LOGO_URL = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773438699/comprando-america/logo.png";
 
-/* ─── CRM public lead ingestion ─── */
-const CRM_API_URL = (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
-
-async function postCrmLead(payload: Record<string, unknown>, honeypot: string): Promise<void> {
-  if (honeypot) return; // bot filled the hidden field — skip
-  try {
-    await fetch(`${CRM_API_URL}/api/public/leads`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-  } catch (err) {
-    console.warn("[CRM] lead post failed (best-effort):", err);
-  }
-}
+/* ─── CRM public lead ingestion — centralizado en lib/crm ─── */
 
 const PHOTOS = {
   hero: "https://res.cloudinary.com/dkn4ybzog/image/upload/v1749082671/hero-skyline_c7itvs.jpg",
@@ -205,10 +193,10 @@ const VEHICLE_DATA: VehicleEntry[] = [
   },
   {
     id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales",
-    descripcion: "Estrategia patrimonial basada en la adquisición de propiedades residenciales en Estados Unidos que generan ingresos mediante programas gubernamentales de asistencia habitacional. El pago de renta es garantizado por el gobierno federal, eliminando el riesgo de impago o vacante.",
+    descripcion: "Estrategia patrimonial basada en la adquisición de propiedades residenciales en Estados Unidos que generan ingresos mediante programas gubernamentales de asistencia habitacional. El pago de renta está respaldado por programas del gobierno federal, lo que ayuda a reducir el riesgo de impago o vacante.",
     desde: "Buscas flujo mensual en dólares pero temes las vacantes, los impagos o tener que gestionar propiedades desde otro país.",
     hacia: "Eres dueño de un activo inmobiliario en Estados Unidos que paga renta puntual respaldada por el gobierno federal, mes tras mes, sin depender del inquilino.",
-    ganas: ["Flujo mensual en dólares respaldado por el gobierno federal", "Eliminación del riesgo de vacante o impago", "Apreciación del activo a largo plazo en mercados de alta demanda", "Inversión completamente pasiva, sin necesidad de operar ni estar presente"],
+    ganas: ["Flujo mensual en dólares respaldado por el gobierno federal", "Menor riesgo de vacante o impago gracias al respaldo gubernamental", "Potencial de apreciación del activo a largo plazo en mercados de alta demanda", "Inversión mayormente pasiva, sin necesidad de operar ni estar presente"],
     ticketMin: 90, ticketLabel: "$90k+", horizonte: "Largo plazo",
     participacion: ["no-operar", "supervisar"],
     objetivos: ["ingresos", "patrimonio"],
@@ -276,11 +264,11 @@ const VEHICLE_DATA: VehicleEntry[] = [
     exclusivo: true,
   },
   {
-    id: "plan-migratorio", nombre: "Visa E-2 · Residencia por Inversión", frase: "Vive en Estados Unidos a través de tu propia empresa",
+    id: "plan-migratorio", nombre: "Visa E-2 · Estatus por Inversión", frase: "Vive en Estados Unidos a través de tu propia empresa",
     descripcion: "Visa de inversionista que permite residir legalmente en Estados Unidos vinculada a una inversión activa en un negocio americano. La ruta más directa y controlable hacia la residencia desde tu empresa.",
     desde: "Quieres vivir o tener presencia legal en Estados Unidos, pero las opciones de migración convencionales son lentas, inciertas o no aplican a tu perfil.",
     hacia: "Tú y tu familia tienen estatus legal en Estados Unidos, respaldado por una inversión activa y una empresa que genera valor en el mercado americano.",
-    ganas: ["Residencia legal en Estados Unidos para ti y tu familia", "Autorización de trabajo vinculada a tu propia empresa", "Acceso al sistema de salud, educación y movilidad del país", "Una ruta migratoria bajo tu control, no a la espera de sorteos o loterías"],
+    ganas: ["Estatus legal en Estados Unidos para ti y tu familia mientras la inversión permanezca activa", "Autorización de trabajo vinculada a tu propia empresa", "Acceso al sistema de salud, educación y movilidad del país", "Una ruta migratoria bajo tu control, no a la espera de sorteos o loterías"],
     ticketMin: 0, ticketLabel: "Consultar", horizonte: "1-2 años",
     participacion: ["no-operar", "supervisar", "activo", "nosc"],
     objetivos: ["familia"],
@@ -514,7 +502,7 @@ function JourneyStrip({ screen, objetivo, participacion, horizonte, capital }: {
 }
 
 /* ─── SCREEN 1 — Objetivo ─── */
-function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
+function Screen1({ onSelect, desdeDiagnostico }: { onSelect: (id: string) => void; desdeDiagnostico?: boolean }) {
   const [hovered, setHovered] = useState<string | null>(null);
   return (
     <div style={{ position: "relative", width: "100%", minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: NAVY }}>
@@ -533,9 +521,20 @@ function Screen1({ onSelect }: { onSelect: (id: string) => void }) {
           <div style={{ width: "60px", height: "1px", background: `linear-gradient(90deg, ${GOLD}90, transparent)` }} />
         </div>
 
+        {/* Reconocimiento cuando el usuario llega desde el diagnóstico de estructura */}
+        {desdeDiagnostico && (
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${GOLD}18`, border: `1px solid ${GOLD}55`, borderRadius: "20px", padding: "6px 16px", marginBottom: "14px" }}>
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: GOLD_LIGHT }}>
+              Vienes de tu diagnóstico de estructura · ya sabemos que buscas invertir
+            </span>
+          </div>
+        )}
+
         {/* Duration indicator */}
         <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${NAVY_CARD}CC`, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "6px 16px", marginBottom: "24px" }}>
-          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>5 preguntas · Menos de 2 minutos</span>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>
+            {desdeDiagnostico ? "Ahora definamos tu vehículo de inversión" : "5 preguntas · Menos de 2 minutos"}
+          </span>
         </div>
 
         <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", fontSize: "clamp(28px,4.8vw,58px)", fontWeight: 700, color: "#fff", lineHeight: 1.15, marginBottom: "18px", textShadow: "0 4px 32px rgba(0,0,0,0.6)" }}>
@@ -672,7 +671,7 @@ function Screen4Capital({ onNext }: { onNext: (id: string) => void }) {
           ¿Qué rango de inversión te sentirías cómodo evaluar hoy?
         </h2>
         <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "14px", color: "#6A8FAF", marginBottom: "36px", lineHeight: 1.7 }}>
-          El capital disponible no define si calificas. Nos ayuda a evitar recomendar oportunidades que no hagan sentido para tu estrategia.
+          El capital disponible no define tu ruta por sí solo. Nos ayuda a evitar recomendar oportunidades que no hagan sentido para tu estrategia.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "36px" }}>
           {OPCIONES_CAPITAL.map((op) => {
@@ -953,7 +952,7 @@ function Screen8Contact({ onNext, partialSent, onPartialSent }: {
         email: form.email.trim(),
         phone: `${form.countryCode}${form.whatsapp.trim()}`,
         sourceSlug: "web_ca_gps",
-        sourceUrl: window.location.href,
+        hito: "diagnostico_parcial",
         stage: "partial",
         gpsFicha: null,
       }, honeypot);
@@ -1328,13 +1327,17 @@ function SocialProofSection() {
 }
 
 /* ─── RESULT SCREEN ─── */
-function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCompare }: {
+function ResultScreen({ perfil, contactData, rankedVehicles, investorData, desdeDiagnostico, onCompare }: {
   perfil: (typeof PERFILES)[string];
   contactData: ContactData | null;
   rankedVehicles: (VehicleEntry & { score: number; pct: number })[];
   investorData: { objetivo: string | null; participacion: string | null; horizonte: string | null; capital: string | null; prioridades: string[] };
+  desdeDiagnostico?: boolean;
   onCompare: () => void;
 }) {
+  // Etiqueta de página de interés (acumulable en el CRM). El GPS siempre representa interés de
+  // inversión; si además llega desde el diagnóstico de estructura, se conserva el rastro.
+  const crmTags = desdeDiagnostico ? ["interes:inversion", "origen:llc-diagnostico"] : ["interes:inversion"];
   const [showConfirm, setShowConfirm] = useState(false);
   const [drawerVehicle, setDrawerVehicle] = useState<(VehicleEntry & { score: number; pct: number }) | null>(null);
   const confirmRef = useRef<HTMLDivElement>(null);
@@ -1409,8 +1412,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
       email: contactData.email.trim(),
       phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
       sourceSlug: "web_ca_gps",
-      sourceUrl: window.location.href,
+      hito: "diagnostico_completo",
       stage: "complete",
+      tags: crmTags,
       quizSessionId: quizSessionIdRef.current,
       gpsFicha: buildGpsFicha(),
     }, ""); // honeypot vacío — ya validado en Screen8
@@ -1429,8 +1433,9 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
         email: contactData.email.trim(),
         phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
         sourceSlug: "web_ca_gps",
-        sourceUrl: window.location.href,
+        hito: "diagnostico_completo",
         stage: "complete",
+        tags: crmTags,
         quizSessionId: quizSessionIdRef.current,
         gpsFicha: buildGpsFicha(),
       }, "");
@@ -2154,10 +2159,19 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onCom
 /* ─── MAIN EXPORT ─── */
 export default function GpsPage() {
   usePlayfairFont();
+  useEffect(() => { trackPageVisit("gps"); }, []);
   const { enabled: soundEnabled, setEnabled: setSoundEnabled, playForward, playBack } = useTransitionSound();
 
   // Screens: 1=objetivo, 2=prioridades, 3=participacion, 4=horizonte, 5=capital, 6=loading, 7=preview, 8=contact, 9=result
   const [screen, setScreen] = useState(1);
+  // El usuario llega desde el diagnóstico de estructura con la intención de inversión ya
+  // definida. Se usa para reconocer el contexto sin repetir la pregunta de propósito y para
+  // etiquetar el lead como interes:inversion en el CRM. No implica ninguna aprobación previa.
+  const [desdeDiagnostico] = useState(() => {
+    if (typeof window === "undefined") return false;
+    const p = new URLSearchParams(window.location.search);
+    return p.get("ref") === "llc-diagnostico" || p.get("intent") === "inversion";
+  });
   const [objetivo, setObjetivo] = useState<string | null>(null);
   const [participacion, setParticipacion] = useState<string | null>(null);
   const [horizonte, setHorizonte] = useState<string | null>(null);
@@ -2194,7 +2208,7 @@ export default function GpsPage() {
       <FlowTopBar screen={screen} totalScreens={9} onBack={handleBack} />
 
       <AnimatePresence mode="wait">
-        {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={id => { setObjetivo(id); goScreen(2); }} /></motion.div>}
+        {screen === 1 && <motion.div key="s1" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen1 onSelect={id => { setObjetivo(id); goScreen(2); }} desdeDiagnostico={desdeDiagnostico} /></motion.div>}
         {screen === 2 && <motion.div key="s2" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen5Priorities onNext={ids => { setPrioridades(ids); goScreen(3); }} /></motion.div>}
         {screen === 3 && <motion.div key="s3" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen2 onNext={id => { setParticipacion(id); goScreen(4); }} /></motion.div>}
         {screen === 4 && <motion.div key="s4" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen3 onNext={v => { setHorizonte(v); goScreen(5); }} /></motion.div>}
@@ -2202,7 +2216,7 @@ export default function GpsPage() {
         {screen === 6 && <motion.div key="s6" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen6Loading onDone={() => goScreen(7)} /></motion.div>}
         {screen === 7 && perfil && <motion.div key="s7" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen7Preview perfil={perfil} rankedVehicles={rankedVehicles} objetivo={objetivo} capital={capital} onContinue={() => goScreen(8)} /></motion.div>}
         {screen === 8 && <motion.div key="s8" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><Screen8Contact onNext={data => { setContactData(data); goScreen(9); }} partialSent={partialSent} onPartialSent={() => setPartialSent(true)} /></motion.div>}
-        {screen === 9 && perfil && <motion.div key="s9" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} onCompare={() => { setObjetivo(null); goScreen(1); }} /></motion.div>}
+        {screen === 9 && perfil && <motion.div key="s9" variants={tv} initial="initial" animate="animate" exit="exit" transition={tt}><ResultScreen perfil={perfil} contactData={contactData} rankedVehicles={rankedVehicles} investorData={{ objetivo, participacion, horizonte, capital, prioridades }} desdeDiagnostico={desdeDiagnostico} onCompare={() => { setObjetivo(null); goScreen(1); }} /></motion.div>}
       </AnimatePresence>
 
       <JourneyStrip screen={screen} objetivo={objetivo} participacion={participacion} horizonte={horizonte} capital={capital} />

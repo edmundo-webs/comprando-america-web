@@ -190,7 +190,7 @@ export default function BienesRaices() {
                 <div className="space-y-5">
                   {[
                     "Identificación de oportunidades alineadas a tu perfil (desde $100,000 USD)",
-                    "Estructuración legal y fiscal antes de comprometer capital",
+                    "Conexión con abogados y contadores certificados antes de comprometer capital",
                     "Red verificada de aliados: bancos, desarrolladores, operadores",
                     "Revisión de variables clave: zonas, regulaciones, flujo y riesgos",
                   ].map((item, i) => (
@@ -208,7 +208,7 @@ export default function BienesRaices() {
                 <p className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase mb-4 font-mono">Inversión Mínima</p>
                 <p className="text-5xl md:text-6xl font-bold text-white mb-2">$100,000</p>
                 <p className="text-slate-500 text-sm mb-6">USD para acceder a oportunidades filtradas</p>
-                <p className="text-slate-400 text-sm leading-relaxed">Todos nuestros miembros cuentan con estructura legal y fiscal optimizada para maximizar retornos.</p>
+                <p className="text-slate-400 text-sm leading-relaxed">Todos nuestros miembros se conectan con abogados y contadores certificados para estructurar correctamente su inversión.</p>
               </div>
             </FadeIn>
           </div>
@@ -304,7 +304,7 @@ export default function BienesRaices() {
                 {[
                   { q: "¿Qué tipos de propiedades se pueden adquirir?", a: "Casas unifamiliares, parques de casas móviles, mini storage y otras opciones residenciales y comerciales adaptadas a tu perfil de inversión." },
                   { q: "¿Cómo está el mercado de bienes raíces en Estados Unidos?", a: "Es dinámico. La clave no es \"el mercado\" en general, sino seleccionar el mercado correcto, la clase de activo, validar supuestos y estructurar la inversión de la mejor manera para cada caso." },
-                  { q: "¿Pueden los extranjeros invertir en bienes raíces en Estados Unidos?", a: "Sí. La diferencia la hace la estructura legal, fiscal y el proceso de compra profesional que garantiza cumplimiento normativo." },
+                  { q: "¿Pueden los extranjeros invertir en bienes raíces en Estados Unidos?", a: "Sí. La diferencia la hace la estructura legal y fiscal, junto con un proceso de compra profesional orientado al cumplimiento normativo." },
                 ].map((faq, i) => (
                   <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl px-6">
                     <AccordionTrigger className="text-white text-left hover:no-underline py-5">{faq.q}</AccordionTrigger>
@@ -355,7 +355,7 @@ export default function BienesRaices() {
             <div className="max-w-2xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl text-white mb-4">¿Listo para invertir con criterio y estructura?</h2>
               <p className="text-slate-400 mb-2">Inversión inmobiliaria en Estados Unidos desde $100,000 USD.</p>
-              <p className="text-slate-500 text-sm mb-10">Estructura legal, fiscal y acompañamiento profesional incluido.</p>
+              <p className="text-slate-500 text-sm mb-10">Conexión con abogados y contadores certificados y acompañamiento profesional incluido.</p>
               <div className="flex flex-wrap justify-center gap-4">
                 <a href="https://comprandoamerica.com/gps">
                   <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">

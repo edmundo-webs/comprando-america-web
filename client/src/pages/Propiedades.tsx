@@ -1,19 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { sendCtaClick } from "@/lib/tracking";
+import {
+  cargarPortafolio, capRatePct, ahorroDe, ETIQUETA_ESTATUS,
+  type Propiedad, type PropiedadAbierta,
+} from "@/lib/portafolio";
 
 /* ── Palette ── */
-const NAVY        = "#0B1F3A";
-const NAVY_CARD   = "#0F2847";
-const NAVY_DARK   = "#091A30";
+const NAVY = "#0B1F3A";
+const NAVY_CARD = "#0F2847";
+const NAVY_DARK = "#091A30";
 const NAVY_BORDER = "#1E3A5F";
-const BLUE        = "#2563EB";
-const BLUE_LIGHT  = "#3B82F6";
-const GOLD        = "#C9A84C"; // solo para métricas financieras
-const GOLD_LIGHT  = "#E2C06E";
+const BLUE = "#2563EB";
+const BLUE_LIGHT = "#3B82F6";
+const GOLD = "#C9A84C"; // solo para métricas financieras
+const GOLD_LIGHT = "#E2C06E";
+const GRAY = "#5A7A9A";
 
-/* ── Data ── */
+/* ── Data ──
+ *
+ * Las propiedades ya no viven en este archivo: se capturan en el CMS y llegan
+ * por su API. Antes estaban escritas a mano aquí —y también en
+ * `lib/deals.ts`, una copia que nadie importaba—, así que publicar una exigía
+ * editar código y desplegar, y quien tocara el archivo equivocado no cambiaba
+ * nada.
+ *
+ * Una propiedad privada llega YA REDACTADA del servidor: sus cifras no se
+ * serializan. Aquí no se esconde nada, porque esconderlo en el navegador no lo
+ * escondería. */
 type Deal = {
   id: number;
   ubicacion: string;
@@ -34,62 +50,51 @@ type Deal = {
   cap: number;
   detalles: string[];
   zillow?: string;
+  foto?: string;
+  fotoFit: "cover" | "contain";
+  fotoPos: string;
+  /** Etiqueta del estatus, o null cuando está simplemente disponible. */
+  estatus: string | null;
+  /** Calle y número. Solo llega con sesión de miembro. */
+  direccion?: string | null;
 };
 
-const FOTO_POS: Record<number, string> = { 1:"center center",2:"center center",3:"center center",4:"center center",5:"center top",6:"center center" };
-const FOTO_FIT: Record<number, "cover"|"contain"> = { 1:"cover",2:"contain",3:"cover",4:"cover",5:"cover",6:"cover" };
-const FOTOS: Record<number, string> = {
-  1: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680688/tts-news/lksrhg3srjl3mkneb71a.png",
-  2: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680692/tts-news/iemqw3nbwx4livztfglv.png",
-  3: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680688/tts-news/xmbhlaqnvvv5zya0yrw3.png",
-  4: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680690/tts-news/bkvmnmld5iqyrepzzuoi.png",
-  5: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680689/tts-news/pxg4lqchgcexfbciw5j0.png",
-  6: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782680688/tts-news/ntweo18moo6rmnjacsun.png",
-};
-
-const DEALS: Deal[] = [
-  {
-    id: 1, ubicacion: "Niagara Falls, NY", tipo: "Casa Unifamiliar", precio: 90000,
-    beds: 2, baths: 1, sqft: 888, ano: 1930, lote: 5270,
-    renta: 900, ingresoAnual: 10800, gastos: 3800, noi: 7000, cap: 7.8,
-    detalles: ["Valor creció +47% en últimos 10 años","2 recámaras / 1 baño","Rango estimado: $49,000 – $63,000","Casa unifamiliar sin HOA"],
-  },
-  {
-    id: 2, ubicacion: "Saint Petersburg, FL", tipo: "Condo", precio: 155000,
-    beds: 2, baths: 1, sqft: 857, ano: 1988, hoa: 5172,
-    renta: 1800, ingresoAnual: 21600, gastos: 10432, noi: 11168, cap: 7,
-    detalles: ["Condo en St. Petersburg, Florida","A/C central + calefacción eléctrica","Electrodomésticos incluidos (lavadora, secadora, refrigerador, estufa, lavavajillas)","Piso de cerámica / ventiladores de techo"],
-  },
-  {
-    id: 3, ubicacion: "Saint Petersburg, FL", tipo: "Casa Unifamiliar", precio: 350000,
-    beds: 3, baths: 2, sqft: 1888, ano: 1957, lote: 8453,
-    renta: 3200, ingresoAnual: 38400, gastos: 13900, noi: 24500, cap: 7,
-    detalles: ["Terreno grande (8,453 sqft)","3 recámaras / 2 baños completos","Garaje adjunto incluido","A/C central + calefacción eléctrica","Deck, patio y porch exterior","Casa unifamiliar sin HOA"],
-  },
-  {
-    id: 4, ubicacion: "Niagara Falls, NY", tipo: "Casa Unifamiliar", precio: 113000, listPrice: 128700, savings: 15700,
-    beds: 3, baths: 1.5, sqft: 960, ano: 1951, lote: 5967,
-    renta: 1200, ingresoAnual: 14400, gastos: 5400, noi: 9000, cap: 8,
-    detalles: ["Precio $15,700 por debajo del Zestimate","3 recámaras / 1.5 baños","Calefacción de aire forzado","Exterior de vinyl (bajo mantenimiento)","Casa unifamiliar sin HOA"],
-  },
-  {
-    id: 5, ubicacion: "St. Petersburg, FL", tipo: "Casa Unifamiliar", precio: 320000, listPrice: 359000, savings: 39000,
-    beds: 2, baths: 1, sqft: 1059, ano: 1952, lote: 6281,
-    renta: 2500, ingresoAnual: 30000, gastos: 11200, noi: 18800, cap: 6,
-    detalles: ["Cocina remodelada","Gabinetes blancos shaker","Encimera de madera butcher block","Lista para rentar de inmediato"],
-    zillow: "https://www.zillow.com/homedetails/3028-9th-ave-n-saint-petersburg-fl-33713/47077263_zpid/",
-  },
-  {
-    id: 6, ubicacion: "St. Petersburg, FL", tipo: "Casa Unifamiliar", precio: 325000, listPrice: 425000, savings: 100000,
-    beds: 3, baths: 2, sqft: 1428, ano: 1956, lote: 10824,
-    renta: 2600, ingresoAnual: 31200, gastos: 11500, noi: 24660, cap: 6,
-    detalles: ["Terreno grande (casi 1,000 m²)","3 recámaras / 2 baños completos","Excelente precio por debajo de valuación","Valuación Zillow: $405,000"],
-    zillow: "https://www.zillow.com/homedetails/6800-dr-martin-luther-king-jr-st-s-saint-petersburg-fl-33705/47016444_zpid/",
-  },
-];
+/** Traduce lo que manda el CMS a la forma que ya dibujan las tarjetas. */
+function aDeal(p: PropiedadAbierta): Deal {
+  const ahorro = ahorroDe(p);
+  const foto = p.fotos[0];
+  return {
+    id: p.numeroPublico,
+    ubicacion: `${p.ciudad}, ${p.estado}`,
+    tipo: p.tipo,
+    precio: p.precioInversionista,
+    listPrice: p.precioLista ?? undefined,
+    savings: ahorro ?? undefined,
+    beds: p.recamaras,
+    baths: p.banos,
+    sqft: p.sqft,
+    ano: p.anioConstruccion ?? 0,
+    lote: p.loteSqft ?? undefined,
+    hoa: p.hoaAnual ?? undefined,
+    renta: p.rentaMensual,
+    ingresoAnual: p.ingresoAnual,
+    gastos: p.gastosAnuales,
+    noi: p.noiAnual,
+    cap: capRatePct(p.capRate),
+    detalles: p.detalles,
+    zillow: p.linkZillow ?? undefined,
+    foto: foto?.url,
+    fotoFit: foto?.fit ?? "cover",
+    fotoPos: foto?.focalPoint ?? "center center",
+    estatus: ETIQUETA_ESTATUS[p.disponibilidad],
+    direccion: p.direccion ?? null,
+  };
+}
 
 const usd = (n: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(n);
+
+const usdCompact = (n: number) => `$${Math.round(n / 1000)}K`;
 
 /* ── DealCard ── */
 type Tab = "roi" | "detalles" | null;
@@ -112,8 +117,10 @@ function DealCard({ d }: { d: Deal }) {
     >
       {/* Photo */}
       <div style={{ position: "relative", height: "220px", overflow: "hidden", background: NAVY_DARK }}>
-        <img src={FOTOS[d.id]} alt={`Propiedad #${d.id} ${d.ubicacion}`}
-          style={{ width: "100%", height: "100%", objectFit: FOTO_FIT[d.id], objectPosition: FOTO_POS[d.id], display: "block" }} />
+        {d.foto && (
+          <img src={d.foto} alt={`Propiedad #${d.id} ${d.ubicacion}`}
+            style={{ width: "100%", height: "100%", objectFit: d.fotoFit, objectPosition: d.fotoPos, display: "block" }} />
+        )}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, transparent 40%, rgba(11,31,58,0.7) 100%)" }} />
 
         {/* Top-left: property type badge — blue */}
@@ -121,8 +128,17 @@ function DealCard({ d }: { d: Deal }) {
           #{d.id} · {d.tipo}
         </span>
 
+        {/* Estatus: una casa apartada sigue arriba, con su etiqueta. Sacarla
+            de la lista escondería que el portafolio se mueve; dejarla como
+            "disponible" prometería algo que ya no está. */}
+        {d.estatus && (
+          <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 800, color: "#fff", background: "#7C5CBF", borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.06em" }}>
+            {d.estatus}
+          </span>
+        )}
+
         {/* Top-right: savings badge — gold accent */}
-        {d.savings && (
+        {!d.estatus && d.savings && (
           <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: NAVY_DARK, background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, borderRadius: "6px", padding: "3px 10px" }}>
             -{usd(d.savings)} ahorro
           </span>
@@ -141,6 +157,14 @@ function DealCard({ d }: { d: Deal }) {
         <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "10px" }}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5A7A9A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>{d.ubicacion}</span>
+          {/* La dirección exacta solo llega con sesión de miembro: si no está,
+              es porque el servidor no la mandó, no porque se esté ocultando
+              aquí. */}
+          {d.direccion && (
+            <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "11px", color: "#C9A84C", marginLeft: "4px" }}>
+              · {d.direccion}
+            </span>
+          )}
         </div>
 
         {/* Price — gold for investor price (financial highlight) */}
@@ -252,8 +276,119 @@ function DealCard({ d }: { d: Deal }) {
   );
 }
 
+/* ── LockedCard — propiedad privada vista por quien no es miembro ──
+ *
+ * Muestra que existe, dónde está y cómo se ve: lo justo para que valga la pena
+ * pedir acceso. Las cifras no están escondidas, no llegaron — el servidor no
+ * las serializa. Tampoco se ofrece el WhatsApp: filtrar el contacto directo
+ * antes de validar la membresía volvería el candado decorativo. */
+function LockedCard({ p }: { p: Extract<Propiedad, { bloqueada: true }> }) {
+  const foto = p.fotos[0];
+
+  return (
+    <div style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "16px", overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      <div style={{ position: "relative", height: "220px", overflow: "hidden", background: NAVY_DARK }}>
+        {foto && (
+          <img src={foto.url} alt={`Propiedad #${p.numeroPublico} ${p.ciudad}`}
+            style={{ width: "100%", height: "100%", objectFit: foto.fit, objectPosition: foto.focalPoint, display: "block", filter: "blur(6px) brightness(0.55)" }} />
+        )}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(11,31,58,0.35), rgba(11,31,58,0.85))" }} />
+        <span style={{ position: "absolute", top: "10px", left: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#fff", background: BLUE, borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.06em" }}>
+          #{p.numeroPublico} · {p.tipo}
+        </span>
+        <span style={{ position: "absolute", top: "10px", right: "10px", display: "inline-flex", alignItems: "center", gap: "5px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 800, color: NAVY_DARK, background: `linear-gradient(90deg,${GOLD},${GOLD_LIGHT})`, borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.06em" }}>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke={NAVY_DARK} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          SOLO MIEMBROS
+        </span>
+
+        <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "8px", padding: "0 20px", textAlign: "center" }}>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={GOLD} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#C7D5E5", lineHeight: 1.5 }}>
+            Los números de esta propiedad son exclusivos del Grupo Empresarial.
+          </p>
+        </div>
+      </div>
+
+      <div style={{ padding: "16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "12px" }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5A7A9A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>{p.ciudad}, {p.estado}</span>
+        </div>
+        <Link href="/acceso">
+          <a style={{ display: "block", textAlign: "center", padding: "11px", borderRadius: "10px", background: BLUE, color: "#fff", fontFamily: "'Inter',sans-serif", fontSize: "13px", fontWeight: 700, textDecoration: "none" }}>
+            Inicia sesión para verla
+          </a>
+        </Link>
+        <Link href="/grupo-empresarial-edmundo">
+          <a style={{ display: "block", textAlign: "center", marginTop: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF", textDecoration: "none" }}>
+            Solicita acceso al Grupo Empresarial →
+          </a>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ── SoldCard — compact card for "Recién Vendidas" ── */
+function SoldCard({ d }: { d: Deal }) {
+  return (
+    <div style={{ background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "16px", overflow: "hidden", display: "flex", flexDirection: "column", opacity: 0.75 }}>
+      <div style={{ position: "relative", height: "160px", overflow: "hidden", background: NAVY_DARK }}>
+        {d.foto && (
+          <img src={d.foto} alt={`Propiedad #${d.id} ${d.ubicacion}`}
+            style={{ width: "100%", height: "100%", objectFit: d.fotoFit, objectPosition: d.fotoPos, display: "block", filter: "grayscale(85%)" }} />
+        )}
+        <div style={{ position: "absolute", inset: 0, background: "rgba(11,31,58,0.55)" }} />
+        <span style={{ position: "absolute", top: "10px", left: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 700, color: "#fff", background: GRAY, borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.06em" }}>
+          #{d.id} · {d.tipo}
+        </span>
+        <span style={{ position: "absolute", top: "10px", right: "10px", fontFamily: "'Inter',sans-serif", fontSize: "10px", fontWeight: 800, color: "#fff", background: "#8A93A0", borderRadius: "6px", padding: "3px 10px", letterSpacing: "0.08em" }}>
+          VENDIDA
+        </span>
+      </div>
+      <div style={{ padding: "14px 16px 16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "8px" }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5A7A9A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#6A8FAF" }}>{d.ubicacion}</span>
+        </div>
+        <p style={{ fontFamily: "'Space Grotesk',monospace", fontSize: "20px", fontWeight: 800, color: "#8FA5C0", lineHeight: 1 }}>
+          {usd(d.precio)}
+        </p>
+        <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "10px", color: "#4A6580", marginTop: "3px", letterSpacing: "0.04em", textTransform: "uppercase" }}>
+          Vendida a precio de inversionista
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /* ── Page ── */
 export default function Propiedades() {
+  const [datos, setDatos] = useState<{ propiedades: Propiedad[]; vendidas: Propiedad[] } | null>(null);
+  const [fallo, setFallo] = useState(false);
+
+  useEffect(() => {
+    cargarPortafolio()
+      .then(r => setDatos({ propiedades: r.propiedades, vendidas: r.vendidas }))
+      .catch(() => setFallo(true));
+  }, []);
+
+  const disponibles = datos?.propiedades ?? [];
+  const vendidas    = datos?.vendidas ?? [];
+
+  // Las cifras del encabezado solo pueden salir de lo que el visitante puede
+  // ver. Calcularlas con las bloqueadas sería filtrar por promedio el precio
+  // que la tarjeta se cuidó de no mostrar.
+  const libres    = disponibles.filter(p => p.disponibilidad === "disponible");
+  const apartadas = disponibles.filter(p => p.disponibilidad !== "disponible");
+  const abiertas   = disponibles.filter((p): p is PropiedadAbierta => !p.bloqueada);
+  const activeDeals = abiertas.map(aDeal);
+
+  const capRates = activeDeals.map(d => d.cap);
+  const minCap = capRates.length ? Math.min(...capRates) : 0;
+  const maxCap = capRates.length ? Math.max(...capRates) : 0;
+  const minPrice = activeDeals.length ? Math.min(...activeDeals.map(d => d.precio)) : 0;
+
   const handleContacto = () => {
     const msg = encodeURIComponent("Hola, me interesan las propiedades disponibles en Comprando América. ¿Pueden enviarme más información?");
     const waUrl = `https://wa.me/523346766178?text=${msg}`;
@@ -299,9 +434,12 @@ export default function Propiedades() {
         {/* Stats bar — gold for the numbers */}
         <div style={{ maxWidth: "800px", margin: "48px auto 0", display: "grid", gridTemplateColumns: "repeat(3,1fr)", borderTop: `1px solid ${NAVY_BORDER}`, borderBottom: `1px solid ${NAVY_BORDER}` }}>
           {[
-            { num: "6", suffix: " propiedades", label: "Disponibles ahora" },
-            { num: "6–8", suffix: "%", label: "Cap Rate promedio" },
-            { num: "$90K", suffix: "+", label: "Desde" },
+            // "Disponibles ahora" cuenta solo lo que de verdad se puede
+            // apartar. Incluir las que ya están en trámites o en revisión de
+            // documentos sería prometer inventario que ya tiene comprador.
+            { num: String(libres.length), suffix: libres.length === 1 ? " propiedad" : " propiedades", label: apartadas.length > 0 ? `Disponibles · ${apartadas.length} apartada${apartadas.length === 1 ? "" : "s"}` : "Disponibles ahora" },
+            { num: minCap === maxCap ? `${minCap}` : `${minCap}–${maxCap}`, suffix: "%", label: "Cap Rate promedio" },
+            { num: usdCompact(minPrice), suffix: "+", label: "Desde" },
           ].map(({ num, suffix, label }, i) => (
             <div key={i} style={{ padding: "20px 16px", textAlign: "center", borderRight: i < 2 ? `1px solid ${NAVY_BORDER}` : "none" }}>
               <p style={{ fontFamily: "'Space Grotesk',monospace", fontSize: "22px", fontWeight: 800, color: GOLD, marginBottom: "2px" }}>
@@ -316,8 +454,31 @@ export default function Propiedades() {
       {/* ── Grid ── */}
       <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "48px 24px 80px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))", gap: "20px" }}>
-          {DEALS.map(d => <DealCard key={d.id} d={d} />)}
+          {disponibles.map(p =>
+            p.bloqueada
+              ? <LockedCard key={p.id} p={p} />
+              : <DealCard key={p.id} d={aDeal(p)} />,
+          )}
         </div>
+
+        {/* ── Recién Vendidas ── */}
+        {vendidas.length > 0 && (
+          <div style={{ marginTop: "56px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
+              <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: GRAY }} />
+              <h2 style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", color: GRAY, textTransform: "uppercase" }}>
+                Recién Vendidas
+              </h2>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 260px), 1fr))", gap: "16px" }}>
+              {vendidas.map(p =>
+                p.bloqueada
+                  ? <LockedCard key={p.id} p={p} />
+                  : <SoldCard key={p.id} d={aDeal(p)} />,
+              )}
+            </div>
+          </div>
+        )}
 
         {/* ── CTA Banner ── */}
         <div style={{ marginTop: "64px", background: NAVY_CARD, border: `1px solid ${NAVY_BORDER}`, borderRadius: "20px", padding: "48px 32px", textAlign: "center", position: "relative", overflow: "hidden" }}>

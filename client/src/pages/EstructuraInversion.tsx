@@ -1,8 +1,8 @@
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
-import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -20,9 +20,40 @@ import {
   FileCheck,
   DollarSign,
   Scale,
+  X,
 } from "lucide-react";
+import { postCrmLead, getSavedContact } from "@/lib/crm";
+import { trackPageVisit, visitedRecently } from "@/lib/journey";
+import EstructuraFlow from "@/components/EstructuraFlow";
+import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 
-const WA_MSG = "Hola, me interesa estructurar mi vehículo de inversión en Estados Unidos.";
+/* ─── Modal wrapper (mismo estilo que la guía de LLC) ─── */
+function Modal({ open, onClose, title, children }: { open: boolean; onClose: () => void; title: string; children: React.ReactNode }) {
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
+          <motion.div
+            className="relative bg-[#0F2847] border border-[#1E3A5F] rounded-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="flex items-center justify-between p-6 border-b border-[#1E3A5F]">
+              <h3 className="text-white font-semibold text-lg">{title}</h3>
+              <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 text-slate-300 leading-relaxed space-y-4">{children}</div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 /* ─── FadeIn ─── */
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -48,6 +79,33 @@ const TAX_SLIDE = "https://lh3.googleusercontent.com/d/1rvNkomqY_CrfxTge9dQJBT1R
 const AUDIENCE = "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
 
 export default function EstructuraInversion() {
+  /* Continuidad entre guías — personalización solo con señal real y reciente. */
+  const [visitedLlc, setVisitedLlc] = useState(false);
+
+  useEffect(() => {
+    trackPageVisit("inversion");
+    const saved = getSavedContact();
+    // El mensaje de continuidad solo aplica si la visita a la otra guía es RECIENTE.
+    if (!visitedRecently("llc")) return;
+    setVisitedLlc(true);
+    postCrmLead(
+      {
+        ...(saved ? { name: saved.name, email: saved.email, phone: saved.phone } : {}),
+        sourceSlug: "web_ca_inversion",
+        hito: "cruce_de_pagina",
+        stage: "partial",
+        tags: ["interes:inversion"],
+      },
+      "",
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* Esta página no vende la formación de LLC: la puerta directa lleva a la guía que sí. */
+  function irACheckoutLlc(estado: "texas" | "florida") {
+    window.location.href = `/estructura-empresarial-en-estados-unidos?estado=${estado}`;
+  }
+
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
       <SEOHead {...PAGE_SEO} />
@@ -64,7 +122,7 @@ export default function EstructuraInversion() {
         <div className="container relative z-10">
           <FadeIn>
             <div className="max-w-3xl">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">Asesoría Legal & Fiscal</p>
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">Estrategia de Inversión</p>
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
                 Estructura tu Vehículo de <span className="gradient-text-primary">Inversión en Estados Unidos</span> con Claridad y Estrategia
               </h1>
@@ -78,16 +136,17 @@ export default function EstructuraInversion() {
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <a href="https://comprandoamerica.com/gps">
-                  <Button className="bg-primary hover:bg-blue-600 text-white px-8 py-6 text-base gap-2 shadow-lg shadow-blue-600/25">
-                    Evaluar mi perfil <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-                <Button variant="outline" onClick={() => openWhatsApp(WHATSAPP_PHONE, WA_MSG)} className="border-slate-600 text-white hover:bg-white/10 px-8 py-6 text-base gap-2">
-                  Hablar con un asesor
-                </Button>
-              </div>
+              {/* Punto de entrada único — dos puertas. Reemplaza los CTA paralelos y la
+                  tarjeta de 3 opciones que estaba duplicada en ambas páginas. */}
+              {/* Continuidad: solo con señal real y reciente (ver lib/journey) */}
+              {visitedLlc && (
+                <p className="text-slate-400 text-sm mb-4 max-w-2xl">
+                  Vimos que hace un momento revisaste la guía de formación de empresa. Retomamos desde aquí.
+                </p>
+              )}
+              <EstructuraFlow sourceSlug="web_ca_inversion" onCheckout={irACheckoutLlc} className="max-w-2xl" anchorId="entrada-estructura" />
+
+              <AdvisoryDisclaimer variant="inline" className="mt-6 max-w-2xl" />
             </div>
           </FadeIn>
         </div>
@@ -251,47 +310,6 @@ export default function EstructuraInversion() {
         </div>
       </section>
 
-      {/* ═══ 6. DOS RUTAS — ☀️ BLANCO ═══ */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="max-w-3xl mx-auto text-center mb-10">
-              <h2 className="text-2xl md:text-3xl text-[#0B1F3A] font-bold">¿Cuál es tu siguiente paso?</h2>
-              <p className="text-[#6B7280] mt-3">Elige la ruta que corresponde a donde estás ahora.</p>
-            </div>
-          </FadeIn>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            <FadeIn>
-              <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 h-full flex flex-col">
-                <h3 className="text-[#0B1F3A] font-bold text-lg mb-3">Mi caso requiere una revisión estratégica</h3>
-                <p className="text-[#6B7280] text-sm leading-relaxed flex-1 mb-6">
-                  Tengo socios, múltiples activos, capital de terceros, una empresa en otro país o evalúo una visa vinculada a la operación.
-                </p>
-                <a href="https://comprandoamerica.com/gps">
-                  <Button className="w-full bg-primary hover:bg-blue-600 text-white gap-2 rounded-xl py-5">
-                    Evaluar mi perfil <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl p-8 h-full flex flex-col">
-                <h3 className="text-[#0B1F3A] font-bold text-lg mb-3">Solo necesito constituir una LLC</h3>
-                <p className="text-[#6B7280] text-sm leading-relaxed flex-1 mb-6">
-                  Quiero operar, facturar o tener presencia en EE.UU. Mi caso es sencillo y ya tengo claridad sobre lo que necesito.
-                </p>
-                <a href="/estructura-empresarial-en-estados-unidos">
-                  <Button variant="outline" className="w-full border-gray-300 text-[#374151] hover:bg-gray-100 gap-2 rounded-xl py-5">
-                    Formar mi LLC <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-
       {/* ═══ 7. CTA FINAL — deep navy ═══ */}
       <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">
@@ -314,11 +332,14 @@ export default function EstructuraInversion() {
                   </Button>
                 </a>
               </div>
+
+              <AdvisoryDisclaimer className="mt-12 text-left" />
             </div>
           </FadeIn>
         </div>
       </section>
 
+      {/* ═══ DIAGNÓSTICO DE ESTRUCTURA DE INVERSIÓN ═══ */}
       <Footer />
     </div>
   );

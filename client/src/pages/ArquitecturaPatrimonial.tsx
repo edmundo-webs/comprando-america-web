@@ -96,7 +96,7 @@ const OBJECTIVES = [
     icon: Banknote,
     title: "Flujo de efectivo",
     description: "Generar ingresos recurrentes a partir de un activo, no solo una apreciación que solo existe en papel.",
-    vehicles: "Programa de renta de vivienda garantizada por el gobierno, Compra de propiedades para generar flujo.",
+    vehicles: "Programa de renta de vivienda respaldada por el gobierno, Compra de propiedades para generar flujo.",
     pos: { left: "89%", top: "27%" },
   },
   {
@@ -124,7 +124,7 @@ const OBJECTIVES = [
     icon: Users,
     title: "Legado familiar",
     description: "Construir algo que pueda heredarse con estructura, no solo con buena intención.",
-    vehicles: "Fondo de Compra de Tierra Estratégica, Programa de renta de vivienda garantizada por el gobierno.",
+    vehicles: "Fondo de Compra de Tierra Estratégica, Programa de renta de vivienda respaldada por el gobierno.",
     pos: { left: "11%", top: "27%" },
   },
 ];
@@ -143,7 +143,7 @@ const VEHICLES = [
   },
   {
     icon: HomeIcon,
-    title: "Programa de renta de vivienda garantizada por el gobierno",
+    title: "Programa de renta de vivienda respaldada por el gobierno",
     paraQuien: "Empresarios que quieren ser propietarios de un activo específico y generar flujo constante.",
     problema: "Depender de inquilinos sin respaldo o de ingresos poco predecibles.",
     objetivo: "Flujo de efectivo y legado familiar.",
@@ -203,9 +203,9 @@ const PROFILE_TYPES = [
   },
   {
     label: "Busco flujo",
-    recommendation: "El Programa de renta de vivienda garantizada y la compra de propiedades para generar flujo son los vehículos que más se acercan a este objetivo.",
+    recommendation: "El Programa de renta de vivienda respaldada y la compra de propiedades para generar flujo son los vehículos que más se acercan a este objetivo.",
     links: [
-      { label: "Programa de renta garantizada", href: "/renta-garantizada" },
+      { label: "Programa de renta respaldada", href: "/renta-garantizada" },
       { label: "Ver propiedades", href: "/activos-disponibles" },
     ],
   },
@@ -237,7 +237,7 @@ const STORIES = [
     objetivo: "Estructurar correctamente su expansión a Estados Unidos.",
     ruta: "Protección patrimonial",
     resultado: "LLC estructurada y networking empresarial dentro de la comunidad.",
-    quote: "Entré buscando cómo estructurar mi expansión a Estados Unidos. El equipo me ayudó a abrir mi LLC correctamente y entender la estructura fiscal.",
+    quote: "Entré buscando cómo estructurar mi expansión a Estados Unidos. El equipo me ayudó a abrir mi LLC correctamente y a conectar con contadores para entender la estructura fiscal.",
   },
   {
     name: "Alejandro",
@@ -277,11 +277,11 @@ const FAQS = [
   },
   {
     q: "¿Puedo invertir desde México?",
-    a: "Sí. Es, de hecho, el caso más común dentro de la comunidad: empresarios que operan y viven en México o en otros países de Latinoamérica, e invierten en Estados Unidos con acompañamiento legal y fiscal.",
+    a: "Sí. Es, de hecho, el caso más común dentro de la comunidad: empresarios que operan y viven en México o en otros países de Latinoamérica, e invierten en Estados Unidos con el acompañamiento de aliados legales y fiscales.",
   },
   {
     q: "¿Qué estrategia genera flujo?",
-    a: "El Programa de renta de vivienda garantizada por el gobierno y la compra de propiedades para generar flujo son los vehículos pensados específicamente para ingreso recurrente.",
+    a: "El Programa de renta de vivienda respaldada por el gobierno y la compra de propiedades para generar flujo son los vehículos pensados específicamente para ingreso recurrente.",
   },
   {
     q: "¿Qué estrategia protege patrimonio?",

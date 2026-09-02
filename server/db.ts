@@ -490,6 +490,60 @@ export async function updateSubscriberCategories(
 
 // ═══ CRM LEADS QUERIES ═══
 
+/**
+ * DDL idempotente de `ca_leads`. La migración 0007 nunca se aplicó en
+ * producción (el deploy no corre `db:push`), así que cada registro de las
+ * landings fallaba con "Table 'ca_leads' doesn't exist" y el lead se perdía.
+ * Se crea en el arranque —igual que ensureAnalyticsTables— y también como
+ * red de seguridad dentro de createLead.
+ */
+const LEADS_DDL = `
+  CREATE TABLE IF NOT EXISTS \`ca_leads\` (
+    \`id\` int AUTO_INCREMENT NOT NULL,
+    \`nombreCompleto\` varchar(255) NOT NULL,
+    \`whatsapp\` varchar(50) NOT NULL,
+    \`email\` varchar(320) NOT NULL,
+    \`fuente\` varchar(100) NOT NULL DEFAULT 'general',
+    \`createdAt\` timestamp NOT NULL DEFAULT (now()),
+    CONSTRAINT \`ca_leads_id\` PRIMARY KEY(\`id\`)
+  )`;
+
+const LEADS_INDEXES = [
+  { name: "ca_leads_created_idx", sql: "CREATE INDEX `ca_leads_created_idx` ON `ca_leads` (`createdAt`)" },
+  { name: "ca_leads_fuente_idx", sql: "CREATE INDEX `ca_leads_fuente_idx` ON `ca_leads` (`fuente`, `createdAt`)" },
+];
+
+export async function ensureLeadsTable(): Promise<boolean> {
+  const pool = await getDbPool();
+  if (!pool) {
+    console.warn("[leads-bootstrap] DB no disponible — se omite ensureLeadsTable");
+    return false;
+  }
+  try {
+    await pool.query(LEADS_DDL);
+    for (const idx of LEADS_INDEXES) {
+      try {
+        const [rows] = await pool.execute(
+          `SELECT 1 FROM information_schema.STATISTICS
+           WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'ca_leads' AND INDEX_NAME = ? LIMIT 1`,
+          [idx.name]
+        );
+        if ((rows as any[]).length > 0) continue;
+        await pool.query(idx.sql);
+      } catch (err: any) {
+        if (!/duplicate|exists/i.test(err?.message ?? "")) {
+          console.warn(`[leads-bootstrap] índice ${idx.name} falló:`, err?.message);
+        }
+      }
+    }
+    console.log("[leads-bootstrap] tabla ca_leads e índices asegurados");
+    return true;
+  } catch (err: any) {
+    console.error("[leads-bootstrap] falló:", err?.message);
+    return false;
+  }
+}
+
 let _crmPool: mysql.Pool | null = null;
 
 function getCrmPool(): mysql.Pool | null {
@@ -528,21 +582,25 @@ export async function createLead(data: InsertLead): Promise<Lead | undefined> {
   }
   const { nombreCompleto, whatsapp, email, fuente = 'general' } = data;
 
-  const dbUrl = process.env.DATABASE_URL || "(not set)";
-  const maskedUrl = dbUrl.replace(/:([^:@]+)@/, ':****@');
   const insertSql = 'INSERT INTO ca_leads (nombreCompleto, whatsapp, email, fuente) VALUES (?, ?, ?, ?)';
-  console.log("[createLead] DATABASE_URL:", maskedUrl);
-  console.log("[createLead] SQL:", insertSql);
-  console.log("[createLead] Params:", [nombreCompleto, whatsapp, email, fuente]);
+  // No se loguean nombre/email/whatsapp: son datos personales del visitante.
+  console.log("[createLead] insertando lead fuente=", fuente);
 
   // Use mysql2 directly — Drizzle adds DEFAULT for auto/defaultNow cols which TiDB rejects
   let result: any;
   try {
     [result] = await _pool.execute(insertSql, [nombreCompleto, whatsapp, email, fuente]);
-    console.log("[createLead] INSERT result:", JSON.stringify(result));
   } catch (err: any) {
-    console.error("[createLead] ERROR:", err?.message, err?.code, err?.sqlState, err?.sqlMessage);
-    throw err;
+    // La tabla puede no existir si la migración 0007 nunca corrió en este
+    // entorno. Se crea al vuelo y se reintenta una sola vez para no perder
+    // el lead del visitante.
+    if (err?.code === "ER_NO_SUCH_TABLE" && (await ensureLeadsTable())) {
+      console.warn("[createLead] ca_leads no existía — creada, reintentando insert");
+      [result] = await _pool.execute(insertSql, [nombreCompleto, whatsapp, email, fuente]);
+    } else {
+      console.error("[createLead] ERROR:", err?.message, err?.code, err?.sqlState, err?.sqlMessage);
+      throw err;
+    }
   }
   const id = Number(result.insertId);
   const db = await getDb();

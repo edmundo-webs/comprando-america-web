@@ -132,7 +132,7 @@ const PAGE_SEO = {
         name: "¿Cómo invertir en Estados Unidos desde México?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Con Comprando América puedes estructurar tu inversión desde $100,000 USD a través de una LLC con acompañamiento legal, fiscal y estratégico.",
+          text: "Con Comprando América puedes estructurar tu inversión desde $100,000 USD a través de una LLC con acompañamiento estratégico y conexión a abogados y contadores certificados.",
         },
       },
       {
@@ -194,7 +194,7 @@ const RUTAS = [
     problema:
       "Evalúo una ruta migratoria real hacia Estados Unidos vinculada a una inversión o a la operación de un negocio.",
     orienta:
-      "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación con asesoría legal especializada.",
+      "Visa E-2, estrategias de residencia a través de inversión y negocios reales en operación, con el acompañamiento de abogados y contadores certificados.",
     href: "/visa-e2-inversion-en-estados-unidos",
   },
   {
@@ -331,7 +331,7 @@ const PLATFORMS: {
     preview: {
       title: "Instagram",
       desc: "Contenido visual sobre inversión, eventos y comunidad. Casos reales en formato breve.",
-      href: "https://www.instagram.com/comprandoamerica/",
+      href: "https://www.instagram.com/edmundotrevino.usa/",
     },
   },
   {
@@ -341,7 +341,7 @@ const PLATFORMS: {
     preview: {
       title: "Facebook",
       desc: "Comunidad activa de empresarios latinos. Transmisiones en vivo y contenido exclusivo.",
-      href: "https://www.facebook.com/comprandoamerica/",
+      href: "https://www.facebook.com/edmundotrevino.usa",
     },
   },
   {
@@ -351,7 +351,7 @@ const PLATFORMS: {
     preview: {
       title: "Spotify",
       desc: "Escucha el podcast en tu plataforma favorita. Disponible en todos los reproductores.",
-      href: "https://open.spotify.com/show/comprando-america",
+      href: "https://open.spotify.com/show/1pYUGyRRFXgA0c9xpaEtw7",
     },
   },
   {
@@ -453,23 +453,6 @@ export default function Home() {
       </section>
 
       {/* ══ Banners eventos ══ */}
-      <a
-        href="/investment-week"
-        className="block w-full bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#1D4ED8] hover:from-[#1E40AF] hover:to-[#1E40AF] transition-colors duration-300 group"
-      >
-        <div className="container flex items-center justify-center gap-3 py-3 px-4 text-center">
-          <span className="inline-flex items-center gap-1.5 bg-white/20 text-white text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
-            Próximo evento
-          </span>
-          <p className="text-white text-sm font-medium">
-            <span className="font-bold">Florida Investment Weekend II</span>
-            {" — "}Terreno real. Propiedades reales. Números reales.
-          </p>
-          <span className="hidden sm:inline-flex items-center gap-1 text-white font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
-            Ver detalles <ArrowRight className="w-3.5 h-3.5" />
-          </span>
-        </div>
-      </a>
       <a
         href="/cumbre-digital"
         className="block w-full bg-gradient-to-r from-[#0B1F3A] via-[#132D52] to-[#0B1F3A] hover:from-[#061428] hover:to-[#061428] transition-colors duration-300 group border-t border-white/10"
@@ -1077,13 +1060,13 @@ export default function Home() {
               <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-200">
                 <img
                   src={INVEST_WEEK}
-                  alt="Florida Investment Weekend II"
+                  alt="Investment Week"
                   className="w-full h-80 object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/50 to-transparent" />
                 <div className="absolute bottom-6 left-6">
                   <span className="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full">
-                    Florida Investment Weekend II
+                    Investment Week
                   </span>
                 </div>
               </div>
