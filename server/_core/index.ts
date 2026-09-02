@@ -11,6 +11,7 @@ import { initializeRssScheduler } from "../rss-sync";
 import { startScheduler } from "../cron/scheduler";
 import { adminRouter } from "../routes/admin";
 import { botMetaMiddleware } from "../routes/bot-meta";
+import { episodesRouter } from "../routes/episodes";
 import { seoRouter } from "../routes/seo";
 import { trackRouter } from "../routes/track";
 import { healthRouter } from "../routes/health";
@@ -59,6 +60,9 @@ async function startServer() {
   // POST /api/track/cta, GET /api/track/redirect. Writes only — reads go
   // through /api/admin/analytics/* which stays token-gated.
   app.use(trackRouter);
+
+  // Latest YouTube episodes for the Podcast page (public RSS, cached).
+  app.use(episodesRouter);
 
   // Dynamic SEO endpoints (sitemap.xml, sitemap_news.xml, rss.xml).
   // Mounted at root BEFORE express.static so they override any prebuilt

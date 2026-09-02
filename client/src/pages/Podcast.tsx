@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
 import { motion } from "framer-motion";
 import { Play, ArrowRight, CheckCircle2, Mic, BookOpen } from "lucide-react";
+import { useEffect, useState } from "react";
 
 // ─── Animated wrapper ───
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -71,8 +72,15 @@ function EpisodeCard({
   );
 }
 
-export default function Podcast() {
-  const episodes = [
+interface EpisodeItem {
+  title: string;
+  videoId: string;
+  videoUrl: string;
+  duration?: string;
+}
+
+// Shown while the live feed loads, or if it ever fails.
+const FALLBACK_EPISODES: EpisodeItem[] = [
     {
       title: "VISA E-1 de COMERCIANTE | La Visa que NADIE conoce",
       videoId: "iFx3QusSR90",
@@ -109,7 +117,31 @@ export default function Podcast() {
       videoUrl: "https://www.youtube.com/watch?v=aZwXyxaEWKc",
       duration: "20:03"
     }
-  ];
+];
+
+export default function Podcast() {
+  // Live episode list from /api/episodes (YouTube channel RSS, server-cached).
+  // Falls back to the curated list above while loading or on error.
+  const [liveEpisodes, setLiveEpisodes] = useState<EpisodeItem[] | null>(null);
+  useEffect(() => {
+    fetch("/api/episodes")
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((d) => {
+        if (Array.isArray(d?.episodes) && d.episodes.length > 0) {
+          setLiveEpisodes(
+            d.episodes.slice(0, 6).map((e: { id: string; title: string; url: string }) => ({
+              title: e.title,
+              videoId: e.id,
+              videoUrl: e.url,
+            })),
+          );
+        }
+      })
+      .catch(() => {
+        /* keep fallback */
+      });
+  }, []);
+  const episodes = liveEpisodes ?? FALLBACK_EPISODES;
 
   const categories = [
     "Inversiones en Estados Unidos",
