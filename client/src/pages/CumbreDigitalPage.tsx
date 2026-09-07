@@ -11,7 +11,10 @@ const YOUTUBE_CANAL = "https://www.youtube.com/@ComprandoAmerica";
 
 /* ─── Datos del evento ───
    El horario se menciona una sola vez en toda la página: aquí, en el HERO. */
-const EVENTO = "Sábado 22 de agosto de 2026 · 6 horas · 10:00 AM Houston / 9:00 AM México · En vivo por Facebook y YouTube";
+/* La edición del 22 de agosto de 2026 ya ocurrió. Mientras no haya fecha
+   confirmada para la siguiente, el registro funciona como lista de aviso:
+   se sigue capturando el lead, pero sin prometer un día concreto. */
+const EVENTO = "Gratuito · 6 horas · En vivo por Facebook y YouTube · Próxima edición por anunciar";
 
 /* ─── Design tokens ─── */
 const NAVY      = "#0B1F3A";
@@ -365,7 +368,7 @@ function RegistroForm({ formData, setFormData, onSubmit, enviando, submitted }: 
         fontFamily: FB, fontSize: "0.82rem", color: GOLD,
         marginTop: 0, marginBottom: 15, fontWeight: 500,
       }}>
-        Registro gratuito. Te enviamos el acceso por WhatsApp.
+        Registro gratuito. Te avisamos por WhatsApp en cuanto se confirme la fecha.
       </p>
 
       <form ref={formRef} onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -525,7 +528,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
     }
 
     setSubmitted(true);
-    toast.success("¡Registro exitoso! Te esperamos el 22 de agosto.");
+    toast.success("¡Listo! Te avisamos en cuanto se confirme la próxima edición.");
     setTimeout(() => { window.location.href = WHATSAPP_GRUPO; }, 1500);
   };
 
@@ -536,7 +539,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
       <style>{CSS}</style>
       <SEOHead
         title="Primera Cumbre Digital Comprando América"
-        description="6 horas que podrían ahorrarte años de prueba y error. Sábado 22 de agosto de 2026, 10:00 AM Houston / 9:00 AM México, en vivo. Criterio para decidir antes de invertir, abrir empresa o migrar a Estados Unidos."
+        description="6 horas gratuitas que podrían ahorrarte años de prueba y error. En vivo, online. Criterio para decidir antes de invertir, abrir empresa o migrar a Estados Unidos. Regístrate y te avisamos de la próxima edición."
         path={seoPath}
       />
       <Navbar />
