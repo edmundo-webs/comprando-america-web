@@ -150,18 +150,24 @@ const PAGE_SEO = {
 /* ─── Photos ─── */
 const HERO_IMAGE =
   "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w1920";
-const AUDIENCE =
-  "https://lh3.googleusercontent.com/d/1gnZX2RiYD4M29nQmqwcsN0k13db74LmV=w1920";
-const NETWORKING =
-  "https://lh3.googleusercontent.com/d/1dOiMwsphB-MpHgpCDtufBtiqaycAIM8W=w1920";
-const PANEL =
-  "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrRIc1Z-VHO=w1920";
+/* ─── Grupo Empresarial ───
+   Cercanía, no escenario. El grid de la sección 9 mostraba audiencia, panel y
+   una casa de un viaje de inspección: tres tomas desde el escenario y un activo.
+   Ninguna decía qué se siente pertenecer al grupo. Estas cuatro sí: Edmundo con
+   miembros, a un brazo de distancia, y una mesa privada. Los eventos son el
+   lugar donde ocurre, no lo que se vende. */
+const GRUPO_ACOMPANAMIENTO =
+  "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537537/comprando-america/eventos/fenfa1ovnmcwxfgttbkq.jpg";
+const GRUPO_CERCANIA =
+  "https://res.cloudinary.com/dgruohz6f/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1773439285/comprando-america/jAVgSvHifxmThGgy.jpg";
+const GRUPO_CONFIANZA =
+  "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537541/comprando-america/eventos/v7r3cxs7gg19ktnwniis.jpg";
+const GRUPO_MESA_PRIVADA =
+  "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537526/comprando-america/eventos/n8lkmvpmlrnco9etkxfb.jpg";
 const INVEST_WEEK =
   "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200";
 const CUMBRE_DIGITAL_PHOTO =
   "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675102/tts-news/qsqtimcq0kinkp5j6gcs.jpg";
-const RUTA_PHOTO =
-  "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_480,g_auto,q_auto,f_auto/v1774537570/comprando-america/eventos/vjyyrtfskd3w7nmklbt3.jpg";
 const AERIAL =
   "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
 
@@ -1085,29 +1091,33 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-xl overflow-hidden aspect-square">
                   <img
-                    src={AUDIENCE}
-                    alt="Grupo Empresarial de Edmundo"
+                    src={GRUPO_ACOMPANAMIENTO}
+                    alt="Edmundo Treviño conversando uno a uno con un miembro del Grupo Empresarial"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="rounded-xl overflow-hidden aspect-square mt-6">
                   <img
-                    src={NETWORKING}
-                    alt="Comunidad de empresarios"
+                    src={GRUPO_CERCANIA}
+                    alt="Edmundo Treviño con miembros del Grupo Empresarial al cierre de una sesión"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="rounded-xl overflow-hidden aspect-square -mt-6">
                   <img
-                    src={PANEL}
-                    alt="Panel de expertos"
+                    src={GRUPO_CONFIANZA}
+                    alt="Edmundo Treviño en conversación distendida con dos miembros del grupo"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="rounded-xl overflow-hidden aspect-square">
                   <img
-                    src={RUTA_PHOTO}
-                    alt="Evento presencial"
+                    src={GRUPO_MESA_PRIVADA}
+                    alt="Cena privada del Grupo Empresarial: mesa reducida de empresarios"
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
                 </div>
