@@ -502,8 +502,8 @@ export default function Home() {
           <FadeIn delay={0.1}>
             <div className="max-w-4xl mx-auto">
               {/* Núcleo */}
-              <div className="flex justify-center mb-8">
-                <div className="bg-primary text-white rounded-2xl px-8 py-6 text-center shadow-xl shadow-blue-600/25 relative">
+              <div className="flex justify-center">
+                <div className="bg-primary text-white rounded-2xl px-8 py-6 text-center shadow-xl shadow-blue-600/25">
                   <p className="text-xs font-mono uppercase tracking-[0.3em] text-blue-200 mb-2">
                     Núcleo del ecosistema
                   </p>
@@ -513,22 +513,48 @@ export default function Home() {
                   <p className="text-blue-200 text-sm mt-1">
                     Donde se contrastan las decisiones patrimoniales
                   </p>
-                  {/* Línea hacia abajo */}
-                  <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-px h-8 bg-primary/40" />
+                </div>
+              </div>
+
+              {/* Conector núcleo → rutas.
+                  Antes era una línea suelta colgando del núcleo que no llegaba
+                  a ninguna tarjeta. El bus se dibuja sobre una grid con las
+                  mismas columnas que las tarjetas, así que cada bajada cae
+                  exactamente en el centro de la suya sin cuentas de porcentajes.
+                  Los tramos se extienden 6px (media separación de gap-3) hacia
+                  cada lado para cruzar los huecos y quedar continuos. */}
+              <div className="md:hidden mx-auto w-px h-8 bg-primary/30" aria-hidden="true" />
+              <div className="hidden md:block" aria-hidden="true">
+                <div className="mx-auto w-px h-7 bg-primary/30" />
+                <div className="grid grid-cols-4 gap-3">
+                  {RUTAS.map((ruta, i) => (
+                    <div key={ruta.id} className="relative h-7">
+                      <div
+                        className={`absolute top-0 h-px bg-primary/30 ${
+                          i === 0
+                            ? "left-1/2 right-[-6px]"
+                            : i === RUTAS.length - 1
+                              ? "left-[-6px] right-1/2"
+                              : "left-[-6px] right-[-6px]"
+                        }`}
+                      />
+                      <div className="absolute inset-y-0 left-1/2 w-px bg-primary/30" />
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Rutas que nacen del núcleo */}
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {RUTAS.map((ruta, i) => {
                   const Icon = ruta.icon;
                   return (
-                    <FadeIn key={ruta.id} delay={0.05 * i}>
-                      <div className="bg-white border border-gray-200 rounded-xl p-4 text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-                        <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mx-auto mb-3">
+                    <FadeIn key={ruta.id} delay={0.05 * i} className="h-full">
+                      <div className="h-full bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+                        <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3 shrink-0">
                           <Icon className="w-5 h-5 text-primary" />
                         </div>
-                        <p className="text-[#0B1F3A] text-xs font-semibold leading-tight">
+                        <p className="text-[#0B1F3A] text-xs md:text-sm font-semibold leading-tight text-balance">
                           {ruta.label}
                         </p>
                       </div>
