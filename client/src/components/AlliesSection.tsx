@@ -8,14 +8,10 @@ interface Ally {
   image: string;
 }
 
+/* Joe Faraci no va en esta lista: es cofundador, no un aliado externo, y
+   /quienes-somos ya lo presenta como tal en la sección de Cofundadores.
+   Tenerlo en ambas lo mostraba dos veces en la misma página. */
 const allies: Ally[] = [
-  {
-    name: "Joe Faraci",
-    specialty: "Inversionista en Bienes Raíces",
-    description: "Propietario de 250+ propiedades con 28 años de experiencia. Especialista en crear riqueza transgeneracional con Real Estate en Estados Unidos.",
-    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
-  },
-
   {
     name: "Tomás Resendez",
     specialty: "Abogado de Inmigración",
@@ -111,10 +107,19 @@ export default function AlliesSection() {
           </p>
         </motion.div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Flex en vez de grid: con una rejilla fija, cualquier número de
+            aliados que no sea múltiplo de las columnas deja una última fila
+            corta pegada a la izquierda (7 daban 4+3). Envolviendo y centrando,
+            la fila incompleta queda centrada y la sección aguanta que la lista
+            crezca o encoja sin retocar las columnas. */}
+        <div className="flex flex-wrap justify-center gap-6">
           {allies.map((ally, index) => (
-            <AllyCard key={ally.name} ally={ally} index={index} />
+            <div
+              key={ally.name}
+              className="w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(25%-1.125rem)] max-w-sm"
+            >
+              <AllyCard ally={ally} index={index} />
+            </div>
           ))}
         </div>
       </div>
