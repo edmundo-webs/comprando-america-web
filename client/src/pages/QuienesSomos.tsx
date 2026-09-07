@@ -270,7 +270,7 @@ export default function QuienesSomos() {
               <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Cofundadores</p>
               <h2 className="text-3xl md:text-4xl text-white">Quienes construyen Comprando América</h2>
               <p className="text-slate-400 text-base leading-relaxed mt-4 max-w-2xl mx-auto">
-                Junto a Edmundo, un equipo fundador que aporta bienes raíces, inversión y operación para que invertir en Estados Unidos sea claro y accesible.
+                Junto a Edmundo, el equipo fundador que aporta bienes raíces, inversión y operación —dentro de Comprando América y de su empresa hermana, Buying America— para que invertir en Estados Unidos sea claro y accesible.
               </p>
             </div>
           </FadeIn>
@@ -279,9 +279,9 @@ export default function QuienesSomos() {
             {[
               {
                 name: "Joe Faraci",
-                role: "Cofundador · Bienes Raíces e Inversiones",
+                role: "Cofundador de Buying America · Bienes Raíces e Inversiones",
                 photo: "/team/joe.jpg",
-                desc: "Inversionista inmobiliario con casi tres décadas de experiencia guiando a inversionistas globales hacia propiedades en Estados Unidos. Fundador de Elev8 Wealth.",
+                desc: "Cofundador de Buying America, la empresa hermana de Comprando América. Inversionista inmobiliario con casi tres décadas de experiencia guiando a inversionistas globales hacia propiedades en Estados Unidos. Fundador de Elev8 Wealth.",
               },
               {
                 name: "Diego Alcalá",

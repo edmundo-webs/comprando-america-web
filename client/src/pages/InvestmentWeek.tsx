@@ -223,7 +223,7 @@ export default function InvestmentWeek() {
               >
                 <img
                   src={INVEST_WEEK_IMG}
-                  alt="Florida Investment Weekend"
+                  alt="Investment Week — viaje de inspección"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/70 via-transparent to-transparent" />
@@ -236,15 +236,21 @@ export default function InvestmentWeek() {
 
                 {/* Strip inferior */}
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <div className="bg-[#0B1F3A]/80 backdrop-blur-sm rounded-xl border border-white/10 px-4 py-3 flex items-center justify-between">
-                    <div>
-                      <p className="text-white text-xs font-semibold">Florida, Estados Unidos</p>
-                      <p className="text-slate-400 text-[11px]">Tampa · St. Pete · Clearwater</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-primary text-xs font-bold">Jul 24–27</p>
-                      <p className="text-slate-500 text-[11px]">2026</p>
-                    </div>
+                  <div className="bg-[#0B1F3A]/80 backdrop-blur-sm rounded-xl border border-white/10 px-4 py-3 flex items-stretch gap-3">
+                    {EDICIONES.map((e) => (
+                      <div
+                        key={e.id}
+                        className="flex-1 min-w-0 border-l border-white/10 pl-3 first:border-0 first:pl-0"
+                      >
+                        <p className="text-white text-xs font-semibold truncate">
+                          {e.ciudad}
+                        </p>
+                        <p className="text-slate-400 text-[11px] truncate">{e.estado}</p>
+                        <p className="text-primary text-[11px] font-bold mt-0.5">
+                          {e.corta}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -438,52 +444,6 @@ export default function InvestmentWeek() {
               </div>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* ── Franja de contexto: por qué Florida ── */}
-      <section className="bg-[#0B1F3A] py-16 md:py-20 relative overflow-hidden">
-        {/* fondo sutil */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{ backgroundImage: "radial-gradient(circle at 1px 1px,rgba(255,255,255,.9) 1px,transparent 0)", backgroundSize: "28px 28px" }} />
-        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-primary to-transparent" />
-
-        <div className="container relative z-10">
-          {/* Frase central */}
-          <FadeIn>
-            <p className="text-center text-slate-500 text-xs font-semibold tracking-[0.3em] uppercase mb-4 font-mono">
-              Por qué Florida (edición anterior)
-            </p>
-            <h2 className="text-center text-2xl md:text-3xl lg:text-4xl text-white font-bold max-w-2xl mx-auto leading-tight mb-14">
-              Florida no es una apuesta.{" "}
-              <span className="text-primary">Es matemática.</span>
-            </h2>
-          </FadeIn>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 rounded-2xl overflow-hidden max-w-4xl mx-auto">
-            {[
-              { n: "#1", label: "destino de migración interna", sub: "en EE.UU." },
-              { n: "0%", label: "impuesto estatal sobre", sub: "ingresos personales" },
-              { n: "1,000+", label: "personas se mudan a", sub: "Florida cada día" },
-              { n: "12%+", label: "apreciación promedio anual", sub: "últimos 5 años" },
-            ].map((s, i) => (
-              <FadeIn key={i} delay={i * 0.08}>
-                <div className="bg-[#0D2245] px-6 py-7 text-center hover:bg-[#0F2850] transition-colors">
-                  <p className="text-3xl md:text-4xl font-bold text-primary leading-none mb-2">{s.n}</p>
-                  <p className="text-white text-xs font-medium leading-snug">{s.label}</p>
-                  <p className="text-slate-500 text-[11px] mt-0.5">{s.sub}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-
-          {/* Nota al pie */}
-          <FadeIn delay={0.2}>
-            <p className="text-center text-slate-600 text-xs mt-8 max-w-xl mx-auto">
-              Durante el viaje analizas activos reales en este mercado — con números, contratos y propiedades físicas sobre la mesa.
-            </p>
-          </FadeIn>
         </div>
       </section>
 
