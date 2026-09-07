@@ -167,8 +167,6 @@ const GRUPO_CONFIANZA =
   "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537541/comprando-america/eventos/v7r3cxs7gg19ktnwniis.jpg";
 const GRUPO_MESA_PRIVADA =
   "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537526/comprando-america/eventos/n8lkmvpmlrnco9etkxfb.jpg";
-const INVEST_WEEK =
-  "https://lh3.googleusercontent.com/d/14QiLZK8eOY1ikSQB3fQqPo3ocWhD77bE=w1200";
 const CUMBRE_DIGITAL_PHOTO =
   "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675102/tts-news/qsqtimcq0kinkp5j6gcs.jpg";
 const AERIAL =
@@ -397,6 +395,10 @@ const PLATFORMS: {
   },
 ];
 
+/* Los originales de Cloudinary pesan 1.9 MB y 8.3 MB. Se sirven recortados a
+   la caja real de la tarjeta para no mandarle eso al visitante. */
+const IMG_TR = "c_fill,w_900,h_450,g_auto,q_auto,f_auto";
+
 /* ─── Próximos eventos ───
    Las dos ediciones de Investment Week y la Cumbre Digital. El carrusel de
    abajo los rota; cuando se agregue o retire una edición basta tocar esta
@@ -411,7 +413,7 @@ const EVENTOS = [
     desc: "Casas unifamiliares para renta, el programa de la sección 8 y oportunidades en mercados que nadie está mirando.",
     href: "/investment-week",
     cta: "Ver la edición",
-    imagen: INVEST_WEEK,
+    imagen: `https://res.cloudinary.com/dgruohz6f/image/upload/${IMG_TR}/v1788822723/tts-news/qjlkynfsqnkt4uflgaqm.jpg`,
   },
   {
     id: "iw-lv",
@@ -422,7 +424,7 @@ const EVENTOS = [
     desc: "Las expos de la industria del transporte —AAPEX y SEMA— para detectar oportunidades, más sesión privada para miembros.",
     href: "/investment-week",
     cta: "Ver la edición",
-    imagen: AERIAL,
+    imagen: `https://res.cloudinary.com/dgruohz6f/image/upload/${IMG_TR}/v1788822260/tts-news/k51cme1dtzvs2c8qaa9b.jpg`,
   },
   {
     id: "cumbre",
@@ -883,63 +885,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          3. OPORTUNIDADES INMOBILIARIAS — Introducción
-      ══════════════════════════════════════════════════════ */}
-      <section className="bg-white py-20 md:py-24">
-        <div className="container">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <FadeIn>
-              <div className="relative rounded-2xl overflow-hidden shadow-lg">
-                <img
-                  src={AERIAL}
-                  alt="Inversión inmobiliaria en Estados Unidos"
-                  className="w-full h-72 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/60 to-transparent" />
-              </div>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-              <div>
-                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                  Arquitectura Patrimonial
-                </p>
-                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
-                  No todo el ladrillo sirve para lo mismo.
-                </h2>
-                <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
-                  Tierra estratégica, renta respaldada por el gobierno y compra
-                  directa de propiedades no compiten entre sí: resuelven
-                  problemas distintos. Lo que decide cuál te conviene no es el
-                  activo, es tu horizonte, tu liquidez y cuánto quieres operar.
-                </p>
-                <ul className="mb-8 space-y-2.5">
-                  {[
-                    "Tierra estratégica — plazo largo, sin operación diaria.",
-                    "Renta respaldada por el gobierno — flujo mensual predecible.",
-                    "Compra directa — control total, gestión a tu cargo.",
-                  ].map((linea) => (
-                    <li key={linea} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-1" />
-                      <span className="text-[#4B5563] text-sm leading-relaxed">
-                        {linea}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-                <a href="https://comprandoamerica.com/arquitectura-patrimonial">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/20">
-                    Conocer Arquitectura Patrimonial{" "}
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          4. CONTENIDO GRATUITO
+          3. CONTENIDO GRATUITO
           Plataformas con preview inline
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-16 md:py-20">
@@ -1074,7 +1020,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          5. CASOS REALES
+          4. CASOS REALES
           Perfil → Objetivo → Ruta → Resultado
       ══════════════════════════════════════════════════════ */}
       <section className="bg-white py-20 md:py-28">
@@ -1163,7 +1109,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          6. EXPERTOS
+          5. EXPERTOS
           ¿En qué tipo de decisiones acompaña al empresario?
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
@@ -1249,7 +1195,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          7. PRÓXIMOS EVENTOS — carrusel
+          6. PRÓXIMOS EVENTOS — carrusel
           Se conserva el texto que explica qué es Investment Week y por qué
           no es una visita de ventas; debajo, las ediciones con fecha.
       ══════════════════════════════════════════════════════ */}
@@ -1287,7 +1233,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          8. GRUPO EMPRESARIAL — Pilar emocional
+          7. GRUPO EMPRESARIAL — Pilar emocional
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
@@ -1363,6 +1309,62 @@ export default function Home() {
                 <a href="/circulo-cercano">
                   <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/25">
                     Conocer el Grupo Empresarial{" "}
+                    <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </a>
+              </div>
+            </FadeIn>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          8. OPORTUNIDADES INMOBILIARIAS — Introducción
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-white py-20 md:py-24">
+        <div className="container">
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <FadeIn>
+              <div className="relative rounded-2xl overflow-hidden shadow-lg">
+                <img
+                  src={AERIAL}
+                  alt="Inversión inmobiliaria en Estados Unidos"
+                  className="w-full h-72 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/60 to-transparent" />
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <div>
+                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                  Arquitectura Patrimonial
+                </p>
+                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                  No todo el ladrillo sirve para lo mismo.
+                </h2>
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
+                  Tierra estratégica, renta respaldada por el gobierno y compra
+                  directa de propiedades no compiten entre sí: resuelven
+                  problemas distintos. Lo que decide cuál te conviene no es el
+                  activo, es tu horizonte, tu liquidez y cuánto quieres operar.
+                </p>
+                <ul className="mb-8 space-y-2.5">
+                  {[
+                    "Tierra estratégica — plazo largo, sin operación diaria.",
+                    "Renta respaldada por el gobierno — flujo mensual predecible.",
+                    "Compra directa — control total, gestión a tu cargo.",
+                  ].map((linea) => (
+                    <li key={linea} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-1" />
+                      <span className="text-[#4B5563] text-sm leading-relaxed">
+                        {linea}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <a href="https://comprandoamerica.com/arquitectura-patrimonial">
+                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/20">
+                    Conocer Arquitectura Patrimonial{" "}
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </a>
