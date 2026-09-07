@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useInView } from "@/hooks/useInView";
@@ -40,18 +40,49 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
   title: "Investment Week | Comprando América",
-  description: "Una semana en terreno analizando activos reales con el equipo. Próximas ediciones: Nueva York, 2 al 7 de octubre de 2026, y Las Vegas, 2 al 7 de noviembre de 2026. Solo por invitación.",
+  description: "Una semana en terreno con el equipo. Niagara Falls, Nueva York: 2 al 6 de octubre de 2026, casas unifamiliares y sección 8. Las Vegas, Nevada: 3 al 7 de noviembre de 2026, AAPEX y SEMA show. Solo por invitación.",
   path: "/investment-week",
 };
 
 /* ─── Próximas ediciones ───
-   La página se escribió para el Florida Investment Weekend II, que ya pasó.
-   El contenido de esa edición se conserva más abajo como referencia de cómo
-   se trabaja en terreno, pero el encabezado ya anuncia las dos ediciones
-   vigentes. */
+   Fechas y agendas tomadas de los flyers oficiales de cada edición. Los días
+   de la semana cuadran con el calendario 2026, así que se usan tal cual.
+   Ojo: las dos ediciones no persiguen lo mismo. Niágara es inmobiliaria
+   (unifamiliares y sección 8); Las Vegas es industria del transporte
+   alrededor del AAPEX y el SEMA. La página no debe mezclarlas. */
 const EDICIONES = [
-  { ciudad: "Nueva York", fecha: "2 al 7 de octubre, 2026" },
-  { ciudad: "Las Vegas", fecha: "2 al 7 de noviembre, 2026" },
+  {
+    id: "niagara",
+    ciudad: "Niagara Falls",
+    estado: "Nueva York",
+    rango: "Viernes 2 al martes 6 de octubre, 2026",
+    corta: "2–6 oct 2026",
+    objetivo:
+      "Analizar oportunidades de inversión en casas unifamiliares para renta, el programa de la sección 8 y oportunidades en mercados ignorados.",
+    agenda: [
+      { fecha: "Viernes 2 de octubre", titulo: "Llegada" },
+      { fecha: "Sábado 3 de octubre", titulo: "Día 1 — Teoría y campo" },
+      { fecha: "Domingo 4 de octubre", titulo: "Día 2 — Inspección de propiedades" },
+      { fecha: "Lunes 5 de octubre", titulo: "Visita a las cataratas del Niágara (opcional)" },
+      { fecha: "Martes 6 de octubre", titulo: "Salida libre" },
+    ],
+  },
+  {
+    id: "vegas",
+    ciudad: "Las Vegas",
+    estado: "Nevada",
+    rango: "Martes 3 al sábado 7 de noviembre, 2026",
+    corta: "3–7 nov 2026",
+    objetivo:
+      "Recorrer las expos de la industria del transporte —AAPEX show y SEMA show— para detectar oportunidades, más una sesión privada para miembros.",
+    agenda: [
+      { fecha: "Martes 3 de noviembre", titulo: "Llegada" },
+      { fecha: "Miércoles 4 de noviembre", titulo: "Día 1 de expo" },
+      { fecha: "Jueves 5 de noviembre", titulo: "Día 2 de expo" },
+      { fecha: "Viernes 6 de noviembre", titulo: "Sesión privada para miembros" },
+      { fecha: "Sábado 7 de noviembre", titulo: "Regreso libre" },
+    ],
+  },
 ];
 
 /* ─── Photos ─── */
@@ -66,9 +97,12 @@ const TEAM = [
   { name: "Joe", role: "Inversiones", photo: "/team/joe.jpg" },
 ];
 
-const WA_APPLY = "Hola, me interesa aplicar a Investment Week (Nueva York 2-7 oct o Las Vegas 2-7 nov 2026).";
+const WA_APPLY = "Hola, me interesa aplicar a Investment Week (Niagara Falls 2-6 oct o Las Vegas 3-7 nov 2026).";
 
 export default function InvestmentWeek() {
+  const [edicion, setEdicion] = useState(EDICIONES[0].id);
+  const edicionActiva = EDICIONES.find((e) => e.id === edicion);
+
   const scrollToApply = () => {
     document.getElementById("aplicar")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -97,10 +131,10 @@ export default function InvestmentWeek() {
               <div className="flex flex-wrap items-center gap-2 mb-5">
                 {EDICIONES.map((e) => (
                   <span
-                    key={e.ciudad}
+                    key={e.id}
                     className="flex items-center gap-1.5 bg-blue-500/15 border border-blue-500/25 text-blue-300 text-[11px] font-semibold px-2.5 py-1 rounded-full"
                   >
-                    <CalendarDays className="w-3 h-3" /> {e.ciudad} · {e.fecha}
+                    <CalendarDays className="w-3 h-3" /> {e.ciudad} · {e.corta}
                   </span>
                 ))}
                 <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-slate-400 text-[11px] px-2.5 py-1 rounded-full">
@@ -117,9 +151,10 @@ export default function InvestmentWeek() {
               {/* Subtítulo */}
               <p className="text-base md:text-lg text-slate-400 leading-snug mb-5 max-w-lg">
                 Dos ediciones este año.{" "}
-                <span className="text-white font-medium">Nueva York</span> en octubre y{" "}
-                <span className="text-white font-medium">Las Vegas</span> en noviembre: activos
-                reales en operación, analizados con el equipo.
+                <span className="text-white font-medium">Niagara Falls</span> en octubre, sobre
+                renta residencial y sección 8.{" "}
+                <span className="text-white font-medium">Las Vegas</span> en noviembre, sobre la
+                industria del transporte en el AAPEX y el SEMA.
               </p>
 
               {/* Duración + cupo */}
@@ -297,96 +332,112 @@ export default function InvestmentWeek() {
         </div>
       </section>
 
-      {/* ═══ 4. AGENDA — ☀️ BLANCO ═══ */}
+      {/* ═══ 4. AGENDA — ☀️ BLANCO ═══
+          Una agenda por edición, con selector. Antes vivía aquí la del
+          Florida Investment Weekend II, que ya pasó; la de cada ciudad viene
+          de su flyer oficial y no se rellena con supuestos: si el flyer sólo
+          dice "Día 1 de Expo", eso es lo que se muestra. */}
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
-            <div className="text-center mb-12">
+            <div className="text-center mb-10">
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Edición anterior · Florida
+                Agenda
               </p>
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
-                Así trabajamos durante la semana
+                Dos ediciones, dos objetivos distintos
               </h2>
               <p className="text-[#6B7280] max-w-2xl mx-auto">
-                La agenda del Florida Investment Weekend II, para que veas el
-                nivel de detalle con el que se analiza en terreno. Nueva York y
-                Las Vegas siguen la misma estructura sobre otros activos.
+                No son la misma semana repetida en otra ciudad. Elige la edición
+                para ver su programa completo.
               </p>
             </div>
           </FadeIn>
 
-          <div className="max-w-4xl mx-auto space-y-6">
-            {[
-              {
-                day: "Día 1", title: "Llegada y Bienvenida", date: "Viernes 24 de julio, 2026",
-                items: ["Llegada a Tampa — Alojamiento recomendado en St. Petersburg", "5:30 PM — Sesión de bienvenida", "¿Por qué Florida? Tendencias del mercado inmobiliario 2026", "Presentación del equipo", "Los dos activos que analizaremos y por qué complementan un portafolio", "7:30 PM — Cena de networking con el equipo y otros inversionistas"],
-              },
-              {
-                day: "Día 2", title: "Parques de Casas Móviles", date: "Sábado 25 de julio, 2026",
-                morning: "Teoría",
-                morningItems: ["Por qué los Mobile Home Parks son el activo más resiliente", "Cómo se valúa un parque", "Palancas de valor: infill, submetering, rent-to-own, estabilización", "Estructura del fondo y cómo participar", "Escenarios de retorno ilustrativos", "Eficiencia fiscal del fondo"],
-                afternoon: "Campo",
-                afternoonItems: ["Visita a parques activos adquiridos por el fondo en Clearwater, Largo y Tampa", "Ver parques antes y después de la operación", "Sesión de preguntas sobre la operación de los parques", "Comparativa: residencial vs parques — ¿cuál es para ti?"],
-              },
-              {
-                day: "Día 3", title: "Casas Unifamiliares, Zonas y Sección 8", date: "Domingo 26 de julio, 2026",
-                morning: "Teoría",
-                morningItems: ["Cómo funciona el mercado residencial en Florida: demanda, migración, zonas clave", "Cómo leer un deal: NOI, Cap Rate, Cash-on-Cash con ejemplos reales", "Cómo comprar siendo extranjero: DSCR loans, financiamiento, LLC", "Estrategia fiscal: depreciación, FIRPTA — lo que necesitas saber antes de comprar"],
-                afternoon: "Campo",
-                afternoonItems: ["Recorrido por las zonas de inversión en St. Petersburg", "Visitas a propiedades: casas y condos disponibles", "Análisis en vivo con el equipo frente al activo", "Sesiones 1 a 1 disponibles para interesados"],
-              },
-              {
-                day: "Día 4", title: "Regreso", date: "Lunes 27 de julio, 2026",
-                items: ["Regreso libre desde el aeropuerto de Tampa o de Orlando (2 horas de distancia)"],
-              },
-            ].map((d, i) => (
-              <FadeIn key={i} delay={i * 0.05}>
-                <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
-                  <div className="grid lg:grid-cols-[220px_1fr]">
-                    <div className="bg-[#0B1F3A] p-6 lg:p-8 flex flex-col justify-center">
-                      <p className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase mb-2 font-mono">{d.day}</p>
-                      <h3 className="text-xl font-bold text-white">{d.title}</h3>
-                      <p className="text-slate-500 text-sm mt-1">{d.date}</p>
-                    </div>
-                    <div className="p-6 lg:p-8">
-                      {d.morning ? (
-                        <>
-                          <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">Mañana — {d.morning}</p>
-                          <div className="grid sm:grid-cols-2 gap-2 mb-5">
-                            {d.morningItems?.map((item, j) => (
-                              <div key={j} className="flex items-start gap-2">
-                                <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                                <p className="text-[#4B5563] text-sm">{item}</p>
-                              </div>
-                            ))}
-                          </div>
-                          <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">Tarde — {d.afternoon}</p>
-                          <div className="grid sm:grid-cols-2 gap-2">
-                            {d.afternoonItems?.map((item, j) => (
-                              <div key={j} className="flex items-start gap-2">
-                                <Eye className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                                <p className="text-[#4B5563] text-sm">{item}</p>
-                              </div>
-                            ))}
-                          </div>
-                        </>
-                      ) : (
-                        <div className="grid sm:grid-cols-2 gap-2">
-                          {d.items?.map((item, j) => (
-                            <div key={j} className="flex items-start gap-2">
-                              <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                              <p className="text-[#4B5563] text-sm">{item}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+          {/* Selector de edición */}
+          <FadeIn>
+            <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-3 mb-8">
+              {EDICIONES.map((e) => {
+                const activa = e.id === edicion;
+                return (
+                  <button
+                    key={e.id}
+                    onClick={() => setEdicion(e.id)}
+                    aria-pressed={activa}
+                    className={`rounded-2xl border p-5 text-left transition-all ${
+                      activa
+                        ? "bg-[#0B1F3A] border-[#0B1F3A] shadow-lg"
+                        : "bg-white border-gray-200 hover:border-blue-300 hover:shadow-md"
+                    }`}
+                  >
+                    <p
+                      className={`text-xs font-mono uppercase tracking-[0.2em] mb-1.5 ${
+                        activa ? "text-blue-400" : "text-primary"
+                      }`}
+                    >
+                      {e.corta}
+                    </p>
+                    <p
+                      className={`text-lg font-bold leading-tight ${
+                        activa ? "text-white" : "text-[#0B1F3A]"
+                      }`}
+                    >
+                      {e.ciudad}, {e.estado}
+                    </p>
+                    <p
+                      className={`text-sm mt-1 ${
+                        activa ? "text-slate-400" : "text-[#6B7280]"
+                      }`}
+                    >
+                      {e.rango}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          </FadeIn>
+
+          {edicionActiva && (
+            <div className="max-w-4xl mx-auto">
+              {/* Objetivo de la edición */}
+              <FadeIn>
+                <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 mb-6 shadow-sm">
+                  <p className="text-primary text-xs font-semibold tracking-wider uppercase mb-3">
+                    Objetivo de la edición
+                  </p>
+                  <p className="text-[#0B1F3A] text-lg leading-relaxed">
+                    {edicionActiva.objetivo}
+                  </p>
                 </div>
               </FadeIn>
-            ))}
-          </div>
+
+              {/* Días */}
+              <div className="space-y-3">
+                {edicionActiva.agenda.map((d, i) => (
+                  <FadeIn key={`${edicionActiva.id}-${i}`} delay={i * 0.05}>
+                    <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all">
+                      <div className="grid sm:grid-cols-[220px_1fr] items-stretch">
+                        <div className="bg-[#0B1F3A] p-5 sm:p-6 flex flex-col justify-center">
+                          <p className="text-blue-400 text-xs font-semibold tracking-[0.3em] uppercase mb-1 font-mono">
+                            Día {i + 1}
+                          </p>
+                          <p className="text-white text-sm font-medium">
+                            {d.fecha}
+                          </p>
+                        </div>
+                        <div className="p-5 sm:p-6 flex items-center gap-3">
+                          <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
+                          <p className="text-[#0B1F3A] text-base md:text-lg font-semibold">
+                            {d.titulo}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </FadeIn>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -401,7 +452,7 @@ export default function InvestmentWeek() {
           {/* Frase central */}
           <FadeIn>
             <p className="text-center text-slate-500 text-xs font-semibold tracking-[0.3em] uppercase mb-4 font-mono">
-              Por qué Florida
+              Por qué Florida (edición anterior)
             </p>
             <h2 className="text-center text-2xl md:text-3xl lg:text-4xl text-white font-bold max-w-2xl mx-auto leading-tight mb-14">
               Florida no es una apuesta.{" "}
