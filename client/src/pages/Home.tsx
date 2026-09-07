@@ -295,11 +295,16 @@ type PlatformId =
 const PLATFORMS: {
   id: PlatformId;
   label: string;
+  /* Color de marca ya aclarado para leerse sobre el azul marino del fondo.
+     Va literal en cada entrada, no compuesto, porque Tailwind sólo genera
+     las clases que encuentra escritas en el código. */
+  accent: string;
   color: string;
   preview: { title: string; desc: string; href: string; videoId?: string };
 }[] = [
   {
     id: "youtube",
+    accent: "text-[#FF3D3D]",
     label: "YouTube",
     color: "bg-red-600",
     preview: {
@@ -311,6 +316,7 @@ const PLATFORMS: {
   },
   {
     id: "podcast",
+    accent: "text-[#7EA8FF]",
     label: "Podcast",
     color: "bg-blue-600",
     preview: {
@@ -322,6 +328,7 @@ const PLATFORMS: {
   },
   {
     id: "linkedin",
+    accent: "text-[#3B9AE1]",
     label: "LinkedIn",
     color: "bg-[#0077B5]",
     preview: {
@@ -332,6 +339,7 @@ const PLATFORMS: {
   },
   {
     id: "instagram",
+    accent: "text-[#E1568C]",
     label: "Instagram",
     color: "bg-gradient-to-br from-purple-600 to-pink-500",
     preview: {
@@ -342,6 +350,7 @@ const PLATFORMS: {
   },
   {
     id: "facebook",
+    accent: "text-[#4293FB]",
     label: "Facebook",
     color: "bg-[#1877F2]",
     preview: {
@@ -352,6 +361,7 @@ const PLATFORMS: {
   },
   {
     id: "spotify",
+    accent: "text-[#1DB954]",
     label: "Spotify",
     color: "bg-green-600",
     preview: {
@@ -362,6 +372,7 @@ const PLATFORMS: {
   },
   {
     id: "articulos",
+    accent: "text-[#8B93F8]",
     label: "Artículos",
     color: "bg-indigo-600",
     preview: {
@@ -372,6 +383,7 @@ const PLATFORMS: {
   },
   {
     id: "noticias",
+    accent: "text-[#94A3B8]",
     label: "Noticias",
     color: "bg-slate-700",
     preview: {
@@ -382,11 +394,51 @@ const PLATFORMS: {
   },
 ];
 
+/* Logos de las plataformas.
+   Los cinco de marca van como SVG en línea en vez de importarse: lucide dejó
+   sus iconos de marca como deprecados y nunca tuvo el de Spotify, así que la
+   mitad del set no existiría. Los tres que no son marca (podcast, artículos,
+   noticias) reutilizan los iconos de lucide que este archivo ya importa. */
+function PlatformIcon({
+  id,
+  className = "w-[18px] h-[18px]",
+}: {
+  id: PlatformId;
+  className?: string;
+}) {
+  const brand = (d: string) => (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d={d} />
+    </svg>
+  );
+  switch (id) {
+    case "youtube":
+      return brand("M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z");
+    case "linkedin":
+      return brand("M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z");
+    case "instagram":
+      return brand("M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z");
+    case "facebook":
+      return brand("M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z");
+    case "spotify":
+      return brand("M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.601.301.96zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z");
+    case "podcast":
+      return <Mic className={className} aria-hidden="true" />;
+    case "articulos":
+      return <BookOpen className={className} aria-hidden="true" />;
+    case "noticias":
+      return <Newspaper className={className} aria-hidden="true" />;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════ */
 
 export default function Home() {
   const [activeRuta, setActiveRuta] = useState<string | null>(null);
-  const [activePlatform, setActivePlatform] = useState<PlatformId | null>(null);
+  /* Arranca en YouTube: la sección solía cargar sin nada seleccionado, así que
+     lo primero que veía el visitante eran ocho botones de texto y el aviso de
+     "selecciona una plataforma". Ahora entra con un video puesto. */
+  const [activePlatform, setActivePlatform] = useState<PlatformId>("youtube");
   const [activeExpert, setActiveExpert] = useState<number | null>(null);
 
   return (
@@ -754,10 +806,10 @@ export default function Home() {
           5. CONTENIDO GRATUITO
           Plataformas con preview inline
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-28">
+      <section className="bg-[#0B1F3A] py-16 md:py-20">
         <div className="container">
           <FadeIn>
-            <div className="text-center mb-14">
+            <div className="text-center mb-8">
               <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 Aprende antes de invertir
               </p>
@@ -773,25 +825,32 @@ export default function Home() {
 
           {/* Platform grid */}
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-              {PLATFORMS.map((p, i) => (
-                <FadeIn key={p.id} delay={i * 0.04}>
-                  <button
-                    onClick={() =>
-                      setActivePlatform(
-                        activePlatform === p.id ? null : p.id
-                      )
-                    }
-                    className={`w-full rounded-xl px-4 py-3 text-sm font-semibold text-white transition-all border ${
-                      activePlatform === p.id
-                        ? "border-primary/60 bg-primary/10 shadow-lg shadow-blue-600/10"
-                        : "border-[#1E3A5F] bg-[#0F2847] hover:border-blue-500/30"
-                    }`}
-                  >
-                    {p.label}
-                  </button>
-                </FadeIn>
-              ))}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-5">
+              {PLATFORMS.map((p, i) => {
+                const active = activePlatform === p.id;
+                return (
+                  <FadeIn key={p.id} delay={i * 0.04}>
+                    <button
+                      onClick={() => setActivePlatform(p.id)}
+                      aria-pressed={active}
+                      className={`group w-full flex items-center gap-2.5 rounded-xl px-3.5 py-3 text-sm font-semibold transition-all border ${
+                        active
+                          ? "border-primary/60 bg-primary/10 text-white shadow-lg shadow-blue-600/10"
+                          : "border-[#1E3A5F] bg-[#0F2847] text-slate-300 hover:border-blue-500/40 hover:bg-[#122E52] hover:text-white"
+                      }`}
+                    >
+                      <span
+                        className={`shrink-0 transition-opacity ${p.accent} ${
+                          active ? "" : "opacity-70 group-hover:opacity-100"
+                        }`}
+                      >
+                        <PlatformIcon id={p.id} />
+                      </span>
+                      {p.label}
+                    </button>
+                  </FadeIn>
+                );
+              })}
             </div>
 
             {/* Inline preview panel */}
@@ -824,9 +883,13 @@ export default function Home() {
                           </div>
                         ) : (
                           <div
-                            className={`${platform.color} flex items-center justify-center min-h-[160px]`}
+                            className={`${platform.color} flex flex-col items-center justify-center gap-3 min-h-[200px] p-8`}
                           >
-                            <p className="text-white/60 text-sm px-8 text-center">
+                            <PlatformIcon
+                              id={platform.id}
+                              className="w-12 h-12 text-white"
+                            />
+                            <p className="text-white/80 text-sm text-center font-medium">
                               Accede al contenido en {platform.label}
                             </p>
                           </div>
@@ -870,12 +933,6 @@ export default function Home() {
                 </motion.div>
               )}
             </AnimatePresence>
-
-            {!activePlatform && (
-              <p className="text-center text-slate-600 text-sm mt-2">
-                Selecciona una plataforma para ver el contenido.
-              </p>
-            )}
           </div>
         </div>
       </section>
