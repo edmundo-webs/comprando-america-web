@@ -167,8 +167,15 @@ const GRUPO_CONFIANZA =
   "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537541/comprando-america/eventos/v7r3cxs7gg19ktnwniis.jpg";
 const GRUPO_MESA_PRIVADA =
   "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537526/comprando-america/eventos/n8lkmvpmlrnco9etkxfb.jpg";
+/* Foto con personas, así que recorta distinto al resto de las tarjetas.
+   La caja de la imagen (h-44) es muy apaisada —hasta 2.7:1 en escritorio— y
+   la foto original viene casi cuadrada: al servirla en 2:1 como las demás, el
+   object-cover del navegador se comía la parte de arriba y cortaba las
+   cabezas. Se sirve ya en la proporción más ancha que llega a tomar la caja,
+   para que el navegador sólo pueda recortar a los lados y nunca por arriba, y
+   con g_faces para que el recorte de Cloudinary se ancle en las caras. */
 const CUMBRE_DIGITAL_PHOTO =
-  "https://res.cloudinary.com/dgruohz6f/image/upload/v1782675102/tts-news/qsqtimcq0kinkp5j6gcs.jpg";
+  "https://res.cloudinary.com/dgruohz6f/image/upload/c_fill,w_900,h_330,g_faces,q_auto,f_auto/v1782675100/tts-news/xpto1gompkv2f4lwqon4.jpg";
 const AERIAL =
   "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
 
