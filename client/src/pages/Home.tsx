@@ -14,6 +14,9 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  CalendarDays,
   CheckCircle2,
   Play,
   Mic,
@@ -394,6 +397,180 @@ const PLATFORMS: {
   },
 ];
 
+/* ─── Próximos eventos ───
+   Las dos ediciones de Investment Week y la Cumbre Digital. El carrusel de
+   abajo los rota; cuando se agregue o retire una edición basta tocar esta
+   lista. */
+const EVENTOS = [
+  {
+    id: "iw-ny",
+    tipo: "Presencial",
+    titulo: "Investment Week · Nueva York",
+    fecha: "2 al 7 de octubre, 2026",
+    lugar: "Nueva York, Estados Unidos",
+    desc: "Una semana en el terreno analizando activos reales con el equipo y otros empresarios.",
+    href: "/investment-week",
+    cta: "Ver la edición",
+    imagen: INVEST_WEEK,
+  },
+  {
+    id: "iw-lv",
+    tipo: "Presencial",
+    titulo: "Investment Week · Las Vegas",
+    fecha: "2 al 7 de noviembre, 2026",
+    lugar: "Las Vegas, Estados Unidos",
+    desc: "Segunda edición del año: mismos criterios de análisis, otro mercado y otros activos.",
+    href: "/investment-week",
+    cta: "Ver la edición",
+    imagen: AERIAL,
+  },
+  {
+    id: "cumbre",
+    tipo: "Online · Gratuito",
+    titulo: "Cumbre Digital",
+    fecha: "Próxima edición por anunciar",
+    lugar: "En vivo, desde donde estés",
+    desc: "Una mañana intensiva para construir y proteger tu patrimonio en EE.UU. Regístrate y te avisamos en cuanto haya fecha.",
+    href: "/cumbre-digital",
+    cta: "Registrarme sin costo",
+    imagen: CUMBRE_DIGITAL_PHOTO,
+  },
+];
+
+/* Carrusel de eventos.
+   Avanza solo cada 4.5s y se detiene mientras el puntero está encima, para no
+   mover una tarjeta que alguien está leyendo. Muestra dos por pantalla en
+   escritorio y una en móvil: el paso es de una tarjeta, no de una pantalla,
+   así que la traslación va en fracciones del ancho visible. Respeta
+   prefers-reduced-motion: si el visitante pidió menos animación, no se
+   auto-avanza y quedan sólo las flechas. */
+function EventosCarousel() {
+  const [index, setIndex] = useState(0);
+  const [porVista, setPorVista] = useState(1);
+  const [pausado, setPausado] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const aplicar = () => setPorVista(mq.matches ? 2 : 1);
+    aplicar();
+    mq.addEventListener("change", aplicar);
+    return () => mq.removeEventListener("change", aplicar);
+  }, []);
+
+  const maxIndex = Math.max(0, EVENTOS.length - porVista);
+  // Al pasar de dos columnas a una, el índice puede quedar fuera de rango.
+  useEffect(() => {
+    setIndex((i) => Math.min(i, maxIndex));
+  }, [maxIndex]);
+
+  useEffect(() => {
+    if (pausado) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = setInterval(
+      () => setIndex((i) => (i >= maxIndex ? 0 : i + 1)),
+      4500
+    );
+    return () => clearInterval(t);
+  }, [pausado, maxIndex]);
+
+  const ir = (n: number) => setIndex(Math.min(Math.max(n, 0), maxIndex));
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setPausado(true)}
+      onMouseLeave={() => setPausado(false)}
+    >
+      <div className="overflow-hidden">
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{ transform: `translateX(-${index * (100 / porVista)}%)` }}
+        >
+          {EVENTOS.map((e) => (
+            <div
+              key={e.id}
+              className="shrink-0 basis-full md:basis-1/2 px-2"
+              aria-hidden={false}
+            >
+              <article className="h-full bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+                <div className="relative h-44 shrink-0">
+                  <img
+                    src={e.imagen}
+                    alt={e.titulo}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/70 to-transparent" />
+                  <span className="absolute top-4 left-4 bg-primary text-white text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                    {e.tipo}
+                  </span>
+                </div>
+                <div className="p-6 flex flex-col grow">
+                  <h3 className="text-[#0B1F3A] text-lg font-bold leading-tight mb-2">
+                    {e.titulo}
+                  </h3>
+                  <p className="flex items-center gap-2 text-primary text-sm font-semibold mb-1">
+                    <CalendarDays className="w-4 h-4 shrink-0" />
+                    {e.fecha}
+                  </p>
+                  <p className="flex items-center gap-2 text-[#9CA3AF] text-xs mb-4">
+                    <MapPin className="w-3.5 h-3.5 shrink-0" />
+                    {e.lugar}
+                  </p>
+                  <p className="text-[#4B5563] text-sm leading-relaxed grow">
+                    {e.desc}
+                  </p>
+                  <a href={e.href} className="mt-5">
+                    <Button
+                      size="sm"
+                      className="bg-primary hover:bg-blue-600 text-white gap-2 w-full sm:w-auto"
+                    >
+                      {e.cta} <ArrowRight className="w-3.5 h-3.5" />
+                    </Button>
+                  </a>
+                </div>
+              </article>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Controles */}
+      <div className="flex items-center justify-center gap-4 mt-6">
+        <button
+          onClick={() => ir(index - 1)}
+          disabled={index === 0}
+          aria-label="Evento anterior"
+          className="w-9 h-9 rounded-full border border-gray-300 bg-white flex items-center justify-center text-[#0B1F3A] transition-colors hover:border-primary hover:text-primary disabled:opacity-35 disabled:hover:border-gray-300 disabled:hover:text-[#0B1F3A]"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <div className="flex items-center gap-2">
+          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => ir(i)}
+              aria-label={`Ir al grupo ${i + 1}`}
+              aria-current={i === index}
+              className={`h-2 rounded-full transition-all ${
+                i === index ? "w-6 bg-primary" : "w-2 bg-gray-300 hover:bg-gray-400"
+              }`}
+            />
+          ))}
+        </div>
+        <button
+          onClick={() => ir(index + 1)}
+          disabled={index === maxIndex}
+          aria-label="Evento siguiente"
+          className="w-9 h-9 rounded-full border border-gray-300 bg-white flex items-center justify-center text-[#0B1F3A] transition-colors hover:border-primary hover:text-primary disabled:opacity-35 disabled:hover:border-gray-300 disabled:hover:text-[#0B1F3A]"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /* Logos de las plataformas.
    Los cinco de marca van como SVG en línea en vez de importarse: lucide dejó
    sus iconos de marca como deprecados y nunca tuvo el de Spotify, así que la
@@ -434,7 +611,11 @@ function PlatformIcon({
 /* ═══════════════════════════════════════════════════════ */
 
 export default function Home() {
-  const [activeRuta, setActiveRuta] = useState<string | null>(null);
+  /* Arranca en la primera ruta para que la sección no cargue vacía, igual que
+     el bloque de plataformas. Seleccionar es sólo seleccionar: no hay estado
+     apagado al que volver. */
+  const [activeRuta, setActiveRuta] = useState<string>(RUTAS[0].id);
+  const activeRutaData = RUTAS.find((r) => r.id === activeRuta);
   /* Arranca en YouTube: la sección solía cargar sin nada seleccionado, así que
      lo primero que veía el visitante eran ocho botones de texto y el aviso de
      "selecciona una plataforma". Ahora entra con un video puesto. */
@@ -521,7 +702,7 @@ export default function Home() {
           </span>
           <p className="text-white text-sm font-medium">
             <span className="font-bold">Cumbre Digital</span>
-            {" — "}Una mañana intensiva para construir y proteger tu patrimonio en EE.UU.
+            {" — "}Gratuita y online. Regístrate y te avisamos de la próxima edición.
           </p>
           <span className="hidden sm:inline-flex items-center gap-1 text-yellow-300 font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
             Ver detalles <ArrowRight className="w-3.5 h-3.5" />
@@ -530,13 +711,17 @@ export default function Home() {
       </a>
 
       {/* ══════════════════════════════════════════════════════
-          2. ¿CÓMO FUNCIONA COMPRANDO AMÉRICA?
-          Ecosistema visual — el Grupo Empresarial es el núcleo
+          2. EL ECOSISTEMA — diagrama + rutas activas
+          Antes eran dos secciones seguidas con las mismas cuatro rutas:
+          el diagrama del núcleo (bonito pero mudo) y un acordeón con todo
+          el contenido (útil pero plano). Ahora el diagrama ES el selector:
+          se conserva el esquema visual y, al elegir una ruta, su contenido
+          aparece debajo sin cambiar de página.
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-28">
+      <section className="bg-[#F5F7FA] py-20 md:py-24">
         <div className="container">
           <FadeIn>
-            <div className="text-center mb-14">
+            <div className="text-center mb-12">
               <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
                 El ecosistema
               </p>
@@ -550,7 +735,6 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          {/* Diagrama visual del ecosistema */}
           <FadeIn delay={0.1}>
             <div className="max-w-4xl mx-auto">
               {/* Núcleo */}
@@ -568,13 +752,11 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Conector núcleo → rutas.
-                  Antes era una línea suelta colgando del núcleo que no llegaba
-                  a ninguna tarjeta. El bus se dibuja sobre una grid con las
-                  mismas columnas que las tarjetas, así que cada bajada cae
-                  exactamente en el centro de la suya sin cuentas de porcentajes.
-                  Los tramos se extienden 6px (media separación de gap-3) hacia
-                  cada lado para cruzar los huecos y quedar continuos. */}
+              {/* Conector núcleo → rutas. El bus se dibuja sobre un grid con
+                  las mismas columnas que las tarjetas, así que cada bajada cae
+                  en el centro de la suya sin cuentas de porcentajes. Los tramos
+                  se extienden 6px (media separación de gap-3) hacia cada lado
+                  para cruzar los huecos y quedar continuos. */}
               <div className="md:hidden mx-auto w-px h-8 bg-primary/30" aria-hidden="true" />
               <div className="hidden md:block" aria-hidden="true">
                 <div className="mx-auto w-px h-7 bg-primary/30" />
@@ -596,30 +778,95 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Rutas que nacen del núcleo */}
+              {/* Las rutas: ahora son el selector del diagrama */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {RUTAS.map((ruta, i) => {
                   const Icon = ruta.icon;
+                  const active = activeRuta === ruta.id;
                   return (
                     <FadeIn key={ruta.id} delay={0.05 * i} className="h-full">
-                      <div className="h-full bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-                        <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3 shrink-0">
-                          <Icon className="w-5 h-5 text-primary" />
+                      <button
+                        onClick={() => setActiveRuta(ruta.id)}
+                        aria-pressed={active}
+                        className={`h-full w-full rounded-xl p-4 flex flex-col items-center justify-center text-center border transition-all ${
+                          active
+                            ? "bg-white border-primary shadow-lg shadow-blue-600/10 -translate-y-0.5"
+                            : "bg-white border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-blue-300"
+                        }`}
+                      >
+                        <div
+                          className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 shrink-0 transition-colors ${
+                            active ? "bg-primary" : "bg-blue-50"
+                          }`}
+                        >
+                          <Icon
+                            className={`w-5 h-5 ${active ? "text-white" : "text-primary"}`}
+                          />
                         </div>
-                        <p className="text-[#0B1F3A] text-xs md:text-sm font-semibold leading-tight text-balance">
+                        <p className="text-[#0B1F3A] text-xs md:text-sm font-semibold leading-tight">
                           {ruta.label}
                         </p>
-                      </div>
+                      </button>
                     </FadeIn>
                   );
                 })}
               </div>
 
-              <FadeIn delay={0.3}>
-                <p className="text-center text-[#9CA3AF] text-sm mt-6">
-                  Todas las rutas nacen del Grupo Empresarial — nunca al revés.
-                </p>
-              </FadeIn>
+              <p className="text-center text-[#9CA3AF] text-sm mt-5">
+                ¿Qué estás intentando construir? Selecciona la ruta que más se
+                acerca a tu situación.
+              </p>
+
+              {/* Contenido de la ruta activa */}
+              <AnimatePresence mode="wait">
+                {activeRutaData && (
+                  <motion.div
+                    key={activeRutaData.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25 }}
+                    className="mt-5 bg-white border border-gray-200 rounded-2xl shadow-sm p-6 md:p-8"
+                  >
+                    <div className="grid md:grid-cols-2 gap-6 md:gap-10">
+                      <div>
+                        <p className="text-primary text-xs font-mono uppercase tracking-widest mb-3">
+                          Qué problema resuelve
+                        </p>
+                        <p className="text-[#4B5563] text-sm leading-relaxed">
+                          {activeRutaData.problema}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-primary text-xs font-mono uppercase tracking-widest mb-3">
+                          Cómo orienta
+                        </p>
+                        <p className="text-[#4B5563] text-sm leading-relaxed">
+                          {activeRutaData.orienta}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="mt-6 pt-6 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4">
+                      <p className="text-[#9CA3AF] text-xs">
+                        El GPS te indica si esta ruta aplica para tu perfil.
+                      </p>
+                      <a href={activeRutaData.href}>
+                        <Button
+                          size="sm"
+                          className="bg-primary hover:bg-blue-600 text-white gap-2"
+                        >
+                          Explorar esta ruta{" "}
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Button>
+                      </a>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <p className="text-center text-[#9CA3AF] text-sm mt-6">
+                Todas las rutas nacen del Grupo Empresarial — nunca al revés.
+              </p>
             </div>
           </FadeIn>
 
@@ -636,133 +883,9 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          3. MAPA DEL ECOSISTEMA — Cards expandibles
-          Sin cambio de página
+          3. OPORTUNIDADES INMOBILIARIAS — Introducción
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#0B1F3A] py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Rutas disponibles
-              </p>
-              <h2 className="text-3xl md:text-4xl text-white mb-4">
-                ¿Qué estás intentando construir?
-              </h2>
-              <p className="text-slate-400 text-lg max-w-xl mx-auto">
-                Selecciona la ruta que más se acerca a tu situación.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="max-w-5xl mx-auto space-y-3">
-            {RUTAS.map((ruta, i) => {
-              const Icon = ruta.icon;
-              const isOpen = activeRuta === ruta.id;
-              return (
-                <FadeIn key={ruta.id} delay={i * 0.06}>
-                  <motion.div
-                    className={`rounded-2xl border overflow-hidden transition-all duration-200 ${
-                      isOpen
-                        ? "border-primary/50 bg-[#0F2847]"
-                        : "border-[#1E3A5F] bg-[#0F2847] hover:border-blue-500/30"
-                    }`}
-                  >
-                    {/* Header */}
-                    <button
-                      onClick={() =>
-                        setActiveRuta(isOpen ? null : ruta.id)
-                      }
-                      className="w-full flex items-center justify-between gap-4 p-6 text-left"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div
-                          className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors ${
-                            isOpen ? "bg-primary" : "bg-[#1E3A5F]"
-                          }`}
-                        >
-                          <Icon
-                            className={`w-5 h-5 ${isOpen ? "text-white" : "text-blue-400"}`}
-                          />
-                        </div>
-                        <div>
-                          <p className="text-white font-semibold text-lg leading-tight">
-                            {ruta.label}
-                          </p>
-                          {!isOpen && (
-                            <p className="text-slate-500 text-sm mt-0.5 line-clamp-1">
-                              {ruta.problema.slice(0, 60)}…
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <ChevronDown
-                        className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300 ${
-                          isOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-
-                    {/* Expandable content */}
-                    <AnimatePresence>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-6 pb-6 pt-0">
-                            <div className="border-t border-white/5 pt-5 grid md:grid-cols-2 gap-6">
-                              <div>
-                                <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-3">
-                                  Qué problema resuelve
-                                </p>
-                                <p className="text-slate-300 text-sm leading-relaxed">
-                                  {ruta.problema}
-                                </p>
-                              </div>
-                              <div>
-                                <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-3">
-                                  Cómo orienta
-                                </p>
-                                <p className="text-slate-300 text-sm leading-relaxed">
-                                  {ruta.orienta}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="mt-6 flex items-center justify-between">
-                              <p className="text-slate-500 text-xs">
-                                El GPS te indica si esta ruta aplica para tu
-                                perfil.
-                              </p>
-                              <a href={ruta.href}>
-                                <Button
-                                  size="sm"
-                                  className="bg-primary hover:bg-blue-600 text-white gap-2"
-                                >
-                                  Explorar esta ruta{" "}
-                                  <ArrowRight className="w-3.5 h-3.5" />
-                                </Button>
-                              </a>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-                </FadeIn>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          4. OPORTUNIDADES INMOBILIARIAS — Introducción
-      ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#F5F7FA] py-20 md:py-24">
+      <section className="bg-white py-20 md:py-24">
         <div className="container">
           <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <FadeIn>
@@ -781,15 +904,28 @@ export default function Home() {
                   Arquitectura Patrimonial
                 </p>
                 <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
-                  Los bienes raíces son una de las rutas patrimoniales, no la
-                  única.
+                  No todo el ladrillo sirve para lo mismo.
                 </h2>
-                <p className="text-[#4B5563] text-lg leading-relaxed mb-8">
-                  Comprando América trabaja con vehículos inmobiliarios
-                  estructurados: tierra estratégica, renta garantizada por el
-                  gobierno y compra de propiedades. Cada uno responde a un
-                  perfil diferente.
+                <p className="text-[#4B5563] text-lg leading-relaxed mb-6">
+                  Tierra estratégica, renta respaldada por el gobierno y compra
+                  directa de propiedades no compiten entre sí: resuelven
+                  problemas distintos. Lo que decide cuál te conviene no es el
+                  activo, es tu horizonte, tu liquidez y cuánto quieres operar.
                 </p>
+                <ul className="mb-8 space-y-2.5">
+                  {[
+                    "Tierra estratégica — plazo largo, sin operación diaria.",
+                    "Renta respaldada por el gobierno — flujo mensual predecible.",
+                    "Compra directa — control total, gestión a tu cargo.",
+                  ].map((linea) => (
+                    <li key={linea} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-1" />
+                      <span className="text-[#4B5563] text-sm leading-relaxed">
+                        {linea}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
                 <a href="https://comprandoamerica.com/arquitectura-patrimonial">
                   <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/20">
                     Conocer Arquitectura Patrimonial{" "}
@@ -803,7 +939,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          5. CONTENIDO GRATUITO
+          4. CONTENIDO GRATUITO
           Plataformas con preview inline
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-16 md:py-20">
@@ -938,7 +1074,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          6. CASOS REALES
+          5. CASOS REALES
           Perfil → Objetivo → Ruta → Resultado
       ══════════════════════════════════════════════════════ */}
       <section className="bg-white py-20 md:py-28">
@@ -1027,7 +1163,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          7. EXPERTOS
+          6. EXPERTOS
           ¿En qué tipo de decisiones acompaña al empresario?
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#0E2544] py-20 md:py-28">
@@ -1113,59 +1249,45 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          8. INVESTMENT WEEK — Reposicionado
+          7. PRÓXIMOS EVENTOS — carrusel
+          Se conserva el texto que explica qué es Investment Week y por qué
+          no es una visita de ventas; debajo, las ediciones con fecha.
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#F5F7FA] py-20 md:py-24">
         <div className="container">
-          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-            <FadeIn delay={0.1}>
-              <div>
-                <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                  Investment Week
-                </p>
-                <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
-                  Hay inversiones que solo se entienden caminándolas.
-                </h2>
-                <p className="text-[#4B5563] text-lg leading-relaxed mb-4">
-                  Hay decisiones que pueden tomarse leyendo un análisis.
-                  Y hay otras que únicamente se comprenden estando en el terreno,
-                  revisando los números reales frente a un activo real.
-                </p>
-                <p className="text-[#4B5563] text-base leading-relaxed mb-8">
-                  Investment Week existe para que el empresario comprenda{" "}
-                  <span className="font-semibold text-[#0B1F3A]">
-                    cómo analizamos activos reales
-                  </span>{" "}
-                  — no para venderle una propiedad.
-                </p>
-                <a href="/investment-week">
-                  <Button className="bg-primary hover:bg-blue-600 text-white gap-2 shadow-lg shadow-blue-600/20">
-                    Conocer Investment Week <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </FadeIn>
-            <FadeIn>
-              <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-200">
-                <img
-                  src={INVEST_WEEK}
-                  alt="Investment Week"
-                  className="w-full h-80 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/50 to-transparent" />
-                <div className="absolute bottom-6 left-6">
-                  <span className="bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-full">
-                    Investment Week
-                  </span>
-                </div>
-              </div>
-            </FadeIn>
-          </div>
+          <FadeIn>
+            <div className="max-w-3xl mx-auto text-center mb-12">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Próximos eventos
+              </p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
+                Hay inversiones que solo se entienden caminándolas.
+              </h2>
+              <p className="text-[#4B5563] text-lg leading-relaxed mb-4">
+                Hay decisiones que pueden tomarse leyendo un análisis. Y hay
+                otras que únicamente se comprenden estando en el terreno,
+                revisando los números reales frente a un activo real.
+              </p>
+              <p className="text-[#4B5563] text-base leading-relaxed">
+                Investment Week existe para que el empresario comprenda{" "}
+                <span className="font-semibold text-[#0B1F3A]">
+                  cómo analizamos activos reales
+                </span>{" "}
+                — no para venderle una propiedad.
+              </p>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <div className="max-w-5xl mx-auto">
+              <EventosCarousel />
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          9. GRUPO EMPRESARIAL — Pilar emocional
+          8. GRUPO EMPRESARIAL — Pilar emocional
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-20 md:py-28">
         <div className="container">
@@ -1251,7 +1373,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          10. GPS — Cierre natural del recorrido
+          9. GPS — Cierre natural del recorrido
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#091A30] py-24 md:py-32">
         <div className="container">

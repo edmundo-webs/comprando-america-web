@@ -39,10 +39,20 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 /* ─── Head (noindex) ─── */
 import SEOHead from "@/components/SEOHead";
 const PAGE_SEO = {
-  title: "Florida Investment Weekend II | Comprando América",
-  description: "Evento privado de inversión en Tampa, St. Pete y Clearwater. Solo por invitación. 24-27 julio 2026.",
+  title: "Investment Week | Comprando América",
+  description: "Una semana en terreno analizando activos reales con el equipo. Próximas ediciones: Nueva York, 2 al 7 de octubre de 2026, y Las Vegas, 2 al 7 de noviembre de 2026. Solo por invitación.",
   path: "/investment-week",
 };
+
+/* ─── Próximas ediciones ───
+   La página se escribió para el Florida Investment Weekend II, que ya pasó.
+   El contenido de esa edición se conserva más abajo como referencia de cómo
+   se trabaja en terreno, pero el encabezado ya anuncia las dos ediciones
+   vigentes. */
+const EDICIONES = [
+  { ciudad: "Nueva York", fecha: "2 al 7 de octubre, 2026" },
+  { ciudad: "Las Vegas", fecha: "2 al 7 de noviembre, 2026" },
+];
 
 /* ─── Photos ─── */
 const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
@@ -56,7 +66,7 @@ const TEAM = [
   { name: "Joe", role: "Inversiones", photo: "/team/joe.jpg" },
 ];
 
-const WA_APPLY = "Hola, me interesa aplicar al Florida Investment Weekend II (24-27 julio 2026).";
+const WA_APPLY = "Hola, me interesa aplicar a Investment Week (Nueva York 2-7 oct o Las Vegas 2-7 nov 2026).";
 
 export default function InvestmentWeek() {
   const scrollToApply = () => {
@@ -85,12 +95,14 @@ export default function InvestmentWeek() {
             >
               {/* Meta pills: fecha · lugar · acceso */}
               <div className="flex flex-wrap items-center gap-2 mb-5">
-                <span className="flex items-center gap-1.5 bg-blue-500/15 border border-blue-500/25 text-blue-300 text-[11px] font-semibold px-2.5 py-1 rounded-full">
-                  <CalendarDays className="w-3 h-3" /> 24–27 jul 2026
-                </span>
-                <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-slate-400 text-[11px] px-2.5 py-1 rounded-full">
-                  <MapPin className="w-3 h-3 text-primary" /> Tampa · St. Pete · Clearwater
-                </span>
+                {EDICIONES.map((e) => (
+                  <span
+                    key={e.ciudad}
+                    className="flex items-center gap-1.5 bg-blue-500/15 border border-blue-500/25 text-blue-300 text-[11px] font-semibold px-2.5 py-1 rounded-full"
+                  >
+                    <CalendarDays className="w-3 h-3" /> {e.ciudad} · {e.fecha}
+                  </span>
+                ))}
                 <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-slate-400 text-[11px] px-2.5 py-1 rounded-full">
                   <Lock className="w-3 h-3 text-blue-400" /> Solo por invitación
                 </span>
@@ -98,15 +110,16 @@ export default function InvestmentWeek() {
 
               {/* Título */}
               <h1 className="text-[2.5rem] md:text-5xl lg:text-[3rem] font-bold text-white leading-[1.08] mb-3">
-                Florida Investment<br />
-                <span className="text-primary">Weekend II</span>
+                Investment<br />
+                <span className="text-primary">Week</span>
               </h1>
 
               {/* Subtítulo */}
               <p className="text-base md:text-lg text-slate-400 leading-snug mb-5 max-w-lg">
-                Visita en terreno:{" "}
-                <span className="text-white font-medium">Casas Unifamiliares</span> y{" "}
-                <span className="text-white font-medium">Parques de Casas Móviles</span> en operación.
+                Dos ediciones este año.{" "}
+                <span className="text-white font-medium">Nueva York</span> en octubre y{" "}
+                <span className="text-white font-medium">Las Vegas</span> en noviembre: activos
+                reales en operación, analizados con el equipo.
               </p>
 
               {/* Duración + cupo */}
@@ -289,8 +302,17 @@ export default function InvestmentWeek() {
         <div className="container">
           <FadeIn>
             <div className="text-center mb-12">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">Agenda</p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A]">4 días de experiencia intensiva</h2>
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Edición anterior · Florida
+              </p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                Así trabajamos durante la semana
+              </h2>
+              <p className="text-[#6B7280] max-w-2xl mx-auto">
+                La agenda del Florida Investment Weekend II, para que veas el
+                nivel de detalle con el que se analiza en terreno. Nueva York y
+                Las Vegas siguen la misma estructura sobre otros activos.
+              </p>
             </div>
           </FadeIn>
 
