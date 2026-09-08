@@ -128,6 +128,7 @@ function StatCounter({
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
 import { EVENTOS, type Evento } from "@/lib/eventos";
+import { useRegistroCumbre } from "@/hooks/useRegistroCumbre";
 import {
   Dialog,
   DialogContent,
@@ -472,20 +473,29 @@ function EventosCarousel() {
               className="shrink-0 basis-full md:basis-1/2 px-2"
               aria-hidden={false}
             >
-              <article className="h-full bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-                <div className="relative h-44 shrink-0">
+              {/* Formato cartel: la imagen va en 4:5 para poder usar los
+                  flyers de los eventos tal como se diseñan, sin recortarles el
+                  texto. La tarjeta se limita en ancho y se centra dentro de su
+                  hueco, porque a 4:5 el ancho completo de media pantalla daría
+                  una tarjeta desproporcionada de alto. */}
+              <article className="h-full max-w-[360px] mx-auto bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+                <div className="relative aspect-[4/5] shrink-0 bg-[#0B1F3A]">
                   <img
                     src={e.imagen}
                     alt={e.titulo}
                     loading="lazy"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/70 to-transparent" />
                   <span className="absolute top-4 left-4 bg-primary text-white text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
                     {e.tipo}
                   </span>
                 </div>
-                <div className="p-6 flex flex-col grow">
+                <div className="p-5 flex flex-col grow">
+                  {e.kicker && (
+                    <p className="text-primary text-[11px] font-mono uppercase tracking-[0.18em] mb-1">
+                      {e.kicker}
+                    </p>
+                  )}
                   <h3 className="text-[#0B1F3A] text-lg font-bold leading-tight mb-2">
                     {e.titulo}
                   </h3>
@@ -585,7 +595,7 @@ function EventoDialog({
           <>
             <DialogHeader className="space-y-0 px-6 pt-6 pb-5 bg-[#0B1F3A] text-left">
               <p className="text-blue-400 text-[11px] font-mono uppercase tracking-[0.2em] mb-2">
-                {evento.tipo}
+                {evento.kicker ? `${evento.kicker} · ${evento.tipo}` : evento.tipo}
               </p>
               <DialogTitle className="text-white text-xl font-bold leading-tight">
                 {evento.titulo}
@@ -599,17 +609,35 @@ function EventoDialog({
                   <MapPin className="w-3.5 h-3.5 shrink-0" />
                   {evento.lugar}
                 </span>
+                {evento.horario && (
+                  <span className="text-slate-400 basis-full">
+                    {evento.horario}
+                  </span>
+                )}
               </div>
             </DialogHeader>
 
-            <div className="px-6 py-5">
+            {/* El cuerpo puede crecer más que la pantalla en móvil, así que
+                desborda aquí dentro en vez de recortarse. */}
+            <div className="px-6 py-5 max-h-[60vh] overflow-y-auto">
               {evento.objetivo && (
                 <>
                   <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-2">
-                    Objetivo
+                    {evento.bloques ? "De qué se trata" : "Objetivo"}
                   </p>
                   <p className="text-[#0B1F3A] text-sm leading-relaxed mb-5">
                     {evento.objetivo}
+                  </p>
+                </>
+              )}
+
+              {evento.porQue && (
+                <>
+                  <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-2">
+                    Para qué existe
+                  </p>
+                  <p className="text-[#4B5563] text-sm leading-relaxed mb-5">
+                    {evento.porQue}
                   </p>
                 </>
               )}
@@ -638,26 +666,65 @@ function EventoDialog({
                   </ol>
                 </>
               )}
+
+              {evento.bloques && (
+                <>
+                  <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-3">
+                    Los 6 bloques
+                  </p>
+                  <ul className="space-y-2">
+                    {evento.bloques.map((b) => (
+                      <li
+                        key={b.num}
+                        className="rounded-lg border border-gray-200 bg-[#F8FAFC] px-3.5 py-3"
+                      >
+                        <div className="flex items-baseline gap-2.5">
+                          <span className="shrink-0 text-primary text-[11px] font-mono font-bold">
+                            {b.num}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-[#0B1F3A] text-sm font-semibold leading-snug">
+                              {b.titulo}
+                            </p>
+                            <p className="text-[#9CA3AF] text-[11px] mt-0.5">
+                              {b.ponente} · 45 min
+                            </p>
+                            <p className="text-[#4B5563] text-xs leading-relaxed mt-1.5">
+                              {b.resumen}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
 
-            <div className="px-6 pb-6 pt-1 flex flex-wrap items-center gap-3">
-              <Button
-                onClick={() =>
-                  openWhatsApp(
-                    WHATSAPP_PHONE,
-                    `Hola, me interesa ${evento.titulo} (${evento.fecha}). ¿Me comparten los requisitos y la logística?`,
-                    `evento-${evento.id}`,
-                    "/"
-                  )
-                }
-                className="bg-primary hover:bg-blue-600 text-white gap-2"
-              >
-                Solicitar información <ArrowRight className="w-4 h-4" />
-              </Button>
-              <p className="text-[#9CA3AF] text-xs">
-                Cupo limitado. La logística se comparte en privado.
-              </p>
-            </div>
+            {evento.bloques ? (
+              <div className="px-6 pb-6 pt-1 border-t border-gray-100">
+                <RegistroCumbreCompacto />
+              </div>
+            ) : (
+              <div className="px-6 pb-6 pt-1 flex flex-wrap items-center gap-3">
+                <Button
+                  onClick={() =>
+                    openWhatsApp(
+                      WHATSAPP_PHONE,
+                      `Hola, me interesa ${evento.titulo} (${evento.fecha}). ¿Me comparten los requisitos y la logística?`,
+                      `evento-${evento.id}`,
+                      "/"
+                    )
+                  }
+                  className="bg-primary hover:bg-blue-600 text-white gap-2"
+                >
+                  Solicitar información <ArrowRight className="w-4 h-4" />
+                </Button>
+                <p className="text-[#9CA3AF] text-xs">
+                  Cupo limitado. La logística se comparte en privado.
+                </p>
+              </div>
+            )}
           </>
         )}
       </DialogContent>
@@ -700,6 +767,91 @@ function PlatformIcon({
     case "noticias":
       return <Newspaper className={className} aria-hidden="true" />;
   }
+}
+
+/* Registro a la Cumbre desde la ventana del home.
+   Usa el mismo hook que /cumbre-digital, así que el lead cae en el CMS con el
+   mismo sourceSlug, hito y stage; lo único distinto es la etiqueta de fuente,
+   que es para poder atribuir de dónde vino. */
+function RegistroCumbreCompacto() {
+  const { formData, setFormData, onSubmit, enviando, submitted } =
+    useRegistroCumbre("home-cumbre");
+
+  if (submitted) {
+    return (
+      <div className="pt-5 text-center">
+        <CheckCircle2 className="w-8 h-8 text-primary mx-auto mb-2" />
+        <p className="text-[#0B1F3A] font-semibold">¡Ya estás registrado!</p>
+        <p className="text-[#6B7280] text-sm mt-1">
+          Te llevamos al grupo de WhatsApp para el acceso.
+        </p>
+      </div>
+    );
+  }
+
+  const campo =
+    "w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-[#0B1F3A] placeholder:text-[#9CA3AF] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary";
+
+  return (
+    <form onSubmit={onSubmit} className="pt-5 space-y-2.5">
+      <p className="text-primary text-[11px] font-semibold uppercase tracking-wider">
+        Registro sin costo
+      </p>
+      <input
+        type="text"
+        required
+        value={formData.nombreCompleto}
+        onChange={(e) =>
+          setFormData({ ...formData, nombreCompleto: e.target.value })
+        }
+        placeholder="Nombre completo"
+        aria-label="Nombre completo"
+        className={campo}
+      />
+      <div className="flex gap-2.5">
+        <input
+          type="text"
+          value={formData.countryCode}
+          onChange={(e) =>
+            setFormData({ ...formData, countryCode: e.target.value })
+          }
+          aria-label="Código de país"
+          className={`${campo} w-20 shrink-0`}
+        />
+        <input
+          type="tel"
+          required
+          value={formData.whatsapp}
+          onChange={(e) =>
+            setFormData({ ...formData, whatsapp: e.target.value })
+          }
+          placeholder="WhatsApp"
+          aria-label="Número de WhatsApp"
+          className={campo}
+        />
+      </div>
+      <input
+        type="email"
+        required
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        placeholder="Correo electrónico"
+        aria-label="Correo electrónico"
+        className={campo}
+      />
+      <Button
+        type="submit"
+        disabled={enviando}
+        className="w-full bg-primary hover:bg-blue-600 text-white gap-2"
+      >
+        {enviando ? "Registrando…" : "Registrarme gratis"}
+        {!enviando && <ArrowRight className="w-4 h-4" />}
+      </Button>
+      <p className="text-[#9CA3AF] text-[11px] text-center">
+        Gratuito. Te enviamos el acceso por WhatsApp.
+      </p>
+    </form>
+  );
 }
 
 /* ═══════════════════════════════════════════════════════ */
@@ -1310,19 +1462,19 @@ export default function Home() {
                 Próximos eventos
               </p>
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
-                Hay inversiones que solo se entienden caminándolas.
+                Ven a ver cómo se decide.
               </h2>
               <p className="text-[#4B5563] text-lg leading-relaxed mb-4">
-                Hay decisiones que pueden tomarse leyendo un análisis. Y hay
-                otras que únicamente se comprenden estando en el terreno,
-                revisando los números reales frente a un activo real.
+                Unos eventos pasan en terreno, frente a un activo real y sus
+                números. Otros son foros abiertos donde se comparte criterio y
+                experiencia con quien ya ejecutó.
               </p>
               <p className="text-[#4B5563] text-base leading-relaxed">
-                Investment Week existe para que el empresario comprenda{" "}
+                Ninguno existe para venderte algo. Existen para que{" "}
                 <span className="font-semibold text-[#0B1F3A]">
-                  cómo analizamos activos reales
-                </span>{" "}
-                — no para venderle una propiedad.
+                  decidas con mejor información
+                </span>
+                . Cada uno explica en su ficha para qué sirve y qué vas a ver.
               </p>
             </div>
           </FadeIn>
