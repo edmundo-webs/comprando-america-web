@@ -458,8 +458,8 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
     <div style={{ fontFamily: FB, background: NAVY_DEEP, color: "#fff", overflowX: "hidden" }}>
       <style>{CSS}</style>
       <SEOHead
-        title="Primera Cumbre Digital Comprando América"
-        description={`2ª Cumbre Digital de Comprando América · De la casa al caso. ${CUMBRE.rango}, ${CUMBRE.horario}. Seis bloques gratuitos y en vivo: mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos abiertos.`}
+        title={`${CUMBRE.kicker} · ${CUMBRE.titulo} | Comprando América`}
+        description={`${CUMBRE.kicker} de Comprando América · ${CUMBRE.titulo}. ${CUMBRE.rango}, ${CUMBRE.horario}. No inviertas sin estrategia: seis bloques gratuitos y en vivo sobre cómo mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos abiertos.`}
         path={seoPath}
       />
       <Navbar />
@@ -490,7 +490,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               fontFamily: FB, fontSize: "0.68rem", letterSpacing: "0.2em",
               color: GOLD, textTransform: "uppercase", marginBottom: 18,
             }} className="cd-hero-eyebrow">
-              Primera Cumbre Digital · Comprando América
+              {CUMBRE.kicker} · Comprando América
             </div>
 
             <h1 className="cd-hero-h1" style={{
@@ -499,8 +499,8 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               fontWeight: 700, color: "#fff",
               lineHeight: 1.2, marginTop: 0, marginBottom: 16,
             }}>
-              6 horas que podrían ahorrarte{" "}
-              <span style={{ color: GOLD }}>años de prueba y error.</span>
+              Casas, Negocios y Visas.{" "}
+              <span style={{ color: GOLD }}>No inviertas sin estrategia.</span>
             </h1>
 
             <p style={{

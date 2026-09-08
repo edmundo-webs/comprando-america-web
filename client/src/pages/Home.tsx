@@ -473,20 +473,29 @@ function EventosCarousel() {
               className="shrink-0 basis-full md:basis-1/2 px-2"
               aria-hidden={false}
             >
-              <article className="h-full bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-                <div className="relative h-44 shrink-0">
+              {/* Formato cartel: la imagen va en 4:5 para poder usar los
+                  flyers de los eventos tal como se diseñan, sin recortarles el
+                  texto. La tarjeta se limita en ancho y se centra dentro de su
+                  hueco, porque a 4:5 el ancho completo de media pantalla daría
+                  una tarjeta desproporcionada de alto. */}
+              <article className="h-full max-w-[360px] mx-auto bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
+                <div className="relative aspect-[4/5] shrink-0 bg-[#0B1F3A]">
                   <img
                     src={e.imagen}
                     alt={e.titulo}
                     loading="lazy"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1F3A]/70 to-transparent" />
                   <span className="absolute top-4 left-4 bg-primary text-white text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
                     {e.tipo}
                   </span>
                 </div>
-                <div className="p-6 flex flex-col grow">
+                <div className="p-5 flex flex-col grow">
+                  {e.kicker && (
+                    <p className="text-primary text-[11px] font-mono uppercase tracking-[0.18em] mb-1">
+                      {e.kicker}
+                    </p>
+                  )}
                   <h3 className="text-[#0B1F3A] text-lg font-bold leading-tight mb-2">
                     {e.titulo}
                   </h3>
@@ -586,7 +595,7 @@ function EventoDialog({
           <>
             <DialogHeader className="space-y-0 px-6 pt-6 pb-5 bg-[#0B1F3A] text-left">
               <p className="text-blue-400 text-[11px] font-mono uppercase tracking-[0.2em] mb-2">
-                {evento.tipo}
+                {evento.kicker ? `${evento.kicker} · ${evento.tipo}` : evento.tipo}
               </p>
               <DialogTitle className="text-white text-xl font-bold leading-tight">
                 {evento.titulo}
@@ -618,6 +627,17 @@ function EventoDialog({
                   </p>
                   <p className="text-[#0B1F3A] text-sm leading-relaxed mb-5">
                     {evento.objetivo}
+                  </p>
+                </>
+              )}
+
+              {evento.porQue && (
+                <>
+                  <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-2">
+                    Para qué existe
+                  </p>
+                  <p className="text-[#4B5563] text-sm leading-relaxed mb-5">
+                    {evento.porQue}
                   </p>
                 </>
               )}
@@ -1442,19 +1462,19 @@ export default function Home() {
                 Próximos eventos
               </p>
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-6">
-                Hay inversiones que solo se entienden caminándolas.
+                Ven a ver cómo se decide.
               </h2>
               <p className="text-[#4B5563] text-lg leading-relaxed mb-4">
-                Hay decisiones que pueden tomarse leyendo un análisis. Y hay
-                otras que únicamente se comprenden estando en el terreno,
-                revisando los números reales frente a un activo real.
+                Unos eventos pasan en terreno, frente a un activo real y sus
+                números. Otros son foros abiertos donde se comparte criterio y
+                experiencia con quien ya ejecutó.
               </p>
               <p className="text-[#4B5563] text-base leading-relaxed">
-                Investment Week existe para que el empresario comprenda{" "}
+                Ninguno existe para venderte algo. Existen para que{" "}
                 <span className="font-semibold text-[#0B1F3A]">
-                  cómo analizamos activos reales
-                </span>{" "}
-                — no para venderle una propiedad.
+                  decidas con mejor información
+                </span>
+                . Cada uno explica en su ficha para qué sirve y qué vas a ver.
               </p>
             </div>
           </FadeIn>
