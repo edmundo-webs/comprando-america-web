@@ -789,8 +789,16 @@ function RegistroCumbreCompacto() {
     );
   }
 
+  /* El ancho NO va aquí: se declara en cada campo.
+     Al tener "w-full" en la base, la lada quedaba con "w-full w-20": las dos
+     son la misma propiedad y Tailwind emite w-full después de la escala
+     numérica, así que ganaba w-full por orden de hoja de estilo, no por el
+     orden del atributo class. La lada se estiraba a toda la fila y el campo de
+     WhatsApp —que es required— se encogía a 26px y quedaba fuera del panel,
+     recortado. El navegador bloqueaba el envío señalando un campo invisible:
+     desde la ventana no se podía registrar nadie. */
   const campo =
-    "w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-[#0B1F3A] placeholder:text-[#9CA3AF] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary";
+    "rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-[#0B1F3A] placeholder:text-[#9CA3AF] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary";
 
   return (
     <form onSubmit={onSubmit} className="pt-5 space-y-2.5">
@@ -806,7 +814,7 @@ function RegistroCumbreCompacto() {
         }
         placeholder="Nombre completo"
         aria-label="Nombre completo"
-        className={campo}
+        className={`${campo} w-full`}
       />
       <div className="flex gap-2.5">
         <input
@@ -827,7 +835,7 @@ function RegistroCumbreCompacto() {
           }
           placeholder="WhatsApp"
           aria-label="Número de WhatsApp"
-          className={campo}
+          className={`${campo} min-w-0 flex-1`}
         />
       </div>
       <input
@@ -837,7 +845,7 @@ function RegistroCumbreCompacto() {
         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         placeholder="Correo electrónico"
         aria-label="Correo electrónico"
-        className={campo}
+        className={`${campo} w-full`}
       />
       <Button
         type="submit"
