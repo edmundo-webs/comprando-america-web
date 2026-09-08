@@ -239,21 +239,21 @@ const RUTAS = [
 /* ─── Casos reales ─── */
 const CASOS = [
   {
-    perfil: "Empresario de manufactura · México · Capital: $200k USD",
+    perfil: "Empresario de manufactura · México · Capital: $98k USD",
     objetivo: "Proteger patrimonio en dólares sin migrar.",
-    ruta: "Apertura de LLC en Texas + inversión inmobiliaria en programa de renta garantizada.",
+    ruta: "Apertura de LLC en Florida + inversión inmobiliaria en programa de renta garantizada.",
     resultado: "Flujo mensual en dólares desde el primer trimestre. Patrimonio desvinculado del peso.",
   },
   {
-    perfil: "Empresario de servicios · Colombia · Capital: $150k USD",
-    objetivo: "Migrar con visa de inversionista y operar en Florida.",
-    ruta: "Visa E-2 vinculada a la adquisición de un negocio de servicios en Miami.",
+    perfil: "Empresario de servicios · México · Capital: $150k USD",
+    objetivo: "Migrar con visa de inversionista y operar en Houston, Texas.",
+    ruta: "Visa E-2 vinculada a la adquisición de un negocio en el sector automotriz.",
     resultado: "Visa aprobada en 4 meses. Negocio operando. Familia con estatus migratorio.",
   },
   {
-    perfil: "Ejecutivo corporativo · Venezuela · Capital: $120k USD",
-    objetivo: "Construir patrimonio fuera de Venezuela con estructura real.",
-    ruta: "LLC + cuenta bancaria en Texas + participación en Fondo de Tierra Estratégica.",
+    perfil: "Ejecutivo corporativo · México · Capital: $120k USD",
+    objetivo: "Construir patrimonio fuera de México con estructura real.",
+    ruta: "LLC + cuenta bancaria en Florida + participación en Fondo de Tierra Estratégica.",
     resultado: "Inversión activa en dólares. Primer Deal Day cerrado como co-inversionista.",
   },
 ];
