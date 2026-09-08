@@ -1140,7 +1140,182 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          3. CONTENIDO GRATUITO
+          3. EXPERTOS — Equipo multidisciplinario
+          ¿En qué tipo de decisiones acompaña al empresario?
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#0E2544] py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Equipo multidisciplinario
+              </p>
+              <h2 className="text-3xl md:text-4xl text-white mb-4">
+                Un equipo. Ocho perspectivas. Una sola dirección.
+              </h2>
+              <p className="text-slate-400 text-lg max-w-xl mx-auto">
+                No un directorio de especialistas. Un equipo que trabaja junto
+                para que el empresario tome mejores decisiones.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {EXPERTS.map((expert, i) => {
+              const isActive = activeExpert === i;
+              return (
+                <FadeIn key={i} delay={i * 0.05}>
+                  <motion.button
+                    onClick={() => setActiveExpert(isActive ? null : i)}
+                    whileHover={{ y: -3 }}
+                    whileTap={{ scale: 0.97 }}
+                    className={`w-full text-left rounded-2xl p-4 border transition-all duration-300 ${
+                      isActive
+                        ? "bg-primary/10 border-primary/50 shadow-lg shadow-blue-600/10"
+                        : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
+                    }`}
+                  >
+                    <div className="flex flex-col items-center text-center gap-3">
+                      <div
+                        className={`w-16 h-16 rounded-full overflow-hidden border-2 transition-all ${
+                          isActive ? "border-primary" : "border-[#1E3A5F]"
+                        }`}
+                      >
+                        <img
+                          src={expert.img}
+                          alt={expert.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <p className="text-white text-sm font-bold leading-tight">
+                        {expert.name}
+                      </p>
+                    </div>
+
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="mt-4 pt-4 border-t border-white/10">
+                            <p className="text-blue-400 text-[10px] font-mono uppercase tracking-widest mb-2">
+                              Acompaña en
+                            </p>
+                            <p className="text-slate-300 text-xs leading-relaxed text-left">
+                              {expert.decision}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
+                </FadeIn>
+              );
+            })}
+          </div>
+          <FadeIn>
+            <p className="text-center text-slate-600 text-sm mt-6">
+              Selecciona a un experto para ver en qué decisiones acompaña.
+            </p>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          4. CASOS REALES
+          Perfil → Objetivo → Ruta → Resultado
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="container">
+          <FadeIn>
+            <div className="text-center mb-14">
+              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
+                Casos reales
+              </p>
+              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
+                Empresarios que encontraron su ruta
+              </h2>
+              <p className="text-[#6B7280] text-lg max-w-xl mx-auto">
+                Historias reales de cómo empresarios distintos encontraron
+                caminos distintos dentro del mismo ecosistema.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {CASOS.map((caso, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl overflow-hidden h-full">
+                  {/* Header */}
+                  <div className="bg-[#0B1F3A] px-6 py-5">
+                    <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-1">
+                      Perfil
+                    </p>
+                    <p className="text-white text-sm font-semibold leading-snug">
+                      {caso.perfil}
+                    </p>
+                  </div>
+                  {/* Flow */}
+                  <div className="p-6 space-y-5">
+                    {[
+                      { label: "Objetivo", value: caso.objetivo },
+                      { label: "Ruta elegida", value: caso.ruta },
+                      { label: "Resultado", value: caso.resultado },
+                    ].map((step, j) => (
+                      <div key={j} className="flex gap-4">
+                        <div className="flex flex-col items-center shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+                            <span className="text-primary text-xs font-bold">
+                              {j + 1}
+                            </span>
+                          </div>
+                          {j < 2 && (
+                            <div className="w-px flex-1 bg-gray-200 my-1" />
+                          )}
+                        </div>
+                        <div className="pb-2">
+                          <p className="text-[#6B7280] text-xs font-semibold uppercase tracking-widest mb-1">
+                            {step.label}
+                          </p>
+                          <p className="text-[#374151] text-sm leading-relaxed">
+                            {step.value}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          <FadeIn>
+            <div className="text-center mt-10">
+              <button
+                onClick={() =>
+                  openWhatsApp(
+                    WHATSAPP_PHONE,
+                    "Hola, quisiera hablar sobre mi situación y ver qué ruta hace sentido para mí.",
+                    "home-rutas-whatsapp",
+                    "/"
+                  )
+                }
+                className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors"
+              >
+                Habla con el equipo sobre tu caso{" "}
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          5. CONTENIDO GRATUITO
           Plataformas con preview inline
       ══════════════════════════════════════════════════════ */}
       <section className="bg-[#0B1F3A] py-16 md:py-20">
@@ -1271,181 +1446,6 @@ export default function Home() {
               )}
             </AnimatePresence>
           </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          4. CASOS REALES
-          Perfil → Objetivo → Ruta → Resultado
-      ══════════════════════════════════════════════════════ */}
-      <section className="bg-white py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <p className="text-primary text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Casos reales
-              </p>
-              <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
-                Empresarios que encontraron su ruta
-              </h2>
-              <p className="text-[#6B7280] text-lg max-w-xl mx-auto">
-                Historias reales de cómo empresarios distintos encontraron
-                caminos distintos dentro del mismo ecosistema.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {CASOS.map((caso, i) => (
-              <FadeIn key={i} delay={i * 0.1}>
-                <div className="bg-[#F5F7FA] border border-gray-200 rounded-2xl overflow-hidden h-full">
-                  {/* Header */}
-                  <div className="bg-[#0B1F3A] px-6 py-5">
-                    <p className="text-blue-400 text-xs font-mono uppercase tracking-widest mb-1">
-                      Perfil
-                    </p>
-                    <p className="text-white text-sm font-semibold leading-snug">
-                      {caso.perfil}
-                    </p>
-                  </div>
-                  {/* Flow */}
-                  <div className="p-6 space-y-5">
-                    {[
-                      { label: "Objetivo", value: caso.objetivo },
-                      { label: "Ruta elegida", value: caso.ruta },
-                      { label: "Resultado", value: caso.resultado },
-                    ].map((step, j) => (
-                      <div key={j} className="flex gap-4">
-                        <div className="flex flex-col items-center shrink-0">
-                          <div className="w-7 h-7 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
-                            <span className="text-primary text-xs font-bold">
-                              {j + 1}
-                            </span>
-                          </div>
-                          {j < 2 && (
-                            <div className="w-px flex-1 bg-gray-200 my-1" />
-                          )}
-                        </div>
-                        <div className="pb-2">
-                          <p className="text-[#6B7280] text-xs font-semibold uppercase tracking-widest mb-1">
-                            {step.label}
-                          </p>
-                          <p className="text-[#374151] text-sm leading-relaxed">
-                            {step.value}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-
-          <FadeIn>
-            <div className="text-center mt-10">
-              <button
-                onClick={() =>
-                  openWhatsApp(
-                    WHATSAPP_PHONE,
-                    "Hola, quisiera hablar sobre mi situación y ver qué ruta hace sentido para mí.",
-                    "home-rutas-whatsapp",
-                    "/"
-                  )
-                }
-                className="inline-flex items-center gap-2 text-primary font-semibold hover:text-blue-700 transition-colors"
-              >
-                Habla con el equipo sobre tu caso{" "}
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          5. EXPERTOS
-          ¿En qué tipo de decisiones acompaña al empresario?
-      ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#0E2544] py-20 md:py-28">
-        <div className="container">
-          <FadeIn>
-            <div className="text-center mb-14">
-              <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-4 font-mono">
-                Equipo multidisciplinario
-              </p>
-              <h2 className="text-3xl md:text-4xl text-white mb-4">
-                Un equipo. Ocho perspectivas. Una sola dirección.
-              </h2>
-              <p className="text-slate-400 text-lg max-w-xl mx-auto">
-                No un directorio de especialistas. Un equipo que trabaja junto
-                para que el empresario tome mejores decisiones.
-              </p>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            {EXPERTS.map((expert, i) => {
-              const isActive = activeExpert === i;
-              return (
-                <FadeIn key={i} delay={i * 0.05}>
-                  <motion.button
-                    onClick={() => setActiveExpert(isActive ? null : i)}
-                    whileHover={{ y: -3 }}
-                    whileTap={{ scale: 0.97 }}
-                    className={`w-full text-left rounded-2xl p-4 border transition-all duration-300 ${
-                      isActive
-                        ? "bg-primary/10 border-primary/50 shadow-lg shadow-blue-600/10"
-                        : "bg-[#0F2847] border-[#1E3A5F] hover:border-blue-500/30"
-                    }`}
-                  >
-                    <div className="flex flex-col items-center text-center gap-3">
-                      <div
-                        className={`w-16 h-16 rounded-full overflow-hidden border-2 transition-all ${
-                          isActive ? "border-primary" : "border-[#1E3A5F]"
-                        }`}
-                      >
-                        <img
-                          src={expert.img}
-                          alt={expert.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <p className="text-white text-sm font-bold leading-tight">
-                        {expert.name}
-                      </p>
-                    </div>
-
-                    <AnimatePresence>
-                      {isActive && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="mt-4 pt-4 border-t border-white/10">
-                            <p className="text-blue-400 text-[10px] font-mono uppercase tracking-widest mb-2">
-                              Acompaña en
-                            </p>
-                            <p className="text-slate-300 text-xs leading-relaxed text-left">
-                              {expert.decision}
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.button>
-                </FadeIn>
-              );
-            })}
-          </div>
-          <FadeIn>
-            <p className="text-center text-slate-600 text-sm mt-6">
-              Selecciona a un experto para ver en qué decisiones acompaña.
-            </p>
-          </FadeIn>
         </div>
       </section>
 
