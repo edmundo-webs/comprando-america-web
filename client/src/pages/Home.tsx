@@ -93,26 +93,47 @@ function StatCounter({
   value,
   suffix,
   label,
+  /* En la banda azul la cifra va en blanco: el azul de marca sobre el azul
+     marino del fondo no tiene contraste suficiente para leerse. */
+  dark = false,
 }: {
   value: number;
   suffix: string;
   label: string;
+  dark?: boolean;
 }) {
   const { ref, isInView } = useInView();
   useCountUp(value, 2000, isInView);
   return (
     <div ref={ref} className="text-center">
-      <div className="text-primary text-3xl md:text-4xl font-bold mb-1">
+      <div
+        className={`text-3xl md:text-4xl font-bold mb-1 ${
+          dark ? "text-white" : "text-primary"
+        }`}
+      >
         <span data-count={value}>0</span>
         {suffix}
       </div>
-      <p className="text-slate-400 text-xs uppercase tracking-wider">{label}</p>
+      <p
+        className={`text-xs uppercase tracking-wider ${
+          dark ? "text-blue-200/80" : "text-slate-400"
+        }`}
+      >
+        {label}
+      </p>
     </div>
   );
 }
 
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
+import { EVENTOS, type Evento } from "@/lib/eventos";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 const PAGE_SEO = {
   title: "Comprando América | ¿Qué estás intentando construir?",
   description:
@@ -167,15 +188,6 @@ const GRUPO_CONFIANZA =
   "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537541/comprando-america/eventos/v7r3cxs7gg19ktnwniis.jpg";
 const GRUPO_MESA_PRIVADA =
   "https://res.cloudinary.com/dofccqypz/image/upload/c_fill,w_800,h_800,g_auto,q_auto,f_auto/v1774537526/comprando-america/eventos/n8lkmvpmlrnco9etkxfb.jpg";
-/* Foto con personas, así que recorta distinto al resto de las tarjetas.
-   La caja de la imagen (h-44) es muy apaisada —hasta 2.7:1 en escritorio— y
-   la foto original viene casi cuadrada: al servirla en 2:1 como las demás, el
-   object-cover del navegador se comía la parte de arriba y cortaba las
-   cabezas. Se sirve ya en la proporción más ancha que llega a tomar la caja,
-   para que el navegador sólo pueda recortar a los lados y nunca por arriba, y
-   con g_faces para que el recorte de Cloudinary se ancle en las caras. */
-const CUMBRE_DIGITAL_PHOTO =
-  "https://res.cloudinary.com/dgruohz6f/image/upload/c_fill,w_900,h_330,g_faces,q_auto,f_auto/v1782675100/tts-news/xpto1gompkv2f4lwqon4.jpg";
 const AERIAL =
   "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
 
@@ -402,50 +414,6 @@ const PLATFORMS: {
   },
 ];
 
-/* Los originales de Cloudinary pesan 1.9 MB y 8.3 MB. Se sirven recortados a
-   la caja real de la tarjeta para no mandarle eso al visitante. */
-const IMG_TR = "c_fill,w_900,h_450,g_auto,q_auto,f_auto";
-
-/* ─── Próximos eventos ───
-   Las dos ediciones de Investment Week y la Cumbre Digital. El carrusel de
-   abajo los rota; cuando se agregue o retire una edición basta tocar esta
-   lista. */
-const EVENTOS = [
-  {
-    id: "iw-ny",
-    tipo: "Presencial",
-    titulo: "Investment Week · Niagara Falls",
-    fecha: "2 al 6 de octubre, 2026",
-    lugar: "Niagara Falls, Nueva York",
-    desc: "Casas unifamiliares para renta, el programa de la sección 8 y oportunidades en mercados que nadie está mirando.",
-    href: "/investment-week",
-    cta: "Ver la edición",
-    imagen: `https://res.cloudinary.com/dgruohz6f/image/upload/${IMG_TR}/v1788822723/tts-news/qjlkynfsqnkt4uflgaqm.jpg`,
-  },
-  {
-    id: "iw-lv",
-    tipo: "Presencial",
-    titulo: "Investment Week · Las Vegas",
-    fecha: "3 al 7 de noviembre, 2026",
-    lugar: "Las Vegas, Nevada",
-    desc: "Las expos de la industria del transporte —AAPEX y SEMA— para detectar oportunidades, más sesión privada para miembros.",
-    href: "/investment-week",
-    cta: "Ver la edición",
-    imagen: `https://res.cloudinary.com/dgruohz6f/image/upload/${IMG_TR}/v1788822260/tts-news/k51cme1dtzvs2c8qaa9b.jpg`,
-  },
-  {
-    id: "cumbre",
-    tipo: "Online · Gratuito",
-    titulo: "Cumbre Digital",
-    fecha: "Próxima edición por anunciar",
-    lugar: "En vivo, desde donde estés",
-    desc: "Una mañana intensiva para construir y proteger tu patrimonio en EE.UU. Regístrate y te avisamos en cuanto haya fecha.",
-    href: "/cumbre-digital",
-    cta: "Registrarme sin costo",
-    imagen: CUMBRE_DIGITAL_PHOTO,
-  },
-];
-
 /* Carrusel de eventos.
    Avanza solo cada 4.5s y se detiene mientras el puntero está encima, para no
    mover una tarjeta que alguien está leyendo. Muestra dos por pantalla en
@@ -455,6 +423,9 @@ const EVENTOS = [
    auto-avanza y quedan sólo las flechas. */
 function EventosCarousel() {
   const [index, setIndex] = useState(0);
+  /* Los eventos con programa no navegan: abren la ventana. Así el visitante
+     ve la información del flyer sin salir del home ni bajar la página. */
+  const [abierto, setAbierto] = useState<Evento | null>(null);
   const [porVista, setPorVista] = useState(1);
   const [pausado, setPausado] = useState(false);
 
@@ -529,14 +500,26 @@ function EventosCarousel() {
                   <p className="text-[#4B5563] text-sm leading-relaxed grow">
                     {e.desc}
                   </p>
-                  <a href={e.href} className="mt-5">
-                    <Button
-                      size="sm"
-                      className="bg-primary hover:bg-blue-600 text-white gap-2 w-full sm:w-auto"
-                    >
-                      {e.cta} <ArrowRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </a>
+                  <div className="mt-5">
+                    {e.href ? (
+                      <a href={e.href}>
+                        <Button
+                          size="sm"
+                          className="bg-primary hover:bg-blue-600 text-white gap-2 w-full sm:w-auto"
+                        >
+                          {e.cta} <ArrowRight className="w-3.5 h-3.5" />
+                        </Button>
+                      </a>
+                    ) : (
+                      <Button
+                        size="sm"
+                        onClick={() => setAbierto(e)}
+                        className="bg-primary hover:bg-blue-600 text-white gap-2 w-full sm:w-auto"
+                      >
+                        {e.cta} <ArrowRight className="w-3.5 h-3.5" />
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </article>
             </div>
@@ -576,7 +559,109 @@ function EventosCarousel() {
           <ChevronRight className="w-4 h-4" />
         </button>
       </div>
+
+      <EventoDialog evento={abierto} onClose={() => setAbierto(null)} />
     </div>
+  );
+}
+
+/* Ventana del evento.
+   Reemplaza a la página de Investment Week como destino del botón: la misma
+   información del flyer —fecha, lugar, objetivo y programa día por día— en un
+   panel que cabe sin scroll interno en una pantalla normal, para que nadie
+   tenga que salir del home para saber de qué va la edición.
+   La logística del viaje no está aquí a propósito: se comparte en privado. */
+function EventoDialog({
+  evento,
+  onClose,
+}: {
+  evento: Evento | null;
+  onClose: () => void;
+}) {
+  return (
+    <Dialog open={!!evento} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-lg bg-white p-0 overflow-hidden gap-0">
+        {evento && (
+          <>
+            <DialogHeader className="space-y-0 px-6 pt-6 pb-5 bg-[#0B1F3A] text-left">
+              <p className="text-blue-400 text-[11px] font-mono uppercase tracking-[0.2em] mb-2">
+                {evento.tipo}
+              </p>
+              <DialogTitle className="text-white text-xl font-bold leading-tight">
+                {evento.titulo}
+              </DialogTitle>
+              <div className="flex flex-wrap gap-x-5 gap-y-1 pt-3 text-sm">
+                <span className="flex items-center gap-1.5 text-blue-200 font-semibold">
+                  <CalendarDays className="w-4 h-4 shrink-0" />
+                  {evento.rango ?? evento.fecha}
+                </span>
+                <span className="flex items-center gap-1.5 text-slate-400">
+                  <MapPin className="w-3.5 h-3.5 shrink-0" />
+                  {evento.lugar}
+                </span>
+              </div>
+            </DialogHeader>
+
+            <div className="px-6 py-5">
+              {evento.objetivo && (
+                <>
+                  <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-2">
+                    Objetivo
+                  </p>
+                  <p className="text-[#0B1F3A] text-sm leading-relaxed mb-5">
+                    {evento.objetivo}
+                  </p>
+                </>
+              )}
+
+              {evento.agenda && (
+                <>
+                  <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-3">
+                    Programa
+                  </p>
+                  <ol className="space-y-2.5">
+                    {evento.agenda.map((d, i) => (
+                      <li key={i} className="flex gap-3">
+                        <span className="shrink-0 w-6 h-6 rounded-md bg-blue-50 text-primary text-[11px] font-bold flex items-center justify-center mt-px">
+                          {i + 1}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-[#0B1F3A] text-sm font-semibold leading-snug">
+                            {d.titulo}
+                          </span>
+                          <span className="block text-[#9CA3AF] text-xs">
+                            {d.fecha}
+                          </span>
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </>
+              )}
+            </div>
+
+            <div className="px-6 pb-6 pt-1 flex flex-wrap items-center gap-3">
+              <Button
+                onClick={() =>
+                  openWhatsApp(
+                    WHATSAPP_PHONE,
+                    `Hola, me interesa ${evento.titulo} (${evento.fecha}). ¿Me comparten los requisitos y la logística?`,
+                    `evento-${evento.id}`,
+                    "/"
+                  )
+                }
+                className="bg-primary hover:bg-blue-600 text-white gap-2"
+              >
+                Solicitar información <ArrowRight className="w-4 h-4" />
+              </Button>
+              <p className="text-[#9CA3AF] text-xs">
+                Cupo limitado. La logística se comparte en privado.
+              </p>
+            </div>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -718,6 +803,26 @@ export default function Home() {
           </span>
         </div>
       </a>
+
+      {/* ══════════════════════════════════════════════════════
+          BANDA DE CIFRAS
+          Estaban al pie de la sección del ecosistema, en gris sobre fondo
+          claro y detrás de todo el diagrama. Cierran el encabezado: la
+          primera prueba de tracción que ve el visitante, sobre el azul de
+          marca y en blanco, antes de que se le explique el ecosistema.
+      ══════════════════════════════════════════════════════ */}
+      <section className="bg-[#0B1F3A] border-y border-white/10 py-12 md:py-14">
+        <div className="container">
+          <FadeIn>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 max-w-4xl mx-auto">
+              <StatCounter value={40} suffix="+" label="Miembros activos" dark />
+              <StatCounter value={53} suffix="+" label="LLCs estructuradas" dark />
+              <StatCounter value={6} suffix="" label="Viajes de inspección" dark />
+              <StatCounter value={14} suffix="+" label="Visas tramitadas" dark />
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
       {/* ══════════════════════════════════════════════════════
           2. EL ECOSISTEMA — diagrama + rutas activas
@@ -879,15 +984,6 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          {/* Stats */}
-          <FadeIn delay={0.2}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mt-16 pt-16 border-t border-gray-200">
-              <StatCounter value={40} suffix="+" label="Miembros activos" />
-              <StatCounter value={53} suffix="+" label="LLCs estructuradas" />
-              <StatCounter value={6} suffix="" label="Viajes de inspección" />
-              <StatCounter value={14} suffix="+" label="Visas tramitadas" />
-            </div>
-          </FadeIn>
         </div>
       </section>
 
