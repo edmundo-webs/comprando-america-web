@@ -23,6 +23,69 @@ const FOTO = "c_fill,w_900,h_450,g_auto,q_auto,f_auto";
 const FOTO_CARAS = "c_fill,w_900,h_330,g_faces,q_auto,f_auto";
 const CLOUD = "https://res.cloudinary.com/dgruohz6f/image/upload";
 
+/** Destinos y URL canónica de la Cumbre, usados por la página y por el
+ *  registro del home. */
+export const CUMBRE_URL = "/cumbre-digital";
+export const CUMBRE_WHATSAPP_GRUPO =
+  "https://chat.whatsapp.com/HIeLRj58zBsBweJuPjp2uN";
+
+/** Un bloque del programa de la Cumbre.
+ *  Los textos salen del índice detallado de la 2ª edición, reescritos para
+ *  público: el documento original es interno —hojas de apoyo para ponentes— y
+ *  describe cada bloque por su función comercial, no por lo que el asistente
+ *  se lleva. */
+export interface BloqueCumbre {
+  num: string;
+  titulo: string;
+  ponente: string;
+  resumen: string;
+}
+
+export const CUMBRE_BLOQUES: BloqueCumbre[] = [
+  {
+    num: "01",
+    titulo: "Ya tengo el capital, ¿ahora qué?",
+    ponente: "Edmundo Treviño",
+    resumen:
+      "Cómo se mueve el dinero de México a Estados Unidos, en qué orden van activo, estructura, operación y caso migratorio, y el piso mínimo: LLC, ITIN y banca.",
+  },
+  {
+    num: "02",
+    titulo: "La primera casa en dólares",
+    ponente: "Joe Faraci & Edmundo Treviño",
+    resumen:
+      "Comprar de contado o a crédito con la LLC, cómo funciona la sección 8, los números de un caso real con escenario de estrés, y quién administra a distancia.",
+  },
+  {
+    num: "03",
+    titulo: "Cuando el objetivo es la visa",
+    ponente: "Tomás Reséndez & Edmundo Treviño",
+    resumen:
+      "Qué exige de verdad un caso E-2 o E-1, veredicto giro por giro, por qué un inmueble rentado casi nunca sostiene el caso, y qué pasa con negativas y antecedentes previos.",
+  },
+  {
+    num: "04",
+    titulo: "El vehículo que conecta todo",
+    ponente: "Edmundo Treviño & Diego Alcalá",
+    resumen:
+      "Qué incluye y qué no incluye el grupo empresarial, resultados verificables, cómo son las primeras cuatro semanas dentro y para quién no es.",
+  },
+  {
+    num: "05",
+    titulo: "Proyectos abiertos para invertir y calificar",
+    ponente: "E. Treviño, D. Alcalá & T. Reséndez",
+    resumen:
+      "Proyectos disponibles con sus números y, en la misma mesa, la validación migratoria de cada uno. Entrar solo o en conjunto, y una E-2 ya resuelta.",
+  },
+  {
+    num: "06",
+    titulo: "Consultorio abierto",
+    ponente: "T. Reséndez, E. Treviño & D. Alcalá",
+    resumen:
+      "Preguntas en vivo: dinero y estructura, migración, y dudas sobre los proyectos y las propiedades que se presentaron durante el día.",
+  },
+];
+
 export interface DiaAgenda {
   fecha: string;
   titulo: string;
@@ -43,6 +106,11 @@ export interface Evento {
   /** Qué se va a hacer en la edición, en una frase. */
   objetivo?: string;
   agenda?: DiaAgenda[];
+  /** Programa de la Cumbre. Cuando está presente, la ventana muestra los
+   *  bloques y el formulario de registro en vez de una agenda por días. */
+  bloques?: BloqueCumbre[];
+  /** Horario, para los eventos en vivo. */
+  horario?: string;
   /** Presente sólo cuando el evento necesita una página propia (un registro,
    *  por ejemplo). Si falta, el botón abre la ventana en vez de navegar. */
   href?: string;
@@ -93,13 +161,19 @@ export const EVENTOS: Evento[] = [
   {
     id: "cumbre",
     tipo: "Online · Gratuito",
-    titulo: "Cumbre Digital",
-    fecha: "Próxima edición por anunciar",
-    lugar: "En vivo, desde donde estés",
-    desc: "Una mañana intensiva para construir y proteger tu patrimonio en EE.UU. Regístrate y te avisamos en cuanto haya fecha.",
-    /* Este sí necesita página: el registro va con formulario. */
-    href: "/cumbre-digital",
-    cta: "Registrarme sin costo",
+    titulo: "2ª Cumbre Digital · De la casa al caso",
+    fecha: "Sábado 24 de octubre, 2026",
+    rango: "Sábado 24 de octubre de 2026",
+    horario: "6 horas · 10:00 AM Houston / 9:00 AM México",
+    lugar: "En vivo por Facebook y YouTube",
+    desc: "Seis bloques para decidir antes de invertir: cómo mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos abiertos.",
+    objetivo:
+      "Compara opciones, identifica los riesgos y define tu siguiente paso. Seis bloques de 45 minutos, sin costo y en vivo.",
+    bloques: CUMBRE_BLOQUES,
+    /* Sin href: el botón abre la ventana con el programa y el registro, para
+       que nadie tenga que salir del home para apuntarse. La página sigue
+       existiendo en /cumbre-digital para quien llegue por búsqueda o enlace. */
+    cta: "Ver programa y registrarme",
     imagen: `${CLOUD}/${FOTO_CARAS}/v1782675100/tts-news/xpto1gompkv2f4lwqon4.jpg`,
   },
 ];

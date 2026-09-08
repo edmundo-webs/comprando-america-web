@@ -128,6 +128,7 @@ function StatCounter({
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
 import { EVENTOS, type Evento } from "@/lib/eventos";
+import { useRegistroCumbre } from "@/hooks/useRegistroCumbre";
 import {
   Dialog,
   DialogContent,
@@ -599,14 +600,21 @@ function EventoDialog({
                   <MapPin className="w-3.5 h-3.5 shrink-0" />
                   {evento.lugar}
                 </span>
+                {evento.horario && (
+                  <span className="text-slate-400 basis-full">
+                    {evento.horario}
+                  </span>
+                )}
               </div>
             </DialogHeader>
 
-            <div className="px-6 py-5">
+            {/* El cuerpo puede crecer más que la pantalla en móvil, así que
+                desborda aquí dentro en vez de recortarse. */}
+            <div className="px-6 py-5 max-h-[60vh] overflow-y-auto">
               {evento.objetivo && (
                 <>
                   <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-2">
-                    Objetivo
+                    {evento.bloques ? "De qué se trata" : "Objetivo"}
                   </p>
                   <p className="text-[#0B1F3A] text-sm leading-relaxed mb-5">
                     {evento.objetivo}
@@ -638,26 +646,65 @@ function EventoDialog({
                   </ol>
                 </>
               )}
+
+              {evento.bloques && (
+                <>
+                  <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-3">
+                    Los 6 bloques
+                  </p>
+                  <ul className="space-y-2">
+                    {evento.bloques.map((b) => (
+                      <li
+                        key={b.num}
+                        className="rounded-lg border border-gray-200 bg-[#F8FAFC] px-3.5 py-3"
+                      >
+                        <div className="flex items-baseline gap-2.5">
+                          <span className="shrink-0 text-primary text-[11px] font-mono font-bold">
+                            {b.num}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-[#0B1F3A] text-sm font-semibold leading-snug">
+                              {b.titulo}
+                            </p>
+                            <p className="text-[#9CA3AF] text-[11px] mt-0.5">
+                              {b.ponente} · 45 min
+                            </p>
+                            <p className="text-[#4B5563] text-xs leading-relaxed mt-1.5">
+                              {b.resumen}
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
 
-            <div className="px-6 pb-6 pt-1 flex flex-wrap items-center gap-3">
-              <Button
-                onClick={() =>
-                  openWhatsApp(
-                    WHATSAPP_PHONE,
-                    `Hola, me interesa ${evento.titulo} (${evento.fecha}). ¿Me comparten los requisitos y la logística?`,
-                    `evento-${evento.id}`,
-                    "/"
-                  )
-                }
-                className="bg-primary hover:bg-blue-600 text-white gap-2"
-              >
-                Solicitar información <ArrowRight className="w-4 h-4" />
-              </Button>
-              <p className="text-[#9CA3AF] text-xs">
-                Cupo limitado. La logística se comparte en privado.
-              </p>
-            </div>
+            {evento.bloques ? (
+              <div className="px-6 pb-6 pt-1 border-t border-gray-100">
+                <RegistroCumbreCompacto />
+              </div>
+            ) : (
+              <div className="px-6 pb-6 pt-1 flex flex-wrap items-center gap-3">
+                <Button
+                  onClick={() =>
+                    openWhatsApp(
+                      WHATSAPP_PHONE,
+                      `Hola, me interesa ${evento.titulo} (${evento.fecha}). ¿Me comparten los requisitos y la logística?`,
+                      `evento-${evento.id}`,
+                      "/"
+                    )
+                  }
+                  className="bg-primary hover:bg-blue-600 text-white gap-2"
+                >
+                  Solicitar información <ArrowRight className="w-4 h-4" />
+                </Button>
+                <p className="text-[#9CA3AF] text-xs">
+                  Cupo limitado. La logística se comparte en privado.
+                </p>
+              </div>
+            )}
           </>
         )}
       </DialogContent>
@@ -700,6 +747,91 @@ function PlatformIcon({
     case "noticias":
       return <Newspaper className={className} aria-hidden="true" />;
   }
+}
+
+/* Registro a la Cumbre desde la ventana del home.
+   Usa el mismo hook que /cumbre-digital, así que el lead cae en el CMS con el
+   mismo sourceSlug, hito y stage; lo único distinto es la etiqueta de fuente,
+   que es para poder atribuir de dónde vino. */
+function RegistroCumbreCompacto() {
+  const { formData, setFormData, onSubmit, enviando, submitted } =
+    useRegistroCumbre("home-cumbre");
+
+  if (submitted) {
+    return (
+      <div className="pt-5 text-center">
+        <CheckCircle2 className="w-8 h-8 text-primary mx-auto mb-2" />
+        <p className="text-[#0B1F3A] font-semibold">¡Ya estás registrado!</p>
+        <p className="text-[#6B7280] text-sm mt-1">
+          Te llevamos al grupo de WhatsApp para el acceso.
+        </p>
+      </div>
+    );
+  }
+
+  const campo =
+    "w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm text-[#0B1F3A] placeholder:text-[#9CA3AF] focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary";
+
+  return (
+    <form onSubmit={onSubmit} className="pt-5 space-y-2.5">
+      <p className="text-primary text-[11px] font-semibold uppercase tracking-wider">
+        Registro sin costo
+      </p>
+      <input
+        type="text"
+        required
+        value={formData.nombreCompleto}
+        onChange={(e) =>
+          setFormData({ ...formData, nombreCompleto: e.target.value })
+        }
+        placeholder="Nombre completo"
+        aria-label="Nombre completo"
+        className={campo}
+      />
+      <div className="flex gap-2.5">
+        <input
+          type="text"
+          value={formData.countryCode}
+          onChange={(e) =>
+            setFormData({ ...formData, countryCode: e.target.value })
+          }
+          aria-label="Código de país"
+          className={`${campo} w-20 shrink-0`}
+        />
+        <input
+          type="tel"
+          required
+          value={formData.whatsapp}
+          onChange={(e) =>
+            setFormData({ ...formData, whatsapp: e.target.value })
+          }
+          placeholder="WhatsApp"
+          aria-label="Número de WhatsApp"
+          className={campo}
+        />
+      </div>
+      <input
+        type="email"
+        required
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        placeholder="Correo electrónico"
+        aria-label="Correo electrónico"
+        className={campo}
+      />
+      <Button
+        type="submit"
+        disabled={enviando}
+        className="w-full bg-primary hover:bg-blue-600 text-white gap-2"
+      >
+        {enviando ? "Registrando…" : "Registrarme gratis"}
+        {!enviando && <ArrowRight className="w-4 h-4" />}
+      </Button>
+      <p className="text-[#9CA3AF] text-[11px] text-center">
+        Gratuito. Te enviamos el acceso por WhatsApp.
+      </p>
+    </form>
+  );
 }
 
 /* ═══════════════════════════════════════════════════════ */

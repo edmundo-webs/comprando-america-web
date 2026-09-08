@@ -1,20 +1,21 @@
-import { useEffect, useRef, useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { postCrmLead } from "@/lib/crm";
+import { useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import SEOHead from "@/components/SEOHead";
-import { toast } from "sonner";
+/* El temario, la fecha y el registro viven fuera de la página: la ventana del
+   home muestra lo mismo y el lead tiene que caer idéntico en el CMS. */
+import { CUMBRE_BLOQUES, CUMBRE_WHATSAPP_GRUPO, EVENTOS } from "@/lib/eventos";
+import { useRegistroCumbre } from "@/hooks/useRegistroCumbre";
 
 /* ─── Destinos post-registro ─── */
-const WHATSAPP_GRUPO = "https://chat.whatsapp.com/HIeLRj58zBsBweJuPjp2uN";
+const WHATSAPP_GRUPO = CUMBRE_WHATSAPP_GRUPO;
 const YOUTUBE_CANAL = "https://www.youtube.com/@ComprandoAmerica";
 
 /* ─── Datos del evento ───
-   El horario se menciona una sola vez en toda la página: aquí, en el HERO. */
-/* La edición del 22 de agosto de 2026 ya ocurrió. Mientras no haya fecha
-   confirmada para la siguiente, el registro funciona como lista de aviso:
-   se sigue capturando el lead, pero sin prometer un día concreto. */
-const EVENTO = "Gratuito · 6 horas · En vivo por Facebook y YouTube · Próxima edición por anunciar";
+   La fecha sale de lib/eventos.ts, que es la misma fuente del carrusel y de la
+   ventana del home: estaba escrita a mano aquí y la edición anterior se quedó
+   anunciada semanas después de haber ocurrido. */
+const CUMBRE = EVENTOS.find((e) => e.id === "cumbre")!;
+const EVENTO = `Gratuito · ${CUMBRE.rango} · ${CUMBRE.horario} · ${CUMBRE.lugar}`;
 
 /* ─── Design tokens ─── */
 const NAVY      = "#0B1F3A";
@@ -59,52 +60,24 @@ const PHOTOS = {
 };
 
 /* ─── Programa ───
-   Sin hora por bloque: la duración la comunica «Bloques de 45 minutos
-   aproximados» y el horario vive únicamente en el HERO. */
-const PROGRAMA = [
-  {
-    num: "01",
-    titulo: "Apertura y creación de oportunidades",
-    ponente: "Edmundo Treviño",
-    avatars: [PHOTOS.edmundo],
-    valor: "Las oportunidades no se encuentran: se construyen.",
-  },
-  {
-    num: "02",
-    titulo: "Opciones migratorias reales (entorno 2026)",
-    ponente: "Tomás Reséndez",
-    avatars: [PHOTOS.tomas],
-    valor: "Cuándo una visa tiene sentido para un proyecto… y cuándo no.",
-  },
-  {
-    num: "03",
-    titulo: "Oportunidades de inversión en EE. UU.",
-    ponente: "E. Treviño & D. Alcalá",
-    avatars: [PHOTOS.edmundoDiego03],
-    valor: "Cómo analizar una oportunidad más allá del rendimiento.",
-  },
-  {
-    num: "04",
-    titulo: "Qué esperar al migrar a EE. UU.",
-    ponente: "T. Reséndez & E. Treviño",
-    avatars: [PHOTOS.tomas, PHOTOS.edmundo],
-    valor: "Expectativas reales frente a la idea que solemos tener.",
-  },
-  {
-    num: "05",
-    titulo: "Oportunidades + casos de éxito",
-    ponente: "E. Treviño & D. Alcalá",
-    avatars: [PHOTOS.edmundoDiego05],
-    valor: "Qué decidieron otros empresarios y qué aprendieron.",
-  },
-  {
-    num: "06",
-    titulo: "¿Cómo ser parte de Comprando América?",
-    ponente: "E. Treviño & D. Alcalá",
-    avatars: [PHOTOS.edmundoDiego06],
-    valor: "Cómo continúa el camino después de la Cumbre.",
-  },
-];
+   Los seis bloques vienen de lib/eventos.ts; aquí sólo se les asocia la foto
+   del o los ponentes, que es lo único específico de esta página. */
+const AVATARS: Record<string, string[]> = {
+  "01": [PHOTOS.edmundo],
+  "02": [PHOTOS.edmundoDiego03],
+  "03": [PHOTOS.tomas, PHOTOS.edmundo],
+  "04": [PHOTOS.edmundoDiego05],
+  "05": [PHOTOS.edmundoDiego06],
+  "06": [PHOTOS.tomas, PHOTOS.edmundo],
+};
+
+const PROGRAMA = CUMBRE_BLOQUES.map((b) => ({
+  num: b.num,
+  titulo: b.titulo,
+  ponente: b.ponente,
+  avatars: AVATARS[b.num] ?? [PHOTOS.edmundo],
+  valor: b.resumen,
+}));
 
 /* ─── Sección 3 · columnas ─── */
 const COLUMNAS = [
@@ -476,70 +449,17 @@ interface Props {
 }
 
 export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
-  const [formData, setFormData] = useState({
-    nombreCompleto: "", countryCode: "+52", whatsapp: "", email: "",
-  });
-  const [submitted, setSubmitted] = useState(false);
-  const [enviando, setEnviando] = useState(false);
+  const { formData, setFormData, onSubmit, enviando, submitted } =
+    useRegistroCumbre(fuente);
 
-  const registerMutation = trpc.leads.create.useMutation();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (enviando) return;
-    if (!formData.nombreCompleto.trim()) { toast.error("Por favor ingresa tu nombre completo."); return; }
-    if (!formData.whatsapp.trim())       { toast.error("Por favor ingresa tu número de WhatsApp."); return; }
-    if (!formData.email.includes("@"))   { toast.error("Por favor ingresa un correo electrónico válido."); return; }
-
-    const nombreCompleto = formData.nombreCompleto.trim();
-    const email = formData.email.trim();
-    const lada = formData.countryCode.replace("CA", "");
-    const numero = formData.whatsapp.trim();
-
-    setEnviando(true);
-    // El lead se manda a dos destinos independientes: la tabla `ca_leads` del
-    // sitio (vía tRPC) y el CRM público. Si uno de los dos está caído el
-    // registro del visitante NO se pierde, y solo mostramos error si fallan
-    // ambos — antes un 500 de la base tiraba el registro completo.
-    const [dbOk, crmOk] = await Promise.all([
-      registerMutation
-        .mutateAsync({ nombreCompleto, whatsapp: `${lada} ${numero}`, email, fuente })
-        .then(() => true)
-        .catch((err) => { console.error("[cumbre] no se pudo guardar en ca_leads:", err); return false; }),
-      postCrmLead(
-        {
-          name: nombreCompleto,
-          email,
-          phone: `${lada}${numero}`,
-          sourceSlug: "web_ca_cumbre",
-          hito: "registro_cumbre",
-          stage: "partial",
-          tags: [`fuente:${fuente}`],
-        },
-        "",
-      ),
-    ]);
-    setEnviando(false);
-
-    if (!dbOk && !crmOk) {
-      // Nunca mostramos el mensaje crudo del backend al visitante.
-      toast.error("No pudimos completar tu registro. Revisa tu conexión e inténtalo de nuevo.");
-      return;
-    }
-
-    setSubmitted(true);
-    toast.success("¡Listo! Te avisamos en cuanto se confirme la próxima edición.");
-    setTimeout(() => { window.location.href = WHATSAPP_GRUPO; }, 1500);
-  };
-
-  const formProps = { formData, setFormData, onSubmit: handleSubmit, enviando, submitted };
+  const formProps = { formData, setFormData, onSubmit, enviando, submitted };
 
   return (
     <div style={{ fontFamily: FB, background: NAVY_DEEP, color: "#fff", overflowX: "hidden" }}>
       <style>{CSS}</style>
       <SEOHead
         title="Primera Cumbre Digital Comprando América"
-        description="6 horas gratuitas que podrían ahorrarte años de prueba y error. En vivo, online. Criterio para decidir antes de invertir, abrir empresa o migrar a Estados Unidos. Regístrate y te avisamos de la próxima edición."
+        description={`2ª Cumbre Digital de Comprando América · De la casa al caso. ${CUMBRE.rango}, ${CUMBRE.horario}. Seis bloques gratuitos y en vivo: mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos abiertos.`}
         path={seoPath}
       />
       <Navbar />
