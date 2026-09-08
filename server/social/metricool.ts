@@ -12,6 +12,7 @@
  *                         (or legacy METRICOOL_BLOG_ID fallback)
  *   METRICOOL_BLOG_ET     blogId for the Edmundo Treviño brand (2116706)
  *   METRICOOL_BLOG_TUM    blogId for the TheUsMarketer brand (2116739)
+ *   METRICOOL_BLOG_BA     blogId for the Buying America brand (4877191)
  *
  * Docs: https://static.metricool.com/API+DOC/API+English.pdf (lightly outdated;
  * payload below was reverse-engineered from the Metricool web UI calls).
@@ -19,7 +20,11 @@
 
 const BASE = "https://app.metricool.com/api";
 
-export type Brand = "comprando-america" | "edmundo-trevino" | "theusmarketer";
+export type Brand =
+  | "comprando-america"
+  | "edmundo-trevino"
+  | "theusmarketer"
+  | "buying-america";
 
 export type Network =
   | "facebook"
@@ -48,6 +53,7 @@ function getAuth(brand: Brand): MetricoolAuth {
     "comprando-america": ["METRICOOL_BLOG_CA", "METRICOOL_BLOG_ID"],
     "edmundo-trevino": ["METRICOOL_BLOG_ET"],
     theusmarketer: ["METRICOOL_BLOG_TUM"],
+    "buying-america": ["METRICOOL_BLOG_BA"],
   };
   const tries = envNames[brand];
   let blogId: string | undefined;
