@@ -937,33 +937,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══ Banners eventos ══ */}
-      <a
-        href="/cumbre-digital"
-        className="block w-full bg-gradient-to-r from-[#0B1F3A] via-[#132D52] to-[#0B1F3A] hover:from-[#061428] hover:to-[#061428] transition-colors duration-300 group border-t border-white/10"
-      >
-        <div className="container flex items-center justify-center gap-3 py-3 px-4 text-center">
-          <span className="inline-flex items-center gap-1.5 bg-yellow-400/20 text-yellow-300 text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full">
-            Evento online
-          </span>
-          <p className="text-white text-sm font-medium">
-            <span className="font-bold">Cumbre Digital</span>
-            {" — "}Gratuita y online. Regístrate y te avisamos de la próxima edición.
-          </p>
-          <span className="hidden sm:inline-flex items-center gap-1 text-yellow-300 font-semibold text-sm underline underline-offset-2 group-hover:gap-2 transition-all">
-            Ver detalles <ArrowRight className="w-3.5 h-3.5" />
-          </span>
-        </div>
-      </a>
-
       {/* ══════════════════════════════════════════════════════
           BANDA DE CIFRAS
           Estaban al pie de la sección del ecosistema, en gris sobre fondo
           claro y detrás de todo el diagrama. Cierran el encabezado: la
           primera prueba de tracción que ve el visitante, sobre el azul de
           marca y en blanco, antes de que se le explique el ecosistema.
+          Aquí vivía además una franja que anunciaba la Cumbre y llevaba a su
+          página. Se retiró: la Cumbre ya tiene su tarjeta en el carrusel de
+          eventos, con el flyer, la fecha y el registro. Esta banda es ahora la
+          que cierra el encabezado, y su borde superior hace el corte con el
+          hero que antes hacía la franja.
       ══════════════════════════════════════════════════════ */}
-      <section className="bg-[#0B1F3A] border-y border-white/10 py-12 md:py-14">
+      <section className="bg-[#0B1F3A] border-t border-white/10 py-12 md:py-14">
         <div className="container">
           <FadeIn>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 max-w-4xl mx-auto">
