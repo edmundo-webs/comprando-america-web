@@ -6,12 +6,6 @@ import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
   ArrowRight,
   MapPin,
   CalendarDays,
@@ -20,10 +14,7 @@ import {
   Lock,
   Shield,
   Eye,
-  Plane,
   Hotel,
-  Car,
-  Clock,
 } from "lucide-react";
 
 /* ─── FadeIn ─── */
@@ -38,52 +29,16 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 
 /* ─── Head (noindex) ─── */
 import SEOHead from "@/components/SEOHead";
+/* Fechas y agendas viven en lib/eventos.ts, que es la fuente que también usa
+   el carrusel del home. Estaban duplicadas y se desfasaron una vez. */
+import { EDICIONES } from "@/lib/eventos";
 const PAGE_SEO = {
   title: "Investment Week | Comprando América",
   description: "Una semana en terreno con el equipo. Niagara Falls, Nueva York: 2 al 6 de octubre de 2026, casas unifamiliares y sección 8. Las Vegas, Nevada: 3 al 7 de noviembre de 2026, AAPEX y SEMA show. Solo por invitación.",
   path: "/investment-week",
 };
 
-/* ─── Próximas ediciones ───
-   Fechas y agendas tomadas de los flyers oficiales de cada edición. Los días
-   de la semana cuadran con el calendario 2026, así que se usan tal cual.
-   Ojo: las dos ediciones no persiguen lo mismo. Niágara es inmobiliaria
-   (unifamiliares y sección 8); Las Vegas es industria del transporte
-   alrededor del AAPEX y el SEMA. La página no debe mezclarlas. */
-const EDICIONES = [
-  {
-    id: "niagara",
-    ciudad: "Niagara Falls",
-    estado: "Nueva York",
-    rango: "Viernes 2 al martes 6 de octubre, 2026",
-    corta: "2–6 oct 2026",
-    objetivo:
-      "Analizar oportunidades de inversión en casas unifamiliares para renta, el programa de la sección 8 y oportunidades en mercados ignorados.",
-    agenda: [
-      { fecha: "Viernes 2 de octubre", titulo: "Llegada" },
-      { fecha: "Sábado 3 de octubre", titulo: "Día 1 — Teoría y campo" },
-      { fecha: "Domingo 4 de octubre", titulo: "Día 2 — Inspección de propiedades" },
-      { fecha: "Lunes 5 de octubre", titulo: "Visita a las cataratas del Niágara (opcional)" },
-      { fecha: "Martes 6 de octubre", titulo: "Salida libre" },
-    ],
-  },
-  {
-    id: "vegas",
-    ciudad: "Las Vegas",
-    estado: "Nevada",
-    rango: "Martes 3 al sábado 7 de noviembre, 2026",
-    corta: "3–7 nov 2026",
-    objetivo:
-      "Recorrer las expos de la industria del transporte —AAPEX show y SEMA show— para detectar oportunidades, más una sesión privada para miembros.",
-    agenda: [
-      { fecha: "Martes 3 de noviembre", titulo: "Llegada" },
-      { fecha: "Miércoles 4 de noviembre", titulo: "Día 1 de expo" },
-      { fecha: "Jueves 5 de noviembre", titulo: "Día 2 de expo" },
-      { fecha: "Viernes 6 de noviembre", titulo: "Sesión privada para miembros" },
-      { fecha: "Sábado 7 de noviembre", titulo: "Regreso libre" },
-    ],
-  },
-];
+
 
 /* ─── Photos ─── */
 const INSPECTION_IMAGE = "https://res.cloudinary.com/dofccqypz/image/upload/v1774537564/comprando-america/eventos/uefjxoxi5trojtoeivha.jpg";
@@ -134,7 +89,7 @@ export default function InvestmentWeek() {
                     key={e.id}
                     className="flex items-center gap-1.5 bg-blue-500/15 border border-blue-500/25 text-blue-300 text-[11px] font-semibold px-2.5 py-1 rounded-full"
                   >
-                    <CalendarDays className="w-3 h-3" /> {e.ciudad} · {e.corta}
+                    <CalendarDays className="w-3 h-3" /> {e.lugar} · {e.fecha}
                   </span>
                 ))}
                 <span className="flex items-center gap-1.5 bg-white/5 border border-white/10 text-slate-400 text-[11px] px-2.5 py-1 rounded-full">
@@ -243,11 +198,10 @@ export default function InvestmentWeek() {
                         className="flex-1 min-w-0 border-l border-white/10 pl-3 first:border-0 first:pl-0"
                       >
                         <p className="text-white text-xs font-semibold truncate">
-                          {e.ciudad}
+                          {e.lugar}
                         </p>
-                        <p className="text-slate-400 text-[11px] truncate">{e.estado}</p>
                         <p className="text-primary text-[11px] font-bold mt-0.5">
-                          {e.corta}
+                          {e.fecha}
                         </p>
                       </div>
                     ))}
@@ -381,14 +335,14 @@ export default function InvestmentWeek() {
                         activa ? "text-blue-400" : "text-primary"
                       }`}
                     >
-                      {e.corta}
+                      {e.fecha}
                     </p>
                     <p
                       className={`text-lg font-bold leading-tight ${
                         activa ? "text-white" : "text-[#0B1F3A]"
                       }`}
                     >
-                      {e.ciudad}, {e.estado}
+                      {e.lugar}
                     </p>
                     <p
                       className={`text-sm mt-1 ${
@@ -477,10 +431,13 @@ export default function InvestmentWeek() {
         </div>
       </section>
 
-      {/* ═══ 6. FILTRO + LOGÍSTICA — ☀️ BLANCO ═══ */}
+      {/* ═══ 6. REQUISITOS DE ACCESO — ☀️ BLANCO ═══
+          La logística del viaje vivía aquí, en la columna derecha, con
+          aeropuertos y hospedaje de Florida que ya no corresponden a ninguna
+          edición. Se retira: se comparte en privado con quien queda aprobado. */}
       <section className="bg-white py-20 md:py-28">
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+          <div className="max-w-2xl mx-auto">
             <FadeIn>
               <div>
                 <Lock className="w-8 h-8 text-primary mb-4" />
@@ -503,58 +460,6 @@ export default function InvestmentWeek() {
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.1}>
-              <div>
-                <p className="text-primary text-sm font-semibold tracking-[0.2em] uppercase mb-6 font-mono">Logística del Viaje</p>
-                <p className="text-[#6B7280] text-sm mb-6">Elige tu punto de llegada según precio y disponibilidad de vuelos desde tu ciudad:</p>
-
-                <Accordion type="single" collapsible className="space-y-3">
-                  <AccordionItem value="tampa" className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-5">
-                    <AccordionTrigger className="text-[#0B1F3A] font-semibold text-sm hover:no-underline py-4 gap-3">
-                      <span className="flex items-center gap-3"><Plane className="w-5 h-5 text-primary" /> Llegada: Tampa (TPA)</span>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-4 space-y-3">
-                      {[
-                        { icon: Plane, label: "Vuelo", desc: "20 min a St. Petersburg. Vuelos directos desde CDMX." },
-                        { icon: Hotel, label: "Hospedaje sugerido", desc: "St. Petersburg — opciones compartidas en privado" },
-                        { icon: Car, label: "Transporte", desc: "Independiente" },
-                        { icon: Clock, label: "Agenda", desc: "Intensiva — 3 días completos" },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-3">
-                          <item.icon className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <div>
-                            <span className="text-[#0B1F3A] font-semibold text-xs">{item.label}</span>
-                            <p className="text-[#6B7280] text-sm">{item.desc}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </AccordionContent>
-                  </AccordionItem>
-
-                  <AccordionItem value="orlando" className="bg-[#F5F7FA] border border-gray-200 rounded-xl px-5">
-                    <AccordionTrigger className="text-[#0B1F3A] font-semibold text-sm hover:no-underline py-4 gap-3">
-                      <span className="flex items-center gap-3"><Plane className="w-5 h-5 text-primary" /> Llegada: Orlando (MCO)</span>
-                    </AccordionTrigger>
-                    <AccordionContent className="pb-4 space-y-3">
-                      {[
-                        { icon: Plane, label: "Vuelo", desc: "Más frecuencias desde México. ~2 horas en auto a St. Pete." },
-                        { icon: Hotel, label: "Hospedaje sugerido", desc: "St. Petersburg — opciones compartidas en privado" },
-                        { icon: Car, label: "Transporte", desc: "Independiente" },
-                        { icon: Clock, label: "Agenda", desc: "Intensiva — 3 días completos" },
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-3">
-                          <item.icon className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                          <div>
-                            <span className="text-[#0B1F3A] font-semibold text-xs">{item.label}</span>
-                            <p className="text-[#6B7280] text-sm">{item.desc}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            </FadeIn>
           </div>
         </div>
       </section>
