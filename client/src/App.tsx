@@ -44,7 +44,7 @@ import Membresia2 from "./pages/Membresia2";
 import Section8 from "./pages/Section8";
 import Acceso from "@/pages/Acceso";
 import Propiedades from "./pages/Propiedades";
-import FondoVictoryCapital from "./pages/FondoVictoryCapital";
+import FondoTierraEstrategica from "./pages/FondoTierraEstrategica";
 import GpsPage from "./pages/GpsPage";
 import ArquitecturaPatrimonial from "./pages/ArquitecturaPatrimonial";
 import Inicio from "./pages/Inicio";
@@ -86,7 +86,7 @@ function Router() {
       <Route path="/renta-garantizada" component={Section8} />
       <Route path="/activos-disponibles" component={Propiedades} />
       <Route path="/acceso" component={Acceso} />
-      <Route path="/tierra-estrategica" component={FondoVictoryCapital} />
+      <Route path="/tierra-estrategica" component={FondoTierraEstrategica} />
       {/* 301 redirects from old URLs */}
       <Route path="/vc-8"><Redirect to="/renta-garantizada" /></Route>
       <Route path="/propiedades"><Redirect to="/activos-disponibles" /></Route>

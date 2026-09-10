@@ -79,7 +79,7 @@ const RISKS = [
   "Puede existir pérdida parcial o total del capital invertido.",
 ];
 
-export default function FondoVictoryCapital() {
+export default function FondoTierraEstrategica() {
   const [checked, setChecked] = useState<boolean[]>(
     Array(CHECKLIST_ITEMS.length).fill(false)
   );
