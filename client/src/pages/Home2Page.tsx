@@ -212,7 +212,7 @@ export default function Home2Page() {
       title: "Quiero invertir en Estados Unidos",
       description:
         "Para empresarios con capital disponible que buscan diversificación, flujo, fondos, real estate o co-inversiones.",
-      services: ["Membresía", "Victory Capital", "Deal Days", "Deal Finding", "Real Estate", "Investment Tours"],
+      services: ["Membresía", "Fondo de Tierra Estratégica", "Deal Days", "Deal Finding", "Real Estate", "Investment Tours"],
     },
     {
       icon: Globe,
@@ -240,7 +240,7 @@ export default function Home2Page() {
     },
     {
       icon: TrendingUp,
-      name: "Victory Capital Fund",
+      name: "Fondo de Tierra Estratégica",
       description: "Fondo inmobiliario en mobile home parks y affordable housing.",
       price: "Desde $100,000 USD",
     },

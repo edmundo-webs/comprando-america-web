@@ -93,14 +93,6 @@ const PAGE_SEO = {
           text: "Sí. La estrategia normalmente busca construir un portafolio de propiedades a largo plazo.",
         },
       },
-      {
-        "@type": "Question",
-        name: "¿Qué porcentaje de la renta proviene del gobierno en Section 8?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "En muchos casos se busca trabajar con vouchers que cubran el 100% de la renta. Algunos casos pueden representar aproximadamente el 80%.",
-        },
-      },
     ],
   },
 };
@@ -169,6 +161,40 @@ const CHECKLIST = [
   "Estoy dispuesto a mantener la inversión varios años.",
 ];
 
+/* ─── Resultado del ejercicio de perfil ─── */
+const CHECKLIST_RESULTS = [
+  {
+    key: "alto",
+    min: 4,
+    label: "Alineación alta",
+    title: "Tu perfil parece alineado con esta estrategia.",
+    body:
+      "Lo que sigue es un diagnóstico: definir monto, mercado y estructura, y revisar qué propiedades del inventario disponible encajan con tu caso.",
+    ctaLabel: "Agendar diagnóstico estratégico",
+    showProperties: true,
+  },
+  {
+    key: "media",
+    min: 2,
+    label: "Alineación parcial",
+    title: "Hay coincidencias, pero falta contexto.",
+    body:
+      "Varias piezas encajan y otras no. Vale la pena una conversación breve para entender si conviene esta estrategia, otra ruta de inversión o una combinación de ambas.",
+    ctaLabel: "Hablar con un asesor",
+    showProperties: true,
+  },
+  {
+    key: "baja",
+    min: 1,
+    label: "Alineación baja",
+    title: "Probablemente otra ruta encaje mejor.",
+    body:
+      "Este modelo está pensado para quien busca flujo en dólares y patrimonio a largo plazo sin operar. Si ese no es tu caso, existen otras rutas dentro del ecosistema que pueden ajustarse mejor a tus objetivos.",
+    ctaLabel: "Explorar otras rutas con un asesor",
+    showProperties: false,
+  },
+];
+
 /* ─── FAQ ─── */
 const FAQS = [
   { q: "¿Necesito vivir en Estados Unidos?", a: "No." },
@@ -182,10 +208,6 @@ const FAQS = [
     a: "Los contratos Section 8 presentan una permanencia promedio aproximada de tres años.",
   },
   {
-    q: "¿Qué porcentaje de la renta proviene del gobierno?",
-    a: "En muchos casos se busca trabajar con vouchers que cubran el 100% de la renta. Algunos casos pueden representar aproximadamente el 80%.",
-  },
-  {
     q: "¿Qué reportes recibe el inversionista?",
     a: "Reportes mensuales, información anual fiscal y acceso a plataforma de seguimiento en tiempo real.",
   },
@@ -197,6 +219,11 @@ const FAQS = [
 export default function Section8() {
   const [checked, setChecked] = useState<boolean[]>(Array(CHECKLIST.length).fill(false));
   const checkedCount = checked.filter(Boolean).length;
+  const result = CHECKLIST_RESULTS.find((r) => checkedCount >= r.min);
+  const selectedItems = CHECKLIST.filter((_, i) => checked[i]).map((item) => item.replace(/\.$/, ""));
+  const checklistMsg = selectedItems.length
+    ? `Hola, hice la autoevaluación de la página de renta respaldada por el gobierno. Me identifico con: ${selectedItems.join("; ")}. Me gustaría revisar si esta estrategia tiene sentido para mí.`
+    : WA_MSG;
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
@@ -355,8 +382,15 @@ export default function Section8() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#0B1F3A]">
               ¿Dónde se encuentran actualmente las oportunidades?
             </h2>
-            <p className="text-slate-500 mb-12 max-w-xl">
+            <p className="text-slate-500 mb-4 max-w-xl">
               Mercados activos en los que el equipo opera directamente.
+            </p>
+            <p className="text-slate-500 mb-12 max-w-xl text-sm">
+              Las propiedades concretas que están a la venta en estos mercados se publican en{" "}
+              <a href="/activos-disponibles" className="font-semibold underline" style={{ color: GOLD }}>
+                activos disponibles
+              </a>
+              , con su precio y estatus actualizados.
             </p>
           </FadeIn>
 
@@ -462,7 +496,7 @@ export default function Section8() {
                   <ClipboardList className="w-6 h-6" style={{ color: GOLD }} />
                 </div>
                 <div>
-                  <p className="font-bold text-[#0B1F3A] text-lg">Global Choice Property Management</p>
+                  <p className="font-bold text-[#0B1F3A] text-lg">Administradora profesional aliada</p>
                   <p className="text-slate-500 text-sm">Costo estimado: 10% del valor anual de la renta</p>
                 </div>
               </div>
@@ -556,7 +590,14 @@ export default function Section8() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
               ¿Esta estrategia podría tener sentido para ti?
             </h2>
-            <p className="text-slate-400 mb-10">Selecciona las frases que mejor te describen:</p>
+            <p className="text-slate-400 leading-relaxed mb-3">
+              Antes de ver precios o propiedades concretas conviene saber si el modelo encaja con tu perfil. Marca las
+              frases con las que te identificas y al final de la lista verás qué tan alineada está esta estrategia
+              contigo y cuál es el siguiente paso.
+            </p>
+            <p className="text-slate-500 text-sm mb-10">
+              Es un ejercicio de autoevaluación: nada se envía ni se registra. Solo tú ves el resultado.
+            </p>
           </FadeIn>
 
           <div className="space-y-3">
@@ -564,6 +605,7 @@ export default function Section8() {
               <FadeIn key={i} delay={i * 0.06}>
                 <button
                   onClick={() => setChecked((prev) => prev.map((v, idx) => (idx === i ? !v : v)))}
+                  aria-pressed={checked[i]}
                   className="w-full flex items-center gap-4 p-5 rounded-xl border text-left transition-all duration-200"
                   style={{
                     borderColor: checked[i] ? `${GOLD}99` : BORDER,
@@ -591,21 +633,49 @@ export default function Section8() {
             ))}
           </div>
 
-          <AnimatePresence>
-            {checkedCount >= 4 && (
+          {/* Resultado del ejercicio */}
+          <AnimatePresence mode="wait">
+            {result && (
               <motion.div
+                key={result.key}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 16 }}
                 transition={{ duration: 0.4 }}
-                className="mt-8 p-6 rounded-xl border"
+                className="mt-8 p-6 md:p-8 rounded-2xl border"
                 style={{ borderColor: `${GOLD}55`, backgroundColor: `${GOLD}0D` }}
               >
-                <p className="font-semibold text-lg mb-1" style={{ color: GOLD_LIGHT }}>
-                  Esta estrategia podría merecer una evaluación más profunda.
+                <p className="text-xs font-semibold tracking-widest uppercase font-mono mb-3 text-slate-400">
+                  {checkedCount} de {CHECKLIST.length} coincidencias · {result.label}
                 </p>
-                <p className="text-slate-400 text-sm">
-                  Agenda un diagnóstico para entender si encaja con tus objetivos patrimoniales.
+                <p className="font-semibold text-lg mb-2" style={{ color: GOLD_LIGHT }}>
+                  {result.title}
+                </p>
+                <p className="text-slate-300 text-sm leading-relaxed mb-6">{result.body}</p>
+
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    onClick={() => openWhatsApp(WHATSAPP_PHONE, checklistMsg)}
+                    className="bg-primary hover:bg-blue-600 text-white px-6 py-5 text-sm gap-2 shadow-lg shadow-blue-600/25"
+                  >
+                    {result.ctaLabel} <ArrowRight className="w-4 h-4" />
+                  </Button>
+                  {result.showProperties && (
+                    <a href="/activos-disponibles">
+                      <Button
+                        variant="outline"
+                        className="border-slate-600 text-white hover:bg-white/10 px-6 py-5 text-sm gap-2"
+                      >
+                        <Building2 className="w-4 h-4" /> Ver propiedades disponibles
+                      </Button>
+                    </a>
+                  )}
+                </div>
+
+                <p className="text-slate-500 text-xs leading-relaxed mt-5">
+                  El diagnóstico es una sesión de evaluación, no una propuesta de compra. En ella revisamos tu objetivo,
+                  tu horizonte y el capital que quieres destinar; a partir de eso se determina qué propiedades del
+                  inventario disponible pueden encajar en tu caso.
                 </p>
               </motion.div>
             )}

@@ -180,7 +180,7 @@ const VEHICLE_DATA: VehicleEntry[] = [
     href: "/circulo-cercano",
   },
   {
-    id: "victory-capital", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional",
+    id: "tierra-estrategica", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional",
     descripcion: "Vehículo patrimonial diseñado para inversionistas que buscan participar en la adquisición y operación profesional de tierra estratégica productiva en Estados Unidos. Tú aportas capital, un equipo profesional lo gestiona y tú recibes reportes y distribuciones en dólares.",
     desde: "Tu dinero está en tu país, expuesto a devaluación e incertidumbre, sin que trabaje con la eficiencia que podría.",
     hacia: "Tu capital opera dentro del sistema americano, invertido en tierra productiva gestionada por profesionales, generando flujo y apreciación en la moneda más sólida del mundo.",
@@ -1079,7 +1079,7 @@ const VEHICULOS_CATEGORIAS = [
     id: "flujo",
     titulo: "Generar flujo pasivo",
     items: [
-      { id: "victory-capital", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/tierra-estrategica", exclusivo: false },
+      { id: "tierra-estrategica", nombre: "Fondo de Tierra Estratégica", frase: "Flujo en dólares, apreciación patrimonial y gestión profesional", participacion: "Pasiva", horizonte: "5-7 años", ticket: "100k+", href: "/tierra-estrategica", exclusivo: false },
       { id: "section8", nombre: "Programa de Vivienda con Renta Respaldada por el Gobierno", frase: "Flujo inmobiliario respaldado por programas gubernamentales", participacion: "Semi-pasiva", horizonte: "Largo plazo", ticket: "90k+", href: "/renta-garantizada", exclusivo: false },
       { id: "coinversiones", nombre: "Oportunidades Privadas Curadas", frase: "Proyectos seleccionados para perfiles específicos de inversionista", participacion: "Flexible", horizonte: "2-4 años", ticket: "50k+", href: "/club-de-inversion-en-estados-unidos", exclusivo: true },
     ],
