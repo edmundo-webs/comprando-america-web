@@ -216,7 +216,7 @@ const PAGE_SEO = {
   },
 };
 
-/* ─── Bloque 1: la inversión en 30 segundos ─── */
+/* ─── Bloque 1: cómo funciona la inversión ─── */
 const QUICK_FACTS: {
   eyebrow: string;
   icon: LucideIcon;
@@ -841,13 +841,13 @@ export default function Section8() {
         </div>
       </section>
 
-      {/* ══ BLOQUE 2 — LA INVERSIÓN EN 30 SEGUNDOS ══ */}
+      {/* ══ BLOQUE 2 — CÓMO FUNCIONA LA INVERSIÓN ══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-24">
         <div className="container">
           <FadeIn>
             <GoldAccent />
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-[#0B1F3A]">
-              La inversión en 30 segundos
+              Cómo funciona la inversión
             </h2>
             <p className="text-slate-600 leading-relaxed mb-12 max-w-3xl">
               Una estrategia de adquisición de vivienda en Estados Unidos orientada a generar flujo por renta,
