@@ -28,6 +28,7 @@ import {
   Calculator,
   CheckCircle2,
   ClipboardList,
+  Clock,
   Coins,
   Home,
   Landmark,
@@ -61,6 +62,7 @@ const EVENTS = {
   esParaMi:         "s8-es-para-mi",
   revisarOportunidad: "s8-revisar-oportunidad",
   hablarAsesor:     "s8-hablar-asesor",
+  avisarOportunidades: "s8-avisar-oportunidades",
   faq:              "s8-todavia-tengo-preguntas",
 } as const;
 
@@ -96,6 +98,17 @@ const HERO_BG =
 ══════════════════════════════════════════════════════ */
 const EJEMPLO_FIJO: number | null = null;
 
+/**
+ * Si una propiedad ya colocada puede servir de ejemplo.
+ *
+ * Las oportunidades de menor precio y mayor rendimiento se colocan rápido y a
+ * veces ni siquiera llegan a publicarse, así que el inventario visible en un
+ * día cualquiera no representa el punto de entrada de la estrategia. Excluirlas
+ * dejaría el ejemplo siempre en la parte cara del portafolio. Se muestran
+ * marcadas como colocadas: que se hayan ido es justamente el argumento.
+ */
+const EJEMPLO_INCLUYE_COLOCADAS = true;
+
 const usd = (n: number) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -105,23 +118,43 @@ const usd = (n: number) =>
 
 const DASH = "$ ——————";
 
-/** Elige qué propiedad exhibida se usa como ejemplo. */
-function elegirEjemplo(propiedades: Propiedad[]): PropiedadAbierta | null {
-  const publicas = propiedades.filter(
+/** Solo entran propiedades públicas y con cifras completas. */
+function exhibibles(propiedades: Propiedad[]): PropiedadAbierta[] {
+  return propiedades.filter(
     (p): p is PropiedadAbierta =>
       !p.bloqueada && !p.esPrivada && p.precioInversionista > 0 && p.ingresoAnual > 0
   );
-  if (!publicas.length) return null;
+}
+
+/** Elige qué propiedad exhibida se usa como ejemplo. */
+function elegirEjemplo(
+  propiedades: Propiedad[],
+  vendidas: Propiedad[]
+): PropiedadAbierta | null {
+  const enVenta = exhibibles(propiedades);
+  const colocadas = EJEMPLO_INCLUYE_COLOCADAS ? exhibibles(vendidas) : [];
+  const candidatas = [...enVenta, ...colocadas];
+  if (!candidatas.length) return null;
 
   if (EJEMPLO_FIJO !== null) {
-    const fija = publicas.find((p) => p.numeroPublico === EJEMPLO_FIJO);
+    const fija = candidatas.find((p) => p.numeroPublico === EJEMPLO_FIJO);
     if (fija) return fija;
   }
 
-  const disponibles = publicas.filter((p) => p.disponibilidad === "disponible");
-  const candidatas = disponibles.length ? disponibles : publicas;
-  // La más accesible: es la que mejor acompaña el "desde" del bloque de arriba.
+  // La más accesible: es la que mejor representa el punto de entrada y la que
+  // acompaña el "desde" del bloque de arriba.
   return candidatas.reduce((a, b) => (b.precioInversionista < a.precioInversionista ? b : a));
+}
+
+/** Lo que hay hoy en venta, para no dejar el ejemplo sin salida al portafolio. */
+function resumirDisponibles(propiedades: Propiedad[]): ResumenPortafolio {
+  const enVenta = exhibibles(propiedades).filter((p) => p.disponibilidad === "disponible");
+  return {
+    cuantas: enVenta.length,
+    desde: enVenta.length
+      ? Math.min(...enVenta.map((p) => p.precioInversionista))
+      : null,
+  };
 }
 
 /**
@@ -136,10 +169,12 @@ function cuentasDe(p: PropiedadAbierta) {
   return { flujoNeto, rendimiento };
 }
 
+type ResumenPortafolio = { cuantas: number; desde: number | null };
+
 type EstadoEjemplo =
   | { estado: "inicial" }
   | { estado: "cargando" }
-  | { estado: "listo"; propiedad: PropiedadAbierta }
+  | { estado: "listo"; propiedad: PropiedadAbierta; resumen: ResumenPortafolio }
   | { estado: "sin-datos" };
 
 /* ─── SEO ─── */
@@ -378,17 +413,17 @@ function GoldAccent({ centered = false }: { centered?: boolean }) {
 function BotonOportunidad({
   label = "Quiero revisar una oportunidad disponible",
   mensaje = MSG_OPORTUNIDAD,
+  evento = EVENTS.revisarOportunidad,
   className = "",
 }: {
   label?: string;
   mensaje?: string;
+  evento?: string;
   className?: string;
 }) {
   return (
     <Button
-      onClick={() =>
-        openWhatsApp(WHATSAPP_PHONE, mensaje, EVENTS.revisarOportunidad, TRACK_LOCATION)
-      }
+      onClick={() => openWhatsApp(WHATSAPP_PHONE, mensaje, evento, TRACK_LOCATION)}
       className={`bg-primary hover:bg-blue-600 text-white px-7 py-6 text-sm md:text-base gap-2 shadow-lg shadow-blue-600/25 ${className}`}
     >
       {label} <ArrowRight className="w-4 h-4" />
@@ -495,11 +530,42 @@ function Row({
   );
 }
 
+/**
+ * Qué pide el botón de la ventana. Sobre una propiedad ya colocada no tiene
+ * sentido invitar a revisarla: la intención real es enterarse de la siguiente,
+ * y en el CRM no es el mismo lead.
+ */
+function ctaDeEjemplo(ejemplo: EstadoEjemplo) {
+  if (ejemplo.estado !== "listo") return {};
+  const p = ejemplo.propiedad;
+  const donde = `${p.ciudad}, ${p.estado}`;
+
+  if (p.disponibilidad === "vendida") {
+    return {
+      label: "Quiero que me avisen de oportunidades así",
+      evento: EVENTS.avisarOportunidades,
+      mensaje: `Hola, vi el análisis de la Oportunidad #${p.numeroPublico} (${donde}), que ya está colocada. Quiero que me avisen cuando haya oportunidades con ese perfil.`,
+    };
+  }
+
+  return {
+    label: `Quiero revisar la Oportunidad #${p.numeroPublico}`,
+    mensaje: `Hola, ya revisé la información sobre la estrategia de renta de vivienda y quiero evaluar los números de la Oportunidad #${p.numeroPublico} (${donde}).`,
+  };
+}
+
 /** El ejemplo con los números de una propiedad exhibida en el portafolio. */
-function TablaEjemplo({ propiedad: p }: { propiedad: PropiedadAbierta }) {
+function TablaEjemplo({
+  propiedad: p,
+  resumen,
+}: {
+  propiedad: PropiedadAbierta;
+  resumen: ResumenPortafolio;
+}) {
   const { flujoNeto, rendimiento } = cuentasDe(p);
   const [fotoRota, setFotoRota] = useState(false);
   const foto = fotoRota ? undefined : p.fotos[0];
+  const colocada = p.disponibilidad === "vendida";
 
   return (
     <>
@@ -518,8 +584,18 @@ function TablaEjemplo({ propiedad: p }: { propiedad: PropiedadAbierta }) {
         )}
         <div className="px-5 py-4 flex flex-wrap items-center justify-between gap-2" style={{ backgroundColor: `${GOLD}0D` }}>
           <div>
-            <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-400">
+            <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-400 flex items-center gap-2 flex-wrap">
               Oportunidad #{p.numeroPublico}
+              <span
+                className="px-2 py-0.5 rounded-full text-[10px]"
+                style={
+                  colocada
+                    ? { backgroundColor: "#1E3A5F", color: "#94A3B8" }
+                    : { backgroundColor: `${GOLD}22`, color: GOLD_LIGHT }
+                }
+              >
+                {colocada ? "Ya colocada" : "Disponible"}
+              </span>
             </p>
             <p className="text-white font-semibold text-sm">
               {p.ciudad}, {p.estado} · {p.tipo}
@@ -573,10 +649,31 @@ function TablaEjemplo({ propiedad: p }: { propiedad: PropiedadAbierta }) {
       </div>
 
       <p className="text-xs text-slate-500 leading-relaxed">
-        Cifras de una propiedad publicada hoy en activos disponibles. El flujo neto es el ingreso por renta menos los
-        gastos de operación, antes de financiamiento e impuestos sobre la renta, y supone la propiedad ocupada todo el
-        año. No es un rendimiento garantizado.
+        Cifras reales de una propiedad del portafolio. El flujo neto es el ingreso por renta menos los gastos de
+        operación, antes de financiamiento e impuestos sobre la renta, y supone la propiedad ocupada todo el año. No
+        es un rendimiento garantizado.
       </p>
+
+      {colocada && (
+        <div
+          className="flex items-start gap-3 p-4 rounded-xl border-l-4"
+          style={{ borderColor: GOLD, backgroundColor: `${GOLD}0D` }}
+        >
+          <Clock className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: GOLD_LIGHT }} />
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Esta propiedad ya se colocó. Las de menor precio y mayor rendimiento suelen irse primero y varias no
+            alcanzan a publicarse, así que la lista pública de un día cualquiera no muestra todo lo que pasa por el
+            equipo.{" "}
+            {resumen.cuantas > 0 && resumen.desde !== null && (
+              <>
+                Hoy hay {resumen.cuantas}{" "}
+                {resumen.cuantas === 1 ? "propiedad publicada" : "propiedades publicadas"} desde{" "}
+                {usd(resumen.desde)}.
+              </>
+            )}
+          </p>
+        </div>
+      )}
     </>
   );
 }
@@ -662,9 +759,13 @@ export default function Section8() {
     }, 12000);
 
     cargarPortafolio()
-      .then(({ propiedades }) => {
-        const elegida = elegirEjemplo(propiedades);
-        setEjemplo(elegida ? { estado: "listo", propiedad: elegida } : { estado: "sin-datos" });
+      .then(({ propiedades, vendidas }) => {
+        const elegida = elegirEjemplo(propiedades, vendidas);
+        setEjemplo(
+          elegida
+            ? { estado: "listo", propiedad: elegida, resumen: resumirDisponibles(propiedades) }
+            : { estado: "sin-datos" }
+        );
       })
       .catch(() => setEjemplo({ estado: "sin-datos" }))
       .finally(() => clearTimeout(rendirse));
@@ -797,12 +898,16 @@ export default function Section8() {
             <p className="text-slate-400 mb-3 max-w-xl">
               Mercados activos en los que el equipo opera directamente.
             </p>
-            <p className="text-slate-500 text-sm mb-12 max-w-xl">
+            <p className="text-slate-500 text-sm mb-2 max-w-xl">
               Las propiedades concretas que están a la venta en estos mercados se publican en{" "}
               <a href="/activos-disponibles" className="font-semibold underline" style={{ color: GOLD_LIGHT }}>
                 activos disponibles
               </a>
               , con su precio y estatus actualizados.
+            </p>
+            <p className="text-slate-500 text-sm mb-12 max-w-xl">
+              Las de menor precio y mayor rendimiento son las primeras en colocarse, y varias no alcanzan a
+              publicarse. Lo que está en esa lista un día cualquiera no es todo lo que pasa por el equipo.
             </p>
           </FadeIn>
 
@@ -906,7 +1011,7 @@ export default function Section8() {
               )}
 
               {ejemplo.estado === "listo" && (
-                <TablaEjemplo propiedad={ejemplo.propiedad} />
+                <TablaEjemplo propiedad={ejemplo.propiedad} resumen={ejemplo.resumen} />
               )}
 
               {(ejemplo.estado === "sin-datos" || ejemplo.estado === "inicial") && <TablaEnBlanco />}
@@ -932,18 +1037,12 @@ export default function Section8() {
               <div className="flex flex-col gap-3">
                 <BotonOportunidad
                   className="w-full justify-center px-6 py-5 text-sm"
-                  label={
-                    ejemplo.estado === "listo"
-                      ? `Quiero revisar la Oportunidad #${ejemplo.propiedad.numeroPublico}`
-                      : undefined
-                  }
-                  mensaje={
-                    ejemplo.estado === "listo"
-                      ? `Hola, ya revisé la información sobre la estrategia de renta de vivienda y quiero evaluar los números de la Oportunidad #${ejemplo.propiedad.numeroPublico} (${ejemplo.propiedad.ciudad}, ${ejemplo.propiedad.estado}).`
-                      : undefined
-                  }
+                  {...ctaDeEjemplo(ejemplo)}
                 />
-                <a href="/activos-disponibles" className="text-center text-xs text-slate-400 hover:text-white underline underline-offset-4 transition-colors">
+                <a
+                  href="/activos-disponibles"
+                  className="text-center text-xs text-slate-400 hover:text-white underline underline-offset-4 transition-colors"
+                >
                   Ver todas las propiedades disponibles
                 </a>
               </div>
