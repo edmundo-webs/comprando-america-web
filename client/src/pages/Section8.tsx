@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -6,6 +6,7 @@ import SEOHead from "@/components/SEOHead";
 import { useInView } from "@/hooks/useInView";
 import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { sendCtaClick } from "@/lib/tracking";
+import { cargarPortafolio, type Propiedad, type PropiedadAbierta } from "@/lib/portafolio";
 import { Button } from "@/components/ui/button";
 import {
   Accordion,
@@ -79,39 +80,67 @@ const HERO_BG =
 /* ══════════════════════════════════════════════════════
    EJEMPLO CON NÚMEROS
    ──────────────────────────────────────────────────────
-   Para publicar cifras reales:
-     1. Pon `publicado: true`.
-     2. Llena precioAdquisicion, rentaMensual y los gastos anuales.
-   Los totales (ingreso bruto, gastos, flujo neto y rendimiento)
-   se calculan solos: no hay que tocar el diseño ni la maquetación.
-   Mientras `publicado` sea false la tabla se muestra con guiones,
-   explicando que los números se revisan sobre una oportunidad vigente.
+   El ejemplo NO se escribe aquí: se toma de una propiedad real
+   publicada en /activos-disponibles, leyendo el mismo portafolio
+   del CMS que alimenta esa página. Así los números siempre
+   corresponden a una oportunidad vigente y nadie tiene que
+   actualizarlos a mano en dos lugares.
 
-   Los números deben corresponder a una oportunidad vigente y aprobada.
+   Para fijar una propiedad concreta pon aquí su número público
+   (el "#3" que se ve en la tarjeta). Con null se elige sola la
+   disponible más accesible.
+
+   Solo entran propiedades públicas: las privadas —que llegan del
+   servidor sin cifras para quien no es miembro— nunca se usan
+   como ejemplo, aunque quien mire sí sea miembro.
 ══════════════════════════════════════════════════════ */
-const EJEMPLO = {
-  publicado: false,
-  precioAdquisicion: 0,
-  rentaMensual: 0,
-  gastos: [
-    { label: "Administración",        monto: 0 },
-    { label: "Property Tax",          monto: 0 },
-    { label: "Seguro",                monto: 0 },
-    { label: "Mantenimiento / otros", monto: 0 },
-  ],
-};
+const EJEMPLO_FIJO: number | null = null;
 
-const money = (n: number) => `$${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
+const usd = (n: number) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(n);
+
 const DASH = "$ ——————";
 
-function calcularEjemplo() {
-  const ingresoAnualBruto = EJEMPLO.rentaMensual * 12;
-  const totalGastos = EJEMPLO.gastos.reduce((sum, g) => sum + g.monto, 0);
-  const flujoNeto = ingresoAnualBruto - totalGastos;
-  const rendimiento =
-    EJEMPLO.precioAdquisicion > 0 ? (flujoNeto / EJEMPLO.precioAdquisicion) * 100 : 0;
-  return { ingresoAnualBruto, totalGastos, flujoNeto, rendimiento };
+/** Elige qué propiedad exhibida se usa como ejemplo. */
+function elegirEjemplo(propiedades: Propiedad[]): PropiedadAbierta | null {
+  const publicas = propiedades.filter(
+    (p): p is PropiedadAbierta =>
+      !p.bloqueada && !p.esPrivada && p.precioInversionista > 0 && p.ingresoAnual > 0
+  );
+  if (!publicas.length) return null;
+
+  if (EJEMPLO_FIJO !== null) {
+    const fija = publicas.find((p) => p.numeroPublico === EJEMPLO_FIJO);
+    if (fija) return fija;
+  }
+
+  const disponibles = publicas.filter((p) => p.disponibilidad === "disponible");
+  const candidatas = disponibles.length ? disponibles : publicas;
+  // La más accesible: es la que mejor acompaña el "desde" del bloque de arriba.
+  return candidatas.reduce((a, b) => (b.precioInversionista < a.precioInversionista ? b : a));
 }
+
+/**
+ * El flujo neto se calcula aquí en vez de leer `noiAnual` del CMS.
+ * La ventana muestra la resta a la vista —ingreso bruto menos gastos—, así que
+ * el resultado tiene que ser esa resta: un NOI capturado a mano que no cuadre
+ * con sus propios sumandos se leería como un error en pantalla.
+ */
+function cuentasDe(p: PropiedadAbierta) {
+  const flujoNeto = p.ingresoAnual - p.gastosAnuales;
+  const rendimiento = (flujoNeto / p.precioInversionista) * 100;
+  return { flujoNeto, rendimiento };
+}
+
+type EstadoEjemplo =
+  | { estado: "inicial" }
+  | { estado: "cargando" }
+  | { estado: "listo"; propiedad: PropiedadAbierta }
+  | { estado: "sin-datos" };
 
 /* ─── SEO ─── */
 const PAGE_SEO = {
@@ -348,15 +377,17 @@ function GoldAccent({ centered = false }: { centered?: boolean }) {
 /** Botón principal: pasa de entender la estrategia a evaluar una propiedad. */
 function BotonOportunidad({
   label = "Quiero revisar una oportunidad disponible",
+  mensaje = MSG_OPORTUNIDAD,
   className = "",
 }: {
   label?: string;
+  mensaje?: string;
   className?: string;
 }) {
   return (
     <Button
       onClick={() =>
-        openWhatsApp(WHATSAPP_PHONE, MSG_OPORTUNIDAD, EVENTS.revisarOportunidad, TRACK_LOCATION)
+        openWhatsApp(WHATSAPP_PHONE, mensaje, EVENTS.revisarOportunidad, TRACK_LOCATION)
       }
       className={`bg-primary hover:bg-blue-600 text-white px-7 py-6 text-sm md:text-base gap-2 shadow-lg shadow-blue-600/25 ${className}`}
     >
@@ -464,6 +495,111 @@ function Row({
   );
 }
 
+/** El ejemplo con los números de una propiedad exhibida en el portafolio. */
+function TablaEjemplo({ propiedad: p }: { propiedad: PropiedadAbierta }) {
+  const { flujoNeto, rendimiento } = cuentasDe(p);
+  const [fotoRota, setFotoRota] = useState(false);
+  const foto = fotoRota ? undefined : p.fotos[0];
+
+  return (
+    <>
+      {/* Qué propiedad estamos analizando */}
+      <div className="rounded-xl border overflow-hidden" style={{ borderColor: BORDER }}>
+        {foto && (
+          <div className="h-32 sm:h-40 overflow-hidden bg-[#091A30]">
+            <img
+              src={foto.url}
+              alt={foto.alt ?? `Oportunidad #${p.numeroPublico} en ${p.ciudad}`}
+              className="w-full h-full"
+              style={{ objectFit: foto.fit, objectPosition: foto.focalPoint }}
+              onError={() => setFotoRota(true)}
+            />
+          </div>
+        )}
+        <div className="px-5 py-4 flex flex-wrap items-center justify-between gap-2" style={{ backgroundColor: `${GOLD}0D` }}>
+          <div>
+            <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-400">
+              Oportunidad #{p.numeroPublico}
+            </p>
+            <p className="text-white font-semibold text-sm">
+              {p.ciudad}, {p.estado} · {p.tipo}
+            </p>
+          </div>
+          <p className="text-slate-400 text-xs">
+            {p.recamaras} rec · {p.banos} {p.banos === 1 ? "baño" : "baños"} ·{" "}
+            {p.sqft.toLocaleString("en-US")} sqft
+          </p>
+        </div>
+      </div>
+
+      {/* La cuenta */}
+      <div className="rounded-xl border overflow-hidden" style={{ borderColor: BORDER }}>
+        <Row label="Precio de adquisición" value={usd(p.precioInversionista)} />
+        <Row label="Renta mensual" value={usd(p.rentaMensual)} divider />
+        <Row label="Ingreso anual bruto" value={usd(p.ingresoAnual)} divider strong />
+
+        <div className="px-5 pt-4 pb-2 border-t" style={{ borderColor: BORDER }}>
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-500">
+            Menos
+          </p>
+        </div>
+        <Row label="Gastos de operación anuales" value={usd(p.gastosAnuales)} muted />
+        <div className="px-5 pb-4">
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Incluye administración, property tax, seguro y mantenimiento
+            {p.hoaAnual ? `, y una cuota HOA de ${usd(p.hoaAnual)} al año` : ""}.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="rounded-xl border p-5" style={{ borderColor: `${GOLD}55`, backgroundColor: `${GOLD}12` }}>
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-400 mb-2">
+            Flujo neto estimado
+          </p>
+          <p className="text-xl font-bold font-mono" style={{ color: GOLD_LIGHT }}>
+            {usd(flujoNeto)}
+            <span className="text-sm font-normal text-slate-400"> / año</span>
+          </p>
+        </div>
+        <div className="rounded-xl border p-5" style={{ borderColor: `${GOLD}55`, backgroundColor: `${GOLD}12` }}>
+          <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-400 mb-2">
+            Rendimiento estimado
+          </p>
+          <p className="text-xl font-bold font-mono" style={{ color: GOLD_LIGHT }}>
+            {rendimiento.toFixed(1)}%
+          </p>
+        </div>
+      </div>
+
+      <p className="text-xs text-slate-500 leading-relaxed">
+        Cifras de una propiedad publicada hoy en activos disponibles. El flujo neto es el ingreso por renta menos los
+        gastos de operación, antes de financiamiento e impuestos sobre la renta, y supone la propiedad ocupada todo el
+        año. No es un rendimiento garantizado.
+      </p>
+    </>
+  );
+}
+
+/** La misma estructura en blanco: cuando el portafolio no responde o está vacío. */
+function TablaEnBlanco() {
+  return (
+    <div className="rounded-xl border overflow-hidden" style={{ borderColor: BORDER }}>
+      <Row label="Precio de adquisición" value={DASH} />
+      <Row label="Renta mensual" value={DASH} divider />
+      <Row label="Ingreso anual bruto" value={DASH} divider strong />
+      <div className="px-5 pt-4 pb-2 border-t" style={{ borderColor: BORDER }}>
+        <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-500">Menos</p>
+      </div>
+      {["Administración", "Property Tax", "Seguro", "Mantenimiento / otros"].map((label) => (
+        <Row key={label} label={label} value={DASH} muted />
+      ))}
+      <Row label="Flujo neto estimado" value={DASH} divider strong />
+      <Row label="Rendimiento estimado" value="—— %" divider strong />
+    </div>
+  );
+}
+
 /** Lista título + descripción usada dentro de las ventanas. */
 function ModalList({
   items,
@@ -497,6 +633,7 @@ export default function Section8() {
   const [perfilAbierto, setPerfilAbierto] = useState(false);
   const [faqAbierta, setFaqAbierta] = useState(false);
   const [ejemploAbierto, setEjemploAbierto] = useState(false);
+  const [ejemplo, setEjemplo] = useState<EstadoEjemplo>({ estado: "inicial" });
 
   const checkedCount = checked.filter(Boolean).length;
   const resultado = PERFIL_RESULTADOS.find((r) => checkedCount >= r.min);
@@ -505,8 +642,44 @@ export default function Section8() {
     ? `${MSG_OPORTUNIDAD} En la autoevaluación me identifiqué con: ${seleccionadas.join("; ")}.`
     : MSG_OPORTUNIDAD;
 
-  const { ingresoAnualBruto, totalGastos, flujoNeto, rendimiento } = calcularEjemplo();
-  const val = (n: number) => (EJEMPLO.publicado ? money(n) : DASH);
+  /**
+   * El portafolio no se pide al cargar la página sino cuando el bloque del
+   * ingreso entra en pantalla: el CMS vive en un plan que se duerme y puede
+   * tardar en despertar, así que arrancar unos segundos antes del clic es la
+   * diferencia entre ver los números y ver un "cargando".
+   *
+   * Si tarda demasiado se muestra la plantilla en blanco, pero la petición
+   * sigue viva: cuando llegue, la ventana se completa sola.
+   */
+  const pedido = useRef(false);
+  const cargarEjemplo = useCallback(() => {
+    if (pedido.current) return;
+    pedido.current = true;
+    setEjemplo({ estado: "cargando" });
+
+    const rendirse = setTimeout(() => {
+      setEjemplo((actual) => (actual.estado === "cargando" ? { estado: "sin-datos" } : actual));
+    }, 12000);
+
+    cargarPortafolio()
+      .then(({ propiedades }) => {
+        const elegida = elegirEjemplo(propiedades);
+        setEjemplo(elegida ? { estado: "listo", propiedad: elegida } : { estado: "sin-datos" });
+      })
+      .catch(() => setEjemplo({ estado: "sin-datos" }))
+      .finally(() => clearTimeout(rendirse));
+  }, []);
+
+  const { ref: refIngreso, isInView: ingresoVisible } = useInView(0);
+  useEffect(() => {
+    if (ingresoVisible) cargarEjemplo();
+  }, [ingresoVisible, cargarEjemplo]);
+
+  const abrirEjemplo = () => {
+    setEjemploAbierto(true);
+    track(EVENTS.ejemploNumeros);
+    cargarEjemplo();
+  };
 
   /** Abre la autoevaluación y lleva al usuario hasta ella. */
   const irAPerfil = () => {
@@ -667,6 +840,7 @@ export default function Section8() {
       {/* ══ BLOQUE 4 — ¿CÓMO SE GENERA EL INGRESO? ══ */}
       <section className="bg-[#F5F7FA] py-20 md:py-24">
         <div className="container max-w-4xl">
+          <div ref={refIngreso} className="h-px" aria-hidden />
           <FadeIn>
             <GoldAccent />
             <h2 className="text-3xl md:text-4xl font-bold mb-10 text-[#0B1F3A]">
@@ -705,10 +879,7 @@ export default function Section8() {
 
           <FadeIn delay={0.2}>
             <Button
-              onClick={() => {
-                setEjemploAbierto(true);
-                track(EVENTS.ejemploNumeros);
-              }}
+              onClick={abrirEjemplo}
               variant="outline"
               className="border-[#0B1F3A]/20 bg-white text-[#0B1F3A] hover:bg-[#0B1F3A] hover:text-white px-7 py-6 text-sm gap-2"
             >
@@ -728,61 +899,54 @@ export default function Section8() {
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="rounded-xl border overflow-hidden" style={{ borderColor: BORDER }}>
-                <Row label="Precio de adquisición" value={val(EJEMPLO.precioAdquisicion)} />
-                <Row label="Renta mensual" value={val(EJEMPLO.rentaMensual)} divider />
-                <Row label="Ingreso anual bruto" value={val(ingresoAnualBruto)} divider strong />
+              {ejemplo.estado === "cargando" && (
+                <div className="py-10 text-center">
+                  <p className="text-slate-400 text-sm">Cargando una oportunidad vigente…</p>
+                </div>
+              )}
 
-                <div className="px-5 pt-4 pb-2 border-t" style={{ borderColor: BORDER }}>
-                  <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-500">
-                    Menos
-                  </p>
-                </div>
-                {EJEMPLO.gastos.map((g) => (
-                  <Row key={g.label} label={g.label} value={val(g.monto)} muted />
-                ))}
-                <Row label="Total de gastos" value={val(totalGastos)} divider />
-              </div>
+              {ejemplo.estado === "listo" && (
+                <TablaEjemplo propiedad={ejemplo.propiedad} />
+              )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="rounded-xl border p-5" style={{ borderColor: `${GOLD}55`, backgroundColor: `${GOLD}12` }}>
-                  <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-400 mb-2">
-                    Flujo neto estimado
-                  </p>
-                  <p className="text-xl font-bold font-mono" style={{ color: GOLD_LIGHT }}>
-                    {val(flujoNeto)}
-                    {EJEMPLO.publicado && <span className="text-sm font-normal text-slate-400"> / año</span>}
-                  </p>
-                </div>
-                <div className="rounded-xl border p-5" style={{ borderColor: `${GOLD}55`, backgroundColor: `${GOLD}12` }}>
-                  <p className="text-[11px] font-semibold tracking-[0.15em] uppercase font-mono text-slate-400 mb-2">
-                    Rendimiento estimado
-                  </p>
-                  <p className="text-xl font-bold font-mono" style={{ color: GOLD_LIGHT }}>
-                    {EJEMPLO.publicado ? `${rendimiento.toFixed(1)}%` : "—— %"}
-                  </p>
-                </div>
-              </div>
+              {(ejemplo.estado === "sin-datos" || ejemplo.estado === "inicial") && <TablaEnBlanco />}
 
               <p className="text-slate-400 text-sm leading-relaxed">
                 No evaluamos una propiedad solamente por cuánto cuesta o cuánto podría aumentar de valor. Analizamos
                 cuánto ingresa, cuánto cuesta operarla y cuánto flujo puede quedar después de gastos.
               </p>
 
-              {!EJEMPLO.publicado && (
+              {ejemplo.estado === "sin-datos" && (
                 <div
                   className="flex items-start gap-3 p-4 rounded-xl border-l-4"
                   style={{ borderColor: GOLD, backgroundColor: `${GOLD}0D` }}
                 >
                   <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: GOLD_LIGHT }} />
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    Los importes se llenan con los de una oportunidad vigente al momento de revisarla contigo. No
-                    publicamos cifras de ejemplo que no correspondan a una propiedad real y disponible.
+                    En este momento no podemos mostrar los importes de una oportunidad vigente. Escríbenos y los
+                    revisamos contigo sobre una propiedad disponible.
                   </p>
                 </div>
               )}
 
-              <BotonOportunidad className="w-full justify-center px-6 py-5 text-sm" />
+              <div className="flex flex-col gap-3">
+                <BotonOportunidad
+                  className="w-full justify-center px-6 py-5 text-sm"
+                  label={
+                    ejemplo.estado === "listo"
+                      ? `Quiero revisar la Oportunidad #${ejemplo.propiedad.numeroPublico}`
+                      : undefined
+                  }
+                  mensaje={
+                    ejemplo.estado === "listo"
+                      ? `Hola, ya revisé la información sobre la estrategia de renta de vivienda y quiero evaluar los números de la Oportunidad #${ejemplo.propiedad.numeroPublico} (${ejemplo.propiedad.ciudad}, ${ejemplo.propiedad.estado}).`
+                      : undefined
+                  }
+                />
+                <a href="/activos-disponibles" className="text-center text-xs text-slate-400 hover:text-white underline underline-offset-4 transition-colors">
+                  Ver todas las propiedades disponibles
+                </a>
+              </div>
             </DialogContent>
           </Dialog>
         </div>
