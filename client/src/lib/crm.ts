@@ -7,7 +7,7 @@
 import { getVisitorId } from "./visitor";
 import { getJourney } from "./journey";
 
-const CRM_API_URL = (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
+const CRM_API_URL = (import.meta.env?.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
 
 /* ─── Contacto recordado localmente ───
    Se guarda tras el primer envío exitoso en cualquiera de las guías, para

@@ -51,7 +51,7 @@ function FadeIn({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
+      initial={false}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay, ease: "easeOut" }}
       className={className}
@@ -135,7 +135,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-const PAGE_SEO = {
+export const PAGE_SEO = {
   title: "Comprando América | ¿Qué estás intentando construir?",
   description:
     "Comprando América no vende inversiones. Construye criterio para tomar decisiones patrimoniales. Grupo Empresarial de Edmundo — ecosistema para empresarios latinos en Estados Unidos.",

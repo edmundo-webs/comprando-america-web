@@ -10,6 +10,7 @@ import { serveStatic, setupVite } from "./vite";
 import { initializeRssScheduler } from "../rss-sync";
 import { startScheduler } from "../cron/scheduler";
 import { adminRouter } from "../routes/admin";
+import { searchPages } from "../routes/search-pages";
 import { botMetaMiddleware } from "../routes/bot-meta";
 import { episodesRouter } from "../routes/episodes";
 import { seoRouter } from "../routes/seo";
@@ -81,6 +82,7 @@ async function startServer() {
   // Slack, Discord, GPTBot, ClaudeBot, etc.) and serves a static HTML
   // with per-article meta tags inlined. Real users (and Googlebot, which
   // executes JS) pass through to the SPA.
+  app.use(searchPages);
   app.use(botMetaMiddleware);
 
   // ═══ IMAGE UPLOAD ENDPOINT ═══

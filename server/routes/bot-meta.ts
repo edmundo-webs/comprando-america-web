@@ -49,6 +49,8 @@ const BOT_UA_PATTERNS = [
   "chatgpt-user",
   "oai-searchbot",
   "claudebot",
+  "claude-searchbot",
+  "claude-user",
   "claude-web",
   "anthropic-ai",
   "perplexitybot",

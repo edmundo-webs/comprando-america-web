@@ -32,7 +32,7 @@ const WA_MSG = "Hola, me interesa saber más sobre el proceso de visa E-2 y estr
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const { ref, isInView } = useInView();
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: "easeOut" }} className={className}>
+    <motion.div ref={ref} initial={false} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: "easeOut" }} className={className}>
       {children}
     </motion.div>
   );
@@ -40,12 +40,8 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
-const PAGE_SEO = {
-  title: "Visa E-2 Inversi\u00f3n en Estados Unidos | Gu\u00eda Estrat\u00e9gica | Comprando Am\u00e9rica",
-  description: "La visa E-2 no es un tr\u00e1mite. Es el resultado de una estructura de inversi\u00f3n bien dise\u00f1ada. Entiende c\u00f3mo funciona y si aplica para tu perfil.",
-  path: "/visa-e2-inversion-en-estados-unidos",
-  schema: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "\u00bfCu\u00e1nto dinero necesito para la visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "La inversi\u00f3n m\u00ednima sugerida es de $150,000 USD, aunque depende del tipo de negocio. El capital debe ser sustancial y en riesgo."}}, {"@type": "Question", "name": "\u00bfPuedo llevar a mi familia con visa E-2?", "acceptedAnswer": {"@type": "Answer", "text": "S\u00ed. El c\u00f3nyuge recibe permiso de trabajo autom\u00e1tico y los hijos menores de 21 a\u00f1os pueden estudiar en Estados Unidos"}}, {"@type": "Question", "name": "\u00bfCu\u00e1l es la diferencia entre visa E-2 y EB-5?", "acceptedAnswer": {"@type": "Answer", "text": "La E-2 requiere menor inversi\u00f3n (~$150K vs $800K+), es renovable indefinidamente pero no da residencia directa. La EB-5 otorga Green Card pero requiere mayor capital."}}]},
-};
+import { INVESTOR_SEO, INVESTOR_FAQS, INVESTOR_SCHEMA } from "@shared/investor-search";
+const PAGE_SEO = { ...INVESTOR_SEO, schema: INVESTOR_SCHEMA };
 
 /* ─── Photos ─── */
 const HERO_IMAGE = "https://lh3.googleusercontent.com/d/1OUXlN1giz2Et67lrb9L1oQNwQsBCqmGo=w1920";
@@ -71,12 +67,12 @@ export default function VisaE2() {
             <div className="max-w-3xl">
               <p className="text-blue-400 text-sm font-semibold tracking-[0.25em] uppercase mb-6 font-mono">Visa E-2 · Inversión</p>
               <h1 className="text-4xl md:text-5xl lg:text-6xl text-white leading-tight mb-6">
-                La visa E-2 no se obtiene aplicando…
+                Visa E-2 para empresarios mexicanos
                 <br />
-                <span className="text-primary">Se obtiene estructurando correctamente tu inversión</span>
+                <span className="text-sky-300">Evalúa el negocio antes de mudarte a Estados Unidos</span>
               </h1>
-              <p className="text-slate-400 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
-                Entiende cómo funciona realmente la visa E-2 y cómo se conecta con inversión, empresa y estrategia.
+              <p className="text-slate-200 text-lg md:text-xl leading-relaxed mb-8 max-w-2xl">
+                Si eres empresario mexicano o latino y quieres invertir y vivir en Estados Unidos, empieza por evaluar el negocio, tu papel como operador y la viabilidad del proyecto migratorio. Comprando América te ayuda a ordenar las decisiones empresariales; la elegibilidad y el trámite se revisan con un abogado de inmigración.
               </p>
 
               <div className="flex flex-wrap gap-4 mb-10">
@@ -242,7 +238,7 @@ export default function VisaE2() {
                 <Target className="w-8 h-8 text-primary mb-4" />
                 <h2 className="text-2xl text-[#0B1F3A] font-semibold mb-6">El enfoque correcto</h2>
                 <p className="text-[#4B5563] text-lg leading-relaxed mb-4">
-                  Cuando la inversión y la empresa están bien diseñadas, la visa se vuelve una consecuencia natural.
+                  Una empresa bien diseñada ayuda a sustentar el proyecto. La elegibilidad y la aprobación migratoria requieren una evaluación independiente y nunca son automáticas.
                 </p>
                 <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
                   <p className="text-[#0B1F3A] font-semibold">El objetivo es construir algo sólido — no perseguir un documento.</p>
@@ -380,19 +376,14 @@ export default function VisaE2() {
           <FadeIn>
             <div className="max-w-3xl mx-auto">
               <h2 className="text-3xl md:text-4xl text-white text-center mb-12">Preguntas frecuentes</h2>
-              <Accordion type="single" collapsible className="space-y-4">
-                {[
-                  { q: "¿Cuánto dinero se necesita para una visa E-2?", a: "No existe un monto mínimo oficial. Sin embargo, la inversión debe ser 'sustancial' en relación con el costo total del negocio. En la práctica, inversiones por debajo de $80,000–$100,000 USD suelen ser difíciles de sustentar. Lo importante no es solo el monto — es cómo se estructura y documenta la inversión." },
-                  { q: "¿La visa E-2 está garantizada?", a: "No. Ninguna visa está garantizada. La visa E-2 depende de múltiples factores: el tipo de inversión, la estructura del negocio, la documentación presentada y la evaluación del oficial consular. Por eso es fundamental tener una estructura sólida antes de aplicar." },
-                  { q: "¿Necesito vivir en Estados Unidos para aplicar?", a: "No necesitas vivir en Estados Unidos para iniciar el proceso. Puedes estructurar la empresa y la inversión de forma remota. Sin embargo, la visa E-2 sí requiere que tengas intención de dirigir y desarrollar el negocio en territorio estadounidense." },
-                  { q: "¿Qué tipo de negocio funciona para la visa E-2?", a: "La visa E-2 aplica para diversos tipos de negocios: restaurantes, franquicias, servicios profesionales, e-commerce, bienes raíces operativos, entre otros. Lo fundamental es que sea un negocio real, activo y con potencial de generar empleos e ingresos." },
-                ].map((faq, i) => (
-                  <AccordionItem key={i} value={`faq-${i}`} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl px-6">
-                    <AccordionTrigger className="text-white text-left hover:no-underline py-5">{faq.q}</AccordionTrigger>
-                    <AccordionContent className="text-slate-400 leading-relaxed pb-5">{faq.a}</AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+              <div className="space-y-4">{INVESTOR_FAQS.map(faq => (
+                <details key={faq.q} className="bg-[#0F2847] border border-[#1E3A5F] rounded-xl p-6">
+                  <summary className="cursor-pointer text-white font-semibold">{faq.q}</summary>
+                  <p className="text-slate-300 leading-relaxed mt-4">{faq.a}</p>
+                </details>
+              ))}</div>
+              <p className="mt-8 text-sm text-slate-300">Información revisada el 19 de septiembre de 2026. Fuentes: <a className="underline" href="https://travel.state.gov/content/travel/en/us-visas/employment/treaty-trader-investor-visa-e.html">Departamento de Estado: visa E-2</a> y <a className="underline" href="https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/fees/treaty.html">países con tratado</a>. Información general; no sustituye asesoría legal individual.</p>
+              <p className="mt-4 text-sm text-slate-300">Conoce <a className="underline" href="/quienes-somos">quiénes somos</a> y escucha nuestras conversaciones sobre inversión en el <a className="underline" href="/podcast">podcast de Comprando América</a>.</p>
             </div>
           </FadeIn>
         </div>

@@ -75,7 +75,7 @@ function Router() {
       <Route path="/investment-week" component={InvestmentWeek} />
       <Route path="/recursos" component={Recursos} />
       <Route path="/estructura-empresarial-en-estados-unidos" component={EstructuraEmpresarial} />
-      <Route path="/visa-e2-inversion-en-estados-unidos" component={VisaE2} />
+      <Route path="/visa-e2-inversion-en-estados-unidos"><Redirect to="/visa-e2-inversionista-usa" /></Route>
       <Route path="/llc"><Redirect to="/estructura-empresarial-en-estados-unidos" /></Route>
       <Route path="/perfil" component={Perfil} />
       <Route path="/terminos" component={TermsAndConditions} />
