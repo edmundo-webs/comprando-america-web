@@ -14,18 +14,19 @@ Guía permanente de este repositorio (`edmundo-webs/comprando-america-web`, en R
 ## 2. Qué hay en este sitio
 
 * Las páginas públicas de Comprando América.
-* Los formularios, que envían a `CMS_API_URL/api/leads` con `fuente: "web"`, la página de origen y los UTM.
+* Los formularios, que envían del servidor a `CMS_API_URL` con el token `CMS_API_KEY`, con `fuente: "web"`, la página de origen y los UTM.
   * Si el CMS no responde: reintento y aviso al visitante de que su mensaje se recibió. El envío fallido queda en el registro del servidor, no en una base de datos.
-* El botón "Acceso miembros" (menú y pie de página), que lleva a `MIEMBROS_URL` (miembros.comprandoamerica.com).
-* La página /sesiones: vitrina con los datos de `CMS_API_URL/api/public/colecciones`.
+* El botón "Acceso miembros" (menú y pie de página), que lleva a `MIEMBROS_URL` (miembros.comprandoamerica.com). Pendiente: el portal aún no existe.
+* La página /sesiones (pendiente, cuando exista el portal): vitrina con los datos de `CMS_API_URL/api/public/colecciones`.
   * Caché de 10 minutos.
   * Si la API falla, se muestra sin tarjetas, sin error.
   * Se indexa y va en el sitemap.
 
 ## 3. Variables de entorno
 
-* `CMS_API_URL`: dirección de la API del CMS.
-* `CMS_LEADS_TOKEN`: token para enviar leads. Solo en el servidor, nunca en el navegador.
+* `CMS_API_URL`: dirección de la API del CMS, usada por el servidor.
+* `CMS_API_KEY`: token para enviar leads (encabezado `x-api-key`). Solo en el servidor, nunca en el navegador.
+* `VITE_CRM_API_URL`: dirección del CMS para lecturas públicas desde el navegador (por ejemplo, el portafolio). Por defecto `https://ca-cms.onrender.com`. Nunca lleva tokens.
 * `MIEMBROS_URL`: https://miembros.comprandoamerica.com
 
 ## 4. Cómo trabajar
@@ -55,7 +56,5 @@ Las reglas de arriba son el objetivo. Hoy el código todavía no las cumple del 
 1. Del navegador al CMS: `client/src/lib/crm.ts` (`postCrmLead`) → `VITE_CRM_API_URL/api/public/leads`, sin token. La usan GPS, estructura, LLC, diagnóstico y Cumbre.
 2. Del servidor al CMS: `server/_core/cmsLead.ts` (`forwardLeadToCms`) → `CMS_API_URL/api/public/v1/leads`, con `CMS_API_KEY` en el encabezado `x-api-key`.
 3. A la tabla local `ca_leads` (tRPC, `server/db.ts`).
-
-**Nombres de variables en uso que difieren de la sección 3:** `VITE_CRM_API_URL` (dirección del CMS en el navegador, por defecto `https://ca-cms.onrender.com`) y `CMS_API_KEY` (el token que la sección 3 llama `CMS_LEADS_TOKEN`).
 
 **Acceso de miembros que ya existe:** `/acceso` (`client/src/pages/Acceso.tsx`, `client/src/lib/portafolio.ts`). Enlace mágico por correo contra `VITE_CRM_API_URL/api/public/portafolio/acceso/*`; el token se guarda en `localStorage` y desbloquea las cifras de `/activos-disponibles`. Es distinto del portal "Mi espacio" en `MIEMBROS_URL`.
