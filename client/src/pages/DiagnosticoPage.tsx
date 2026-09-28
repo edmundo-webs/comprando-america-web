@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { sendDiagnostic, trackedRedirect } from "@/lib/tracking";
+import { trackedRedirect } from "@/lib/tracking";
+import { WHATSAPP_PHONE } from "@/lib/whatsapp";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 type ProfileKey = "explorador" | "constructor" | "patrimonial" | null;
@@ -574,7 +575,7 @@ function WhatsAppWidget({
   const message = encodeURIComponent(
     `Hola, mi perfil es ${profileLabel}. ¿Podemos validar mi capital para el plan Investor Entry?`
   );
-  const whatsappUrl = `https://wa.me/17862784421?text=${message}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${message}`;
 
   return (
     <a
@@ -610,34 +611,18 @@ export default function DiagnosticoPage() {
   const [capital, setCapital] = useState(50000);
   const [scrolled, setScrolled] = useState(false);
 
-  // Persist a "diagnostic started" event once when a profile is picked;
-  // and again as "completed" if the user clicks any WhatsApp CTA from
-  // this page (see `whatsappHref` below).
-  useEffect(() => {
-    if (!selectedProfile) return;
-    sendDiagnostic({
-      profile: selectedProfile.key,
-      responses: { capital, range: selectedProfile.range },
-      completed: false,
-    });
-  }, [selectedProfile, capital]);
+  // Esta página ya no guarda sus respuestas en ca_diagnostic_responses
+  // (CLAUDE.md §1): no pide datos de contacto, así que no hay lead que mandar
+  // al CMS. Los clics a WhatsApp siguen midiéndose con wrapWhatsApp.
 
   // Turn a raw wa.me URL into one that goes through /api/track/redirect.
   // Pure — no side effects, safe to call inside `href={...}`.
   const wrapWhatsApp = (rawUrl: string, ctaId: string) =>
     trackedRedirect(rawUrl, ctaId, "/diagnostico");
 
-  // Fire on the actual click. Marks the diagnostic as "completed" (a
-  // WhatsApp click = conversion intent). The <a target="_blank"> still
-  // navigates on its own — this just persists the beacon first.
-  const onWhatsAppClick = () => {
-    if (!selectedProfile) return;
-    sendDiagnostic({
-      profile: selectedProfile.key,
-      responses: { capital, range: selectedProfile.range },
-      completed: true,
-    });
-  };
+  // Se conserva para los botones que lo reciben; la medición del clic ya la
+  // hace el redirect de wrapWhatsApp.
+  const onWhatsAppClick = () => {};
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -678,7 +663,7 @@ export default function DiagnosticoPage() {
               Roadmap
             </a>
             <a
-              href={wrapWhatsApp("https://wa.me/17862784421", "diag-nav-whatsapp")}
+              href={wrapWhatsApp(`https://wa.me/${WHATSAPP_PHONE}`, "diag-nav-whatsapp")}
               onClick={onWhatsAppClick}
               target="_blank"
               rel="noopener noreferrer"
@@ -690,7 +675,7 @@ export default function DiagnosticoPage() {
           </nav>
 
           <a
-            href={wrapWhatsApp("https://wa.me/17862784421", "diag-nav-whatsapp-mobile")}
+            href={wrapWhatsApp(`https://wa.me/${WHATSAPP_PHONE}`, "diag-nav-whatsapp-mobile")}
             onClick={onWhatsAppClick}
             target="_blank"
             rel="noopener noreferrer"
@@ -837,7 +822,7 @@ export default function DiagnosticoPage() {
 
           <a
             href={wrapWhatsApp(
-              `https://wa.me/17862784421?text=${encodeURIComponent(
+              `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(
                 selectedProfile
                   ? `Hola, mi perfil es ${selectedProfile.title}. ¿Podemos validar mi capital para el plan Investor Entry?`
                   : "Hola, quiero conocer más sobre el plan Investor Entry."
@@ -885,7 +870,7 @@ export default function DiagnosticoPage() {
               Inicio
             </a>
             <a
-              href={wrapWhatsApp("https://wa.me/17862784421", "diag-footer-whatsapp")}
+              href={wrapWhatsApp(`https://wa.me/${WHATSAPP_PHONE}`, "diag-footer-whatsapp")}
               onClick={onWhatsAppClick}
               target="_blank"
               rel="noopener noreferrer"

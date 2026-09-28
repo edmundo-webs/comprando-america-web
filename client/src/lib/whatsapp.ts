@@ -1,4 +1,5 @@
 import { sendCtaClick, trackedRedirect } from "./tracking";
+import { digitosParaWhatsApp } from "@shared/telefono";
 
 /**
  * Genera una URL de WhatsApp con un mensaje predefinido
@@ -46,6 +47,10 @@ export function openWhatsApp(
   window.open(url, "_blank", "noopener,noreferrer");
 }
 
-// Constantes de WhatsApp para Comprando América
-export const WHATSAPP_PHONE = "523346766178";
+// Constantes de WhatsApp para Comprando América.
+// El número del sitio vive SOLO aquí, en E.164 (CLAUDE.md §5). Ninguna página
+// escribe el número a mano: todas usan WHATSAPP_PHONE o getWhatsAppUrl.
+export const WHATSAPP_E164 = "+523346766178";
+/** El mismo número sin "+", que es como lo pide wa.me. */
+export const WHATSAPP_PHONE = digitosParaWhatsApp(WHATSAPP_E164);
 export const WHATSAPP_MESSAGE = "Hola, vi tu información en el sitio web de Comprando América. Me gustaría conocer más sobre las oportunidades de inversión.";

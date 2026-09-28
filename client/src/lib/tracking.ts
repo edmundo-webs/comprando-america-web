@@ -5,10 +5,6 @@
  *   Returns a URL you can drop in <a href=...>. When clicked, the request
  *   goes to /api/track/redirect which logs the click and 302s to `url`.
  *
- * `sendDiagnostic(payload)`
- *   Fire-and-forget beacon that persists a GPS-Estratégico completion.
- *   Uses navigator.sendBeacon when available so it survives page unload.
- *
  * `sendCtaClick({cta, location, destination})`
  *   Fire-and-forget POST for cases where you can't intercept the click
  *   with a redirect (e.g., internal navigation, modal-open buttons).
@@ -111,38 +107,6 @@ export function sendCtaClick(payload: {
       navigator.sendBeacon("/api/track/cta", blob);
     } else {
       fetch("/api/track/cta", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body,
-        keepalive: true,
-      }).catch(() => {});
-    }
-  } catch {
-    /* swallow */
-  }
-}
-
-/** Persist a diagnostic completion. Never blocks the UI. */
-export function sendDiagnostic(payload: {
-  profile?: string;
-  responses?: Record<string, unknown>;
-  nombre?: string;
-  whatsapp?: string;
-  email?: string;
-  completed?: boolean;
-}): void {
-  if (typeof window === "undefined") return;
-  try {
-    const body = JSON.stringify({
-      ...payload,
-      sessionId: getOrCreateSessionId(),
-      ...readUtmParams(),
-    });
-    if (navigator.sendBeacon) {
-      const blob = new Blob([body], { type: "application/json" });
-      navigator.sendBeacon("/api/track/diagnostic", blob);
-    } else {
-      fetch("/api/track/diagnostic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body,

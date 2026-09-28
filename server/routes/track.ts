@@ -1,7 +1,7 @@
 /**
  * Internal analytics endpoints.
  *
- *   POST /api/track/diagnostic     Save a GPS-Estratégico completion.
+ *   POST /api/track/diagnostic     Obsoleta: responde "ok" sin guardar nada.
  *   POST /api/track/cta            Log a click on a tracked CTA (fire-and-forget).
  *   GET  /api/track/redirect       Log a click AND 302 to the destination in one shot.
  *
@@ -11,7 +11,7 @@
  * through /api/admin/analytics (token-gated).
  */
 import { Router } from "express";
-import { ctaClicks, diagnosticResponses } from "../../drizzle/schema";
+import { ctaClicks } from "../../drizzle/schema";
 import { getDb } from "../db";
 
 export const trackRouter = Router();
@@ -26,36 +26,12 @@ function isSafeRedirectTarget(url: string): boolean {
 }
 
 // ── POST /api/track/diagnostic ─────────────────────────────────────────
-// Body: { sessionId, profile, responses (obj), nombre?, whatsapp?, email?,
-//         utmSource?, utmMedium?, utmCampaign?, completed? }
-trackRouter.post("/api/track/diagnostic", async (req, res) => {
-  try {
-    const b = (req.body ?? {}) as Record<string, unknown>;
-    const db = await getDb();
-    if (!db) return res.status(200).json({ ok: false, reason: "db unavailable" });
-
-    await db.insert(diagnosticResponses).values({
-      sessionId: MAX_STR(b.sessionId, 64),
-      profile: MAX_STR(b.profile, 32),
-      responses: typeof b.responses === "object" && b.responses !== null
-        ? JSON.stringify(b.responses).slice(0, 65_000)
-        : MAX_STR(b.responses, 65_000),
-      nombre: MAX_STR(b.nombre, 255),
-      whatsapp: MAX_STR(b.whatsapp, 50),
-      email: MAX_STR(b.email, 320),
-      utmSource: MAX_STR(b.utmSource, 100),
-      utmMedium: MAX_STR(b.utmMedium, 100),
-      utmCampaign: MAX_STR(b.utmCampaign, 100),
-      referrer: MAX_STR(b.referrer ?? req.get("referer"), 500),
-      userAgent: MAX_STR(req.get("user-agent"), 500),
-      completed: b.completed === true || b.completed === "true" ? "true" : "false",
-    });
-    res.json({ ok: true });
-  } catch (err: any) {
-    console.error("[track/diagnostic] error:", err?.message);
-    // Never fail the client — analytics losses shouldn't break UX.
-    res.status(200).json({ ok: false, reason: "internal" });
-  }
+// Ya no guarda nada: `ca_diagnostic_responses` es una tabla de negocio y la
+// regla 1 de CLAUDE.md la manda al CMS. Se deja la ruta respondiendo "ok"
+// para no romper navegadores que tengan cargada una versión anterior del
+// sitio. La tabla no se borra.
+trackRouter.post("/api/track/diagnostic", (_req, res) => {
+  res.json({ ok: true, stored: false });
 });
 
 // ── POST /api/track/cta ────────────────────────────────────────────────

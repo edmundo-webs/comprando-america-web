@@ -129,6 +129,7 @@ function StatCounter({
 import SEOHead from "@/components/SEOHead";
 import { EVENTOS, type Evento } from "@/lib/eventos";
 import { useRegistroCumbre } from "@/hooks/useRegistroCumbre";
+import CampoTelefono from "@/components/CampoTelefono";
 import {
   Dialog,
   DialogContent,
@@ -774,7 +775,7 @@ function PlatformIcon({
    mismo sourceSlug, hito y stage; lo único distinto es la etiqueta de fuente,
    que es para poder atribuir de dónde vino. */
 function RegistroCumbreCompacto() {
-  const { formData, setFormData, onSubmit, enviando, submitted } =
+  const { formData, setFormData, onSubmit, enviando, submitted, errorTelefono } =
     useRegistroCumbre("home-cumbre");
 
   if (submitted) {
@@ -816,28 +817,16 @@ function RegistroCumbreCompacto() {
         aria-label="Nombre completo"
         className={`${campo} w-full`}
       />
-      <div className="flex gap-2.5">
-        <input
-          type="text"
-          value={formData.countryCode}
-          onChange={(e) =>
-            setFormData({ ...formData, countryCode: e.target.value })
-          }
-          aria-label="Código de país"
-          className={`${campo} w-20 shrink-0`}
-        />
-        <input
-          type="tel"
-          required
-          value={formData.whatsapp}
-          onChange={(e) =>
-            setFormData({ ...formData, whatsapp: e.target.value })
-          }
-          placeholder="WhatsApp"
-          aria-label="Número de WhatsApp"
-          className={`${campo} min-w-0 flex-1`}
-        />
-      </div>
+      <CampoTelefono
+        valor={formData.telefono}
+        onCambio={(telefono) => setFormData({ ...formData, telefono })}
+        error={errorTelefono}
+        placeholder="WhatsApp"
+        ariaLabel="Número de WhatsApp"
+        claseBoton={`${campo} shrink-0`}
+        claseNumero={campo}
+        claseError="text-xs text-red-600 mt-1"
+      />
       <input
         type="email"
         required

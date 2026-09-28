@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { trpc } from "@/lib/trpc";
 import { postCrmLead } from "@/lib/crm";
+import { telefonoAE164, TELEFONO_VACIO, type Telefono } from "@shared/telefono";
 import { CUMBRE_URL, CUMBRE_WHATSAPP_GRUPO } from "@/lib/eventos";
 
 /**
@@ -19,22 +19,20 @@ import { CUMBRE_URL, CUMBRE_WHATSAPP_GRUPO } from "@/lib/eventos";
 
 export interface RegistroFormData {
   nombreCompleto: string;
-  countryCode: string;
-  whatsapp: string;
+  /** País elegido por la persona + número (CLAUDE.md §5: sin país por defecto). */
+  telefono: Telefono;
   email: string;
 }
 
 export function useRegistroCumbre(fuente: string) {
   const [formData, setFormData] = useState<RegistroFormData>({
     nombreCompleto: "",
-    countryCode: "+52",
-    whatsapp: "",
+    telefono: TELEFONO_VACIO,
     email: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [enviando, setEnviando] = useState(false);
-
-  const registerMutation = trpc.leads.create.useMutation();
+  const [errorTelefono, setErrorTelefono] = useState<string | null>(null);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,10 +41,13 @@ export function useRegistroCumbre(fuente: string) {
       toast.error("Por favor ingresa tu nombre completo.");
       return;
     }
-    if (!formData.whatsapp.trim()) {
-      toast.error("Por favor ingresa tu número de WhatsApp.");
+    const tel = telefonoAE164(formData.telefono.pais, formData.telefono.numero);
+    if (!tel.ok) {
+      setErrorTelefono(tel.error);
+      toast.error(tel.error);
       return;
     }
+    setErrorTelefono(null);
     if (!formData.email.includes("@")) {
       toast.error("Por favor ingresa un correo electrónico válido.");
       return;
@@ -54,42 +55,29 @@ export function useRegistroCumbre(fuente: string) {
 
     const nombreCompleto = formData.nombreCompleto.trim();
     const email = formData.email.trim();
-    const lada = formData.countryCode.replace("CA", "");
-    const numero = formData.whatsapp.trim();
 
     setEnviando(true);
-    // El lead se manda a dos destinos independientes: la tabla `ca_leads` del
-    // sitio (vía tRPC) y el CRM público. Si uno de los dos está caído el
-    // registro del visitante NO se pierde, y solo mostramos error si fallan
-    // ambos — antes un 500 de la base tiraba el registro completo.
-    const [dbOk, crmOk] = await Promise.all([
-      registerMutation
-        .mutateAsync({ nombreCompleto, whatsapp: `${lada} ${numero}`, email, fuente })
-        .then(() => true)
-        .catch((err) => {
-          console.error("[cumbre] no se pudo guardar en ca_leads:", err);
-          return false;
-        }),
-      postCrmLead(
-        {
-          name: nombreCompleto,
-          email,
-          phone: `${lada}${numero}`,
-          sourceSlug: "web_ca_cumbre",
-          hito: "registro_cumbre",
-          stage: "partial",
-          tags: [`fuente:${fuente}`],
-          // postCrmLead manda sourceUrl con la página donde se llenó el
-          // formulario, que desde el home es "/". Esto asegura que el CMS
-          // reciba siempre la URL del evento, no la de la página de origen.
-          eventoUrl: CUMBRE_URL,
-        },
-        "",
-      ),
-    ]);
+    // Un solo destino: el servidor del sitio, que lo pasa al CMS (CLAUDE.md §1).
+    // Ya no se escribe en ca_leads.
+    const ok = await postCrmLead(
+      {
+        name: nombreCompleto,
+        email,
+        phone: tel.e164,
+        sourceSlug: "web_ca_cumbre",
+        hito: "registro_cumbre",
+        stage: "partial",
+        tags: [`fuente:${fuente}`],
+        // postCrmLead manda sourceUrl con la página donde se llenó el
+        // formulario, que desde el home es "/". Esto asegura que el CMS
+        // reciba siempre la URL del evento, no la de la página de origen.
+        eventoUrl: CUMBRE_URL,
+      },
+      "",
+    );
     setEnviando(false);
 
-    if (!dbOk && !crmOk) {
+    if (!ok) {
       // Nunca mostramos el mensaje crudo del backend al visitante.
       toast.error("No pudimos completar tu registro. Revisa tu conexión e inténtalo de nuevo.");
       return;
@@ -102,5 +90,5 @@ export function useRegistroCumbre(fuente: string) {
     }, 1500);
   };
 
-  return { formData, setFormData, onSubmit, enviando, submitted };
+  return { formData, setFormData, onSubmit, enviando, submitted, errorTelefono };
 }

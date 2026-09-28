@@ -75,7 +75,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <MessageCircle className="w-4 h-4 text-blue-400 shrink-0" />
-                <a href={trackedRedirect("https://wa.me/523346766178", "footer-whatsapp")} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">WhatsApp</a>
+                <a href={trackedRedirect(`https://wa.me/${WHATSAPP_PHONE}`, "footer-whatsapp")} target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors">WhatsApp</a>
               </li>
               <li className="flex items-center gap-3 text-white/50 text-sm">
                 <MapPin className="w-4 h-4 text-blue-400 shrink-0" />

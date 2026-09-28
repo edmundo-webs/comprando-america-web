@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import { WHATSAPP_PHONE } from "@/lib/whatsapp";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { trpc } from "@/lib/trpc";
@@ -288,7 +289,7 @@ export default function NewsArticle() {
                     </Link>
                     <a
                       href={trackedRedirect(
-                        "https://wa.me/14696134741?text=Hola%2C%20me%20interesa%20obtener%20m%C3%A1s%20informaci%C3%B3n",
+                        `https://wa.me/${WHATSAPP_PHONE}?text=Hola%2C%20me%20interesa%20obtener%20m%C3%A1s%20informaci%C3%B3n`,
                         "news-article-whatsapp",
                         "/news"
                       )}

@@ -1,4 +1,5 @@
 import SEOHead from "@/components/SEOHead";
+import { WHATSAPP_PHONE } from "@/lib/whatsapp";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MemberTestimonialSlider from "@/components/MemberTestimonialSlider";
@@ -157,7 +158,7 @@ export default function Perfil() {
       readinessLevel = "Perfil listo para inversión";
       readinessPercentage = Math.min(100, 70 + (score - 70));
       cta = "Agendar llamada estratégica";
-      link = "https://wa.me/523346766178";
+      link = `https://wa.me/${WHATSAPP_PHONE}`;
     } else if (score >= 40) {
       readinessLevel = "Perfil en desarrollo";
       readinessPercentage = 40 + (score - 40);
