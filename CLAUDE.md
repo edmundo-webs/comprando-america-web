@@ -38,6 +38,18 @@ Guía permanente de este repositorio (`edmundo-webs/comprando-america-web`, en R
 5. Diseño: usa los estilos existentes del sitio (azul marino `#0B1F3A`, acento azul aproximadamente `#3D7FF0`, Playfair Display e Inter).
 6. Al terminar, entrega un reporte corto: qué cambió, cómo probarlo y qué variables faltan.
 
+## 5. Regla: teléfonos siempre con código de país
+
+* Todo campo de teléfono, en cualquier formulario del sitio web, del CMS o del portal, lleva un selector de país obligatorio (bandera, nombre y código, con búsqueda) separado del número.
+* Prohibido adivinar el país: no se asume México ni ningún otro por defecto de forma oculta. Sin país elegido, el formulario no se envía y muestra "Selecciona el código de tu país".
+* Valida el número según el país elegido con `libphonenumber-js`.
+* Se guarda solo en formato internacional E.164 (ejemplo: `+523346766178`). Este formato se usa para comparar duplicados, armar ligas de WhatsApp y mostrar el número.
+* La API del CMS (`/api/public/v1/leads` y cualquier otra que reciba teléfonos):
+  * Acepta números en E.164.
+  * Si llega uno sin código de país, no lo rechaza (para no perder el lead): lo guarda como llegó y lo marca como "código de país pendiente".
+  * Nunca lo completa adivinando.
+* Los teléfonos ya guardados sin código se marcan como "código de país pendiente" y aparecen en una lista del CMS para que el equipo los confirme. No se corrigen automáticamente.
+
 ---
 
 ## Nota: estado actual del código (septiembre 2026)
