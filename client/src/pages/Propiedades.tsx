@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { Link } from "wouter";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -104,7 +105,7 @@ function DealCard({ d }: { d: Deal }) {
   const toggle = (t: Tab) => setTab(prev => prev === t ? null : t);
   const wa = () => {
     const msg = encodeURIComponent(`Hola, me interesa la Oportunidad #${d.id}: ${d.ubicacion} — ${usd(d.precio)}. ¿Está disponible?`);
-    const waUrl = `https://wa.me/523346766178?text=${msg}`;
+    const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${msg}`;
     sendCtaClick({ cta: `propiedades-deal-${d.id}`, location: "/activos-disponibles", destination: waUrl });
     window.open(waUrl, "_blank");
   };
@@ -391,7 +392,7 @@ export default function Propiedades() {
 
   const handleContacto = () => {
     const msg = encodeURIComponent("Hola, me interesan las propiedades disponibles en Comprando América. ¿Pueden enviarme más información?");
-    const waUrl = `https://wa.me/523346766178?text=${msg}`;
+    const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${msg}`;
     sendCtaClick({ cta: "propiedades-contacto-whatsapp", location: "/activos-disponibles", destination: waUrl });
     window.open(waUrl, "_blank");
   };

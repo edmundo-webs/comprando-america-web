@@ -17,10 +17,12 @@
  * componente, no del diagnóstico: fuera de esos estados se resuelve con un
  * referido, no con una salida sin respuesta.
  */
-import { useState, useEffect, useImperativeHandle, useRef } from "react";
+import { Fragment, useState, useEffect, useImperativeHandle, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle2, XCircle, ShoppingCart, Compass, MessageSquare, MapPin } from "lucide-react";
 import { openWhatsApp, WHATSAPP_PHONE } from "@/lib/whatsapp";
+import { telefonoDesdeGuardado, telefonoOpcional, TELEFONO_VACIO, type Telefono } from "@shared/telefono";
+import CampoTelefono from "@/components/CampoTelefono";
 import { type FichaContacto, postCrmLead, saveContact, getSavedContact, buildFichaTexto, origenCampos } from "@/lib/crm";
 import AdvisoryDisclaimer from "@/components/AdvisoryDisclaimer";
 import { FlowModal, OptionButton } from "@/components/FlowModal";
@@ -75,6 +77,14 @@ export default function EstructuraFlow({
   const [honeypot, setHoneypot] = useState("");
 
   const [contacto, setContacto] = useState<FichaContacto>({ name: "", email: "", phone: "", country: "" });
+  /* El teléfono se captura con país obligatorio (CLAUDE.md §5); `contacto.phone` no se usa. */
+  const [telefono, setTelefono] = useState<Telefono>(TELEFONO_VACIO);
+  const [errorTelefono, setErrorTelefono] = useState<string | null>(null);
+  /** El teléfono en E.164, o vacío si no hay uno válido. */
+  const telE164 = () => {
+    const r = telefonoOpcional(telefono);
+    return r.ok ? r.e164 : "";
+  };
   /* Personalización solo con señal real: dato guardado por el propio usuario en este navegador. */
   const [knownName, setKnownName] = useState<string | null>(null);
 
@@ -88,7 +98,8 @@ export default function EstructuraFlow({
     const saved = getSavedContact();
     if (!saved) return;
     setKnownName(saved.name || null);
-    setContacto((p) => ({ ...p, name: p.name || saved.name || "", email: p.email || saved.email || "", phone: p.phone || saved.phone || "" }));
+    setContacto((p) => ({ ...p, name: p.name || saved.name || "", email: p.email || saved.email || "" }));
+    setTelefono((t) => (t.numero ? t : telefonoDesdeGuardado(saved.phone)));
   }, []);
 
   /* El CTA fijo de móvil vive fuera de este componente y necesita abrir el
@@ -109,7 +120,7 @@ export default function EstructuraFlow({
     return [
       { label: "Nombre", value: contacto.name },
       { label: "Correo", value: contacto.email },
-      { label: "WhatsApp", value: contacto.phone },
+      { label: "WhatsApp", value: telE164() },
       { label: "País", value: contacto.country },
       { label: "Estado elegido", value: estadoValue },
       ...origenCampos(),
@@ -120,7 +131,7 @@ export default function EstructuraFlow({
     const lista = campos();
     postCrmLead(
       {
-        name: contacto.name, email: contacto.email, phone: contacto.phone,
+        name: contacto.name, email: contacto.email, phone: telE164(),
         sourceSlug,
         hito,
         stage: extra?.stage ?? "partial",
@@ -185,11 +196,16 @@ export default function EstructuraFlow({
   }
 
   function porWhatsApp(contexto: string, hito: string) {
+    const tel = telefonoOpcional(telefono);
+    if (!tel.ok) {
+      setErrorTelefono(tel.error);
+      return;
+    }
     const lista = campos();
-    openWhatsApp(WHATSAPP_PHONE, buildFichaTexto(lista, SALUDO, contexto));
+    // Primero el lead al CMS, después WhatsApp (el envío sale con keepalive).
     postCrmLead(
       {
-        name: contacto.name, email: contacto.email, phone: contacto.phone,
+        name: contacto.name, email: contacto.email, phone: telE164(),
         sourceSlug, hito, stage: "complete",
         tags: [tagInteres],
         submissionId: submissionIdRef.current,
@@ -198,8 +214,9 @@ export default function EstructuraFlow({
       },
       honeypot,
     );
-    if (!honeypot && (contacto.name || contacto.email || contacto.phone)) {
-      saveContact({ name: contacto.name.trim(), email: contacto.email.trim(), phone: contacto.phone.trim() });
+    openWhatsApp(WHATSAPP_PHONE, buildFichaTexto(lista, SALUDO, contexto));
+    if (!honeypot && (contacto.name || contacto.email || telE164())) {
+      saveContact({ name: contacto.name.trim(), email: contacto.email.trim(), phone: telE164() });
     }
     setOpen(false);
   }
@@ -362,10 +379,24 @@ export default function EstructuraFlow({
               {[
                 { key: "name", type: "text", label: "Nombre", ph: "Tu nombre completo" },
                 { key: "email", type: "email", label: "Correo", ph: "correo@ejemplo.com" },
-                { key: "phone", type: "tel", label: "WhatsApp", ph: "+52 555 000 0000" },
-                { key: "country", type: "text", label: "País de residencia", ph: "México, Colombia, etc." },
+                    { key: "country", type: "text", label: "País de residencia", ph: "México, Colombia, etc." },
               ].map((f) => (
-                <div key={f.key}>
+                <Fragment key={f.key}>
+                {f.key === "country" && (
+                <div>
+                  <label className="text-slate-400 text-xs block mb-1">WhatsApp</label>
+                  <CampoTelefono
+                    valor={telefono}
+                    onCambio={(t) => { setTelefono(t); setErrorTelefono(null); }}
+                    error={errorTelefono}
+                    placeholder="Tu número"
+                    ariaLabel="Número de WhatsApp"
+                    claseBoton="bg-[#091A30] border border-[#1E3A5F] rounded-lg px-3 py-3 text-white text-sm focus:outline-none focus:border-primary/50 transition-colors"
+                    claseNumero="bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
+                  />
+                </div>
+                )}
+                <div>
                   <label className="text-slate-400 text-xs block mb-1">{f.label}</label>
                   <input
                     type={f.type}
@@ -375,6 +406,7 @@ export default function EstructuraFlow({
                     className="w-full bg-[#091A30] border border-[#1E3A5F] rounded-lg px-4 py-3 text-white text-sm placeholder-slate-600 focus:outline-none focus:border-primary/50 transition-colors"
                   />
                 </div>
+                </Fragment>
               ))}
               <div style={{ position: "absolute", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden" }} aria-hidden="true">
                 <input type="text" name="website" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />

@@ -10,6 +10,7 @@ Guía permanente de este repositorio (`edmundo-webs/comprando-america-web`, en R
   * Crear tablas, archivos JSON u hojas de cálculo para guardar leads o miembros.
   * Conectarse directo a la base de datos del CMS.
   * Duplicar lógica del portal de miembros aquí.
+* Excepción permitida: `ca_cta_clicks`. Es la analítica de clics del sitio (qué botón, en qué página, a dónde llevaba, un identificador de visita al azar y los UTM). No guarda nombre, email ni teléfono, así que se queda en la base del sitio.
 
 ## 2. Qué hay en este sitio
 
@@ -59,14 +60,18 @@ Las reglas de arriba son el objetivo. Hoy el código todavía no las cumple del 
 **Base de datos propia (MySQL, `DATABASE_URL`, esquema en `drizzle/schema.ts`):**
 
 * De contenido y operación del sitio: `users` (panel `/cms`), `blog_posts`, `ca_news_articles`, `ca_news_feeds`, `ca_social_posts`, `ca_ingestion_runs`.
-* De negocio, que la regla 1 manda al CMS: `ca_leads`, `ca_news_subscribers`, `ca_diagnostic_responses` (GPS Estratégico).
-* De analítica: `ca_cta_clicks`. Es la analítica que ya tiene el sitio (regla 4.4): `client/src/lib/tracking.ts` (`sendCtaClick`, `trackedRedirect`) → `server/routes/track.ts` → se consulta en `/cms/analytics`.
+* De negocio: `ca_leads`, `ca_news_subscribers`, `ca_diagnostic_responses`. **Desde la Tanda 1 ya no se escriben**; se conservan con lo que tenían. `scripts/contar-registros.mjs` las cuenta (solo lectura) y `scripts/exportar-leads-a-cms.mjs` las exporta al CMS (sin `--enviar` no manda nada).
+* De analítica: `ca_cta_clicks`, la excepción permitida de la regla 1: `client/src/lib/tracking.ts` (`sendCtaClick`, `trackedRedirect`) → `server/routes/track.ts` → se consulta en `/cms/analytics`.
 * No se crean tablas nuevas de negocio.
 
-**Tres formas de enviar leads hoy:**
+**Un solo camino para los leads (desde la Tanda 1):**
 
-1. Del navegador al CMS: `client/src/lib/crm.ts` (`postCrmLead`) → `VITE_CRM_API_URL/api/public/leads`, sin token. La usan GPS, estructura, LLC, diagnóstico y Cumbre.
-2. Del servidor al CMS: `server/_core/cmsLead.ts` (`forwardLeadToCms`) → `CMS_API_URL/api/public/v1/leads`, con `CMS_API_KEY` en el encabezado `x-api-key`.
-3. A la tabla local `ca_leads` (tRPC, `server/db.ts`).
+* Navegador → `POST /api/leads` de este sitio (`client/src/lib/crm.ts`, `postCrmLead`) → servidor (`server/routes/leads.ts`) → CMS con `CMS_API_KEY` (`server/_core/cmsLead.ts`).
+* Formularios y cuestionarios van a `CMS_API_URL/api/public/leads`, que guarda la ficha del GPS y los datos del formulario como notas visibles. Hoy esa dirección no revisa el token; se manda igual para cuando el CMS lo exija.
+* El boletín de `/news` va a `CMS_API_URL/api/public/v1/leads`, que sí exige el token.
+* Si un teléfono no llega en E.164, se manda como llegó y se anota "Código de país del teléfono: pendiente" en los datos del formulario (la API del CMS aún no tiene un campo para esa marca).
+* Si el CMS no responde, el servidor reintenta en segundo plano; si al final no entra, el envío completo queda en el registro de Render (buscar `ENVIO FALLIDO`).
+* Ya no existe la conexión directa a la base del CRM (`CRM_DATABASE_URL`).
+* El número de WhatsApp del sitio vive solo en `client/src/lib/whatsapp.ts` (`WHATSAPP_E164`).
 
 **Acceso de miembros que ya existe:** `/acceso` (`client/src/pages/Acceso.tsx`, `client/src/lib/portafolio.ts`). Enlace mágico por correo contra `VITE_CRM_API_URL/api/public/portafolio/acceso/*`; el token se guarda en `localStorage` y desbloquea las cifras de `/activos-disponibles`. Es distinto del portal "Mi espacio" en `MIEMBROS_URL`.

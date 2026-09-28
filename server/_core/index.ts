@@ -15,9 +15,9 @@ import { botMetaMiddleware } from "../routes/bot-meta";
 import { episodesRouter } from "../routes/episodes";
 import { seoRouter } from "../routes/seo";
 import { trackRouter } from "../routes/track";
+import { leadsRouter } from "../routes/leads";
 import { healthRouter } from "../routes/health";
 import { ensureAnalyticsTables } from "./ensureAnalyticsTables";
-import { ensureLeadsTable } from "../db";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -62,6 +62,10 @@ async function startServer() {
   // POST /api/track/cta, GET /api/track/redirect. Writes only — reads go
   // through /api/admin/analytics/* which stays token-gated.
   app.use(trackRouter);
+
+  // Entrada única de leads: POST /api/leads → CMS con CMS_API_KEY.
+  // No se guarda nada en la base de este sitio (CLAUDE.md §1).
+  app.use(leadsRouter);
 
   // Latest YouTube episodes for the Podcast page (public RSS, cached).
   app.use(episodesRouter);
@@ -211,10 +215,6 @@ async function startServer() {
     // Runs in the background so it never blocks the listen callback.
     ensureAnalyticsTables().catch((err) =>
       console.error("[analytics-bootstrap] error:", err?.message)
-    );
-    // Idem para ca_leads: sin ella, todo formulario de landing devuelve 500.
-    ensureLeadsTable().catch((err) =>
-      console.error("[leads-bootstrap] error:", err?.message)
     );
   });
 }

@@ -4,7 +4,8 @@ import SEOHead from "@/components/SEOHead";
 /* El temario, la fecha y el registro viven fuera de la página: la ventana del
    home muestra lo mismo y el lead tiene que caer idéntico en el CMS. */
 import { CUMBRE_BLOQUES, CUMBRE_WHATSAPP_GRUPO, EVENTOS } from "@/lib/eventos";
-import { useRegistroCumbre } from "@/hooks/useRegistroCumbre";
+import { useRegistroCumbre, type RegistroFormData } from "@/hooks/useRegistroCumbre";
+import CampoTelefono from "@/components/CampoTelefono";
 
 /* ─── Destinos post-registro ─── */
 const WHATSAPP_GRUPO = CUMBRE_WHATSAPP_GRUPO;
@@ -28,27 +29,6 @@ const SLATE     = "#8EA3BF";
 const DIVIDER   = "rgba(201, 168, 76, 0.2)";
 const FD = "'Playfair Display', Georgia, serif";
 const FB = "'Inter', system-ui, sans-serif";
-
-/* ─── Country codes ─── */
-const COUNTRY_CODES = [
-  { code: "+52",  label: "🇲🇽 México (+52)" },
-  { code: "+1",   label: "🇺🇸 Estados Unidos (+1)" },
-  { code: "+57",  label: "🇨🇴 Colombia (+57)" },
-  { code: "+34",  label: "🇪🇸 España (+34)" },
-  { code: "+54",  label: "🇦🇷 Argentina (+54)" },
-  { code: "+56",  label: "🇨🇱 Chile (+56)" },
-  { code: "+51",  label: "🇵🇪 Perú (+51)" },
-  { code: "+58",  label: "🇻🇪 Venezuela (+58)" },
-  { code: "+593", label: "🇪🇨 Ecuador (+593)" },
-  { code: "+502", label: "🇬🇹 Guatemala (+502)" },
-  { code: "+503", label: "🇸🇻 El Salvador (+503)" },
-  { code: "+506", label: "🇨🇷 Costa Rica (+506)" },
-  { code: "+507", label: "🇵🇦 Panamá (+507)" },
-  { code: "+591", label: "🇧🇴 Bolivia (+591)" },
-  { code: "+595", label: "🇵🇾 Paraguay (+595)" },
-  { code: "+598", label: "🇺🇾 Uruguay (+598)" },
-  { code: "+1CA", label: "🇨🇦 Canadá (+1)" },
-];
 
 /* ─── Fotos de ponentes ─── */
 const PHOTOS = {
@@ -162,8 +142,6 @@ const CSS = `
        omite en móvil para que los campos suban por encima del pliegue. */
     .cd-hero-eyebrow { display: none !important; }
     .cd-hero-sub     { margin-bottom: 16px !important; }
-    /* Se acota la lada para que el número de WhatsApp quepa completo. */
-    .cd-lada         { max-width: 152px; }
   }
 
   @keyframes spin { to { transform: rotate(360deg); } }
@@ -246,14 +224,15 @@ function ProgramCard({ c }: { c: typeof PROGRAMA[0] }) {
    antes. Se renderiza dos veces (HERO y cierre) compartiendo el estado del
    contenedor, así que ambas instancias van siempre sincronizadas. */
 interface FormProps {
-  formData: { nombreCompleto: string; countryCode: string; whatsapp: string; email: string };
-  setFormData: (d: FormProps["formData"]) => void;
+  formData: RegistroFormData;
+  setFormData: (d: RegistroFormData) => void;
   onSubmit: (e: React.FormEvent) => void;
   enviando: boolean;
   submitted: boolean;
+  errorTelefono: string | null;
 }
 
-function RegistroForm({ formData, setFormData, onSubmit, enviando, submitted }: FormProps) {
+function RegistroForm({ formData, setFormData, onSubmit, enviando, submitted, errorTelefono }: FormProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   // Red de seguridad contra el submit nativo: si por cualquier motivo el
@@ -364,36 +343,21 @@ function RegistroForm({ formData, setFormData, onSubmit, enviando, submitted }: 
           <label style={{ display: "block", fontFamily: FB, fontSize: "0.76rem", color: SLATE, marginBottom: 6, letterSpacing: "0.05em" }}>
             WhatsApp <span style={{ color: GOLD }}>*</span>
           </label>
-          <div style={{ display: "flex", gap: 8 }}>
-            <div className="cd-lada" style={{ position: "relative", flex: "0 1 auto", minWidth: 0 }}>
-              <select
-                value={formData.countryCode}
-                onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                style={{
-                  appearance: "none", background: NAVY,
-                  width: "100%", maxWidth: "100%",
-                  border: `1px solid rgba(142,163,191,0.25)`,
-                  borderRadius: 3, padding: "11px 28px 11px 11px",
-                  color: "#fff", fontFamily: FB, fontSize: "0.8rem",
-                  cursor: "pointer", outline: "none",
-                }}
-              >
-                {COUNTRY_CODES.map((c, i) => <option key={i} value={c.code}>{c.label}</option>)}
-              </select>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={SLATE} strokeWidth="2"
-                style={{ position: "absolute", right: 9, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
-            </div>
-            <input
-              type="tel"
-              value={formData.whatsapp}
-              onChange={(e) => setFormData({ ...formData, whatsapp: e.target.value })}
-              placeholder="123 456 7890"
-              required
-              style={{ ...inputStyle, flex: 1, width: "auto", minWidth: 0 }}
-            />
-          </div>
+          <CampoTelefono
+            valor={formData.telefono}
+            onCambio={(telefono) => setFormData({ ...formData, telefono })}
+            error={errorTelefono}
+            placeholder="123 456 7890"
+            ariaLabel="Número de WhatsApp"
+            estiloBoton={{
+              background: NAVY, border: `1px solid rgba(142,163,191,0.25)`,
+              borderRadius: 3, padding: "11px 11px", color: "#fff",
+              fontFamily: FB, fontSize: "0.8rem", cursor: "pointer",
+            }}
+            estiloNumero={{ ...inputStyle, width: "auto" }}
+            claseError=""
+            estiloError={{ fontFamily: FB, fontSize: "0.76rem", color: "#F87171", marginTop: 6 }}
+          />
         </div>
 
         {/* Email */}
@@ -449,10 +413,10 @@ interface Props {
 }
 
 export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
-  const { formData, setFormData, onSubmit, enviando, submitted } =
+  const { formData, setFormData, onSubmit, enviando, submitted, errorTelefono } =
     useRegistroCumbre(fuente);
 
-  const formProps = { formData, setFormData, onSubmit, enviando, submitted };
+  const formProps = { formData, setFormData, onSubmit, enviando, submitted, errorTelefono };
 
   return (
     <div style={{ fontFamily: FB, background: NAVY_DEEP, color: "#fff", overflowX: "hidden" }}>

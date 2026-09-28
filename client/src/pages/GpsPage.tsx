@@ -1,9 +1,11 @@
 // Diagnóstico de Inversión — página principal en /diagnostico
 import React, { useState, useEffect, useRef } from "react";
-import { trpc } from "@/lib/trpc";
+import { WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { AnimatePresence, motion } from "framer-motion";
 import { sendCtaClick } from "@/lib/tracking";
 import { postCrmLead } from "@/lib/crm";
+import CampoTelefono from "@/components/CampoTelefono";
+import { telefonoAE164, TELEFONO_VACIO, type Telefono } from "@shared/telefono";
 import { trackPageVisit } from "@/lib/journey";
 
 /* ─── Brand ─── */
@@ -900,57 +902,37 @@ function Screen7Preview({ perfil, rankedVehicles, objetivo, capital, onContinue 
 }
 
 /* ─── SCREEN 8 — Contact form ─── */
-const COUNTRY_CODES = [
-  { code: "+52", flag: "🇲🇽", name: "México" },
-  { code: "+1", flag: "🇺🇸", name: "Estados Unidos" },
-  { code: "+57", flag: "🇨🇴", name: "Colombia" },
-  { code: "+54", flag: "🇦🇷", name: "Argentina" },
-  { code: "+56", flag: "🇨🇱", name: "Chile" },
-  { code: "+51", flag: "🇵🇪", name: "Perú" },
-  { code: "+58", flag: "🇻🇪", name: "Venezuela" },
-  { code: "+502", flag: "🇬🇹", name: "Guatemala" },
-  { code: "+34", flag: "🇪🇸", name: "España" },
-];
-
-type ContactData = { nombre: string; countryCode: string; whatsapp: string; email: string };
+/** `whatsapp` va en E.164 (CLAUDE.md §5): el país lo eligió la persona. */
+type ContactData = { nombre: string; whatsapp: string; email: string };
+type ContactForm = { nombre: string; telefono: Telefono; email: string };
 
 function Screen8Contact({ onNext, partialSent, onPartialSent }: {
   onNext: (data: ContactData) => void;
   partialSent: boolean;
   onPartialSent: () => void;
 }) {
-  const [form, setForm] = useState<ContactData>({ nombre: "", countryCode: "+52", whatsapp: "", email: "" });
-  const [errors, setErrors] = useState<Partial<Record<keyof ContactData, string>>>({});
+  const [form, setForm] = useState<ContactForm>({ nombre: "", telefono: TELEFONO_VACIO, email: "" });
+  const [errors, setErrors] = useState<Partial<Record<"nombre" | "whatsapp" | "email", string>>>({});
   const [focused, setFocused] = useState<string | null>(null);
   const [honeypot, setHoneypot] = useState("");
-  const createLead = trpc.leads.create.useMutation();
   const [submitting, setSubmitting] = useState(false);
 
-  function validate() {
-    const e: Partial<Record<keyof ContactData, string>> = {};
-    if (!form.nombre.trim()) e.nombre = "Tu nombre es necesario";
-    if (!form.whatsapp.trim() || form.whatsapp.replace(/\D/g, "").length < 7) e.whatsapp = "Ingresa un número válido";
-    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Ingresa un correo válido";
-    return e;
-  }
-
   function handleSubmit() {
-    const e = validate();
-    if (Object.keys(e).length > 0) { setErrors(e); return; }
+    const e: Partial<Record<"nombre" | "whatsapp" | "email", string>> = {};
+    if (!form.nombre.trim()) e.nombre = "Tu nombre es necesario";
+    const tel = telefonoAE164(form.telefono.pais, form.telefono.numero);
+    if (!tel.ok) e.whatsapp = tel.error;
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Ingresa un correo válido";
+    if (Object.keys(e).length > 0 || !tel.ok) { setErrors(e); return; }
     setSubmitting(true);
-    // Envío interno best-effort
-    createLead.mutate({
-      nombreCompleto: form.nombre.trim(),
-      whatsapp: `${form.countryCode} ${form.whatsapp.trim()}`,
-      email: form.email.trim(),
-      fuente: "gps-diagnostico",
-    });
-    // POST al CRM público — partial — solo si no se ha enviado antes
+    const datos: ContactData = { nombre: form.nombre.trim(), whatsapp: tel.e164, email: form.email.trim() };
+    // Al CMS por el servidor del sitio — partial — solo si no se ha enviado antes.
+    // Ya no se escribe en ca_leads (CLAUDE.md §1).
     if (!partialSent) {
       postCrmLead({
-        name: form.nombre.trim(),
-        email: form.email.trim(),
-        phone: `${form.countryCode}${form.whatsapp.trim()}`,
+        name: datos.nombre,
+        email: datos.email,
+        phone: datos.whatsapp,
         sourceSlug: "web_ca_gps",
         hito: "diagnostico_parcial",
         stage: "partial",
@@ -958,7 +940,7 @@ function Screen8Contact({ onNext, partialSent, onPartialSent }: {
       }, honeypot);
       onPartialSent();
     }
-    setTimeout(() => onNext(form), 600);
+    setTimeout(() => onNext(datos), 600);
   }
 
   function fieldStyle(id: string, hasErr: boolean): React.CSSProperties {
@@ -998,20 +980,16 @@ function Screen8Contact({ onNext, partialSent, onPartialSent }: {
           <label style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: errors.whatsapp ? "#E05C5C" : focused === "whatsapp" ? GOLD : "#6A8FAF", textTransform: "uppercase", marginBottom: "8px" }}>
             <IconPhone /> WhatsApp
           </label>
-          <div style={{ display: "flex", gap: "8px" }}>
-            <select value={form.countryCode}
-              onChange={e => setForm(p => ({ ...p, countryCode: e.target.value }))}
-              style={{ padding: "14px 10px", background: NAVY_CARD, border: `1.5px solid ${NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", outline: "none", flexShrink: 0, cursor: "pointer" }}>
-              {COUNTRY_CODES.map(c => (
-                <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
-              ))}
-            </select>
-            <input type="tel" value={form.whatsapp} placeholder="33 1234 5678"
-              onFocus={() => { setFocused("whatsapp"); setErrors(p => ({ ...p, whatsapp: undefined })); }}
-              onBlur={() => setFocused(null)}
-              onChange={e => setForm(p => ({ ...p, whatsapp: e.target.value }))}
-              style={{ ...fieldStyle("whatsapp", !!errors.whatsapp), flex: 1 }} />
-          </div>
+          <CampoTelefono
+            valor={form.telefono}
+            onCambio={telefono => { setForm(p => ({ ...p, telefono })); setErrors(p => ({ ...p, whatsapp: undefined })); }}
+            placeholder="33 1234 5678"
+            ariaLabel="Número de WhatsApp"
+            onFocus={() => { setFocused("whatsapp"); setErrors(p => ({ ...p, whatsapp: undefined })); }}
+            onBlur={() => setFocused(null)}
+            estiloBoton={{ padding: "14px 10px", background: NAVY_CARD, border: `1.5px solid ${errors.whatsapp && !form.telefono.pais ? "#E05C5C" : NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", outline: "none", cursor: "pointer" }}
+            estiloNumero={{ ...fieldStyle("whatsapp", !!errors.whatsapp), width: "auto" }}
+          />
           {errors.whatsapp && <p style={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#E05C5C", marginTop: "5px" }}>{errors.whatsapp}</p>}
         </div>
 
@@ -1410,7 +1388,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, desde
     postCrmLead({
       name: contactData.nombre.trim(),
       email: contactData.email.trim(),
-      phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
+      phone: contactData.whatsapp,
       sourceSlug: "web_ca_gps",
       hito: "diagnostico_completo",
       stage: "complete",
@@ -1431,7 +1409,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, desde
       postCrmLead({
         name: contactData.nombre.trim(),
         email: contactData.email.trim(),
-        phone: `${contactData.countryCode}${contactData.whatsapp.trim()}`,
+        phone: contactData.whatsapp,
         sourceSlug: "web_ca_gps",
         hito: "diagnostico_completo",
         stage: "complete",
@@ -1456,7 +1434,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, desde
   function sendWhatsApp() {
     const nombre = contactData?.nombre ?? "";
     const firstName = nombre.trim().split(" ")[0];
-    const whatsapp = `${contactData?.countryCode ?? ""}${contactData?.whatsapp ?? ""}`;
+    const whatsapp = contactData?.whatsapp ?? "";
     const email = contactData?.email ?? "";
 
     const AREA_LABELS: Record<string, string> = {
@@ -1541,7 +1519,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, desde
     lines.push("Me gustaría agendar un diagnóstico estratégico personalizado.");
 
     const msg = lines.join("\n");
-    const waUrl = `https://wa.me/523346766178?text=${encodeURIComponent(msg)}`;
+    const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(msg)}`;
     sendCtaClick({ cta: "gps-diagnostico-whatsapp", location: "/gps", destination: waUrl });
     window.open(waUrl, "_blank");
   }
@@ -2102,7 +2080,7 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, desde
                     <div style={{ display: "flex", flexDirection: "column" as const, gap: "6px" }}>
                       {[
                         { label: "Nombre", value: contactData.nombre },
-                        { label: "WhatsApp", value: `${contactData.countryCode} ${contactData.whatsapp}` },
+                        { label: "WhatsApp", value: contactData.whatsapp },
                         { label: "Correo", value: contactData.email },
                       ].map(({ label, value }) => (
                         <div key={label} style={{ display: "flex", alignItems: "center", gap: "12px", padding: "9px 14px", background: `${NAVY}80`, borderRadius: "8px" }}>

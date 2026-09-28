@@ -63,7 +63,7 @@ export function NewsletterSignup() {
           ¡Suscripción exitosa!
         </h3>
         <p className="text-green-700 mb-4">
-          Verifica tu email para confirmar la suscripción y recibir noticias.
+          ¡Gracias! Tu correo quedó registrado para recibir las noticias de Comprando América.
         </p>
         <Button
           variant="outline"

@@ -12,7 +12,9 @@ import { NOT_ADMIN_ERR_MSG } from "@shared/const";
 import bcrypt from "bcryptjs";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
-import { forwardLeadToCms } from "./_core/cmsLead";
+import { enviarAlCms } from "./_core/cmsLead";
+
+export const MENSAJE_BOLETIN = "¡Gracias! Tu correo quedó registrado para recibir las noticias de Comprando América.";
 
 // Helper: create CMS session cookie using the SDK's signSession
 // The SDK verifySession expects { openId, appId, name } in the JWT payload
@@ -361,20 +363,19 @@ export const appRouter = router({
         categories: z.array(z.string()).default(["all"]),
       }))
       .mutation(async ({ input }) => {
-        const existing = await db.getNewsSubscriber(input.email);
-        if (existing) {
-          throw new TRPCError({ code: "CONFLICT", message: "Este email ya esta suscrito" });
-        }
-        await db.createNewsSubscriber(input.email, input.name, input.categories);
-        // Best-effort copy to the central CMS so the lead enters the CRM pipeline
-        forwardLeadToCms({
-          email: input.email,
-          name: input.name,
+        // El suscriptor vive en el CMS (CLAUDE.md §1): no se escribe en
+        // ca_news_subscribers. El CMS deduplica por email, así que suscribirse
+        // dos veces no es un error para el visitante.
+        await enviarAlCms("/api/public/v1/leads", {
+          email: input.email.trim().toLowerCase(),
+          ...(input.name?.trim() ? { name: input.name.trim() } : {}),
           interests: input.categories.filter(c => c !== "all"),
           formSlug: "newsletter",
+          site: "comprandoamerica.com",
+          pageUrl: "https://comprandoamerica.com/news",
           consent: true,
         });
-        return { success: true, message: "Verifica tu email para confirmar la suscripcion" };
+        return { success: true, message: MENSAJE_BOLETIN };
       }),
     // Public: verify subscription
     verify: publicProcedure
@@ -538,8 +539,11 @@ export const appRouter = router({
         email: z.string().email("Email inválido"),
         fuente: z.string().default("general"),
       }))
-      .mutation(async ({ input }) => {
-        await db.createLead(input);
+      .mutation(async () => {
+        // Obsoleto: los formularios ahora envían por POST /api/leads. Se deja
+        // respondiendo para navegadores con una versión anterior del sitio,
+        // que además ya mandan el mismo lead al CMS por su cuenta; reenviarlo
+        // desde aquí lo duplicaría. No escribe en ca_leads.
         return { success: true };
       }),
     // Protected: list all leads (CMS only)

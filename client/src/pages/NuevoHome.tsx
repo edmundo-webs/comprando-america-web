@@ -2,8 +2,12 @@
 // Ruta independiente de staging — no modifica ningún componente del sitio actual
 
 import React, { useState, useEffect, useRef } from "react";
+import { WHATSAPP_PHONE } from "@/lib/whatsapp";
 import { AnimatePresence, motion } from "framer-motion";
 import { sendCtaClick } from "@/lib/tracking";
+import { postCrmLead } from "@/lib/crm";
+import CampoTelefono from "@/components/CampoTelefono";
+import { telefonoAE164, TELEFONO_VACIO, type Telefono } from "@shared/telefono";
 
 /* ─── Brand ─── */
 const NAVY = "#0B1F3A";
@@ -707,31 +711,48 @@ function IconMail({ color = GOLD }: { color?: string }) {
   );
 }
 
+/** `whatsapp` va en E.164 (CLAUDE.md §5): el país lo eligió la persona. */
 type ContactData = { nombre: string; whatsapp: string; email: string };
 
+/* Un mismo recorrido manda el contacto y, al abrir WhatsApp, la ficha: el CMS
+   los junta en un solo registro por este identificador. */
+let _submissionId: string | null = null;
+function submissionIdTuRuta(): string {
+  if (!_submissionId) _submissionId = crypto.randomUUID();
+  return _submissionId;
+}
+
 function Screen6Contact({ onNext }: { onNext: (data: ContactData) => void }) {
-  const [form, setForm] = useState<ContactData>({ nombre: "", whatsapp: "", email: "" });
+  const [form, setForm] = useState<{ nombre: string; email: string }>({ nombre: "", email: "" });
+  const [telefono, setTelefono] = useState<Telefono>(TELEFONO_VACIO);
   const [errors, setErrors] = useState<Partial<ContactData>>({});
   const [focused, setFocused] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  function validate() {
+  function handleSubmit() {
     const e: Partial<ContactData> = {};
     if (!form.nombre.trim()) e.nombre = "Tu nombre es necesario";
-    if (!form.whatsapp.trim() || form.whatsapp.replace(/\D/g, "").length < 7) e.whatsapp = "Ingresa un número válido";
+    const tel = telefonoAE164(telefono.pais, telefono.numero);
+    if (!tel.ok) e.whatsapp = tel.error;
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Ingresa un correo válido";
-    return e;
-  }
-
-  function handleSubmit() {
-    const e = validate();
-    if (Object.keys(e).length > 0) { setErrors(e); return; }
+    if (Object.keys(e).length > 0 || !tel.ok) { setErrors(e); return; }
     setSubmitting(true);
+    const datos: ContactData = { nombre: form.nombre.trim(), whatsapp: tel.e164, email: form.email.trim() };
+    // Antes esta pantalla no guardaba el contacto en ningún lado: ahora va al CMS.
+    postCrmLead({
+      name: datos.nombre,
+      email: datos.email,
+      phone: datos.whatsapp,
+      sourceSlug: "web_ca_tu_ruta",
+      hito: "tu_ruta_contacto",
+      stage: "partial",
+      submissionId: submissionIdTuRuta(),
+    }, "");
     // Small delay for perceived processing
-    setTimeout(() => onNext(form), 600);
+    setTimeout(() => onNext(datos), 600);
   }
 
-  function field(id: keyof ContactData, label: string, placeholder: string, icon: JSX.Element, type = "text") {
+  function field(id: "nombre" | "email", label: string, placeholder: string, icon: JSX.Element, type = "text") {
     const isFoc = focused === id;
     const hasErr = !!errors[id];
     return (
@@ -772,7 +793,24 @@ function Screen6Contact({ onNext }: { onNext: (data: ContactData) => void }) {
         {/* Form */}
         <div>
           {field("nombre", "Nombre", "Tu nombre completo", <IconUser />, "text")}
-          {field("whatsapp", "WhatsApp", "+52 55 1234 5678", <IconPhone />, "tel")}
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: "'Inter',sans-serif", fontSize: "12px", fontWeight: 700, letterSpacing: "0.12em", color: errors.whatsapp ? "#E05C5C" : focused === "whatsapp" ? GOLD : "#6A8FAF", textTransform: "uppercase", marginBottom: "8px", transition: "color 0.2s" }}>
+              <IconPhone /> WhatsApp
+            </label>
+            <CampoTelefono
+              valor={telefono}
+              onCambio={t => { setTelefono(t); setErrors(prev => ({ ...prev, whatsapp: undefined })); }}
+              error={errors.whatsapp}
+              placeholder="55 1234 5678"
+              ariaLabel="Número de WhatsApp"
+              onFocus={() => { setFocused("whatsapp"); setErrors(prev => ({ ...prev, whatsapp: undefined })); }}
+              onBlur={() => setFocused(null)}
+              estiloBoton={{ padding: "14px 10px", background: NAVY_CARD, border: `1.5px solid ${errors.whatsapp && !telefono.pais ? "#E05C5C" : NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "14px", outline: "none", cursor: "pointer" }}
+              estiloNumero={{ padding: "14px 16px", background: NAVY_CARD, border: `1.5px solid ${errors.whatsapp ? "#E05C5C" : focused === "whatsapp" ? GOLD : NAVY_BORDER}`, borderRadius: "10px", color: "#E8ECF1", fontFamily: "'Inter',sans-serif", fontSize: "15px", outline: "none", transition: "border-color 0.2s", boxSizing: "border-box" }}
+              claseError=""
+              estiloError={{ fontFamily: "'Inter',sans-serif", fontSize: "12px", color: "#E05C5C", marginTop: "5px", marginLeft: "2px" }}
+            />
+          </div>
           {field("email", "Correo electrónico", "tu@correo.com", <IconMail />, "email")}
         </div>
 
@@ -888,7 +926,25 @@ function ResultScreen({ perfil, contactData, rankedVehicles, investorData, onUnd
       "",
       "Me gustaría agendar un diagnóstico estratégico.",
     ].join("\n");
-    const waUrl = `https://wa.me/523346766178?text=${encodeURIComponent(msg)}`;
+    // Primero la ficha al CMS, después WhatsApp (el envío sale con keepalive).
+    if (contactData) {
+      postCrmLead({
+        name: nombre,
+        email,
+        phone: whatsapp,
+        sourceSlug: "web_ca_tu_ruta",
+        hito: "tu_ruta_whatsapp",
+        stage: "partial",
+        submissionId: submissionIdTuRuta(),
+        formFields: [
+          { label: "Perfil", value: perfil.nombre },
+          // "Rol" a secas el CMS lo toma como el cargo del contacto: se aclara.
+          ...fichaData.map(f => ({ label: f.label === "Rol" ? "Rol en la inversión" : f.label, value: String(f.value) })),
+          ...topVehicles.slice(0, 3).map((v, i) => ({ label: `Vehículo compatible ${i + 1}`, value: `${v.nombre} — ${v.pct}%` })),
+        ],
+      }, "");
+    }
+    const waUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(msg)}`;
     sendCtaClick({ cta: "nuevohome-gps-whatsapp", location: "/nuevo-home", destination: waUrl });
     window.open(waUrl, "_blank");
   }

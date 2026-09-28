@@ -494,8 +494,7 @@ export async function updateSubscriberCategories(
  * DDL idempotente de `ca_leads`. La migración 0007 nunca se aplicó en
  * producción (el deploy no corre `db:push`), así que cada registro de las
  * landings fallaba con "Table 'ca_leads' doesn't exist" y el lead se perdía.
- * Se crea en el arranque —igual que ensureAnalyticsTables— y también como
- * red de seguridad dentro de createLead.
+ * Ya no se llama al arrancar: el sitio dejó de escribir en ca_leads.
  */
 const LEADS_DDL = `
   CREATE TABLE IF NOT EXISTS \`ca_leads\` (
@@ -544,73 +543,10 @@ export async function ensureLeadsTable(): Promise<boolean> {
   }
 }
 
-let _crmPool: mysql.Pool | null = null;
-
-function getCrmPool(): mysql.Pool | null {
-  if (!_crmPool && process.env.CRM_DATABASE_URL) {
-    _crmPool = mysql.createPool({
-      uri: process.env.CRM_DATABASE_URL,
-      ssl: { rejectUnauthorized: true },
-      connectionLimit: 3,
-    });
-  }
-  return _crmPool;
-}
-
-async function syncToCrm(nombreCompleto: string, email: string, whatsapp: string): Promise<void> {
-  const pool = getCrmPool();
-  if (!pool) return;
-  const parts = nombreCompleto.trim().split(/\s+/);
-  const firstName = parts[0] ?? '';
-  const lastName = parts.slice(1).join(' ') ?? '';
-  try {
-    await pool.execute(
-      "INSERT INTO crm_contacts (first_name, last_name, email, whatsapp, source_id, status, created_by, lead_score_auto) VALUES (?, ?, ?, ?, NULL, 'nuevo', 1, 0)",
-      [firstName, lastName, email, whatsapp]
-    );
-    console.log("[createLead] CRM sync OK");
-  } catch (err: any) {
-    console.error("[createLead] CRM sync ERROR:", err?.message, err?.code);
-  }
-}
-
-export async function createLead(data: InsertLead): Promise<Lead | undefined> {
-  await getDb(); // ensure _pool is initialized
-  if (!_pool) {
-    console.warn("[Database] Cannot create lead: database not available");
-    return undefined;
-  }
-  const { nombreCompleto, whatsapp, email, fuente = 'general' } = data;
-
-  const insertSql = 'INSERT INTO ca_leads (nombreCompleto, whatsapp, email, fuente) VALUES (?, ?, ?, ?)';
-  // No se loguean nombre/email/whatsapp: son datos personales del visitante.
-  console.log("[createLead] insertando lead fuente=", fuente);
-
-  // Use mysql2 directly — Drizzle adds DEFAULT for auto/defaultNow cols which TiDB rejects
-  let result: any;
-  try {
-    [result] = await _pool.execute(insertSql, [nombreCompleto, whatsapp, email, fuente]);
-  } catch (err: any) {
-    // La tabla puede no existir si la migración 0007 nunca corrió en este
-    // entorno. Se crea al vuelo y se reintenta una sola vez para no perder
-    // el lead del visitante.
-    if (err?.code === "ER_NO_SUCH_TABLE" && (await ensureLeadsTable())) {
-      console.warn("[createLead] ca_leads no existía — creada, reintentando insert");
-      [result] = await _pool.execute(insertSql, [nombreCompleto, whatsapp, email, fuente]);
-    } else {
-      console.error("[createLead] ERROR:", err?.message, err?.code, err?.sqlState, err?.sqlMessage);
-      throw err;
-    }
-  }
-  const id = Number(result.insertId);
-  const db = await getDb();
-  const row = await db.select().from(leads).where(eq(leads.id, id)).limit(1);
-
-  // Mirror to CRM — fire-and-forget, never blocks the main response
-  syncToCrm(nombreCompleto, email, whatsapp).catch(() => {});
-
-  return row.length > 0 ? row[0] : undefined;
-}
+// Ya no hay escritura de leads aquí (CLAUDE.md §1): los formularios envían
+// por POST /api/leads al CMS. Tampoco hay conexión directa a la base del CRM
+// (la antigua CRM_DATABASE_URL). ca_leads se conserva solo para leer lo que
+// ya tiene: el panel /cms/leads y el script de exportación.
 
 export async function getAllLeads(): Promise<Lead[]> {
   const db = await getDb();

@@ -1,13 +1,10 @@
 /*
- * Ingesta pública de leads al CRM — punto único de envío para todo el sitio.
- * Centraliza la función que antes estaba duplicada en GpsPage.tsx y
- * EstructuraEmpresarial.tsx. Adjunta automáticamente visitorId, recorrido
- * (journey), URL de origen y parámetros UTM a cada envío.
+ * Ingesta de leads — punto único de envío para todo el sitio.
+ * Manda a POST /api/leads de este mismo sitio; el servidor lo reenvía al CMS
+ * con el token (server/routes/leads.ts). El navegador nunca habla con la API
+ * de leads del CMS ni lleva tokens (CLAUDE.md §1 y §3). Adjunta la URL de
+ * origen y los parámetros UTM a cada envío.
  */
-import { getVisitorId } from "./visitor";
-import { getJourney } from "./journey";
-
-const CRM_API_URL = (import.meta.env?.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
 
 /* ─── Contacto recordado localmente ───
    Se guarda tras el primer envío exitoso en cualquiera de las guías, para
@@ -90,33 +87,32 @@ export interface CrmLeadPayload {
 }
 
 /**
- * Envía el lead al CRM. Nunca lanza: devuelve `true` solo si el CRM confirmó
- * que lo guardó, para que quien lo llame pueda decidir si el registro del
- * visitante quedó realmente asegurado en algún destino.
+ * Envía el lead. Nunca lanza: devuelve `true` cuando el servidor del sitio lo
+ * recibió. Desde ahí el servidor se encarga de que llegue al CMS (reintenta si
+ * el CMS no responde y, si al final no entra, lo deja en su registro).
  */
 export async function postCrmLead(payload: CrmLeadPayload, honeypot: string): Promise<boolean> {
   if (honeypot) return false; // bot llenó el campo oculto — omitir
-  const visitorId = getVisitorId();
-  const journey = getJourney();
   try {
-    const res = await fetch(`${CRM_API_URL}/api/public/leads`, {
+    const res = await fetch("/api/leads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // Sobrevive si la página abre WhatsApp o se cierra justo después:
+      // el lead sale antes de que la persona se vaya.
+      keepalive: true,
       body: JSON.stringify({
         ...payload,
-        visitorId,
         sourceUrl: window.location.href,
-        journey,
-        ...parseUtm(),
+        utm: parseUtm(),
       }),
     });
     if (!res.ok) {
-      console.warn("[CRM] lead post rechazado:", res.status, await res.text().catch(() => ""));
+      console.warn("[leads] envío rechazado:", res.status, await res.text().catch(() => ""));
       return false;
     }
     return true;
   } catch (err) {
-    console.warn("[CRM] lead post failed (best-effort):", err);
+    console.warn("[leads] envío fallido:", err);
     return false;
   }
 }
