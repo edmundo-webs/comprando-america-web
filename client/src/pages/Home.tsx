@@ -279,7 +279,7 @@ const EXPERTS = [
   {
     name: "Daniel Palacios",
     decision: "Estructura fiscal y optimización tributaria para empresas e inversionistas.",
-    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439334/comprando-america/wFeekCNwGVKwmuYw.JPG.webp",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790785590/tts-news/f30onwqy75s7picht00b.jpg",
   },
   {
     name: "Aubrey Dwyer",
@@ -289,7 +289,7 @@ const EXPERTS = [
   {
     name: "Destiny Bounds",
     decision: "Derecho corporativo, pequeñas empresas y propiedad intelectual.",
-    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790788037/tts-news/hmghxbnplneozezkxygd.jpg",
   },
   {
     name: "Sebastián Jara",

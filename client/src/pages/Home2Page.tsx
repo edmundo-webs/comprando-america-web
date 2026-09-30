@@ -92,9 +92,9 @@ const PANEL_IMG = "https://lh3.googleusercontent.com/d/191DAUtt8vkLpZJatNDqvtYrR
 const EXPERTS = [
   { name: "Joe Faraci", role: "Bienes Raíces", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439173/comprando-america/SLCApXDNVruIMYzi.jpg" },
   { name: "Tomás Resendez", role: "Inmigración", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674492/tts-news/luo4ghjyjekkpxh8kh2n.jpg" },
-  { name: "Daniel Palacios", role: "CPA & Fiscal", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439334/comprando-america/wFeekCNwGVKwmuYw.JPG.webp" },
+  { name: "Daniel Palacios", role: "CPA & Fiscal", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790785590/tts-news/f30onwqy75s7picht00b.jpg" },
   { name: "Aubrey Dwyer", role: "Derecho Corporativo", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439166/comprando-america/QZAlYTAoaVokeCSo.jpg" },
-  { name: "Destiny Bounds", role: "Corporativo & PI", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif" },
+  { name: "Destiny Bounds", role: "Corporativo & PI", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790788037/tts-news/hmghxbnplneozezkxygd.jpg" },
   { name: "John McKee", role: "Estrategia Comercial", img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439314/comprando-america/sZacCQEqvoOyeOMO.avif" },
 ];
 

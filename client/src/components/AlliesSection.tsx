@@ -22,7 +22,7 @@ const allies: Ally[] = [
     name: "Daniel Palacios",
     specialty: "Contador CPA y Fiscalista",
     description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
-    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439334/comprando-america/wFeekCNwGVKwmuYw.JPG.webp",
+    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790785590/tts-news/f30onwqy75s7picht00b.jpg",
   },
   {
     name: "Aubrey Dwyer",
@@ -34,7 +34,7 @@ const allies: Ally[] = [
     name: "Destiny Bounds",
     specialty: "Abogada Corporativa y PI",
     description: "Fundadora de Bounds Law LLC, especializada en derecho corporativo, pequeñas empresas y propiedad intelectual. Autora y conferencista nacional.",
-    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif",
+    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790788037/tts-news/hmghxbnplneozezkxygd.jpg",
   },
   {
     name: "Sebastián Jara",
