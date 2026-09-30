@@ -173,8 +173,8 @@ export const EVENTOS: Evento[] = [
     tipo: "Online · Gratuito",
     kicker: "2ª Cumbre Digital",
     titulo: "Casas, Negocios y Visas",
-    fecha: "Sábado 24 de octubre, 2026",
-    rango: "Sábado 24 de octubre de 2026",
+    fecha: "Sábado 14 de noviembre, 2026",
+    rango: "Sábado 14 de noviembre de 2026",
     horario: "6 horas · 10:00 AM Houston / 9:00 AM México",
     lugar: "En vivo por Facebook y YouTube",
     /* La tarjeta lleva el flyer, que ya dice el titular, la fecha y "regístrate
