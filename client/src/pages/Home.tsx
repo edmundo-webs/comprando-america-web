@@ -269,17 +269,17 @@ const EXPERTS = [
   {
     name: "Joe Faraci",
     decision: "Operación e inversión inmobiliaria. 250+ propiedades. 28 años en el mercado.",
-    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439173/comprando-america/SLCApXDNVruIMYzi.jpg",
   },
   {
     name: "Tomás Resendez",
     decision: "Estrategias migratorias. Visa E-2 y residencia a través de inversión.",
-    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439162/comprando-america/QGuNYwiuoAkxjDwj.png",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674492/tts-news/luo4ghjyjekkpxh8kh2n.jpg",
   },
   {
     name: "Daniel Palacios",
     decision: "Estructura fiscal y optimización tributaria para empresas e inversionistas.",
-    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439036/comprando-america/CPGtnnreqZlWVzgL.png",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790785590/tts-news/f30onwqy75s7picht00b.jpg",
   },
   {
     name: "Aubrey Dwyer",
@@ -289,7 +289,7 @@ const EXPERTS = [
   {
     name: "Destiny Bounds",
     decision: "Derecho corporativo, pequeñas empresas y propiedad intelectual.",
-    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439040/comprando-america/EDQOyfeHfevdqerE.avif",
+    img: "https://res.cloudinary.com/dgruohz6f/image/upload/v1790788037/tts-news/hmghxbnplneozezkxygd.jpg",
   },
   {
     name: "Sebastián Jara",

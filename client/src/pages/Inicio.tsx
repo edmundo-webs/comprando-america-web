@@ -58,9 +58,9 @@ const PAGE_SEO = {
 
 /* ─── Photos (reused from the site's existing team/leadership content) ─── */
 const EDMUNDO_PHOTO = "https://lh3.googleusercontent.com/d/1Um6fwMpl_mMyAZWmF1hWVdnLYpJCp0Kz=w800";
-const JOE_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439239/comprando-america/YfxVlywHHLmCeDRI.png";
-const TOMAS_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439162/comprando-america/QGuNYwiuoAkxjDwj.png";
-const DANIEL_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439036/comprando-america/CPGtnnreqZlWVzgL.png";
+const JOE_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439173/comprando-america/SLCApXDNVruIMYzi.jpg";
+const TOMAS_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674492/tts-news/luo4ghjyjekkpxh8kh2n.jpg";
+const DANIEL_PHOTO = "https://res.cloudinary.com/dgruohz6f/image/upload/v1790785590/tts-news/f30onwqy75s7picht00b.jpg";
 
 /* ─── Data ─── */
 const COMPASS_ROUTES = [
