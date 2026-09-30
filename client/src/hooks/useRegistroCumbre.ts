@@ -84,7 +84,7 @@ export function useRegistroCumbre(fuente: string) {
     }
 
     setSubmitted(true);
-    toast.success("¡Listo! Te esperamos el sábado 24 de octubre.");
+    toast.success("¡Listo! Te esperamos el sábado 14 de noviembre.");
     setTimeout(() => {
       window.location.href = CUMBRE_WHATSAPP_GRUPO;
     }, 1500);
