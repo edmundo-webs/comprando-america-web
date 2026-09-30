@@ -16,13 +16,13 @@ const allies: Ally[] = [
     name: "Tomás Resendez",
     specialty: "Abogado de Inmigración",
     description: "Especialista en inmigración corporativa con experiencia representando a Fortune 100. Bilingüe (inglés-español), garantiza asesoramiento legal claro y preciso.",
-    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439162/comprando-america/QGuNYwiuoAkxjDwj.png",
+    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1782674492/tts-news/luo4ghjyjekkpxh8kh2n.jpg",
   },
   {
     name: "Daniel Palacios",
     specialty: "Contador CPA y Fiscalista",
     description: "Especialista en contabilidad empresarial y planeación fiscal. Experto asesorando a empresas y particulares con socios latinos.",
-    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439036/comprando-america/CPGtnnreqZlWVzgL.png",
+    image: "https://res.cloudinary.com/dgruohz6f/image/upload/v1773439334/comprando-america/wFeekCNwGVKwmuYw.JPG.webp",
   },
   {
     name: "Aubrey Dwyer",
