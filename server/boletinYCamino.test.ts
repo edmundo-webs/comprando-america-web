@@ -161,6 +161,59 @@ describe("exportar-leads-a-cms", () => {
     expect(ada.find((e: any) => e.ruta === "/api/public/leads").cuerpo.phone).toBe("+523346766178");
   });
 
+  it("--csv arma la tabla del importador del CMS, separada por tabuladores", async () => {
+    const { agruparContactos, e164SiYaLoEs, normalizarEmail, tablaCsv, etiquetaFormulario } = await import("../scripts/exportar-leads-a-cms.mjs");
+
+    expect(etiquetaFormulario("Cumbre Digital Ago 2026")).toBe("form:cumbre-digital-ago-2026");
+
+    const r = (tabla: string, fuente: string, fecha: string, nombre: string, email: string, tel: string, datos = {}) => ({
+      tabla, fuente, fecha, nombre, datos,
+      email: normalizarEmail(email), telefonoE164: e164SiYaLoEs(tel), telefonoCrudo: tel,
+    });
+    const grupos = agruparContactos([
+      r("ca_leads", "cumbre-digital", "2026-08-05T10:00:00.000Z", "Ada María Lovelace", "ada@example.com", "+52 3346766178"),
+      r("ca_diagnostic_responses", "constructor", "2026-07-02T10:00:00.000Z", "Ada L", "otro@example.com", "+523346766178",
+        { perfil: "constructor", respuestas: { capital: 50000, range: "$50k\t–\n$100k" } }),
+      r("ca_news_subscribers", "", "2026-09-01T10:00:00.000Z", "", "ADA@example.com", "", { "categorías": ["visas-migracion"] }),
+      r("ca_leads", "gps-diagnostico", "2026-06-01T10:00:00.000Z", "Grace Hopper", "grace@example.com", "55 1234 5678"),
+    ]);
+
+    const lineas = tablaCsv(grupos).split("\n");
+    expect(lineas).toHaveLength(3); // encabezados + 2 contactos
+    expect(lineas[0]).toBe(
+      "Nombre\tApellido\tEmail\tTeléfono\tWhatsApp\tFecha de primer contacto\tFuente del lead\tEtiquetas\tNota",
+    );
+    const filas = lineas.slice(1).map((l) => l.split("\t"));
+    filas.forEach((f) => expect(f).toHaveLength(9));
+
+    const ada = filas.find((f) => f[2] === "otro@example.com" || f[2] === "ada@example.com")!;
+    expect(ada[0]).toBe("Ada L"); // nombre del registro más antiguo, completo
+    expect(ada[1]).toBe(""); // no se parten nombres
+    expect(ada[3]).toBe("+523346766178");
+    expect(ada[4]).toBe("+523346766178");
+    expect(ada[5]).toBe("2026-07-02"); // la fecha más antigua del contacto
+    expect(ada[6]).toBe("Web CA");
+    expect(ada[7]).toBe("newsletter,form:diagnostico,form:cumbre-digital");
+    expect(ada[8]).toContain("capital: 50000");
+    expect(ada[8]).toContain("range: $50k – $100k"); // sin tabuladores ni saltos de línea
+    expect(ada[8]).toContain("categorías: visas-migracion");
+
+    const grace = filas.find((f) => f[2] === "grace@example.com")!;
+    expect(grace[3]).toBe("55 1234 5678"); // tal como llegó, sin completar el código
+    expect(grace[4]).toBe("55 1234 5678");
+    expect(grace[7]).toBe("form:gps-diagnostico,codigo-pais-pendiente");
+    expect(grace[8]).toContain("Código de país del teléfono: pendiente (llegó como: 55 1234 5678)");
+  });
+
+  it("--csv no envía nada al CMS", () => {
+    const exportar = leer(path.join(raiz, "scripts/exportar-leads-a-cms.mjs"));
+    const main = exportar.slice(exportar.indexOf("async function main"));
+    const salidaCsv = main.indexOf('console.log("No se envió nada al CMS (--csv nunca envía).");\n    return;');
+    expect(salidaCsv).toBeGreaterThan(0);
+    expect(salidaCsv).toBeLessThan(main.indexOf("fetch("));
+    expect(main.indexOf("if (csv)")).toBeLessThan(main.indexOf("if (!enviar)"));
+  });
+
   it("por omisión no envía nada y el conteo es de solo lectura", () => {
     const exportar = leer(path.join(raiz, "scripts/exportar-leads-a-cms.mjs"));
     expect(exportar).toContain('args.includes("--enviar")');

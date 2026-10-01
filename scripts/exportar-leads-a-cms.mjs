@@ -8,6 +8,12 @@
 //   node scripts/exportar-leads-a-cms.mjs                 # solo resumen
 //   node scripts/exportar-leads-a-cms.mjs --enviar --limite 3   # prueba con 3
 //   node scripts/exportar-leads-a-cms.mjs --enviar        # todos
+//   node scripts/exportar-leads-a-cms.mjs --csv           # tabla para el importador
+//
+// --csv imprime en pantalla, separado por tabuladores, lo que pide el
+// importador de contactos del CMS (COLUMNAS_CSV), una fila por contacto único,
+// y al final el resumen tras una línea en blanco y la palabra RESUMEN. Con
+// --csv NUNCA se envía nada, aunque también se pase --enviar.
 //
 // Teléfonos (CLAUDE.md §5): nunca se completa un código de país. Un teléfono
 // que no esté en E.164 válido se manda como está, con la marca "código de país
@@ -20,6 +26,14 @@ import { parsePhoneNumberFromString } from "libphonenumber-js/max";
 import { pathToFileURL } from "node:url";
 
 export const ETIQUETA_PAIS_PENDIENTE = "Código de país del teléfono";
+
+/** Encabezados exactos del importador del CMS, en su orden. */
+export const COLUMNAS_CSV = [
+  "Nombre", "Apellido", "Email", "Teléfono", "WhatsApp",
+  "Fecha de primer contacto", "Fuente del lead", "Etiquetas", "Nota",
+];
+export const FUENTE_CSV = "Web CA";
+export const ETIQUETA_CSV_PAIS_PENDIENTE = "codigo-pais-pendiente";
 
 export function normalizarEmail(v) {
   const t = String(v ?? "").trim().toLowerCase();
@@ -111,6 +125,103 @@ export function cuerposParaCms(grupo) {
   return cuerpos;
 }
 
+/**
+ * La misma etiqueta `form:<slug>` que pone hoy la API del CMS
+ * (formOriginTagName en el CMS): minúsculas, sin acentos, guiones.
+ */
+export function etiquetaFormulario(slug) {
+  const s = String(slug ?? "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+  return s ? `form:${s}` : "";
+}
+
+/** Formulario de origen de un registro: `fuente` en ca_leads; /diagnostico en los diagnósticos. */
+function slugFormulario(r) {
+  if (r.tabla === "ca_leads") return r.fuente;
+  if (r.tabla === "ca_diagnostic_responses") return "diagnostico";
+  return "";
+}
+
+/** Una celda en una sola línea: sin tabuladores ni saltos de línea. */
+export function celdaCsv(v) {
+  return String(v ?? "").replace(/[\t\r\n]+/g, " ").replace(/ {2,}/g, " ").trim();
+}
+
+function textoDato(v) {
+  if (v === null || v === undefined || v === "") return "";
+  if (Array.isArray(v)) return v.map(textoDato).filter(Boolean).join(", ");
+  if (typeof v === "object") {
+    return Object.entries(v).map(([k, x]) => (textoDato(x) ? `${k}: ${textoDato(x)}` : "")).filter(Boolean).join(", ");
+  }
+  return String(v);
+}
+
+/** Lo que dejó un registro, además de nombre, email y teléfono. */
+function detalleRegistro(r) {
+  const fecha = r.fecha ? ` (${String(r.fecha).slice(0, 10)})` : "";
+  const datos = Object.entries(r.datos ?? {})
+    .map(([k, v]) => (textoDato(v) ? `${k}: ${textoDato(v)}` : ""))
+    .filter(Boolean)
+    .join(", ");
+  const titulo =
+    r.tabla === "ca_leads" ? `Formulario ${r.fuente || "sin nombre"}`
+    : r.tabla === "ca_diagnostic_responses" ? "Diagnóstico /diagnostico"
+    : "Boletín /news";
+  return `${titulo}${fecha}${datos ? `: ${datos}` : ""}`;
+}
+
+/** Un contacto único → una fila del importador, con las columnas de COLUMNAS_CSV. */
+export function filaCsv(grupo) {
+  const ordenado = [...grupo].sort((a, b) => String(a.fecha ?? "￿").localeCompare(String(b.fecha ?? "￿")));
+  const distintos = (f) => [...new Set(ordenado.map(f).filter(Boolean))];
+
+  const nombres = distintos((r) => r.nombre);
+  const emails = distintos((r) => r.email);
+  // Cada teléfono en E.164 si ya lo está; si no, tal como llegó.
+  const telefonos = distintos((r) => r.telefonoE164 || r.telefonoCrudo);
+  const sinCodigo = distintos((r) => (r.telefonoE164 ? "" : r.telefonoCrudo));
+  const fechas = ordenado.map((r) => r.fecha).filter(Boolean);
+
+  const etiquetas = [];
+  if (grupo.some((r) => r.tabla === "ca_news_subscribers")) etiquetas.push("newsletter");
+  for (const r of ordenado) {
+    const e = etiquetaFormulario(slugFormulario(r));
+    if (e && !etiquetas.includes(e)) etiquetas.push(e);
+  }
+  if (sinCodigo.length) etiquetas.push(ETIQUETA_CSV_PAIS_PENDIENTE);
+
+  const nota = [
+    "Exportación del sitio web comprandoamerica.com",
+    ...ordenado.map(detalleRegistro),
+    ...(sinCodigo.length ? [`${ETIQUETA_PAIS_PENDIENTE}: pendiente (llegó como: ${sinCodigo.join(", ")})`] : []),
+    ...(nombres.length > 1 ? [`Otros nombres: ${nombres.slice(1).join(", ")}`] : []),
+    ...(emails.length > 1 ? [`Otros emails: ${emails.slice(1).join(", ")}`] : []),
+    ...(telefonos.length > 1 ? [`Otros teléfonos: ${telefonos.slice(1).join(", ")}`] : []),
+  ].join(" | ");
+
+  const telefono = telefonos[0] ?? "";
+  return [
+    nombres[0] ?? "",
+    "", // Apellido: no se parten nombres.
+    emails[0] ?? "",
+    telefono,
+    telefono,
+    fechas.length ? String(fechas[0]).slice(0, 10) : "",
+    FUENTE_CSV,
+    etiquetas.join(","),
+    nota,
+  ].map(celdaCsv);
+}
+
+/** Encabezados + una fila por contacto, separados por tabuladores. */
+export function tablaCsv(grupos) {
+  return [COLUMNAS_CSV, ...grupos.map(filaCsv)].map((fila) => fila.join("\t")).join("\n");
+}
+
 async function leerTablas(conn) {
   const registros = [];
   const sinContacto = { ca_leads: 0, ca_diagnostic_responses: 0, ca_news_subscribers: 0 };
@@ -122,6 +233,13 @@ async function leerTablas(conn) {
     registros.push(r);
   };
   const [leads] = await conn.query("SELECT nombreCompleto, whatsapp, email, fuente, createdAt FROM ca_leads");
+  const json = (t) => {
+    try {
+      return t ? JSON.parse(t) : null;
+    } catch {
+      return t;
+    }
+  };
   for (const l of leads) {
     agregar({
       tabla: "ca_leads", fuente: l.fuente, fecha: l.createdAt?.toISOString?.() ?? l.createdAt,
@@ -129,19 +247,26 @@ async function leerTablas(conn) {
       telefonoE164: e164SiYaLoEs(l.whatsapp), telefonoCrudo: String(l.whatsapp ?? "").trim(),
     });
   }
-  const [diags] = await conn.query("SELECT nombre, whatsapp, email, profile, createdAt FROM ca_diagnostic_responses");
+  const [diags] = await conn.query(
+    "SELECT nombre, whatsapp, email, profile, responses, completed, utmSource, utmMedium, utmCampaign, referrer, createdAt FROM ca_diagnostic_responses",
+  );
   for (const d of diags) {
     agregar({
       tabla: "ca_diagnostic_responses", fuente: d.profile, fecha: d.createdAt?.toISOString?.() ?? d.createdAt,
       nombre: String(d.nombre ?? "").trim(), email: normalizarEmail(d.email),
       telefonoE164: e164SiYaLoEs(d.whatsapp), telefonoCrudo: String(d.whatsapp ?? "").trim(),
+      datos: {
+        perfil: d.profile, respuestas: json(d.responses), completado: d.completed === "true" ? "sí" : "no",
+        utm_source: d.utmSource, utm_medium: d.utmMedium, utm_campaign: d.utmCampaign, "página de procedencia": d.referrer,
+      },
     });
   }
-  const [subs] = await conn.query("SELECT name, email, createdAt FROM ca_news_subscribers");
+  const [subs] = await conn.query("SELECT name, email, categories, createdAt FROM ca_news_subscribers");
   for (const s of subs) {
     agregar({
       tabla: "ca_news_subscribers", fuente: "", fecha: s.createdAt?.toISOString?.() ?? s.createdAt,
       nombre: String(s.name ?? "").trim(), email: normalizarEmail(s.email), telefonoE164: "", telefonoCrudo: "",
+      datos: { "categorías": json(s.categories) },
     });
   }
   return { registros, sinContacto, totales: { ca_leads: leads.length, ca_diagnostic_responses: diags.length, ca_news_subscribers: subs.length } };
@@ -149,6 +274,7 @@ async function leerTablas(conn) {
 
 async function main() {
   const args = process.argv.slice(2);
+  const csv = args.includes("--csv");
   const enviar = args.includes("--enviar");
   const iLimite = args.indexOf("--limite");
   const limite = iLimite >= 0 ? Number(args[iLimite + 1]) : Infinity;
@@ -168,6 +294,18 @@ async function main() {
   await conn.end();
 
   const grupos = agruparContactos(registros);
+
+  if (csv) {
+    console.log(tablaCsv(grupos));
+    console.log("\nRESUMEN");
+    console.log("Registros por tabla:", JSON.stringify(totales));
+    console.log("Sin email ni teléfono (no se exportan):", JSON.stringify(sinContacto));
+    console.log(`Filas de datos (contactos únicos después de quitar duplicados): ${grupos.length}`);
+    console.log(`Con teléfono sin código de país (etiqueta ${ETIQUETA_CSV_PAIS_PENDIENTE}): ${grupos.filter((g) => g.some((r) => r.telefonoCrudo && !r.telefonoE164)).length}`);
+    console.log("No se envió nada al CMS (--csv nunca envía).");
+    return;
+  }
+
   const envios = grupos.flatMap(cuerposParaCms);
   const pendientes = envios.filter((e) => (e.cuerpo.formFields ?? []).some((f) => f.label === ETIQUETA_PAIS_PENDIENTE)).length;
 
