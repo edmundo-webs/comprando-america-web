@@ -7,10 +7,11 @@
  * URLs and never refresh as new content gets published. These endpoints
  * pull from the DB on every request and cache for 10 minutes.
  */
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, lte } from "drizzle-orm";
 import { Router } from "express";
 import { blogPosts, newsArticles } from "../../drizzle/schema";
 import { getDb } from "../db";
+import { buildBlogRss } from "./blog-rss";
 
 const BASE = "https://comprandoamerica.com";
 const SITE_NAME = "Comprando América";
@@ -292,5 +293,30 @@ seoRouter.get(["/rss.xml", "/feed", "/feed.xml"], async (_req, res) => {
   } catch (err: any) {
     console.error("[seo] rss error:", err?.message);
     res.status(500).type("text/plain").send("rss error");
+  }
+});
+
+// Separate from the existing news feed. Reflects CMS publications without a build.
+seoRouter.get("/blog/rss.xml", async (_req, res) => {
+  try {
+    res.set("Cache-Control", "public, max-age=300");
+    const cached = readCache("blog-rss");
+    if (cached) { res.type("application/rss+xml").send(cached); return; }
+    const db = await getDb();
+    if (!db) throw new Error("Blog database unavailable");
+    const posts = await db.select({
+      slug: blogPosts.slug, title: blogPosts.title,
+      description: blogPosts.excerpt, imageUrl: blogPosts.featuredImage,
+      category: blogPosts.category, publishedAt: blogPosts.publishedAt,
+    }).from(blogPosts).where(and(
+      eq(blogPosts.status, "published"), eq(blogPosts.language, "es"),
+      lte(blogPosts.publishedAt, new Date())
+    )).orderBy(desc(blogPosts.publishedAt), desc(blogPosts.id)).limit(50);
+    const xml = buildBlogRss(posts);
+    writeCache("blog-rss", xml);
+    res.type("application/rss+xml").send(xml);
+  } catch {
+    res.set("Cache-Control", "no-store");
+    res.status(503).type("text/plain").send("Blog feed temporarily unavailable");
   }
 });
