@@ -7,7 +7,7 @@
  * URLs and never refresh as new content gets published. These endpoints
  * pull from the DB on every request and cache for 10 minutes.
  */
-import { and, desc, eq, lte } from "drizzle-orm";
+import { and, desc, eq, lte, sql } from "drizzle-orm";
 import { Router } from "express";
 import { blogPosts, newsArticles } from "../../drizzle/schema";
 import { getDb } from "../db";
@@ -104,7 +104,8 @@ function categoryLabel(cat: string | null | undefined): string {
 // ─── data fetchers ────────────────────────────────────────────────────
 async function fetchPublishedNews(limit = 1000): Promise<SimplePost[]> {
   const db = await getDb();
-  if (!db) return [];
+  if (!db) throw new Error("News database unavailable");
+  const publishedDate = sql<Date>`COALESCE(${newsArticles.publishedAtInternal}, ${newsArticles.publishedAt})`;
   const rows = await db
     .select({
       slug: newsArticles.slug,
@@ -117,8 +118,8 @@ async function fetchPublishedNews(limit = 1000): Promise<SimplePost[]> {
       updatedAt: newsArticles.updatedAt,
     })
     .from(newsArticles)
-    .where(eq(newsArticles.status, "published"))
-    .orderBy(desc(newsArticles.publishedAtInternal), desc(newsArticles.publishedAt))
+    .where(and(eq(newsArticles.status, "published"), lte(publishedDate, new Date())))
+    .orderBy(desc(publishedDate), desc(newsArticles.id))
     .limit(limit);
   return rows.map((r) => ({
     slug: r.slug,
@@ -207,14 +208,14 @@ function buildNewsSitemap(news: SimplePost[]): string {
 }
 
 function buildRss(news: SimplePost[]): string {
-  const items = news.slice(0, 30).map((n) => {
+  const items = news.slice(0, 50).map((n) => {
     const link = `${BASE}/news/${xmlEscape(n.slug)}`;
     const title = xmlEscape((n.title ?? "").slice(0, 300));
     const desc = xmlEscape((n.description ?? "").slice(0, 500));
     const pub = (n.publishedAt ?? n.updatedAt ?? new Date()).toUTCString();
     const cat = xmlEscape(categoryLabel(n.category));
     const enclosure = n.imageUrl
-      ? `      <enclosure url="${xmlEscape(n.imageUrl)}" type="image/jpeg" />\n`
+      ? `      <media:content url="${xmlEscape(n.imageUrl)}" medium="image" />\n`
       : "";
     return `    <item>
       <title>${title}</title>
@@ -228,7 +229,7 @@ ${enclosure}      <description>${desc}</description>
 
   const lastBuild = new Date().toUTCString();
   return `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>${xmlEscape(SITE_NAME)} — Noticias</title>
     <link>${BASE}/news</link>
@@ -236,6 +237,7 @@ ${enclosure}      <description>${desc}</description>
     <description>${xmlEscape(SITE_DESC)}</description>
     <language>es-MX</language>
     <lastBuildDate>${lastBuild}</lastBuildDate>
+    <ttl>10</ttl>
 ${items.join("\n")}
   </channel>
 </rss>
@@ -286,7 +288,7 @@ seoRouter.get(["/rss.xml", "/feed", "/feed.xml"], async (_req, res) => {
       res.type("application/rss+xml").send(cached);
       return;
     }
-    const news = await fetchPublishedNews(30);
+    const news = await fetchPublishedNews(50);
     const xml = buildRss(news);
     writeCache("rss", xml);
     res.type("application/rss+xml").send(xml);
