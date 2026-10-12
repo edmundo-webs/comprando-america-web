@@ -23,6 +23,11 @@ export const ENV = {
   // Central CMS (Community Management Services) public lead API
   cmsApiUrl: process.env.CMS_API_URL ?? "",
   cmsApiKey: process.env.CMS_API_KEY ?? "",
+  // Cloudflare Turnstile del boletín de /news (server/_core/turnstile.ts).
+  // La llave del sitio, para el navegador, es VITE_TURNSTILE_SITE_KEY.
+  get turnstileSecretKey() {
+    return process.env.TURNSTILE_SECRET_KEY ?? "";
+  },
   // Metricool — social distribution, multi-brand.
   // 3 brands supported: comprando-america, edmundo-trevino, theusmarketer.
   metricoolApiKey: process.env.METRICOOL_API_KEY ?? "",

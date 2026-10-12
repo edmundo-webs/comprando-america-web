@@ -13,6 +13,8 @@ import bcrypt from "bcryptjs";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
 import { enviarAlCms } from "./_core/cmsLead";
+import { MENSAJE_TURNSTILE, verificarTurnstile } from "./_core/turnstile";
+import { ipDelVisitante } from "./_core/visitante";
 
 export const MENSAJE_BOLETIN = "¡Gracias! Tu correo quedó registrado para recibir las noticias de Comprando América.";
 
@@ -361,11 +363,26 @@ export const appRouter = router({
         email: z.string().email("Email invalido"),
         name: z.string().optional(),
         categories: z.array(z.string()).default(["all"]),
+        // Campo trampa (honeypot): oculto para las personas. Si llega lleno,
+        // es un bot: se responde igual que un envío bueno y no se manda nada.
+        website: z.string().max(500).optional(),
+        // Token de Cloudflare Turnstile (server/_core/turnstile.ts).
+        turnstileToken: z.string().max(2048).optional(),
       }))
-      .mutation(async ({ input }) => {
+      .mutation(async ({ ctx, input }) => {
+        if (input.website?.trim()) return { success: true, message: MENSAJE_BOLETIN };
+
+        const ip = ipDelVisitante(ctx.req);
+        const verificacion = await verificarTurnstile(input.turnstileToken, ip);
+        if (!verificacion.ok) {
+          console.warn(`[boletin] Turnstile no pasó: ${verificacion.motivo}`);
+          throw new TRPCError({ code: "BAD_REQUEST", message: MENSAJE_TURNSTILE });
+        }
+
         // El suscriptor vive en el CMS (CLAUDE.md §1): no se escribe en
         // ca_news_subscribers. El CMS deduplica por email, así que suscribirse
-        // dos veces no es un error para el visitante.
+        // dos veces no es un error para el visitante. La IP del visitante es
+        // para el límite de registros por IP del CMS.
         await enviarAlCms("/api/public/v1/leads", {
           email: input.email.trim().toLowerCase(),
           ...(input.name?.trim() ? { name: input.name.trim() } : {}),
@@ -374,6 +391,7 @@ export const appRouter = router({
           site: "comprandoamerica.com",
           pageUrl: "https://comprandoamerica.com/news",
           consent: true,
+          ...(ip ? { clientIp: ip } : {}),
         });
         return { success: true, message: MENSAJE_BOLETIN };
       }),
