@@ -238,7 +238,7 @@ export function NewsletterSignup() {
         </Button>
 
         <p className="text-xs text-foreground/50 text-center">
-          Recibirás un email de confirmación. Puedes desuscriberte en cualquier momento.
+          Te escribiremos solo con novedades de Comprando América. Puedes darte de baja cuando quieras.
         </p>
       </form>
     </div>
