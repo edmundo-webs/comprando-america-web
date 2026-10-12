@@ -29,6 +29,8 @@ Guía permanente de este repositorio (`edmundo-webs/comprando-america-web`, en R
 * `CMS_API_KEY`: token para enviar leads (encabezado `x-api-key`). Solo en el servidor, nunca en el navegador.
 * `VITE_CRM_API_URL`: dirección del CMS para lecturas públicas desde el navegador (por ejemplo, el portafolio). Por defecto `https://ca-cms.onrender.com`. Nunca lleva tokens.
 * `MIEMBROS_URL`: https://miembros.comprandoamerica.com
+* `VITE_TURNSTILE_SITE_KEY`: llave pública del widget de Cloudflare Turnstile del boletín de /news. Se lee al compilar; sin ella no hay widget.
+* `TURNSTILE_SECRET_KEY`: llave secreta de Turnstile. Solo en el servidor, nunca en el navegador. Sin ella, el boletín no verifica el token (se avisa en el registro).
 
 ## 4. Cómo trabajar
 

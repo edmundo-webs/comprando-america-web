@@ -13,6 +13,7 @@
 import { Router } from "express";
 import { esE164Valido } from "../../shared/telefono";
 import { enviarAlCms } from "../_core/cmsLead";
+import { ipDelVisitante } from "../_core/visitante";
 
 export const leadsRouter = Router();
 
@@ -158,7 +159,9 @@ leadsRouter.post("/api/leads", async (req, res) => {
   const preparado = prepararLead(entrada);
   if (!preparado.ok) return res.status(400).json({ ok: false, error: preparado.error });
 
-  const r = await enviarAlCms("/api/public/leads", preparado.cuerpo);
+  // La IP del visitante, para el límite de registros por IP del CMS.
+  const clientIp = ipDelVisitante(req);
+  const r = await enviarAlCms("/api/public/leads", { ...preparado.cuerpo, ...(clientIp ? { clientIp } : {}) });
   // Aunque el CMS no haya respondido, el envío quedó en manos del servidor
   // (reintento en segundo plano o registro): para el visitante, se recibió.
   res.json({ ok: true, entregado: r.entregado });
