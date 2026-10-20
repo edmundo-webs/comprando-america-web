@@ -21,8 +21,12 @@ import { ENV } from "./env";
  * «Ocupado» es otra cosa: el CMS está recibiendo muchos registros a la vez
  * (Cumbre) y responde 503 con Retry-After y `retryAfter`. Ahí se espera lo que
  * pide y se reintenta UNA sola vez; si sigue ocupado, se le avisa al visitante
- * («intenta en unos segundos») en lugar de insistir en segundo plano, que solo
- * le sumaría carga. El envío queda igual en el registro.
+ * («intenta en unos segundos») y queda un último intento en segundo plano a los
+ * 60 segundos, cuando la avalancha ya pasó: los formularios con diagnóstico
+ * siguen a WhatsApp sin esperar la respuesta y su lead no puede quedarse solo
+ * en el registro. Si ese intento también falla, el envío completo queda en el
+ * registro («ENVIO FALLIDO»). Si la persona además lo vuelve a enviar, el CMS
+ * no duplica: lo reconoce por su correo o su teléfono.
  */
 
 /** Lo que ve el visitante cuando el CMS está ocupado (mismo texto que el CMS). */
@@ -30,6 +34,9 @@ export const MENSAJE_OCUPADO = "Estamos recibiendo muchos registros, intenta en 
 
 /** Nunca se espera más que esto antes del único reintento por «ocupado». */
 export const ESPERA_OCUPADO_MAX_MS = 5_000;
+
+/** El último intento en segundo plano cuando el CMS siguió ocupado. */
+export const ULTIMO_INTENTO_OCUPADO_MS = 60_000;
 
 export type RutaCms = "/api/public/leads" | "/api/public/v1/leads";
 
@@ -132,7 +139,12 @@ export async function enviarAlCms(
     await esperar(primero.esperaMs ?? ESPERA_OCUPADO_MAX_MS);
     primero = await intentarEnvio(ruta, cuerpo, fetchImpl);
     if (!primero.entregado && primero.ocupado) {
-      registrarFallo(ruta, cuerpo, primero);
+      console.warn(`[cms-lead] CMS ocupado ${ruta}: último intento en ${ULTIMO_INTENTO_OCUPADO_MS / 1000} s`);
+      programar(async () => {
+        const r = await intentarEnvio(ruta, cuerpo, fetchImpl);
+        if (r.entregado) console.log(`[cms-lead] entregado en el último intento ${ruta}`);
+        else registrarFallo(ruta, cuerpo, r);
+      }, ULTIMO_INTENTO_OCUPADO_MS);
       return primero;
     }
   }

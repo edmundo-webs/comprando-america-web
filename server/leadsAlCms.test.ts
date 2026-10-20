@@ -303,16 +303,42 @@ describe("CMS ocupado (fila de altas llena)", () => {
     expect(programar).not.toHaveBeenCalled();
   });
 
-  it("si sigue ocupado, no insiste en segundo plano: avisa y deja el envío en el registro", async () => {
+  it("si sigue ocupado, avisa y deja un último intento a los 60 s que sí entrega", async () => {
     const errores: string[] = [];
     const spy = vi.spyOn(console, "error").mockImplementation((...a) => void errores.push(a.join(" ")));
-    const fetchImpl = vi.fn().mockImplementation(async () => ocupado());
-    const programar = vi.fn();
-    const r = await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar: async () => {}, programar });
-    spy.mockRestore();
+    const avisos = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const fetchImpl = vi.fn()
+      .mockResolvedValueOnce(ocupado())
+      .mockResolvedValueOnce(ocupado())
+      .mockResolvedValueOnce(new Response("{}", { status: 201 }));
+    const tareas: Array<{ fn: () => Promise<void> | void; ms: number }> = [];
+    const r = await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar: async () => {}, programar: (fn, ms) => void tareas.push({ fn, ms }) });
     expect(r).toMatchObject({ entregado: false, ocupado: true });
     expect(fetchImpl).toHaveBeenCalledTimes(2);
-    expect(programar).not.toHaveBeenCalled();
+    expect(tareas).toHaveLength(1);
+    expect(tareas[0].ms).toBe(cmsLead.ULTIMO_INTENTO_OCUPADO_MS);
+    expect(cmsLead.ULTIMO_INTENTO_OCUPADO_MS).toBe(60_000);
+    await tareas[0].fn();
+    spy.mockRestore();
+    avisos.mockRestore();
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+    expect(errores.join("\n")).not.toContain("ENVIO FALLIDO");
+  });
+
+  it("si el último intento también falla, queda en el registro con «ENVIO FALLIDO» y no hay más", async () => {
+    const errores: string[] = [];
+    const spy = vi.spyOn(console, "error").mockImplementation((...a) => void errores.push(a.join(" ")));
+    const avisos = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const fetchImpl = vi.fn().mockImplementation(async () => ocupado());
+    const tareas: Array<() => Promise<void> | void> = [];
+    await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar: async () => {}, programar: (fn) => void tareas.push(fn) });
+    expect(errores.join("\n")).not.toContain("ENVIO FALLIDO");
+    await tareas.shift()!();
+    spy.mockRestore();
+    avisos.mockRestore();
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+    expect(tareas).toHaveLength(0);
+    expect(errores.join("\n")).toContain("ENVIO FALLIDO");
     expect(errores.join("\n")).toContain("ada@example.com");
   });
 
