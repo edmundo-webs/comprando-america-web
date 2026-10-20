@@ -27,7 +27,7 @@ Guía permanente de este repositorio (`edmundo-webs/comprando-america-web`, en R
 
 * `CMS_API_URL`: dirección de la API del CMS, usada por el servidor.
 * `CMS_API_KEY`: token para enviar leads (encabezado `x-api-key`). Solo en el servidor, nunca en el navegador.
-* `VITE_CRM_API_URL`: dirección del CMS para lecturas públicas desde el navegador (por ejemplo, el portafolio). Por defecto `https://ca-cms.onrender.com`. Nunca lleva tokens.
+* `VITE_CRM_API_URL`: dirección del CMS para lecturas públicas desde el navegador (por ejemplo, el portafolio). Por defecto `https://cms.comprandoamerica.com` (`client/src/lib/cmsUrl.ts`). Se lee en el navegador de `import.meta.env` y en el servidor de `process.env`: el servidor también carga código de `client/src` (la página de inicio para buscadores), así que ningún módulo del cliente lee `import.meta.env` al cargarse. Nunca lleva tokens.
 * `MIEMBROS_URL`: https://miembros.comprandoamerica.com
 * `VITE_TURNSTILE_SITE_KEY`: llave pública del widget de Cloudflare Turnstile del boletín de /news. Se lee al compilar; sin ella no hay widget.
 * `TURNSTILE_SECRET_KEY`: llave secreta de Turnstile. Solo en el servidor, nunca en el navegador. Sin ella, el boletín no verifica el token (se avisa en el registro).
@@ -40,6 +40,14 @@ Guía permanente de este repositorio (`edmundo-webs/comprando-america-web`, en R
 4. Mide con la analítica que ya tiene el sitio: envíos de formularios y clics en "Acceso miembros", "Ya soy miembro: entrar" y "Quiero unirme al Grupo Empresarial".
 5. Diseño: usa los estilos existentes del sitio (azul marino `#0B1F3A`, acento azul aproximadamente `#3D7FF0`, Playfair Display e Inter).
 6. Al terminar, entrega un reporte corto: qué cambió, cómo probarlo y qué variables faltan.
+
+## 4.1 Verificación de cada PR
+
+Antes de reportar un PR, además de las pruebas (`pnpm test`):
+
+1. `pnpm build`.
+2. `NODE_ENV=production pnpm start` (igual que Render) y confirmar que el servidor arranca.
+3. Que respondan `/`, `/eventos`, `/cumbre-digital` e `/investment-week` (y las páginas que toque el PR).
 
 ## 5. Regla: teléfonos siempre con código de país
 
