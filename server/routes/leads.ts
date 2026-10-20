@@ -12,7 +12,7 @@
  */
 import { Router } from "express";
 import { esE164Valido } from "../../shared/telefono";
-import { enviarAlCms } from "../_core/cmsLead";
+import { ESPERA_OCUPADO_MAX_MS, MENSAJE_OCUPADO, enviarAlCms } from "../_core/cmsLead";
 import { ipDelVisitante } from "../_core/visitante";
 
 export const leadsRouter = Router();
@@ -162,6 +162,12 @@ leadsRouter.post("/api/leads", async (req, res) => {
   // La IP del visitante, para el límite de registros por IP del CMS.
   const clientIp = ipDelVisitante(req);
   const r = await enviarAlCms("/api/public/leads", { ...preparado.cuerpo, ...(clientIp ? { clientIp } : {}) });
+  // CMS ocupado aun después del único reintento: se le pide al visitante que
+  // lo intente en unos segundos (el formulario muestra el mensaje).
+  if (!r.entregado && r.ocupado) {
+    res.setHeader("Retry-After", String(Math.ceil(ESPERA_OCUPADO_MAX_MS / 1000)));
+    return res.status(503).json({ ok: false, ocupado: true, error: MENSAJE_OCUPADO });
+  }
   // Aunque el CMS no haya respondido, el envío quedó en manos del servidor
   // (reintento en segundo plano o registro): para el visitante, se recibió.
   res.json({ ok: true, entregado: r.entregado });

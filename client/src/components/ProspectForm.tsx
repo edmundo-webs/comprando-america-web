@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
 import CampoTelefono from "@/components/CampoTelefono";
-import { postCrmLead } from "@/lib/crm";
+import { MENSAJE_OCUPADO, enviarLead } from "@/lib/crm";
 import { telefonoOpcional, TELEFONO_VACIO, type Telefono } from "@shared/telefono";
 
 interface ProspectFormProps {
@@ -47,7 +47,7 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
     // Antes este formulario decía "Gracias" y no enviaba nada: ahora va al CMS.
     setEnviando(true);
     const nombre = [formData.nombre, formData.apellido].map((v) => v.trim()).filter(Boolean).join(" ");
-    const ok = await postCrmLead(
+    const envio = await enviarLead(
       {
         name: nombre,
         email: formData.email.trim(),
@@ -69,8 +69,8 @@ export default function ProspectForm({ variant = "dark", title = "Solicita más 
       honeypot,
     );
     setEnviando(false);
-    if (!ok && !honeypot) {
-      toast.error("No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.");
+    if (envio !== "ok" && !honeypot) {
+      toast.error(envio === "ocupado" ? MENSAJE_OCUPADO : "No pudimos enviar tus datos. Revisa tu conexión e inténtalo de nuevo.");
       return;
     }
     toast.success("¡Gracias! Nos pondremos en contacto contigo pronto.");

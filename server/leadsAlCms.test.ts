@@ -184,7 +184,7 @@ describe("cada formulario llega al CMS", () => {
   it("cada formulario del código usa postCrmLead con su sourceSlug", () => {
     const leer = (archivo: string) => fs.readFileSync(path.resolve(__dirname, "..", archivo), "utf8");
     for (const f of FORMULARIOS) {
-      expect(leer(f.archivo), f.archivo).toContain("postCrmLead(");
+      expect(leer(f.archivo), f.archivo).toMatch(/postCrmLead\(|enviarLead\(/);
       expect(leer(f.archivoSlug ?? f.archivo), f.archivoSlug ?? f.archivo).toContain(`"${f.sourceSlug}"`);
     }
   });
@@ -281,6 +281,106 @@ describe("enviarAlCms — reintentos y registro", () => {
     expect(programar).not.toHaveBeenCalled();
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
+  });
+});
+
+describe("CMS ocupado (fila de altas llena)", () => {
+  const cuerpo = { name: "Ada", email: "ada@example.com" };
+  const ocupado = () =>
+    new Response(JSON.stringify({ success: false, error: "Estamos recibiendo muchos registros, intenta en unos segundos.", retryAfter: 5 }), {
+      status: 503,
+      headers: { "Retry-After": "0" },
+    });
+
+  it("espera lo que pide el CMS y reintenta una sola vez", async () => {
+    const fetchImpl = vi.fn().mockResolvedValueOnce(ocupado()).mockResolvedValueOnce(new Response("{}", { status: 201 }));
+    const esperar = vi.fn(async () => {});
+    const programar = vi.fn();
+    const r = await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar, programar });
+    expect(r).toMatchObject({ entregado: true, status: 201 });
+    expect(esperar).toHaveBeenCalledTimes(1);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    expect(programar).not.toHaveBeenCalled();
+  });
+
+  it("si sigue ocupado, avisa y deja un último intento a los 60 s que sí entrega", async () => {
+    const errores: string[] = [];
+    const spy = vi.spyOn(console, "error").mockImplementation((...a) => void errores.push(a.join(" ")));
+    const avisos = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const fetchImpl = vi.fn()
+      .mockResolvedValueOnce(ocupado())
+      .mockResolvedValueOnce(ocupado())
+      .mockResolvedValueOnce(new Response("{}", { status: 201 }));
+    const tareas: Array<{ fn: () => Promise<void> | void; ms: number }> = [];
+    const r = await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar: async () => {}, programar: (fn, ms) => void tareas.push({ fn, ms }) });
+    expect(r).toMatchObject({ entregado: false, ocupado: true });
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    expect(tareas).toHaveLength(1);
+    expect(tareas[0].ms).toBe(cmsLead.ULTIMO_INTENTO_OCUPADO_MS);
+    expect(cmsLead.ULTIMO_INTENTO_OCUPADO_MS).toBe(60_000);
+    await tareas[0].fn();
+    spy.mockRestore();
+    avisos.mockRestore();
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+    expect(errores.join("\n")).not.toContain("ENVIO FALLIDO");
+  });
+
+  it("si el último intento también falla, queda en el registro con «ENVIO FALLIDO» y no hay más", async () => {
+    const errores: string[] = [];
+    const spy = vi.spyOn(console, "error").mockImplementation((...a) => void errores.push(a.join(" ")));
+    const avisos = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const fetchImpl = vi.fn().mockImplementation(async () => ocupado());
+    const tareas: Array<() => Promise<void> | void> = [];
+    await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar: async () => {}, programar: (fn) => void tareas.push(fn) });
+    expect(errores.join("\n")).not.toContain("ENVIO FALLIDO");
+    await tareas.shift()!();
+    spy.mockRestore();
+    avisos.mockRestore();
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+    expect(tareas).toHaveLength(0);
+    expect(errores.join("\n")).toContain("ENVIO FALLIDO");
+    expect(errores.join("\n")).toContain("ada@example.com");
+  });
+
+  it("nunca espera más de 5 s, aunque el CMS pida más", async () => {
+    const fetchImpl = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ retryAfter: 60 }), { status: 503, headers: { "Retry-After": "60" } }))
+      .mockResolvedValueOnce(new Response("{}", { status: 201 }));
+    const esperar = vi.fn(async () => {});
+    await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar });
+    expect(esperar).toHaveBeenCalledWith(cmsLead.ESPERA_OCUPADO_MAX_MS);
+  });
+
+  it("un 503 sin el aviso del CMS (servicio caído) sigue el reintento en segundo plano de siempre", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(new Response("Service Unavailable", { status: 503 }));
+    const esperar = vi.fn(async () => {});
+    const programar = vi.fn();
+    const r = await cmsLead.enviarAlCms("/api/public/leads", cuerpo, { fetchImpl, esperar, programar, esperas: [1] });
+    expect(r).toMatchObject({ entregado: false, reintentable: true });
+    expect(esperar).not.toHaveBeenCalled();
+    expect(programar).toHaveBeenCalledTimes(1);
+  });
+
+  it("el formulario recibe 503 con el mensaje para el visitante", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    cms.mockImplementation(async () => ocupado());
+    const res = await enviarFormulario({ name: "Ada", email: "ada@example.com", sourceSlug: "web_ca_gps" }, "10.0.0.77");
+    spy.mockRestore();
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({ ok: false, ocupado: true, error: cmsLead.MENSAJE_OCUPADO });
+    expect(cms).toHaveBeenCalledTimes(2);
+  });
+
+  it("el navegador muestra el mismo mensaje (contacto, Cumbre y diagnósticos)", () => {
+    const leer = (p: string) => fs.readFileSync(path.resolve(__dirname, "..", p), "utf8");
+    const crm = leer("client/src/lib/crm.ts");
+    expect(crm).toContain(`export const MENSAJE_OCUPADO = "${cmsLead.MENSAJE_OCUPADO}"`);
+    expect(crm).toMatch(/res\.status === 503\) return "ocupado"/);
+    expect(crm).toMatch(/if \(r === "ocupado"\) toast\.error\(MENSAJE_OCUPADO\)/);
+    for (const f of ["client/src/components/ProspectForm.tsx", "client/src/hooks/useRegistroCumbre.ts"]) {
+      expect(leer(f)).toMatch(/envio === "ocupado" \? MENSAJE_OCUPADO/);
+    }
+    expect(leer("server/routers.ts")).toMatch(/envio\.ocupado[\s\S]*TOO_MANY_REQUESTS[\s\S]*MENSAJE_OCUPADO/);
   });
 });
 
