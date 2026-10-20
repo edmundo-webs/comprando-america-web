@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alternarOpcion, avisoEncuesta, esLigaSegura, type EncuestaSala } from "./salaEnVivo";
+import { SLUG_VALIDO, alternarOpcion, avisoEncuesta, esLigaSegura, salaPorSlug, type EncuestaSala } from "./salaEnVivo";
 
 const encuesta = (cambios: Partial<EncuestaSala> = {}): EncuestaSala => ({
   id: 1, question: "¿Ficticia?", kind: "opcion_unica", options: ["Sí", "No"], open: true, results: null, myVote: null, ...cambios,
@@ -23,5 +23,11 @@ describe("sala en vivo: piezas del navegador", () => {
     expect(esLigaSegura("https://wa.me/523346766178?text=Hola")).toBe(true);
     expect(esLigaSegura("javascript:alert(1)")).toBe(false);
     expect(esLigaSegura("http://inseguro.example")).toBe(false);
+  });
+
+  it("la liga directa solo acepta slugs del CMS (no pide nada con uno raro)", async () => {
+    expect(SLUG_VALIDO.test("cumbre-de-prueba-a1b2c3d4")).toBe(true);
+    expect(SLUG_VALIDO.test("../admin")).toBe(false);
+    expect(await salaPorSlug("../admin")).toBeNull();
   });
 });

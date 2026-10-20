@@ -30,6 +30,7 @@ import {
   preguntar,
   registrarse,
   salaAbierta,
+  salaPorSlug,
   votar,
   type EncuestaSala,
   type EstadoSala,
@@ -47,19 +48,36 @@ const INPUT = "w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 t
 const BOTON_PAIS = "flex shrink-0 items-center gap-1 rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white";
 const NUMERO = "min-w-0 flex-1 rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white placeholder:text-white/40 focus:border-[#3D7FF0] focus:outline-none";
 
-export default function EnVivo() {
+/**
+ * /en-vivo: la sala abierta de un evento publicado.
+ * /en-vivo/<slug>: esa sala por su liga directa (así se entra a una sala de
+ * prueba, que no sale en /en-vivo). Esas ligas no se indexan.
+ */
+export default function EnVivo({ params }: { params?: { slug?: string } }) {
+  const slugDirecto = params?.slug;
   const [sala, setSala] = useState<SalaInfo | null | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
   const [errorCarga, setErrorCarga] = useState(false);
 
   useEffect(() => {
-    salaAbierta()
+    setSala(undefined);
+    setErrorCarga(false);
+    (slugDirecto ? salaPorSlug(slugDirecto) : salaAbierta())
       .then((s) => {
         setSala(s);
         if (s) setToken(fichaGuardada(s.slug));
       })
       .catch(() => setErrorCarga(true));
-  }, []);
+  }, [slugDirecto]);
+
+  useEffect(() => {
+    if (!slugDirecto) return;
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex";
+    document.head.appendChild(meta);
+    return () => meta.remove();
+  }, [slugDirecto]);
 
   const salir = useCallback(() => {
     if (sala) olvidarFicha(sala.slug);
@@ -71,13 +89,14 @@ export default function EnVivo() {
       <SEOHead
         title="En vivo | Comprando América"
         description="Sala en vivo de Comprando América: la transmisión, encuestas y preguntas en tiempo real."
-        path="/en-vivo"
+        path={slugDirecto ? `/en-vivo/${slugDirecto}` : "/en-vivo"}
       />
       <Navbar />
       <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
         {sala === undefined && !errorCarga && <Cargando />}
         {errorCarga && <Aviso titulo="No pudimos cargar la sala" texto="Recarga la página en unos segundos." />}
-        {sala === null && (
+        {sala === null && slugDirecto && <Aviso titulo="Esta sala no existe" texto="Revisa la liga que te compartieron." />}
+        {sala === null && !slugDirecto && (
           <Aviso titulo="La sala en vivo todavía no abre" texto="Aquí verás la transmisión el día del evento. Mientras tanto, consulta los próximos eventos.">
             <a href="/eventos" className="mt-5 inline-block rounded-lg px-5 py-2.5 text-sm font-semibold" style={{ background: ACENTO }}>Ver eventos</a>
           </Aviso>
