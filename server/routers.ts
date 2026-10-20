@@ -12,7 +12,7 @@ import { NOT_ADMIN_ERR_MSG } from "@shared/const";
 import bcrypt from "bcryptjs";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
-import { enviarAlCms } from "./_core/cmsLead";
+import { MENSAJE_OCUPADO, enviarAlCms } from "./_core/cmsLead";
 import { MENSAJE_TURNSTILE, verificarTurnstile } from "./_core/turnstile";
 import { ipDelVisitante } from "./_core/visitante";
 
@@ -383,7 +383,7 @@ export const appRouter = router({
         // ca_news_subscribers. El CMS deduplica por email, así que suscribirse
         // dos veces no es un error para el visitante. La IP del visitante es
         // para el límite de registros por IP del CMS.
-        await enviarAlCms("/api/public/v1/leads", {
+        const envio = await enviarAlCms("/api/public/v1/leads", {
           email: input.email.trim().toLowerCase(),
           ...(input.name?.trim() ? { name: input.name.trim() } : {}),
           interests: input.categories.filter(c => c !== "all"),
@@ -393,6 +393,10 @@ export const appRouter = router({
           consent: true,
           ...(ip ? { clientIp: ip } : {}),
         });
+        // CMS ocupado aun después del único reintento: el formulario muestra el aviso.
+        if (!envio.entregado && envio.ocupado) {
+          throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: MENSAJE_OCUPADO });
+        }
         return { success: true, message: MENSAJE_BOLETIN };
       }),
     // Public: verify subscription

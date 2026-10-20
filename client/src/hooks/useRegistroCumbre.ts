@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { postCrmLead } from "@/lib/crm";
+import { MENSAJE_OCUPADO, enviarLead } from "@/lib/crm";
 import { telefonoAE164, TELEFONO_VACIO, type Telefono } from "@shared/telefono";
 import { CUMBRE_URL, CUMBRE_WHATSAPP_GRUPO } from "@/lib/eventos";
 
@@ -59,7 +59,7 @@ export function useRegistroCumbre(fuente: string) {
     setEnviando(true);
     // Un solo destino: el servidor del sitio, que lo pasa al CMS (CLAUDE.md §1).
     // Ya no se escribe en ca_leads.
-    const ok = await postCrmLead(
+    const envio = await enviarLead(
       {
         name: nombreCompleto,
         email,
@@ -77,9 +77,9 @@ export function useRegistroCumbre(fuente: string) {
     );
     setEnviando(false);
 
-    if (!ok) {
+    if (envio !== "ok") {
       // Nunca mostramos el mensaje crudo del backend al visitante.
-      toast.error("No pudimos completar tu registro. Revisa tu conexión e inténtalo de nuevo.");
+      toast.error(envio === "ocupado" ? MENSAJE_OCUPADO : "No pudimos completar tu registro. Revisa tu conexión e inténtalo de nuevo.");
       return;
     }
 

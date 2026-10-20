@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 /*
  * Ingesta de leads — punto único de envío para todo el sitio.
  * Manda a POST /api/leads de este mismo sitio; el servidor lo reenvía al CMS
@@ -86,13 +88,21 @@ export interface CrmLeadPayload {
   [key: string]: unknown;
 }
 
+/** Cómo terminó un envío: recibido, CMS ocupado (intentar en unos segundos) o error. */
+export type EnvioLead = "ok" | "ocupado" | "error";
+
+/** Mismo texto que el CMS y que el servidor del sitio. */
+export const MENSAJE_OCUPADO = "Estamos recibiendo muchos registros, intenta en unos segundos.";
+
 /**
- * Envía el lead. Nunca lanza: devuelve `true` cuando el servidor del sitio lo
- * recibió. Desde ahí el servidor se encarga de que llegue al CMS (reintenta si
- * el CMS no responde y, si al final no entra, lo deja en su registro).
+ * Envía el lead. Nunca lanza. «ok» cuando el servidor del sitio lo recibió;
+ * desde ahí se encarga de que llegue al CMS (reintenta si el CMS no responde y,
+ * si al final no entra, lo deja en su registro). «ocupado» cuando el CMS sigue
+ * lleno después del único reintento del servidor: el formulario muestra
+ * MENSAJE_OCUPADO para que la persona lo intente en unos segundos.
  */
-export async function postCrmLead(payload: CrmLeadPayload, honeypot: string): Promise<boolean> {
-  if (honeypot) return false; // bot llenó el campo oculto — omitir
+export async function enviarLead(payload: CrmLeadPayload, honeypot: string): Promise<EnvioLead> {
+  if (honeypot) return "error"; // bot llenó el campo oculto — omitir
   try {
     const res = await fetch("/api/leads", {
       method: "POST",
@@ -106,13 +116,25 @@ export async function postCrmLead(payload: CrmLeadPayload, honeypot: string): Pr
         utm: parseUtm(),
       }),
     });
+    if (res.status === 503) return "ocupado";
     if (!res.ok) {
       console.warn("[leads] envío rechazado:", res.status, await res.text().catch(() => ""));
-      return false;
+      return "error";
     }
-    return true;
+    return "ok";
   } catch (err) {
     console.warn("[leads] envío fallido:", err);
-    return false;
+    return "error";
   }
+}
+
+/**
+ * Para los formularios que no esperan la respuesta (diagnósticos que siguen a
+ * WhatsApp): `true` si se recibió. Si el CMS está ocupado, avisa con el mismo
+ * mensaje, porque esa pantalla no muestra errores propios.
+ */
+export async function postCrmLead(payload: CrmLeadPayload, honeypot: string): Promise<boolean> {
+  const r = await enviarLead(payload, honeypot);
+  if (r === "ocupado") toast.error(MENSAJE_OCUPADO);
+  return r === "ok";
 }
