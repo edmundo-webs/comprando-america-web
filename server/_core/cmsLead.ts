@@ -33,7 +33,7 @@ export const ESPERAS_REINTENTO_MS = [5_000, 30_000, 120_000, 600_000];
 const TIEMPO_MAXIMO_MS = 8_000;
 
 export function urlDelCms(): string {
-  const base = ENV.cmsApiUrl || process.env.VITE_CRM_API_URL || "https://ca-cms.onrender.com";
+  const base = ENV.cmsApiUrl || process.env.VITE_CRM_API_URL || "https://cms.comprandoamerica.com";
   return base.replace(/\/+$/, "");
 }
 

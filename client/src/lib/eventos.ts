@@ -18,6 +18,8 @@
  * público: se comparte en privado con quien queda aprobado.
  */
 
+import { cmsUrl } from "./cmsUrl";
+
 /** Destinos y URL canónica de la Cumbre, usados por la página y por el
  *  registro del home. */
 export const CUMBRE_URL = "/cumbre-digital";
@@ -220,11 +222,8 @@ export function aEvento(e: EventoApi): Evento {
   };
 }
 
-const CMS_URL =
-  (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
-
 export async function cargarEventos(): Promise<Evento[]> {
-  const res = await fetch(`${CMS_URL}/api/public/eventos`);
+  const res = await fetch(`${cmsUrl()}/api/public/eventos`);
   if (!res.ok) throw new Error(`El CMS respondió ${res.status}`);
   const body = (await res.json()) as { eventos?: EventoApi[] };
   return (body.eventos ?? []).map(aEvento);

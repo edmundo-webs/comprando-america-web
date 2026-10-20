@@ -9,10 +9,10 @@
 // escondería, porque seguirían viajando en la respuesta y se leen en la pestaña
 // de red. Este archivo solo dibuja lo que llegó.
 
-const CMS_URL =
-  (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
+import { cmsUrl } from "./cmsUrl";
 
-const BASE = `${CMS_URL}/api/public/portafolio`;
+/** Se arma al llamarse: este módulo también puede cargarse en el servidor (ver cmsUrl). */
+const base = () => `${cmsUrl()}/api/public/portafolio`;
 
 /** Dónde se guarda la sesión de miembro en el navegador. */
 const CLAVE_SESION = "ca_miembro_token";
@@ -132,7 +132,7 @@ function encabezados(): HeadersInit {
 // ─── Llamadas ────────────────────────────────────────────────────────────────
 
 export async function cargarPortafolio(): Promise<RespuestaPortafolio> {
-  const res = await fetch(`${BASE}/propiedades`, { headers: encabezados() });
+  const res = await fetch(`${base()}/propiedades`, { headers: encabezados() });
   if (!res.ok) throw new Error(`El portafolio no respondió (${res.status})`);
   return res.json();
 }
@@ -143,7 +143,7 @@ export async function cargarPortafolio(): Promise<RespuestaPortafolio> {
  * directorio de miembros.
  */
 export async function solicitarAcceso(email: string): Promise<{ mensaje: string }> {
-  const res = await fetch(`${BASE}/acceso/solicitar`, {
+  const res = await fetch(`${base()}/acceso/solicitar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
@@ -154,7 +154,7 @@ export async function solicitarAcceso(email: string): Promise<{ mensaje: string 
 }
 
 export async function verificarAcceso(token: string): Promise<{ nombre: string; email: string }> {
-  const res = await fetch(`${BASE}/acceso/verificar`, {
+  const res = await fetch(`${base()}/acceso/verificar`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ token }),
@@ -166,7 +166,7 @@ export async function verificarAcceso(token: string): Promise<{ nombre: string; 
 }
 
 export async function quienSoy(): Promise<{ esMiembro: boolean; nombre?: string; email?: string }> {
-  const res = await fetch(`${BASE}/acceso/yo`, { headers: encabezados() });
+  const res = await fetch(`${base()}/acceso/yo`, { headers: encabezados() });
   if (!res.ok) return { esMiembro: false };
   return res.json();
 }
