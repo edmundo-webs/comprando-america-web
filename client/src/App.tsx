@@ -85,6 +85,7 @@ function Router() {
       <Route path="/diagnostico" component={DiagnosticoPage} />
       <Route path="/cumbre-digital" component={CumbreDigital} />
       <Route path="/en-vivo" component={EnVivo} />
+      <Route path="/en-vivo/:slug" component={EnVivo} />
       <Route path="/renta-garantizada" component={Section8} />
       <Route path="/activos-disponibles" component={Propiedades} />
       <Route path="/acceso" component={Acceso} />

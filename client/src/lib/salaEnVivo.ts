@@ -89,12 +89,27 @@ export function olvidarFicha(slug: string): void {
 
 // ─── Llamadas ────────────────────────────────────────────────────────────────
 
-/** La sala abierta, si hay una. */
+/** La sala abierta de /en-vivo, si hay una (solo de eventos publicados). */
 export async function salaAbierta(): Promise<SalaInfo | null> {
   const res = await fetch(`${cmsUrl()}/api/public/sala`);
   if (!res.ok) throw new Error(`Error ${res.status}`);
   return ((await res.json()) as { sala: SalaInfo | null }).sala;
 }
+
+/**
+ * Una sala por su liga directa (/en-vivo/<slug>): así se entra a una sala de
+ * prueba, que no sale en /en-vivo. `null` si no existe.
+ */
+export async function salaPorSlug(slug: string): Promise<SalaInfo | null> {
+  if (!SLUG_VALIDO.test(slug)) return null;
+  const res = await fetch(`${cmsUrl()}/api/public/sala/${slug}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`Error ${res.status}`);
+  return ((await res.json()) as { sala: SalaInfo | null }).sala;
+}
+
+/** El mismo formato de slug que acepta el CMS. */
+export const SLUG_VALIDO = /^[a-z0-9-]{1,220}$/;
 
 export interface DatosRegistro {
   slug: string;
