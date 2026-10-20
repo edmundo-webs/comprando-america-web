@@ -127,7 +127,8 @@ function StatCounter({
 
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
-import { EVENTOS, type Evento } from "@/lib/eventos";
+import { type Evento } from "@/lib/eventos";
+import { useEventos } from "@/hooks/useEventos";
 import { useRegistroCumbre } from "@/hooks/useRegistroCumbre";
 import CampoTelefono from "@/components/CampoTelefono";
 import {
@@ -423,7 +424,7 @@ const PLATFORMS: {
    así que la traslación va en fracciones del ancho visible. Respeta
    prefers-reduced-motion: si el visitante pidió menos animación, no se
    auto-avanza y quedan sólo las flechas. */
-function EventosCarousel() {
+function EventosCarousel({ eventos }: { eventos: Evento[] }) {
   const [index, setIndex] = useState(0);
   /* Los eventos con programa no navegan: abren la ventana. Así el visitante
      ve la información del flyer sin salir del home ni bajar la página. */
@@ -439,7 +440,7 @@ function EventosCarousel() {
     return () => mq.removeEventListener("change", aplicar);
   }, []);
 
-  const maxIndex = Math.max(0, EVENTOS.length - porVista);
+  const maxIndex = Math.max(0, eventos.length - porVista);
   // Al pasar de dos columnas a una, el índice puede quedar fuera de rango.
   useEffect(() => {
     setIndex((i) => Math.min(i, maxIndex));
@@ -468,7 +469,7 @@ function EventosCarousel() {
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${index * (100 / porVista)}%)` }}
         >
-          {EVENTOS.map((e) => (
+          {eventos.map((e) => (
             <div
               key={e.id}
               className="shrink-0 basis-full md:basis-1/2 px-2"
@@ -481,15 +482,27 @@ function EventosCarousel() {
                   una tarjeta desproporcionada de alto. */}
               <article className="h-full max-w-[360px] mx-auto bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
                 <div className="relative aspect-[4/5] shrink-0 bg-[#0B1F3A]">
-                  <img
-                    src={e.imagen}
-                    alt={e.titulo}
-                    loading="lazy"
-                    className="w-full h-full object-cover"
-                  />
+                  {e.imagen ? (
+                    <img
+                      src={e.imagen}
+                      alt={e.titulo}
+                      loading="lazy"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    /* Sin flyer en el CMS: el cartel lleva el título para no quedar vacío. */
+                    <div className="w-full h-full flex items-end p-6 bg-gradient-to-br from-[#132D52] to-[#0B1F3A]">
+                      <span className="text-white text-2xl font-bold leading-tight">{e.titulo}</span>
+                    </div>
+                  )}
                   <span className="absolute top-4 left-4 bg-primary text-white text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
                     {e.tipo}
                   </span>
+                  {e.cancelado && (
+                    <span className="absolute top-4 right-4 bg-red-600 text-white text-[11px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                      Cancelado
+                    </span>
+                  )}
                 </div>
                 <div className="p-5 flex flex-col grow">
                   {e.kicker && (
@@ -621,6 +634,12 @@ function EventoDialog({
             {/* El cuerpo puede crecer más que la pantalla en móvil, así que
                 desborda aquí dentro en vez de recortarse. */}
             <div className="px-6 py-5 max-h-[60vh] overflow-y-auto">
+              {evento.cancelado && (
+                <p className="mb-5 rounded-lg bg-red-50 px-3.5 py-2.5 text-sm font-semibold text-red-700">
+                  Este evento se canceló.
+                </p>
+              )}
+              <TransmisionEnVivo evento={evento} />
               {evento.objetivo && (
                 <>
                   <p className="text-primary text-[11px] font-semibold uppercase tracking-wider mb-2">
@@ -730,6 +749,28 @@ function EventoDialog({
         )}
       </DialogContent>
     </Dialog>
+  );
+}
+
+/* «Ver la transmisión».
+   La liga la da el CMS solo dentro de la ventana del evento (15 minutos antes
+   del inicio hasta 30 después del fin). Antes de esa ventana, o si el equipo
+   todavía no la publica, se muestra el aviso que manda el CMS. */
+function TransmisionEnVivo({ evento }: { evento: Evento }) {
+  const t = evento.transmision;
+  if (!t || evento.cancelado) return null;
+  return (
+    <div className="mb-5 rounded-lg border border-blue-100 bg-blue-50 px-3.5 py-3">
+      {t.url ? (
+        <a href={t.url} target="_blank" rel="noopener noreferrer">
+          <Button className="bg-primary hover:bg-blue-600 text-white gap-2 w-full sm:w-auto">
+            Ver la transmisión <ArrowRight className="w-4 h-4" />
+          </Button>
+        </a>
+      ) : (
+        <p className="text-sm text-[#0B1F3A]">{t.mensaje}</p>
+      )}
+    </div>
   );
 }
 
@@ -854,6 +895,7 @@ function RegistroCumbreCompacto() {
 /* ═══════════════════════════════════════════════════════ */
 
 export default function Home() {
+  const { eventos } = useEventos();
   /* Arranca en la primera ruta para que la sección no cargue vacía, igual que
      el bloque de plataformas. Seleccionar es sólo seleccionar: no hay estado
      apagado al que volver. */
@@ -1437,6 +1479,9 @@ export default function Home() {
           Se conserva el texto que explica qué es Investment Week y por qué
           no es una visita de ventas; debajo, las ediciones con fecha.
       ══════════════════════════════════════════════════════ */}
+      {/* Los eventos vienen del CMS. Si no responde o no hay próximos, la
+          sección no se muestra: nunca con datos viejos. */}
+      {eventos.length > 0 && (
       <section className="bg-[#F5F7FA] py-20 md:py-24">
         <div className="container">
           <FadeIn>
@@ -1464,11 +1509,12 @@ export default function Home() {
 
           <FadeIn delay={0.1}>
             <div className="max-w-5xl mx-auto">
-              <EventosCarousel />
+              <EventosCarousel eventos={eventos} />
             </div>
           </FadeIn>
         </div>
       </section>
+      )}
 
       {/* ══════════════════════════════════════════════════════
           7. GRUPO EMPRESARIAL — Pilar emocional

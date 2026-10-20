@@ -35,6 +35,8 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
+import { TIPO_CUMBRE, TIPO_INVESTMENT_WEEK, CUMBRE_URL, type Evento } from "@/lib/eventos";
+import { useEventos } from "@/hooks/useEventos";
 const PAGE_SEO = {
   title: "Eventos y Experiencias para Inversionistas | Comprando Am\u00e9rica",
   description: "Participa en eventos presenciales, viajes de inspecci\u00f3n y encuentros privados para empresarios e inversionistas en Estados Unidos.",
@@ -158,56 +160,12 @@ export default function Eventos() {
       {/* ═══ 3. PRÓXIMOS EVENTOS ═══ */}
       <div id="proximos-eventos">
 
-        {/* ─── CUMBRE DIGITAL — dark navy ─── */}
-        <section className="bg-[#091A30] py-20 md:py-28">
-          <div className="container">
-            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-              <FadeIn>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#1E3A5F] shadow-2xl">
-                  <img src={PHOTOS.cumbreDigital} alt="Primera Cumbre Digital Comprando América" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-xs font-semibold uppercase tracking-wider">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" /> 22 ago 2026
-                    </span>
-                  </div>
-                </div>
-              </FadeIn>
-
-              <FadeIn delay={0.1}>
-                <div>
-                  <Globe className="w-10 h-10 text-blue-400 mb-4" />
-                  <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase mb-2 font-mono">Evento en línea · Gratuito</p>
-                  <h3 className="text-3xl md:text-4xl text-white mb-3">Primera Cumbre Digital Comprando América</h3>
-                  <p className="text-slate-400 text-lg leading-relaxed mb-6">Un día completo de sesiones en vivo para empresarios latinoamericanos que quieren invertir, estructurarse y vivir en Estados Unidos — sin salir de casa.</p>
-
-                  <div className="space-y-3 mb-6">
-                    {[
-                      "Visas, migración y caminos legales hacia Estados Unidos",
-                      "Bienes raíces e inversión desde Latinoamérica",
-                      "Cómo abrir y estructurar tu empresa en Estados Unidos",
-                      "Estrategias reales de quienes ya lo lograron",
-                    ].map((item, i) => (
-                      <div key={i} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                        <p className="text-slate-400 text-sm">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-4 text-slate-400 text-sm mb-8">
-                    <span className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-blue-400" /> Sábado 22 de agosto, 2026</span>
-                    <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> 9 AM–3 PM México · 10 AM–4 PM Houston</span>
-                  </div>
-
-                  <a href="/cumbre-digital">
-                    <Button className="bg-primary hover:bg-blue-600 text-white gap-2">Pre-registro gratuito <ArrowRight className="w-4 h-4" /></Button>
-                  </a>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </section>
+        {/* ─── PRÓXIMOS EVENTOS DEL CMS — dark navy ───
+            Antes aquí estaba escrita a mano la Primera Cumbre Digital (22 de
+            agosto) y se quedó anunciada después de pasar. Ahora salen los
+            próximos eventos públicos capturados en el CMS; si no hay, o si el
+            CMS no responde, el bloque no se muestra. */}
+        <ProximosDelCms />
 
         {/* ─── INVESTMENT WEEKEND II — oculto: edición de julio 2026 ya finalizada ─── */}
 
@@ -344,5 +302,83 @@ export default function Eventos() {
 
       <Footer />
     </div>
+  );
+}
+
+/* A dónde lleva el botón de cada evento: la página propia de la Cumbre o de
+   Investment Week, la liga de registro capturada en el CMS, o WhatsApp. */
+function BotonEvento({ e }: { e: Evento }) {
+  const clase = "bg-primary hover:bg-blue-600 text-white gap-2";
+  if (e.clave === TIPO_CUMBRE) {
+    return <a href={CUMBRE_URL}><Button className={clase}>Registro gratuito <ArrowRight className="w-4 h-4" /></Button></a>;
+  }
+  if (e.clave === TIPO_INVESTMENT_WEEK) {
+    return <a href="/investment-week"><Button className={clase}>Ver el programa <ArrowRight className="w-4 h-4" /></Button></a>;
+  }
+  if (e.registro) {
+    return <a href={e.registro} target="_blank" rel="noopener noreferrer"><Button className={clase}>Registro <ArrowRight className="w-4 h-4" /></Button></a>;
+  }
+  return (
+    <Button
+      onClick={() => openWhatsApp(WHATSAPP_PHONE, `Hola, me interesa ${e.titulo} (${e.fecha}).`)}
+      className={clase}
+    >
+      Solicitar información <ArrowRight className="w-4 h-4" />
+    </Button>
+  );
+}
+
+function ProximosDelCms() {
+  const { eventos } = useEventos();
+  if (eventos.length === 0) return null;
+  return (
+    <section className="bg-[#091A30] py-20 md:py-28">
+      <div className="container">
+        <FadeIn>
+          <div className="text-center mb-12">
+            <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase mb-2 font-mono">Calendario</p>
+            <h2 className="text-3xl md:text-4xl text-white">Próximos eventos</h2>
+          </div>
+        </FadeIn>
+        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {eventos.map((e, i) => (
+            <FadeIn key={e.id} delay={i * 0.08}>
+              <article className="h-full rounded-2xl overflow-hidden border border-[#1E3A5F] bg-[#0B1F3A] grid sm:grid-cols-[200px_1fr]">
+                {e.imagen ? (
+                  <img src={e.imagen} alt={e.titulo} loading="lazy" className="w-full h-64 sm:h-full object-cover" />
+                ) : (
+                  <div className="hidden sm:block bg-gradient-to-br from-[#132D52] to-[#0B1F3A]" />
+                )}
+                <div className="p-6">
+                  <p className="text-blue-400 text-xs font-semibold tracking-[0.2em] uppercase mb-2 font-mono">
+                    {e.kicker ? `${e.kicker} · ${e.tipo}` : e.tipo}
+                  </p>
+                  <h3 className={`text-2xl text-white mb-3 ${e.cancelado ? "line-through decoration-red-400/70" : ""}`}>{e.titulo}</h3>
+                  {e.cancelado && <p className="text-red-300 text-sm font-semibold mb-3">Este evento se canceló.</p>}
+                  <div className="space-y-1.5 text-slate-400 text-sm mb-4">
+                    <p className="flex items-center gap-2"><CalendarDays className="w-4 h-4 text-blue-400 shrink-0" /> {e.fecha}</p>
+                    {e.horario && <p className="flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400 shrink-0" /> {e.horario}</p>}
+                    {e.lugar && <p className="flex items-center gap-2"><Globe className="w-4 h-4 text-blue-400 shrink-0" /> {e.lugar}</p>}
+                  </div>
+                  {e.desc && <p className="text-slate-400 leading-relaxed mb-6">{e.desc}</p>}
+                  {!e.cancelado && e.transmision && (
+                    <div className="mb-5">
+                      {e.transmision.url ? (
+                        <a href={e.transmision.url} target="_blank" rel="noopener noreferrer">
+                          <Button className="bg-red-600 hover:bg-red-500 text-white gap-2">Ver la transmisión <ArrowRight className="w-4 h-4" /></Button>
+                        </a>
+                      ) : (
+                        <p className="text-slate-300 text-sm">{e.transmision.mensaje}</p>
+                      )}
+                    </div>
+                  )}
+                  {!e.cancelado && <BotonEvento e={e} />}
+                </div>
+              </article>
+            </FadeIn>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

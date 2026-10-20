@@ -29,14 +29,20 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 
 /* ─── Head (noindex) ─── */
 import SEOHead from "@/components/SEOHead";
-/* Fechas y agendas viven en lib/eventos.ts, que es la fuente que también usa
-   el carrusel del home. Estaban duplicadas y se desfasaron una vez. */
-import { EDICIONES } from "@/lib/eventos";
-const PAGE_SEO = {
-  title: "Investment Week | Comprando América",
-  description: "Una semana en terreno con el equipo. Niagara Falls, Nueva York: 2 al 6 de octubre de 2026, casas unifamiliares y sección 8. Las Vegas, Nevada: 3 al 7 de noviembre de 2026, AAPEX y SEMA show. Solo por invitación.",
-  path: "/investment-week",
-};
+/* Fechas y agendas vienen del CMS (Eventos, tipo «Investment Week»): la misma
+   fuente del carrusel del home. Una edición que ya pasó deja de salir sola. */
+import { diasDelEvento, ediciones, mensajeAplicar } from "@/lib/eventos";
+import { useEventos } from "@/hooks/useEventos";
+/* La descripción nombra las ediciones con su sede y fecha del CMS; sin
+   ediciones próximas, queda la frase general. */
+function pageSeo(eds: { lugar: string; rango?: string; fecha: string }[]) {
+  const detalle = eds.map((e) => `${e.lugar}: ${e.rango ?? e.fecha}.`).join(" ");
+  return {
+    title: "Investment Week | Comprando América",
+    description: `Una semana en terreno con el equipo.${detalle ? ` ${detalle}` : ""} Solo por invitación.`,
+    path: "/investment-week",
+  };
+}
 
 
 
@@ -52,11 +58,16 @@ const TEAM = [
   { name: "Joe", role: "Inversiones", photo: "/team/joe.jpg" },
 ];
 
-const WA_APPLY = "Hola, me interesa aplicar a Investment Week (Niagara Falls 2-6 oct o Las Vegas 3-7 nov 2026).";
 
 export default function InvestmentWeek() {
-  const [edicion, setEdicion] = useState(EDICIONES[0].id);
-  const edicionActiva = EDICIONES.find((e) => e.id === edicion);
+  const { eventos } = useEventos();
+  const EDICIONES = ediciones(eventos);
+  // El mensaje de WhatsApp nombra cada edición con su título y su fecha del CMS.
+  const WA_APPLY = mensajeAplicar(EDICIONES);
+  const proxima = EDICIONES[0];
+  const dias = proxima ? diasDelEvento(proxima) : null;
+  const [edicion, setEdicion] = useState<string | null>(null);
+  const edicionActiva = EDICIONES.find((e) => e.id === edicion) ?? EDICIONES[0];
 
   const scrollToApply = () => {
     document.getElementById("aplicar")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -64,7 +75,7 @@ export default function InvestmentWeek() {
 
   return (
     <div className="min-h-screen bg-[#0B1F3A] text-white overflow-x-hidden">
-      <SEOHead {...PAGE_SEO} />
+      <SEOHead {...pageSeo(EDICIONES)} />
       <Navbar />
 
       {/* ═══ 1. HERO ═══ */}
@@ -104,22 +115,32 @@ export default function InvestmentWeek() {
               </h1>
 
               {/* Subtítulo */}
+              {/* Sede, fecha y tema de cada edición, tal como vienen del CMS. */}
               <p className="text-base md:text-lg text-slate-400 leading-snug mb-5 max-w-lg">
-                Dos ediciones este año.{" "}
-                <span className="text-white font-medium">Niagara Falls</span> en octubre, sobre
-                renta residencial y sección 8.{" "}
-                <span className="text-white font-medium">Las Vegas</span> en noviembre, sobre la
-                industria del transporte en el AAPEX y el SEMA.
+                {EDICIONES.length === 0
+                  ? "Una semana en terreno con el equipo. Las próximas fechas se anuncian aquí."
+                  : EDICIONES.map((e, i) => (
+                      <span key={e.id}>
+                        {i > 0 && " "}
+                        <span className="text-white font-medium">{e.lugar}</span>, {e.fecha}
+                        {e.desc ? `: ${e.desc.charAt(0).toLowerCase()}${e.desc.slice(1)}` : "."}
+                      </span>
+                    ))}
               </p>
 
               {/* Duración + cupo */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-white leading-none">4</p>
-                    <p className="text-slate-500 text-[10px] mt-0.5">días</p>
+                    {/* Los días salen de las fechas de la próxima edición. */}
+                    {dias !== null && (
+                      <>
+                        <p className="text-2xl font-bold text-white leading-none">{dias}</p>
+                        <p className="text-slate-500 text-[10px] mt-0.5">días</p>
+                      </>
+                    )}
                   </div>
-                  <div className="w-px h-8 bg-white/10" />
+                  {dias !== null && <div className="w-px h-8 bg-white/10" />}
                   <span className="flex items-center gap-1.5 text-slate-400 text-xs">
                     <Users className="w-3.5 h-3.5 text-primary" /> Cupo limitado
                   </span>
@@ -190,7 +211,7 @@ export default function InvestmentWeek() {
                 </div>
 
                 {/* Strip inferior */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
+                {EDICIONES.length > 0 && <div className="absolute bottom-0 left-0 right-0 p-4">
                   <div className="bg-[#0B1F3A]/80 backdrop-blur-sm rounded-xl border border-white/10 px-4 py-3 flex items-stretch gap-3">
                     {EDICIONES.map((e) => (
                       <div
@@ -206,7 +227,7 @@ export default function InvestmentWeek() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div>}
               </div>
             </motion.div>
 
@@ -296,7 +317,9 @@ export default function InvestmentWeek() {
           Una agenda por edición, con selector. Antes vivía aquí la del
           Florida Investment Weekend II, que ya pasó; la de cada ciudad viene
           de su flyer oficial y no se rellena con supuestos: si el flyer sólo
-          dice "Día 1 de Expo", eso es lo que se muestra. */}
+          dice "Día 1 de Expo", eso es lo que se muestra. Viene del CMS: sin
+          ediciones próximas (o si el CMS no responde), la sección no sale. */}
+      {EDICIONES.length > 0 && (
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
@@ -305,20 +328,22 @@ export default function InvestmentWeek() {
                 Agenda
               </p>
               <h2 className="text-3xl md:text-4xl text-[#0B1F3A] mb-4">
-                Dos ediciones, dos objetivos distintos
+                {EDICIONES.length > 1 ? "Elige tu edición" : (edicionActiva?.titulo ?? "Programa")}
               </h2>
               <p className="text-[#6B7280] max-w-2xl mx-auto">
-                No son la misma semana repetida en otra ciudad. Elige la edición
-                para ver su programa completo.
+                {EDICIONES.length > 1
+                  ? "Cada edición tiene su propio objetivo. Elige una para ver su programa completo."
+                  : edicionActiva?.rango ?? edicionActiva?.fecha}
               </p>
             </div>
           </FadeIn>
 
-          {/* Selector de edición */}
+          {/* Selector de edición: solo con más de una. */}
+          {EDICIONES.length > 1 && (
           <FadeIn>
             <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-3 mb-8">
               {EDICIONES.map((e) => {
-                const activa = e.id === edicion;
+                const activa = e.id === edicionActiva?.id;
                 return (
                   <button
                     key={e.id}
@@ -356,6 +381,7 @@ export default function InvestmentWeek() {
               })}
             </div>
           </FadeIn>
+          )}
 
           {edicionActiva && (
             <div className="max-w-4xl mx-auto">
@@ -366,7 +392,7 @@ export default function InvestmentWeek() {
                     Objetivo de la edición
                   </p>
                   <p className="text-[#0B1F3A] text-lg leading-relaxed">
-                    {edicionActiva.objetivo}
+                    {edicionActiva.objetivo ?? edicionActiva.desc}
                   </p>
                 </div>
               </FadeIn>
@@ -400,6 +426,7 @@ export default function InvestmentWeek() {
           )}
         </div>
       </section>
+      )}
 
       {/* ═══ 5. QUÉ HACE DIFERENTE — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">

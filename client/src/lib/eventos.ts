@@ -1,27 +1,22 @@
 /**
- * Eventos de Comprando América — fuente única.
+ * Eventos de Comprando América.
  *
- * Los datos de cada edición vivían duplicados en Home.tsx y en
- * InvestmentWeek.tsx, y las fechas ya se desfasaron una vez entre las dos.
- * Aquí viven una sola vez: el carrusel del home, la ventana del evento y la
- * página de Investment Week leen de este archivo.
+ * Desde el PR 3 del calendario, los eventos ya no viven en este repositorio:
+ * se capturan en el CMS (Eventos) y se leen de su API pública,
+ * `VITE_CRM_API_URL/api/public/eventos`. Antes estaban escritos aquí a mano, y
+ * publicar o corregir una fecha exigía editar código y desplegar.
  *
- * Las agendas se transcriben tal como vienen en el flyer oficial de cada
- * edición, sin rellenar los huecos: si el flyer sólo dice "Día 1 de Expo",
- * eso es lo que se muestra.
+ * Lo que llega ya viene filtrado por el CMS: solo eventos publicados (o
+ * cancelados, marcados), públicos y que no han terminado. La liga de Zoom y los
+ * eventos «solo miembros» nunca salen de ahí. Si el CMS no responde, las
+ * secciones de eventos se ocultan en vez de mostrar datos viejos.
  *
- * La logística del viaje (aeropuerto, hospedaje, traslados) NO va aquí:
- * se comparte en privado con quien queda aprobado.
+ * Lo que SÍ se queda aquí es el programa de bloques de la Cumbre, que se
+ * mantiene en su página del sitio por ahora.
+ *
+ * La logística del viaje (aeropuerto, hospedaje, traslados) NO va en el CMS
+ * público: se comparte en privado con quien queda aprobado.
  */
-
-/* Las tarjetas pasaron a formato cartel (4:5) para poder usar los flyers de
-   los eventos, que vienen verticales. Los originales pesan megas, así que se
-   sirven ya recortados a esa proporción. */
-const FOTO = "c_fill,w_700,h_875,g_auto,q_auto,f_auto";
-/* Cuando la foto lleva personas, el recorte se ancla a las caras: un 4:5 sobre
-   una toma horizontal recorta mucho a los lados y sin esto se come las cabezas. */
-const FOTO_CARAS = "c_fill,w_700,h_875,g_faces,q_auto,f_auto";
-const CLOUD = "https://res.cloudinary.com/dgruohz6f/image/upload";
 
 /** Destinos y URL canónica de la Cumbre, usados por la página y por el
  *  registro del home. */
@@ -91,9 +86,25 @@ export interface DiaAgenda {
   titulo: string;
 }
 
+/** «Ver la transmisión»: la liga pública sale solo dentro de la ventana del evento. */
+export interface Transmision {
+  /** Solo dentro de la ventana y si el equipo ya la capturó. */
+  url: string | null;
+  /** Lo que se lee cuando todavía no hay botón. */
+  mensaje: string | null;
+}
+
 export interface Evento {
+  /** El slug del evento en el CMS. */
   id: string;
-  /** Etiqueta de la tarjeta: presencial u online. */
+  /** La clave fija del tipo en el CMS («cumbre», «investment-week»): no
+   *  cambia aunque el equipo renombre el tipo. Con ella se reconoce cada uno. */
+  clave: string;
+  /** Inicio y fin (ISO, UTC) y si es de «todo el día». */
+  inicio: string;
+  fin: string;
+  todoElDia: boolean;
+  /** Etiqueta de la tarjeta: modalidad y costo («Online · Gratuito»). */
   tipo: string;
   /** Línea sobre el título: la serie a la que pertenece la edición. */
   kicker?: string;
@@ -104,94 +115,168 @@ export interface Evento {
   rango?: string;
   lugar: string;
   desc: string;
+  /** Ya recortada a cartel (4:5). Vacía si el evento no tiene imagen. */
   imagen: string;
   /** Qué se va a hacer en la edición, en una frase. */
   objetivo?: string;
-  /** Para qué existe este evento. Vive por evento y no en el encabezado de la
-   *  sección porque los formatos no se parecen: un viaje en terreno y un foro
-   *  abierto no se justifican con el mismo argumento, y van a venir más. */
+  /** Para qué existe este evento. */
   porQue?: string;
   agenda?: DiaAgenda[];
   /** Programa de la Cumbre. Cuando está presente, la ventana muestra los
    *  bloques y el formulario de registro en vez de una agenda por días. */
   bloques?: BloqueCumbre[];
-  /** Horario, para los eventos en vivo. */
+  /** Horario, para los eventos en vivo: «6 horas · 10:00 AM Houston / 10:00 AM Ciudad de México». */
   horario?: string;
-  /** Presente sólo cuando el evento necesita una página propia (un registro,
-   *  por ejemplo). Si falta, el botón abre la ventana en vez de navegar. */
+  /** Presente sólo cuando el evento necesita una página propia. */
   href?: string;
   cta: string;
+  cancelado: boolean;
+  transmision: Transmision | null;
+  /** Ligas de registro y programa capturadas en el CMS. */
+  registro?: string;
+  programa?: string;
 }
 
-export const EVENTOS: Evento[] = [
-  {
-    id: "iw-ny",
-    tipo: "Presencial",
-    titulo: "Investment Week · Niagara Falls",
-    fecha: "2 al 6 de octubre, 2026",
-    rango: "Viernes 2 al martes 6 de octubre, 2026",
-    lugar: "Niagara Falls, Nueva York",
-    desc: "Casas unifamiliares para renta, el programa de la sección 8 y oportunidades en mercados que nadie está mirando.",
-    objetivo:
-      "Analizar oportunidades de inversión en casas unifamiliares para renta, el programa de la sección 8 y oportunidades en mercados ignorados.",
-    porQue:
-      "Hay decisiones que se toman leyendo un análisis, y otras que sólo se comprenden en el terreno, con los números reales frente a un activo real. Investment Week existe para que entiendas cómo analizamos, no para venderte una propiedad.",
-    agenda: [
-      { fecha: "Viernes 2 de octubre", titulo: "Llegada" },
-      { fecha: "Sábado 3 de octubre", titulo: "Día 1 — Teoría y campo" },
-      { fecha: "Domingo 4 de octubre", titulo: "Día 2 — Inspección de propiedades" },
-      { fecha: "Lunes 5 de octubre", titulo: "Visita a las cataratas del Niágara (opcional)" },
-      { fecha: "Martes 6 de octubre", titulo: "Salida libre" },
-    ],
-    cta: "Ver el programa",
-    imagen: `${CLOUD}/${FOTO}/v1788822723/tts-news/qjlkynfsqnkt4uflgaqm.jpg`,
-  },
-  {
-    id: "iw-lv",
-    tipo: "Presencial",
-    titulo: "Investment Week · Las Vegas",
-    fecha: "3 al 7 de noviembre, 2026",
-    rango: "Martes 3 al sábado 7 de noviembre, 2026",
-    lugar: "Las Vegas, Nevada",
-    desc: "Las expos de la industria del transporte —AAPEX y SEMA— para detectar oportunidades, más sesión privada para miembros.",
-    objetivo:
-      "Recorrer las expos de la industria del transporte —AAPEX show y SEMA show— para detectar oportunidades, más una sesión privada para miembros.",
-    porQue:
-      "El mismo criterio de análisis, aplicado a un sector distinto: ver de cerca dónde se mueve la industria del transporte antes de decidir si vale una operación propia.",
-    agenda: [
-      { fecha: "Martes 3 de noviembre", titulo: "Llegada" },
-      { fecha: "Miércoles 4 de noviembre", titulo: "Día 1 de expo" },
-      { fecha: "Jueves 5 de noviembre", titulo: "Día 2 de expo" },
-      { fecha: "Viernes 6 de noviembre", titulo: "Sesión privada para miembros" },
-      { fecha: "Sábado 7 de noviembre", titulo: "Regreso libre" },
-    ],
-    cta: "Ver el programa",
-    imagen: `${CLOUD}/${FOTO}/v1788822260/tts-news/k51cme1dtzvs2c8qaa9b.jpg`,
-  },
-  {
-    id: "cumbre",
-    tipo: "Online · Gratuito",
-    kicker: "2ª Cumbre Digital",
-    titulo: "Casas, Negocios y Visas",
-    fecha: "Sábado 14 de noviembre, 2026",
-    rango: "Sábado 14 de noviembre de 2026",
-    horario: "6 horas · 10:00 AM Houston / 9:00 AM México",
-    lugar: "En vivo por Facebook y YouTube",
-    /* La tarjeta lleva el flyer, que ya dice el titular, la fecha y "regístrate
-       gratis". Esta descripción suma lo que el flyer no cabe: los seis bloques. */
-    desc: "Seis bloques con el equipo y sus especialistas: cómo mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos abiertos.",
-    objetivo:
-      "Seis bloques de 45 minutos sobre cómo mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos que hoy están abiertos.",
-    porQue:
-      "Un foro abierto, sin costo, donde el equipo y sus especialistas comparten criterio y experiencia en vez de una presentación de ventas. Se presentan oportunidades concretas y se dice cómo entrar a cada una.",
-    bloques: CUMBRE_BLOQUES,
-    /* Sin href: el botón abre la ventana con el programa y el registro, para
-       que nadie tenga que salir del home para apuntarse. La página sigue
-       existiendo en /cumbre-digital para quien llegue por búsqueda o enlace. */
-    cta: "Ver programa y registrarme",
-    imagen: `${CLOUD}/${FOTO_CARAS}/v1782675100/tts-news/xpto1gompkv2f4lwqon4.jpg`,
-  },
-];
+/** Lo que manda `GET /api/public/eventos` del CMS (los campos que usa el sitio). */
+export interface EventoApi {
+  slug: string;
+  type: string;
+  /** Clave fija del tipo (`evt_event_types.slug` del CMS). */
+  typeSlug: string;
+  startsAt: string;
+  endsAt: string;
+  allDay: boolean;
+  kicker: string | null;
+  title: string;
+  summary: string | null;
+  objective: string | null;
+  why: string | null;
+  modalityLabel: string;
+  location: string | null;
+  platform: string | null;
+  priceLabel: string | null;
+  imageUrl: string | null;
+  registrationUrl: string | null;
+  programUrl: string | null;
+  cancelled: boolean;
+  dateLabel: string;
+  rangeLabel: string;
+  scheduleLabel: string | null;
+  agenda: { date: string; label: string; title: string; description: string | null }[];
+  liveStream: { state: string; url: string | null; message: string | null } | null;
+}
+
+/** Clave fija (no el nombre) del tipo que lleva el programa de bloques y el
+ *  registro de la Cumbre. El nombre visible se puede cambiar en el CMS. */
+export const TIPO_CUMBRE = "cumbre";
+/** Clave fija del tipo cuyas ediciones muestra la página de Investment Week. */
+export const TIPO_INVESTMENT_WEEK = "investment-week";
+
+/* Las tarjetas van en formato cartel (4:5) para poder usar los flyers, que
+   vienen verticales. El original pesa megas, así que se pide ya recortado a
+   esa proporción, con el recorte anclado a lo importante de la imagen. */
+const CARTEL = "c_fill,w_700,h_875,g_auto,q_auto,f_auto";
+
+/** Recorta una imagen de Cloudinary a cartel. Otra liga, o una que ya trae
+ *  transformaciones, pasa tal cual. */
+export function cartel(url: string | null | undefined): string {
+  if (!url) return "";
+  const marker = "/image/upload/";
+  const i = url.indexOf(marker);
+  if (!/^https:\/\/res\.cloudinary\.com\//.test(url) || i < 0) return url;
+  const tail = url.slice(i + marker.length);
+  if (/^(f_|q_|w_|h_|c_|ar_|g_|e_)/.test(tail)) return url;
+  return `${url.slice(0, i + marker.length)}${CARTEL}/${tail}`;
+}
+
+/** Un evento del CMS en la forma que dibujan el carrusel, la ventana y las páginas. */
+export function aEvento(e: EventoApi): Evento {
+  const esCumbre = e.typeSlug === TIPO_CUMBRE;
+  const agenda = e.agenda.map((d) => ({ fecha: d.label, titulo: d.title }));
+  return {
+    id: e.slug,
+    clave: e.typeSlug,
+    inicio: e.startsAt,
+    fin: e.endsAt,
+    todoElDia: e.allDay,
+    tipo: [e.modalityLabel, e.priceLabel].filter(Boolean).join(" · "),
+    kicker: e.kicker ?? undefined,
+    titulo: e.title,
+    fecha: e.dateLabel,
+    rango: e.rangeLabel,
+    lugar: e.location || e.platform || "",
+    desc: e.summary ?? "",
+    imagen: cartel(e.imageUrl),
+    objetivo: e.objective ?? undefined,
+    porQue: e.why ?? undefined,
+    agenda: agenda.length > 0 ? agenda : undefined,
+    bloques: esCumbre ? CUMBRE_BLOQUES : undefined,
+    horario: e.scheduleLabel ?? undefined,
+    cta: esCumbre ? "Ver programa y registrarme" : agenda.length > 0 ? "Ver el programa" : "Ver detalles",
+    cancelado: e.cancelled,
+    transmision: e.liveStream ? { url: e.liveStream.url, mensaje: e.liveStream.message } : null,
+    registro: e.registrationUrl ?? undefined,
+    programa: e.programUrl ?? undefined,
+  };
+}
+
+const CMS_URL =
+  (import.meta.env.VITE_CRM_API_URL as string | undefined) ?? "https://ca-cms.onrender.com";
+
+export async function cargarEventos(): Promise<Evento[]> {
+  const res = await fetch(`${CMS_URL}/api/public/eventos`);
+  if (!res.ok) throw new Error(`El CMS respondió ${res.status}`);
+  const body = (await res.json()) as { eventos?: EventoApi[] };
+  return (body.eventos ?? []).map(aEvento);
+}
+
+/** La próxima Cumbre (la página /cumbre-digital toma de aquí fecha, horario y transmisión). */
+export function proximaCumbre(eventos: Evento[]): Evento | undefined {
+  const cumbres = eventos.filter((e) => e.clave === TIPO_CUMBRE);
+  // La que sigue en pie; si todas se cancelaron, la primera, para avisarlo.
+  return cumbres.find((e) => !e.cancelado) ?? cumbres[0];
+}
 
 /** Las ediciones de Investment Week, que son las que tienen programa. */
-export const EDICIONES = EVENTOS.filter((e) => e.agenda && e.agenda.length > 0);
+export function ediciones(eventos: Evento[]): (Evento & { agenda: DiaAgenda[] })[] {
+  return eventos.filter(
+    (e): e is Evento & { agenda: DiaAgenda[] } => e.clave === TIPO_INVESTMENT_WEEK && !!e.agenda?.length
+  );
+}
+
+// ─── Textos que se arman con lo que manda el CMS ─────────────────────────────
+
+const ZONA_CDMX = "America/Mexico_City";
+
+/** «Sábado 14 de noviembre · 10:00 a. m. (hora de Ciudad de México)». Un
+ *  evento de «todo el día» lleva solo la fecha. */
+export function fechaHoraCdmx(e: Pick<Evento, "inicio" | "todoElDia" | "fecha">): string {
+  const inicio = new Date(e.inicio);
+  if (Number.isNaN(inicio.getTime())) return e.fecha;
+  const partes = new Intl.DateTimeFormat("es-MX", {
+    timeZone: ZONA_CDMX, weekday: "long", day: "numeric", month: "long",
+  }).formatToParts(inicio);
+  const p = (t: string) => partes.find((x) => x.type === t)?.value ?? "";
+  const dia = `${p("weekday").charAt(0).toUpperCase()}${p("weekday").slice(1)} ${p("day")} de ${p("month")}`;
+  if (e.todoElDia) return dia;
+  const h = new Intl.DateTimeFormat("en-US", { timeZone: ZONA_CDMX, hour: "numeric", minute: "2-digit", hour12: true })
+    .formatToParts(inicio);
+  const q = (t: string) => h.find((x) => x.type === t)?.value ?? "";
+  const ampm = q("dayPeriod").toUpperCase() === "PM" ? "p. m." : "a. m.";
+  return `${dia} · ${q("hour")}:${q("minute")} ${ampm} (hora de Ciudad de México)`;
+}
+
+/** Cuántos días dura un viaje de «todo el día». Null si no aplica. */
+export function diasDelEvento(e: Pick<Evento, "inicio" | "fin" | "todoElDia">): number | null {
+  if (!e.todoElDia) return null;
+  const dias = Math.round((new Date(e.fin).getTime() - new Date(e.inicio).getTime()) / 86_400_000);
+  return dias > 0 ? dias : null;
+}
+
+/** El mensaje de WhatsApp para aplicar: nombra cada edición con su título y su
+ *  fecha, tal como vienen del CMS. */
+export function mensajeAplicar(ediciones: Pick<Evento, "titulo" | "fecha">[]): string {
+  if (ediciones.length === 0) return "Hola, me interesa aplicar a Investment Week.";
+  const lista = ediciones.map((e) => `${e.titulo} (${e.fecha})`).join(" o ");
+  return `Hola, me interesa aplicar a ${lista}.`;
+}
