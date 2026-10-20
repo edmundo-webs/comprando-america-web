@@ -90,9 +90,12 @@ describe("Cloudflare Turnstile", () => {
   });
 
   it("la llave secreta nunca va al navegador", () => {
+    // El widget vive en un hook compartido (boletín y sala en vivo).
     const componente = fs.readFileSync(path.resolve(__dirname, "../client/src/components/NewsletterSignup.tsx"), "utf8");
-    expect(componente).not.toMatch(/TURNSTILE_SECRET_KEY/);
-    expect(componente).toMatch(/VITE_TURNSTILE_SITE_KEY/);
+    const hook = fs.readFileSync(path.resolve(__dirname, "../client/src/hooks/useTurnstile.ts"), "utf8");
+    expect(componente + hook).not.toMatch(/TURNSTILE_SECRET_KEY/);
+    expect(componente).toMatch(/useTurnstile/);
+    expect(hook).toMatch(/VITE_TURNSTILE_SITE_KEY/);
   });
 });
 

@@ -48,9 +48,23 @@ export function openWhatsApp(
 }
 
 // Constantes de WhatsApp para Comprando América.
-// El número del sitio vive SOLO aquí, en E.164 (CLAUDE.md §5). Ninguna página
-// escribe el número a mano: todas usan WHATSAPP_PHONE o getWhatsAppUrl.
-export const WHATSAPP_E164 = "+523346766178";
+// El número del sitio es el COMERCIAL y vive SOLO aquí, en E.164 (CLAUDE.md §5).
+// Ninguna página escribe el número a mano: todas usan WHATSAPP_PHONE o
+// getWhatsAppUrl. Viene de VITE_WHATSAPP_COMERCIAL; mientras no esté puesta se
+// usa el comercial de siempre. El de miembros (Dirección de Miembros) nunca va
+// en el sitio: es de Mi espacio.
+export const WHATSAPP_COMERCIAL_POR_DEFECTO = "+523346766178";
+
+type Entorno = Record<string, string | undefined>;
+
+/** Se lee con acceso seguro: este módulo también corre en el servidor (SSR), donde import.meta.env no existe. */
+function numeroComercial(): string {
+  const deVite = (import.meta as unknown as { env?: Entorno }).env?.VITE_WHATSAPP_COMERCIAL;
+  const deNode = typeof process !== "undefined" ? process.env?.VITE_WHATSAPP_COMERCIAL : undefined;
+  return (deVite || deNode || WHATSAPP_COMERCIAL_POR_DEFECTO).trim();
+}
+
+export const WHATSAPP_E164 = numeroComercial();
 /** El mismo número sin "+", que es como lo pide wa.me. */
 export const WHATSAPP_PHONE = digitosParaWhatsApp(WHATSAPP_E164);
 export const WHATSAPP_MESSAGE = "Hola, vi tu información en el sitio web de Comprando América. Me gustaría conocer más sobre las oportunidades de inversión.";

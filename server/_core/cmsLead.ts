@@ -88,7 +88,7 @@ export async function intentarEnvio(
 }
 
 /** El 503 «ocupado» del CMS (fila de altas llena) lleva Retry-After y `retryAfter`. */
-function esOcupado(status: number, retryAfter: string | null, cuerpo: string): { esperaMs: number } | null {
+export function esOcupado(status: number, retryAfter: string | null, cuerpo: string): { esperaMs: number } | null {
   if (status !== 503 || retryAfter === null) return null;
   try {
     if (typeof (JSON.parse(cuerpo) as { retryAfter?: unknown }).retryAfter !== "number") return null;
