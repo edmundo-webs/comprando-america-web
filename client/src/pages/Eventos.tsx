@@ -309,10 +309,10 @@ export default function Eventos() {
    Investment Week, la liga de registro capturada en el CMS, o WhatsApp. */
 function BotonEvento({ e }: { e: Evento }) {
   const clase = "bg-primary hover:bg-blue-600 text-white gap-2";
-  if (e.categoria === TIPO_CUMBRE) {
+  if (e.clave === TIPO_CUMBRE) {
     return <a href={CUMBRE_URL}><Button className={clase}>Registro gratuito <ArrowRight className="w-4 h-4" /></Button></a>;
   }
-  if (e.categoria === TIPO_INVESTMENT_WEEK) {
+  if (e.clave === TIPO_INVESTMENT_WEEK) {
     return <a href="/investment-week"><Button className={clase}>Ver el programa <ArrowRight className="w-4 h-4" /></Button></a>;
   }
   if (e.registro) {

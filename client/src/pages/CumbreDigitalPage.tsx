@@ -3,7 +3,7 @@ import Navbar from "@/components/Navbar";
 import SEOHead from "@/components/SEOHead";
 /* El temario, la fecha y el registro viven fuera de la página: la ventana del
    home muestra lo mismo y el lead tiene que caer idéntico en el CMS. */
-import { CUMBRE_BLOQUES, CUMBRE_WHATSAPP_GRUPO, proximaCumbre, type Evento } from "@/lib/eventos";
+import { CUMBRE_BLOQUES, CUMBRE_WHATSAPP_GRUPO, fechaHoraCdmx, proximaCumbre, type Evento } from "@/lib/eventos";
 import { useEventos } from "@/hooks/useEventos";
 import { useRegistroCumbre, type RegistroFormData } from "@/hooks/useRegistroCumbre";
 import CampoTelefono from "@/components/CampoTelefono";
@@ -235,7 +235,7 @@ interface FormProps {
   errorTelefono: string | null;
 }
 
-function RegistroForm({ formData, setFormData, onSubmit, enviando, submitted, errorTelefono }: FormProps) {
+function RegistroForm({ formData, setFormData, onSubmit, enviando, submitted, errorTelefono, fechaConfirmada }: FormProps & { fechaConfirmada?: string }) {
   const formRef = useRef<HTMLFormElement>(null);
 
   // Red de seguridad contra el submit nativo: si por cualquier motivo el
@@ -323,7 +323,10 @@ function RegistroForm({ formData, setFormData, onSubmit, enviando, submitted, er
         fontFamily: FB, fontSize: "0.82rem", color: GOLD,
         marginTop: 0, marginBottom: 15, fontWeight: 500,
       }}>
-        Registro gratuito. Te avisamos por WhatsApp en cuanto se confirme la fecha.
+        {/* La fecha confirmada sale del CMS. Sin una Cumbre próxima, el texto de respaldo. */}
+        {fechaConfirmada
+          ? `Registro gratuito · ${fechaConfirmada}`
+          : "Registro gratuito. Te avisamos por WhatsApp en cuanto se confirme la fecha."}
       </p>
 
       <form ref={formRef} onSubmit={onSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -423,6 +426,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
   const { eventos } = useEventos();
   const CUMBRE = proximaCumbre(eventos);
   const serie = CUMBRE?.kicker ?? "Cumbre Digital";
+  const fechaConfirmada = CUMBRE && !CUMBRE.cancelado ? fechaHoraCdmx(CUMBRE) : undefined;
 
   return (
     <div style={{ fontFamily: FB, background: NAVY_DEEP, color: "#fff", overflowX: "hidden" }}>
@@ -509,7 +513,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
 
           {/* ── Registro ── */}
           <div>
-            <RegistroForm {...formProps} />
+            <RegistroForm {...formProps} fechaConfirmada={fechaConfirmada} />
           </div>
         </div>
       </section>
@@ -615,7 +619,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
           }}>
             Seis horas antes de una decisión que puede acompañarte años.
           </h2>
-          <RegistroForm {...formProps} />
+          <RegistroForm {...formProps} fechaConfirmada={fechaConfirmada} />
         </div>
       </section>
 

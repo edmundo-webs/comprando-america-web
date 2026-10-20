@@ -97,8 +97,13 @@ export interface Transmision {
 export interface Evento {
   /** El slug del evento en el CMS. */
   id: string;
-  /** El tipo del catálogo del CMS («Cumbre», «Investment Week»…). */
-  categoria: string;
+  /** La clave fija del tipo en el CMS («cumbre», «investment-week»): no
+   *  cambia aunque el equipo renombre el tipo. Con ella se reconoce cada uno. */
+  clave: string;
+  /** Inicio y fin (ISO, UTC) y si es de «todo el día». */
+  inicio: string;
+  fin: string;
+  todoElDia: boolean;
   /** Etiqueta de la tarjeta: modalidad y costo («Online · Gratuito»). */
   tipo: string;
   /** Línea sobre el título: la serie a la que pertenece la edición. */
@@ -136,6 +141,11 @@ export interface Evento {
 export interface EventoApi {
   slug: string;
   type: string;
+  /** Clave fija del tipo (`evt_event_types.slug` del CMS). */
+  typeSlug: string;
+  startsAt: string;
+  endsAt: string;
+  allDay: boolean;
   kicker: string | null;
   title: string;
   summary: string | null;
@@ -156,10 +166,11 @@ export interface EventoApi {
   liveStream: { state: string; url: string | null; message: string | null } | null;
 }
 
-/** El tipo del catálogo del CMS que lleva el programa de bloques y el registro de la Cumbre. */
-export const TIPO_CUMBRE = "Cumbre";
-/** El tipo cuyas ediciones muestra la página de Investment Week. */
-export const TIPO_INVESTMENT_WEEK = "Investment Week";
+/** Clave fija (no el nombre) del tipo que lleva el programa de bloques y el
+ *  registro de la Cumbre. El nombre visible se puede cambiar en el CMS. */
+export const TIPO_CUMBRE = "cumbre";
+/** Clave fija del tipo cuyas ediciones muestra la página de Investment Week. */
+export const TIPO_INVESTMENT_WEEK = "investment-week";
 
 /* Las tarjetas van en formato cartel (4:5) para poder usar los flyers, que
    vienen verticales. El original pesa megas, así que se pide ya recortado a
@@ -180,11 +191,14 @@ export function cartel(url: string | null | undefined): string {
 
 /** Un evento del CMS en la forma que dibujan el carrusel, la ventana y las páginas. */
 export function aEvento(e: EventoApi): Evento {
-  const esCumbre = e.type === TIPO_CUMBRE;
+  const esCumbre = e.typeSlug === TIPO_CUMBRE;
   const agenda = e.agenda.map((d) => ({ fecha: d.label, titulo: d.title }));
   return {
     id: e.slug,
-    categoria: e.type,
+    clave: e.typeSlug,
+    inicio: e.startsAt,
+    fin: e.endsAt,
+    todoElDia: e.allDay,
     tipo: [e.modalityLabel, e.priceLabel].filter(Boolean).join(" · "),
     kicker: e.kicker ?? undefined,
     titulo: e.title,
@@ -218,7 +232,7 @@ export async function cargarEventos(): Promise<Evento[]> {
 
 /** La próxima Cumbre (la página /cumbre-digital toma de aquí fecha, horario y transmisión). */
 export function proximaCumbre(eventos: Evento[]): Evento | undefined {
-  const cumbres = eventos.filter((e) => e.categoria === TIPO_CUMBRE);
+  const cumbres = eventos.filter((e) => e.clave === TIPO_CUMBRE);
   // La que sigue en pie; si todas se cancelaron, la primera, para avisarlo.
   return cumbres.find((e) => !e.cancelado) ?? cumbres[0];
 }
@@ -226,6 +240,43 @@ export function proximaCumbre(eventos: Evento[]): Evento | undefined {
 /** Las ediciones de Investment Week, que son las que tienen programa. */
 export function ediciones(eventos: Evento[]): (Evento & { agenda: DiaAgenda[] })[] {
   return eventos.filter(
-    (e): e is Evento & { agenda: DiaAgenda[] } => e.categoria === TIPO_INVESTMENT_WEEK && !!e.agenda?.length
+    (e): e is Evento & { agenda: DiaAgenda[] } => e.clave === TIPO_INVESTMENT_WEEK && !!e.agenda?.length
   );
+}
+
+// ─── Textos que se arman con lo que manda el CMS ─────────────────────────────
+
+const ZONA_CDMX = "America/Mexico_City";
+
+/** «Sábado 14 de noviembre · 10:00 a. m. (hora de Ciudad de México)». Un
+ *  evento de «todo el día» lleva solo la fecha. */
+export function fechaHoraCdmx(e: Pick<Evento, "inicio" | "todoElDia" | "fecha">): string {
+  const inicio = new Date(e.inicio);
+  if (Number.isNaN(inicio.getTime())) return e.fecha;
+  const partes = new Intl.DateTimeFormat("es-MX", {
+    timeZone: ZONA_CDMX, weekday: "long", day: "numeric", month: "long",
+  }).formatToParts(inicio);
+  const p = (t: string) => partes.find((x) => x.type === t)?.value ?? "";
+  const dia = `${p("weekday").charAt(0).toUpperCase()}${p("weekday").slice(1)} ${p("day")} de ${p("month")}`;
+  if (e.todoElDia) return dia;
+  const h = new Intl.DateTimeFormat("en-US", { timeZone: ZONA_CDMX, hour: "numeric", minute: "2-digit", hour12: true })
+    .formatToParts(inicio);
+  const q = (t: string) => h.find((x) => x.type === t)?.value ?? "";
+  const ampm = q("dayPeriod").toUpperCase() === "PM" ? "p. m." : "a. m.";
+  return `${dia} · ${q("hour")}:${q("minute")} ${ampm} (hora de Ciudad de México)`;
+}
+
+/** Cuántos días dura un viaje de «todo el día». Null si no aplica. */
+export function diasDelEvento(e: Pick<Evento, "inicio" | "fin" | "todoElDia">): number | null {
+  if (!e.todoElDia) return null;
+  const dias = Math.round((new Date(e.fin).getTime() - new Date(e.inicio).getTime()) / 86_400_000);
+  return dias > 0 ? dias : null;
+}
+
+/** El mensaje de WhatsApp para aplicar: nombra cada edición con su título y su
+ *  fecha, tal como vienen del CMS. */
+export function mensajeAplicar(ediciones: Pick<Evento, "titulo" | "fecha">[]): string {
+  if (ediciones.length === 0) return "Hola, me interesa aplicar a Investment Week.";
+  const lista = ediciones.map((e) => `${e.titulo} (${e.fecha})`).join(" o ");
+  return `Hola, me interesa aplicar a ${lista}.`;
 }

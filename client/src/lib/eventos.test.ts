@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { CUMBRE_BLOQUES, aEvento, cartel, ediciones, proximaCumbre, type EventoApi } from "./eventos";
+import { CUMBRE_BLOQUES, aEvento, cartel, diasDelEvento, ediciones, fechaHoraCdmx, mensajeAplicar, proximaCumbre, type EventoApi } from "./eventos";
 
 // Datos ficticios con la forma que manda GET /api/public/eventos del CMS.
 function api(over: Partial<EventoApi> = {}): EventoApi {
   return {
-    slug: "cumbre-ficticia", type: "Cumbre", kicker: "2ª Cumbre Ficticia", title: "Título ficticio",
+    slug: "cumbre-ficticia", type: "Cumbre", typeSlug: "cumbre",
+    startsAt: "2026-11-14T16:00:00.000Z", endsAt: "2026-11-14T22:00:00.000Z", allDay: false, kicker: "2ª Cumbre Ficticia", title: "Título ficticio",
     summary: "Resumen", objective: "Objetivo", why: "Por qué", modalityLabel: "Online",
     location: null, platform: "Facebook y YouTube", priceLabel: "Gratuito",
     imageUrl: "https://res.cloudinary.com/demo/image/upload/v1/comprando-america/eventos/flyer.jpg",
@@ -28,7 +29,8 @@ describe("eventos del CMS", () => {
 
   it("un viaje trae su agenda con el día de la semana", () => {
     const e = aEvento(api({
-      slug: "iw-ficticia", type: "Investment Week", location: "Ciudad Ficticia", modalityLabel: "Presencial", priceLabel: null,
+      slug: "iw-ficticia", type: "Investment Week", typeSlug: "investment-week", allDay: true,
+      startsAt: "2026-11-03T08:00:00.000Z", endsAt: "2026-11-08T08:00:00.000Z", location: "Ciudad Ficticia", modalityLabel: "Presencial", priceLabel: null,
       agenda: [{ date: "2026-11-03", label: "Martes 3 de noviembre", title: "Llegada", description: null }],
     }));
     expect(e.tipo).toBe("Presencial");
@@ -61,6 +63,30 @@ describe("eventos del CMS", () => {
     expect(proximaCumbre([cancelada, vigente])?.id).toBe("b");
     expect(proximaCumbre([cancelada])?.id).toBe("a");
     expect(proximaCumbre([])).toBeUndefined();
+  });
+
+  it("reconoce cada tipo por su clave, aunque lo renombren en el CMS", () => {
+    const renombrada = aEvento(api({ type: "Gran Cumbre Anual" }));
+    expect(renombrada.bloques).toBe(CUMBRE_BLOQUES);
+    expect(proximaCumbre([renombrada])?.id).toBe("cumbre-ficticia");
+    // Un tipo que se llame «Cumbre» pero con otra clave no es la Cumbre del sitio.
+    const otra = aEvento(api({ slug: "otra", type: "Cumbre", typeSlug: "cumbre-2" }));
+    expect(otra.bloques).toBeUndefined();
+    expect(proximaCumbre([otra])).toBeUndefined();
+  });
+
+  it("la fecha confirmada de la Cumbre, en hora de Ciudad de México", () => {
+    expect(fechaHoraCdmx(aEvento(api()))).toBe("Sábado 14 de noviembre · 10:00 a. m. (hora de Ciudad de México)");
+    expect(fechaHoraCdmx(aEvento(api({ startsAt: "2026-11-14T22:30:00.000Z" })))).toBe("Sábado 14 de noviembre · 4:30 p. m. (hora de Ciudad de México)");
+  });
+
+  it("los días y el mensaje de WhatsApp salen del CMS", () => {
+    const iw = aEvento(api({ slug: "iw", type: "Investment Week", typeSlug: "investment-week", title: "Investment Week · Ciudad Ficticia",
+      dateLabel: "3 al 7 de noviembre, 2026", allDay: true, startsAt: "2026-11-03T08:00:00.000Z", endsAt: "2026-11-08T08:00:00.000Z" }));
+    expect(diasDelEvento(iw)).toBe(5);
+    expect(diasDelEvento(aEvento(api()))).toBeNull();
+    expect(mensajeAplicar([iw])).toBe("Hola, me interesa aplicar a Investment Week · Ciudad Ficticia (3 al 7 de noviembre, 2026).");
+    expect(mensajeAplicar([])).toBe("Hola, me interesa aplicar a Investment Week.");
   });
 
   it("nada de Zoom en lo que dibuja el sitio", () => {
