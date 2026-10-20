@@ -141,6 +141,56 @@ export async function registrarse(datos: DatosRegistro): Promise<ResultadoRegist
   }
 }
 
+/** ¿Sirve la liga personal del correo? Solo devuelve la sala y el nombre de pila. */
+export type InfoInvitacion =
+  | { ok: true; sala: SalaInfo; nombre: string | null }
+  | { ok: false; error: string };
+
+export async function infoInvitacion(slug: string, invitacion: string): Promise<InfoInvitacion> {
+  if (!SLUG_VALIDO.test(slug)) return { ok: false, error: "Esta sala no existe." };
+  try {
+    const res = await fetch(`${cmsUrl()}/api/public/sala/${slug}/invitacion?i=${encodeURIComponent(invitacion)}`, { cache: "no-store" });
+    const cuerpo = (await res.json().catch(() => ({}))) as { sala?: SalaInfo; nombre?: string | null; error?: string };
+    if (res.ok && cuerpo.sala) return { ok: true, sala: cuerpo.sala, nombre: cuerpo.nombre ?? null };
+    return { ok: false, error: cuerpo.error ?? "Tu liga ya no es válida. Puedes registrarte aquí mismo." };
+  } catch {
+    return { ok: false, error: "No pudimos revisar tu liga. Recarga la página." };
+  }
+}
+
+/** Entrar con la liga personal: solo el aviso de privacidad (y la casilla opcional). */
+export async function entrarConInvitacion(datos: {
+  slug: string;
+  invitacion: string;
+  privacyAccepted: true;
+  marketingOptIn: boolean;
+}): Promise<ResultadoRegistro> {
+  try {
+    const res = await fetch("/api/en-vivo/invitacion", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datos),
+    });
+    const cuerpo = (await res.json().catch(() => ({}))) as { token?: string; enRevision?: boolean; error?: string; ocupado?: boolean };
+    if (res.ok && cuerpo.token) return { ok: true, token: cuerpo.token, enRevision: cuerpo.enRevision === true };
+    return { ok: false, error: cuerpo.error ?? "No pudimos abrir la sala. Intenta de nuevo.", ocupado: cuerpo.ocupado === true };
+  } catch {
+    return { ok: false, error: "No pudimos abrir la sala. Revisa tu conexión e inténtalo de nuevo." };
+  }
+}
+
+/** La liga personal no se queda en la barra de direcciones (por si comparten la pantalla o la liga). */
+export function quitarInvitacionDeLaLiga(): void {
+  try {
+    const url = new URL(window.location.href);
+    if (!url.searchParams.has("i")) return;
+    url.searchParams.delete("i");
+    window.history.replaceState(null, "", url.pathname + (url.search ? url.search : "") + url.hash);
+  } catch {
+    /* nada que limpiar */
+  }
+}
+
 export type LecturaEstado =
   | { tipo: "ok"; estado: EstadoSala; etag: string | null }
   | { tipo: "sin-cambios" }

@@ -31,6 +31,9 @@ import {
   registrarse,
   salaAbierta,
   salaPorSlug,
+  infoInvitacion,
+  entrarConInvitacion,
+  quitarInvitacionDeLaLiga,
   votar,
   type EncuestaSala,
   type EstadoSala,
@@ -58,6 +61,10 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
   const [sala, setSala] = useState<SalaInfo | null | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
   const [errorCarga, setErrorCarga] = useState(false);
+  // La liga personal del correo (?i=…), solo con la liga directa de la sala.
+  const [invitacion, setInvitacion] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("i"));
+  const [avisoInvitacion, setAvisoInvitacion] = useState<string | null>(null);
 
   useEffect(() => {
     setSala(undefined);
@@ -78,6 +85,10 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
     document.head.appendChild(meta);
     return () => meta.remove();
   }, [slugDirecto]);
+
+  useEffect(() => {
+    if (token) quitarInvitacionDeLaLiga();
+  }, [token]);
 
   const salir = useCallback(() => {
     if (sala) olvidarFicha(sala.slug);
@@ -101,7 +112,17 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
             <a href="/eventos" className="mt-5 inline-block rounded-lg px-5 py-2.5 text-sm font-semibold" style={{ background: ACENTO }}>Ver eventos</a>
           </Aviso>
         )}
-        {sala && !token && <Registro sala={sala} onFicha={(t) => { guardarFicha(sala.slug, t); setToken(t); }} />}
+        {sala && !token && slugDirecto && invitacion && (
+          <EntradaInvitacion
+            sala={sala}
+            invitacion={invitacion}
+            onFicha={(t) => { guardarFicha(sala.slug, t); quitarInvitacionDeLaLiga(); setToken(t); }}
+            onInvalida={(msg) => { quitarInvitacionDeLaLiga(); setInvitacion(null); setAvisoInvitacion(msg); }}
+          />
+        )}
+        {sala && !token && !(slugDirecto && invitacion) && (
+          <Registro sala={sala} aviso={avisoInvitacion} onFicha={(t) => { guardarFicha(sala.slug, t); setToken(t); }} />
+        )}
         {sala && token && <Sala sala={sala} token={token} onSinFicha={salir} />}
       </main>
     </div>
@@ -128,7 +149,7 @@ function Aviso({ titulo, texto, children }: { titulo: string; texto: string; chi
 
 // ─── Registro ────────────────────────────────────────────────────────────────
 
-function Registro({ sala, onFicha }: { sala: SalaInfo; onFicha: (token: string) => void }) {
+function Registro({ sala, aviso, onFicha }: { sala: SalaInfo; aviso?: string | null; onFicha: (token: string) => void }) {
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [telefono, setTelefono] = useState<Telefono>(TELEFONO_VACIO);
@@ -185,6 +206,7 @@ function Registro({ sala, onFicha }: { sala: SalaInfo; onFicha: (token: string) 
 
       <form onSubmit={enviar} className="space-y-4 rounded-2xl p-6" style={{ background: NAVY_CARD }} noValidate>
         <h2 className="text-xl font-bold" style={{ fontFamily: TITULOS }}>Entra a la sala</h2>
+        {aviso && <p className="rounded-lg bg-amber-500/15 px-3 py-2 text-sm text-amber-100">{aviso}</p>}
         <label className="block">
           <span className="mb-1 block text-xs text-white/60">Nombre completo</span>
           <input className={INPUT} autoComplete="name" value={nombre} onChange={(e) => setNombre(e.target.value)} maxLength={200} />
@@ -214,6 +236,68 @@ function Registro({ sala, onFicha }: { sala: SalaInfo; onFicha: (token: string) 
         </button>
       </form>
     </div>
+  );
+}
+
+// ─── Entrada con la liga personal del correo ─────────────────────────────────
+
+function EntradaInvitacion({ sala, invitacion, onFicha, onInvalida }: {
+  sala: SalaInfo;
+  invitacion: string;
+  onFicha: (token: string) => void;
+  onInvalida: (mensaje: string) => void;
+}) {
+  const [nombre, setNombre] = useState<string | null | undefined>(undefined);
+  const [privacidad, setPrivacidad] = useState(false);
+  const [informacion, setInformacion] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // El aviso de «liga inválida» se lee de una ref: la página lo pasa en línea y no debe volver a pedir la liga.
+  const alInvalida = useRef(onInvalida);
+  alInvalida.current = onInvalida;
+
+  useEffect(() => {
+    let vivo = true;
+    infoInvitacion(sala.slug, invitacion).then((r) => {
+      if (!vivo) return;
+      if (r.ok) setNombre(r.nombre);
+      else alInvalida.current(r.error);
+    });
+    return () => { vivo = false; };
+  }, [sala.slug, invitacion]);
+
+  async function entrar(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    if (!privacidad) return setError("Para entrar, acepta el aviso de privacidad.");
+    setEnviando(true);
+    const r = await entrarConInvitacion({ slug: sala.slug, invitacion, privacyAccepted: true, marketingOptIn: informacion });
+    setEnviando(false);
+    if (r.ok) onFicha(r.token);
+    else setError(r.error);
+  }
+
+  if (nombre === undefined) return <Cargando />;
+  return (
+    <form onSubmit={entrar} className="mx-auto max-w-lg space-y-4 rounded-2xl p-7" style={{ background: NAVY_CARD }} noValidate>
+      {sala.kicker && <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: ACENTO }}>{sala.kicker}</p>}
+      <h1 className="text-2xl font-bold leading-tight md:text-3xl" style={{ fontFamily: TITULOS }}>{nombre ? `Hola, ${nombre}` : "Hola"}</h1>
+      <p className="text-white/75">Tu lugar en <b>{sala.title}</b> ya está listo. Confirma y entra a la sala; no tienes que volver a registrarte.</p>
+      {!sala.open && <p className="rounded-lg bg-white/10 px-4 py-3 text-sm text-white/80">La sala todavía no abre. Vuelve un poco antes de que empiece con esta misma liga.</p>}
+      <label className="flex items-start gap-2 text-sm text-white/80">
+        <input type="checkbox" className="mt-1" checked={privacidad} onChange={(e) => setPrivacidad(e.target.checked)} />
+        <span>He leído y acepto el <a href="/privacidad" target="_blank" rel="noreferrer" className="underline" style={{ color: ACENTO }}>aviso de privacidad</a>.</span>
+      </label>
+      <label className="flex items-start gap-2 text-sm text-white/80">
+        <input type="checkbox" className="mt-1" checked={informacion} onChange={(e) => setInformacion(e.target.checked)} />
+        <span>Quiero recibir información de Comprando América por correo y WhatsApp (opcional).</span>
+      </label>
+      {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{error}</p>}
+      <button type="submit" disabled={enviando || !sala.open} className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 font-semibold disabled:opacity-50" style={{ background: ACENTO }}>
+        {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : null} Entrar a la sala
+      </button>
+    </form>
   );
 }
 

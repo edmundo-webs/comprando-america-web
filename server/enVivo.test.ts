@@ -137,6 +137,52 @@ describe("POST /api/en-vivo/registro", () => {
   });
 });
 
+describe("POST /api/en-vivo/invitacion (liga personal del correo)", () => {
+  const entrada = { slug: "cumbre-ficticia", invitacion: "ficha.de.la.invitacion", privacyAccepted: true, marketingOptIn: false };
+  async function entrar(cuerpo: Record<string, unknown>) {
+    return realFetch(`${base}/api/en-vivo/invitacion`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-forwarded-for": `10.2.0.${++ipSiguiente}` },
+      body: JSON.stringify(cuerpo),
+    });
+  }
+
+  it("sin aceptar el aviso de privacidad no entra", async () => {
+    const res = await entrar({ ...entrada, privacyAccepted: false });
+    expect(res.status).toBe(400);
+    expect((await res.json()).error).toBe("Para entrar, acepta el aviso de privacidad.");
+    expect(red).not.toHaveBeenCalled();
+  });
+
+  it("va al CMS con la llave y la ficha de la invitación, sin Turnstile ni datos de la persona", async () => {
+    red.mockResolvedValueOnce(fichaOk());
+    const res = await entrar({ ...entrada, marketingOptIn: true });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true, token: "ficha-ficticia", enRevision: false });
+    expect(red).toHaveBeenCalledTimes(1);
+    const [url, init] = red.mock.calls[0] as [string, RequestInit];
+    expect(url).toBe("https://cms.prueba/api/public/sala/cumbre-ficticia/invitacion");
+    expect((init.headers as Record<string, string>)["x-api-key"]).toBe("clave-de-prueba");
+    expect(JSON.parse(String(init.body))).toEqual({ invitacion: "ficha.de.la.invitacion", privacyAccepted: true, marketingOptIn: true });
+  });
+
+  it("una liga vencida se explica con el mensaje del CMS", async () => {
+    red.mockResolvedValueOnce(new Response(JSON.stringify({ error: "Tu liga ya no es válida (el evento terminó o la liga está incompleta). Puedes registrarte aquí mismo." }), { status: 410 }));
+    const res = await entrar(entrada);
+    expect(res.status).toBe(410);
+    expect((await res.json()).error).toMatch(/Tu liga ya no es válida/);
+  });
+
+  it("CMS ocupado dos veces: el mismo aviso", async () => {
+    red.mockResolvedValueOnce(ocupado()).mockResolvedValueOnce(ocupado());
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await entrar(entrada);
+    spy.mockRestore();
+    expect(res.status).toBe(503);
+    expect((await res.json()).error).toBe(cmsLead.MENSAJE_OCUPADO);
+  });
+});
+
 describe("registrarEnSala", () => {
   it("ocupado una vez: espera lo que pide el CMS y entra al reintento", async () => {
     const fetchImpl = vi.fn().mockResolvedValueOnce(ocupado()).mockResolvedValueOnce(fichaOk());

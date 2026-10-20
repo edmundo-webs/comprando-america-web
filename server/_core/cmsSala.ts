@@ -28,8 +28,11 @@ const TIEMPO_MAXIMO_MS = 8_000;
 /** Slug de sala que acepta el CMS. */
 export const SLUG_SALA = /^[a-z0-9-]{1,220}$/;
 
-async function intentar(slug: string, cuerpo: Record<string, unknown>, fetchImpl: Fetch) {
-  const res = await fetchImpl(`${urlDelCms()}/api/public/sala/${slug}/registro`, {
+/** A qué ruta del CMS va: el registro con el formulario o la entrada con la invitación del correo. */
+export type AccionSala = "registro" | "invitacion";
+
+async function intentar(slug: string, accion: AccionSala, cuerpo: Record<string, unknown>, fetchImpl: Fetch) {
+  const res = await fetchImpl(`${urlDelCms()}/api/public/sala/${slug}/${accion}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-api-key": ENV.cmsApiKey },
     body: JSON.stringify(cuerpo),
@@ -39,10 +42,32 @@ async function intentar(slug: string, cuerpo: Record<string, unknown>, fetchImpl
   return { res, texto };
 }
 
-export async function registrarEnSala(
+export function registrarEnSala(
   slug: string,
   cuerpo: Record<string, unknown>,
   opciones: { fetchImpl?: Fetch; esperar?: Esperar } = {},
+): Promise<ResultadoSala> {
+  return enviarASala(slug, "registro", cuerpo, opciones);
+}
+
+/**
+ * Entrar con la liga personal del correo: el aviso de privacidad aceptado y la
+ * ficha de la invitación. El CMS la liga al contacto que ya existe, sin
+ * duplicarlo; no hace falta Turnstile (la liga va firmada).
+ */
+export function entrarConInvitacion(
+  slug: string,
+  cuerpo: { invitacion: string; privacyAccepted: true; marketingOptIn: boolean },
+  opciones: { fetchImpl?: Fetch; esperar?: Esperar } = {},
+): Promise<ResultadoSala> {
+  return enviarASala(slug, "invitacion", cuerpo, opciones);
+}
+
+async function enviarASala(
+  slug: string,
+  accion: AccionSala,
+  cuerpo: Record<string, unknown>,
+  opciones: { fetchImpl?: Fetch; esperar?: Esperar },
 ): Promise<ResultadoSala> {
   const { fetchImpl = fetch, esperar = (ms) => new Promise<void>((r) => setTimeout(r, ms)) } = opciones;
   if (!ENV.cmsApiKey) {
@@ -50,15 +75,15 @@ export async function registrarEnSala(
     return { ok: false, status: 500, error: "Falta configuración del servidor" };
   }
   try {
-    let { res, texto } = await intentar(slug, cuerpo, fetchImpl);
+    let { res, texto } = await intentar(slug, accion, cuerpo, fetchImpl);
     const primero = esOcupado(res.status, res.headers.get("retry-after"), texto);
     if (primero) {
       await esperar(primero.esperaMs ?? ESPERA_OCUPADO_MAX_MS);
-      ({ res, texto } = await intentar(slug, cuerpo, fetchImpl));
+      ({ res, texto } = await intentar(slug, accion, cuerpo, fetchImpl));
       if (esOcupado(res.status, res.headers.get("retry-after"), texto)) {
         // Sin datos de contacto en claro de más: el registro lleva el envío
         // completo, como los leads, para recuperarlo si hiciera falta.
-        console.error(`[sala] ENVIO FALLIDO registro ${slug} status=503 ocupado`, JSON.stringify(cuerpo));
+        console.error(`[sala] ENVIO FALLIDO ${accion} ${slug} status=503 ocupado`, JSON.stringify(cuerpo));
         return { ok: false, ocupado: true };
       }
     }
@@ -70,14 +95,14 @@ export async function registrarEnSala(
     try {
       const datos = JSON.parse(texto) as { error?: string };
       // Solo los mensajes para la persona (sala cerrada, datos inválidos).
-      if (datos.error && (res.status === 409 || res.status === 400 || res.status === 404)) error = datos.error;
+      if (datos.error && [400, 404, 409, 410].includes(res.status)) error = datos.error;
     } catch {
       /* respuesta sin JSON */
     }
-    if (res.status >= 500) console.error(`[sala] registro ${slug} status=${res.status} ${texto.slice(0, 300)}`);
+    if (res.status >= 500) console.error(`[sala] ${accion} ${slug} status=${res.status} ${texto.slice(0, 300)}`);
     return { ok: false, status: res.status, error };
   } catch (err: any) {
-    console.error(`[sala] registro ${slug} sin respuesta del CMS: ${String(err?.message ?? err)}`);
+    console.error(`[sala] ${accion} ${slug} sin respuesta del CMS: ${String(err?.message ?? err)}`);
     return { ok: false, status: 502, error: "No pudimos registrarte. Intenta de nuevo." };
   }
 }

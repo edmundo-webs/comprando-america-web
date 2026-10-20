@@ -2,7 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { esE164Valido } from "../../shared/telefono";
 import { MENSAJE_OCUPADO, ESPERA_OCUPADO_MAX_MS } from "../_core/cmsLead";
-import { SLUG_SALA, registrarEnSala } from "../_core/cmsSala";
+import { SLUG_SALA, entrarConInvitacion, registrarEnSala } from "../_core/cmsSala";
 import { MENSAJE_TURNSTILE, verificarTurnstile } from "../_core/turnstile";
 import { ipDelVisitante } from "../_core/visitante";
 
@@ -81,6 +81,38 @@ enVivoRouter.post("/api/en-vivo/registro", async (req, res) => {
     ...(entrada.utm ? { utm: entrada.utm } : {}),
     ...(ip ? { clientIp: ip } : {}),
   });
+  if (r.ok) return res.json({ ok: true, token: r.token, enRevision: r.enRevision });
+  if (r.ocupado) {
+    res.setHeader("Retry-After", String(Math.ceil(ESPERA_OCUPADO_MAX_MS / 1000)));
+    return res.status(503).json({ ok: false, ocupado: true, error: MENSAJE_OCUPADO });
+  }
+  return res.status(r.status >= 500 ? 502 : r.status).json({ ok: false, error: r.error });
+});
+
+const invitacionSchema = z.object({
+  slug: z.string().regex(SLUG_SALA),
+  invitacion: z.string().min(10).max(2048),
+  privacyAccepted: z.literal(true),
+  marketingOptIn: z.boolean().default(false),
+});
+
+/**
+ * Entrar con la liga personal del correo (/en-vivo/<clave>?i=…): la persona
+ * solo acepta el aviso de privacidad (y, si quiere, la casilla de información).
+ * El CMS revisa la firma de la liga y la liga a su contacto, sin duplicarlo.
+ */
+enVivoRouter.post("/api/en-vivo/invitacion", async (req, res) => {
+  const ip = ipDelVisitante(req);
+  if (excedeLimiteSala(ip ?? "desconocida")) {
+    return res.status(429).json({ ok: false, error: "Demasiados intentos seguidos. Intenta en un minuto." });
+  }
+  const parsed = invitacionSchema.safeParse(req.body ?? {});
+  if (!parsed.success) {
+    const sinAviso = parsed.error.issues.some((i) => i.path[0] === "privacyAccepted");
+    return res.status(400).json({ ok: false, error: sinAviso ? "Para entrar, acepta el aviso de privacidad." : "Tu liga no es válida." });
+  }
+  const { slug, ...cuerpo } = parsed.data;
+  const r = await entrarConInvitacion(slug, { invitacion: cuerpo.invitacion, privacyAccepted: true, marketingOptIn: cuerpo.marketingOptIn });
   if (r.ok) return res.json({ ok: true, token: r.token, enRevision: r.enRevision });
   if (r.ocupado) {
     res.setHeader("Retry-After", String(Math.ceil(ESPERA_OCUPADO_MAX_MS / 1000)));
