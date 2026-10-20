@@ -29,7 +29,8 @@ Guía permanente de este repositorio (`edmundo-webs/comprando-america-web`, en R
 * `CMS_API_KEY`: token para enviar leads (encabezado `x-api-key`). Solo en el servidor, nunca en el navegador.
 * `VITE_CRM_API_URL`: dirección del CMS para lecturas públicas desde el navegador (por ejemplo, el portafolio). Por defecto `https://cms.comprandoamerica.com` (`client/src/lib/cmsUrl.ts`). Se lee en el navegador de `import.meta.env` y en el servidor de `process.env`: el servidor también carga código de `client/src` (la página de inicio para buscadores), así que ningún módulo del cliente lee `import.meta.env` al cargarse. Nunca lleva tokens.
 * `MIEMBROS_URL`: https://miembros.comprandoamerica.com
-* `VITE_TURNSTILE_SITE_KEY`: llave pública del widget de Cloudflare Turnstile del boletín de /news. Se lee al compilar; sin ella no hay widget.
+* `VITE_TURNSTILE_SITE_KEY`: llave pública del widget de Cloudflare Turnstile (boletín de /news y registro a /en-vivo; `client/src/hooks/useTurnstile.ts`). Se lee al compilar; sin ella no hay widget.
+* `VITE_WHATSAPP_COMERCIAL`: el WhatsApp **comercial** del sitio en E.164 (`client/src/lib/whatsapp.ts`). Sin ella se usa el comercial de siempre. El de miembros (Dirección de Miembros) nunca va en el sitio: es de Mi espacio; una prueba lo revisa.
 * `TURNSTILE_SECRET_KEY`: llave secreta de Turnstile. Solo en el servidor, nunca en el navegador. Sin ella, el boletín no verifica el token (se avisa en el registro).
 
 ## 4. Cómo trabajar
@@ -85,5 +86,11 @@ Las reglas de arriba son el objetivo. Hoy el código todavía no las cumple del 
 * El número de WhatsApp del sitio vive solo en `client/src/lib/whatsapp.ts` (`WHATSAPP_E164`).
 
 **Eventos (desde el PR 3 del calendario):** ya no se escriben aquí. Se capturan en el CMS (Eventos) y se leen de `VITE_CRM_API_URL/api/public/eventos` (`client/src/lib/eventos.ts`, `client/src/hooks/useEventos.ts`): el carrusel del home y su ventana, las ediciones de `/investment-week` (tipo con clave `investment-week`), los datos y la transmisión de `/cumbre-digital` (la próxima del tipo con clave `cumbre`) y «Próximos eventos» de `/eventos`. Solo llegan eventos públicos y próximos; si el CMS no responde, esas secciones se ocultan. El programa de bloques de la Cumbre sigue en `lib/eventos.ts`. Los tipos se reconocen por su clave fija (`typeSlug` de la API), nunca por el nombre visible: renombrarlos en el CMS no rompe el sitio. Fechas, sedes, días y el mensaje de WhatsApp para aplicar a Investment Week salen del CMS. «Ver la transmisión» sale solo cuando el CMS manda la liga (dentro de la ventana del evento).
+
+**Sala en vivo (`/en-vivo`, `client/src/pages/EnVivo.tsx`):** la sala de la transmisión, abierta al público. La sala la abre y la maneja el equipo desde el CMS (Eventos → evento → «Sala en vivo»); el sitio solo la muestra.
+* Registro: nombre, correo, WhatsApp con país (E.164), aviso de privacidad (`/privacidad`, obligatorio), casilla aparte y opcional para recibir información, y Turnstile. Va a `POST /api/en-vivo/registro` de este sitio (`server/routes/enVivo.ts`), que revisa Turnstile y lo pasa al CMS con `CMS_API_KEY` (`server/_core/cmsSala.ts`). El CMS crea o reconoce al lead (sin duplicar) y devuelve la «ficha» de la sala (7 días, en `localStorage`).
+* Con la ficha, el navegador lee el panel cada 4 s, vota y pregunta directo en `VITE_CRM_API_URL/api/public/sala/*` (`client/src/lib/salaEnVivo.ts`). La ficha no lleva datos de la persona y el navegador nunca lleva la llave del CMS.
+* Video de YouTube con su API: si no se puede ver dentro de la página, se cambia por «Ver en YouTube»; la liga también queda siempre abajo.
+* Si el CMS está ocupado (503 «ocupado»), se espera y se reintenta una vez; si sigue ocupado, la persona ve «Estamos recibiendo muchos registros, intenta en unos segundos.».
 
 **Acceso de miembros que ya existe:** `/acceso` (`client/src/pages/Acceso.tsx`, `client/src/lib/portafolio.ts`). Enlace mágico por correo contra `VITE_CRM_API_URL/api/public/portafolio/acceso/*`; el token se guarda en `localStorage` y desbloquea las cifras de `/activos-disponibles`. Es distinto del portal "Mi espacio" en `MIEMBROS_URL`.

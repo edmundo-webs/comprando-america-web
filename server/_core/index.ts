@@ -16,6 +16,7 @@ import { episodesRouter } from "../routes/episodes";
 import { seoRouter } from "../routes/seo";
 import { trackRouter } from "../routes/track";
 import { leadsRouter } from "../routes/leads";
+import { enVivoRouter } from "../routes/enVivo";
 import { healthRouter } from "../routes/health";
 import { ensureAnalyticsTables } from "./ensureAnalyticsTables";
 
@@ -66,6 +67,8 @@ async function startServer() {
   // Entrada única de leads: POST /api/leads → CMS con CMS_API_KEY.
   // No se guarda nada en la base de este sitio (CLAUDE.md §1).
   app.use(leadsRouter);
+  // Registro a la sala en vivo (/en-vivo): Turnstile aquí y la llave al CMS.
+  app.use(enVivoRouter);
 
   // Latest YouTube episodes for the Podcast page (public RSS, cached).
   app.use(episodesRouter);
