@@ -29,9 +29,10 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 
 /* ─── Head (noindex) ─── */
 import SEOHead from "@/components/SEOHead";
-/* Fechas y agendas viven en lib/eventos.ts, que es la fuente que también usa
-   el carrusel del home. Estaban duplicadas y se desfasaron una vez. */
-import { EDICIONES } from "@/lib/eventos";
+/* Fechas y agendas vienen del CMS (Eventos, tipo «Investment Week»): la misma
+   fuente del carrusel del home. Una edición que ya pasó deja de salir sola. */
+import { ediciones } from "@/lib/eventos";
+import { useEventos } from "@/hooks/useEventos";
 const PAGE_SEO = {
   title: "Investment Week | Comprando América",
   description: "Una semana en terreno con el equipo. Niagara Falls, Nueva York: 2 al 6 de octubre de 2026, casas unifamiliares y sección 8. Las Vegas, Nevada: 3 al 7 de noviembre de 2026, AAPEX y SEMA show. Solo por invitación.",
@@ -55,8 +56,10 @@ const TEAM = [
 const WA_APPLY = "Hola, me interesa aplicar a Investment Week (Niagara Falls 2-6 oct o Las Vegas 3-7 nov 2026).";
 
 export default function InvestmentWeek() {
-  const [edicion, setEdicion] = useState(EDICIONES[0].id);
-  const edicionActiva = EDICIONES.find((e) => e.id === edicion);
+  const { eventos } = useEventos();
+  const EDICIONES = ediciones(eventos);
+  const [edicion, setEdicion] = useState<string | null>(null);
+  const edicionActiva = EDICIONES.find((e) => e.id === edicion) ?? EDICIONES[0];
 
   const scrollToApply = () => {
     document.getElementById("aplicar")?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -190,7 +193,7 @@ export default function InvestmentWeek() {
                 </div>
 
                 {/* Strip inferior */}
-                <div className="absolute bottom-0 left-0 right-0 p-4">
+                {EDICIONES.length > 0 && <div className="absolute bottom-0 left-0 right-0 p-4">
                   <div className="bg-[#0B1F3A]/80 backdrop-blur-sm rounded-xl border border-white/10 px-4 py-3 flex items-stretch gap-3">
                     {EDICIONES.map((e) => (
                       <div
@@ -206,7 +209,7 @@ export default function InvestmentWeek() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div>}
               </div>
             </motion.div>
 
@@ -296,7 +299,9 @@ export default function InvestmentWeek() {
           Una agenda por edición, con selector. Antes vivía aquí la del
           Florida Investment Weekend II, que ya pasó; la de cada ciudad viene
           de su flyer oficial y no se rellena con supuestos: si el flyer sólo
-          dice "Día 1 de Expo", eso es lo que se muestra. */}
+          dice "Día 1 de Expo", eso es lo que se muestra. Viene del CMS: sin
+          ediciones próximas (o si el CMS no responde), la sección no sale. */}
+      {EDICIONES.length > 0 && (
       <section className="bg-[#F5F7FA] py-20 md:py-28">
         <div className="container">
           <FadeIn>
@@ -318,7 +323,7 @@ export default function InvestmentWeek() {
           <FadeIn>
             <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-3 mb-8">
               {EDICIONES.map((e) => {
-                const activa = e.id === edicion;
+                const activa = e.id === edicionActiva?.id;
                 return (
                   <button
                     key={e.id}
@@ -366,7 +371,7 @@ export default function InvestmentWeek() {
                     Objetivo de la edición
                   </p>
                   <p className="text-[#0B1F3A] text-lg leading-relaxed">
-                    {edicionActiva.objetivo}
+                    {edicionActiva.objetivo ?? edicionActiva.desc}
                   </p>
                 </div>
               </FadeIn>
@@ -400,6 +405,7 @@ export default function InvestmentWeek() {
           )}
         </div>
       </section>
+      )}
 
       {/* ═══ 5. QUÉ HACE DIFERENTE — navy ═══ */}
       <section className="bg-[#0E2544] py-20 md:py-28">

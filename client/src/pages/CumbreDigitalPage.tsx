@@ -3,7 +3,8 @@ import Navbar from "@/components/Navbar";
 import SEOHead from "@/components/SEOHead";
 /* El temario, la fecha y el registro viven fuera de la página: la ventana del
    home muestra lo mismo y el lead tiene que caer idéntico en el CMS. */
-import { CUMBRE_BLOQUES, CUMBRE_WHATSAPP_GRUPO, EVENTOS } from "@/lib/eventos";
+import { CUMBRE_BLOQUES, CUMBRE_WHATSAPP_GRUPO, proximaCumbre, type Evento } from "@/lib/eventos";
+import { useEventos } from "@/hooks/useEventos";
 import { useRegistroCumbre, type RegistroFormData } from "@/hooks/useRegistroCumbre";
 import CampoTelefono from "@/components/CampoTelefono";
 
@@ -12,11 +13,13 @@ const WHATSAPP_GRUPO = CUMBRE_WHATSAPP_GRUPO;
 const YOUTUBE_CANAL = "https://www.youtube.com/@ComprandoAmerica";
 
 /* ─── Datos del evento ───
-   La fecha sale de lib/eventos.ts, que es la misma fuente del carrusel y de la
-   ventana del home: estaba escrita a mano aquí y la edición anterior se quedó
-   anunciada semanas después de haber ocurrido. */
-const CUMBRE = EVENTOS.find((e) => e.id === "cumbre")!;
-const EVENTO = `Gratuito · ${CUMBRE.rango} · ${CUMBRE.horario} · ${CUMBRE.lugar}`;
+   Fecha, horario y transmisión vienen del CMS (la próxima Cumbre en Eventos),
+   la misma fuente del carrusel y de la ventana del home: estaban escritos a
+   mano y la edición anterior se quedó anunciada semanas después de haber
+   ocurrido. Si el CMS no responde, la línea de datos no sale. */
+function datosDe(c: Evento): string {
+  return [c.tipo, c.rango, c.horario, c.lugar].filter(Boolean).join(" · ");
+}
 
 /* ─── Design tokens ─── */
 const NAVY      = "#0B1F3A";
@@ -417,13 +420,16 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
     useRegistroCumbre(fuente);
 
   const formProps = { formData, setFormData, onSubmit, enviando, submitted, errorTelefono };
+  const { eventos } = useEventos();
+  const CUMBRE = proximaCumbre(eventos);
+  const serie = CUMBRE?.kicker ?? "Cumbre Digital";
 
   return (
     <div style={{ fontFamily: FB, background: NAVY_DEEP, color: "#fff", overflowX: "hidden" }}>
       <style>{CSS}</style>
       <SEOHead
-        title={`${CUMBRE.kicker} · ${CUMBRE.titulo} | Comprando América`}
-        description={`${CUMBRE.kicker} de Comprando América · ${CUMBRE.titulo}. ${CUMBRE.rango}, ${CUMBRE.horario}. No inviertas sin estrategia: seis bloques gratuitos y en vivo sobre cómo mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos abiertos.`}
+        title={`${serie} · Casas, Negocios y Visas | Comprando América`}
+        description={`${serie} de Comprando América · Casas, Negocios y Visas.${CUMBRE ? ` ${[CUMBRE.rango, CUMBRE.horario].filter(Boolean).join(", ")}.` : ""} No inviertas sin estrategia: seis bloques gratuitos y en vivo sobre cómo mover el capital, la primera casa en dólares, qué sostiene un caso migratorio y los proyectos abiertos.`}
         path={seoPath}
       />
       <Navbar />
@@ -454,7 +460,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               fontFamily: FB, fontSize: "0.68rem", letterSpacing: "0.2em",
               color: GOLD, textTransform: "uppercase", marginBottom: 18,
             }} className="cd-hero-eyebrow">
-              {CUMBRE.kicker} · Comprando América
+              {serie} · Comprando América
             </div>
 
             <h1 className="cd-hero-h1" style={{
@@ -476,7 +482,7 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
             </p>
 
             {/* Datos del evento — única mención de horario en la página */}
-            <div style={{
+            {CUMBRE && <div style={{
               background: "rgba(37,99,235,0.08)",
               border: `1px solid ${DIVIDER}`,
               borderLeft: `3px solid ${GOLD}`,
@@ -485,8 +491,20 @@ export function CumbreDigitalPage({ fuente, registroId, seoPath }: Props) {
               fontFamily: FB, fontSize: "0.86rem", fontWeight: 500,
               color: "#fff", lineHeight: 1.6,
             }}>
-              {EVENTO}
-            </div>
+              {CUMBRE.cancelado ? `Cancelada · ${datosDe(CUMBRE)}` : datosDe(CUMBRE)}
+            </div>}
+            {CUMBRE && !CUMBRE.cancelado && CUMBRE.transmision && (
+              <div style={{ marginTop: 12, fontFamily: FB, fontSize: "0.9rem", color: OFF_WHITE }}>
+                {CUMBRE.transmision.url ? (
+                  <a href={CUMBRE.transmision.url} target="_blank" rel="noopener noreferrer" style={{
+                    display: "inline-block", background: GOLD, color: "#fff", fontWeight: 600,
+                    padding: "10px 18px", borderRadius: 4, textDecoration: "none",
+                  }}>
+                    Ver la transmisión →
+                  </a>
+                ) : CUMBRE.transmision.mensaje}
+              </div>
+            )}
           </div>
 
           {/* ── Registro ── */}
