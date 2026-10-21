@@ -45,6 +45,21 @@ export type PanelSala =
   | { mode: "encuesta"; poll: EncuestaSala | null }
   | { mode: "cta"; buttons: { label: string; href: string }[] };
 
+export type PreguntaPanel = { id: number; author: string; text: string; answered: boolean };
+export type Pestana = "encuesta" | "preguntas" | "comentarios";
+export const ORDEN_PESTANAS: readonly Pestana[] = ["encuesta", "preguntas", "comentarios"];
+
+/**
+ * Las pestañas del panel. Una pestaña en null no se muestra. `first` es la que
+ * destaca el equipo: cuando cambia, el panel se va a ella.
+ */
+export interface PestanasSala {
+  first: Pestana | null;
+  encuesta: { poll: EncuestaSala } | null;
+  preguntas: { questions: PreguntaPanel[] } | null;
+  comentarios: { paused: boolean } | null;
+}
+
 export interface EstadoSala {
   version: number;
   title: string;
@@ -52,9 +67,37 @@ export interface EstadoSala {
   open: boolean;
   video: VideoSala | null;
   panel: PanelSala;
+  /** Las pestañas (desde el foro). Un CMS anterior no las manda: se usa `panel`. */
+  tabs?: PestanasSala;
+  /** Los botones arriba de las pestañas, cuando el equipo los destaca. */
+  cta?: { buttons: { label: string; href: string }[] } | null;
   /** false: registro en revisión; puede ver, no votar ni preguntar. */
   participa: boolean;
 }
+
+export interface ComentarioSala {
+  id: number;
+  author: string;
+  text: string;
+  /** Lo escribió el equipo (sale con su etiqueta). */
+  team: boolean;
+  at: string;
+}
+
+export interface ForoSala {
+  activo: true;
+  participa: boolean;
+  /** Se puede comentar ahora (sala abierta y foro sin pausa). */
+  open: boolean;
+  paused: boolean;
+  slowSeconds: number;
+  muted: boolean;
+  pinned: ComentarioSala | null;
+  comments: ComentarioSala[];
+}
+
+/** Máximo de caracteres de un comentario (el CMS lo hace valer). */
+export const MAX_COMENTARIO = 300;
 
 /** Cada cuánto se pregunta por el panel. El CMS responde de un caché de 2 s. */
 export const INTERVALO_SONDEO_MS = 4_000;
@@ -212,6 +255,48 @@ export async function leerEstado(slug: string, token: string, etag: string | nul
   }
 }
 
+export type LecturaForo =
+  | { tipo: "ok"; foro: ForoSala | null; etag: string | null }
+  | { tipo: "sin-cambios" }
+  | { tipo: "sin-ficha" }
+  | { tipo: "error" };
+
+/** Los comentarios del foro; `foro: null` si el foro no está encendido. */
+export async function leerComentarios(slug: string, token: string, etag: string | null): Promise<LecturaForo> {
+  try {
+    const res = await fetch(`${cmsUrl()}/api/public/sala/${slug}/comentarios`, {
+      headers: { Authorization: `Bearer ${token}`, ...(etag ? { "If-None-Match": etag } : {}) },
+      cache: "no-store",
+    });
+    if (res.status === 304) return { tipo: "sin-cambios" };
+    if (res.status === 401) return { tipo: "sin-ficha" };
+    if (!res.ok) return { tipo: "error" };
+    const cuerpo = (await res.json()) as ForoSala | { activo: false };
+    return { tipo: "ok", foro: cuerpo.activo ? cuerpo : null, etag: res.headers.get("etag") };
+  } catch {
+    return { tipo: "error" };
+  }
+}
+
+export type ResultadoComentario =
+  | { ok: true; publicado: boolean; mensaje: string | null }
+  | { ok: false; error: string; esperar?: number };
+
+export async function comentar(slug: string, token: string, body: string): Promise<ResultadoComentario> {
+  try {
+    const res = await fetch(`${cmsUrl()}/api/public/sala/${slug}/comentarios`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ body }),
+    });
+    const cuerpo = (await res.json().catch(() => ({}))) as { publicado?: boolean; mensaje?: string | null; error?: string; retryAfter?: number };
+    if (res.ok) return { ok: true, publicado: cuerpo.publicado === true, mensaje: cuerpo.mensaje ?? null };
+    return { ok: false, error: cuerpo.error ?? "No pudimos publicar tu comentario.", esperar: cuerpo.retryAfter };
+  } catch {
+    return { ok: false, error: "No pudimos publicar tu comentario. Revisa tu conexión." };
+  }
+}
+
 export async function votar(
   slug: string,
   token: string,
@@ -248,6 +333,25 @@ export async function preguntar(slug: string, token: string, body: string): Prom
 }
 
 // ─── Piezas sin red (probadas en salaEnVivo.test.ts) ─────────────────────────
+
+/** Las pestañas que se muestran, en orden. */
+export function pestanasVisibles(tabs: PestanasSala): Pestana[] {
+  return ORDEN_PESTANAS.filter((p) => tabs[p] !== null);
+}
+
+/**
+ * La pestaña que se ve: si el equipo destacó otra (cambió `first`), esa; si la
+ * que tenía la persona dejó de mostrarse, la destacada (o la primera); si no,
+ * la que eligió la persona.
+ */
+export function pestanaActiva(tabs: PestanasSala, actual: Pestana | null, firstAnterior: Pestana | null | undefined): Pestana | null {
+  const visibles = pestanasVisibles(tabs);
+  if (visibles.length === 0) return null;
+  const destacada = tabs.first && visibles.includes(tabs.first) ? tabs.first : visibles[0];
+  if (firstAnterior !== undefined && tabs.first !== firstAnterior && tabs.first) return destacada;
+  if (actual && visibles.includes(actual)) return actual;
+  return destacada;
+}
 
 /** Opciones que se mandan al votar: una en opción única, una o más en múltiple. */
 export function alternarOpcion(kind: EncuestaSala["kind"], elegidas: number[], indice: number): number[] {

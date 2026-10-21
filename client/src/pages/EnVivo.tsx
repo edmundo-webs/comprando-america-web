@@ -4,15 +4,16 @@
  * 1. Sin ficha: registro (nombre, correo, WhatsApp con país, aviso de
  *    privacidad obligatorio, casilla opcional de información y Turnstile).
  * 2. Con ficha: el video de YouTube (con «Ver en YouTube» si no carga dentro
- *    de la página) y el panel que el equipo cambia desde la consola del CMS:
- *    vacío, preguntas aprobadas, encuesta o botones. El panel se pregunta cada
- *    4 segundos. Debajo, «Haz una pregunta».
+ *    de la página) y el panel en pestañas que el equipo maneja desde la
+ *    consola del CMS: Encuesta, Preguntas aprobadas y Comentarios (el foro),
+ *    con los botones arriba cuando el equipo los destaca. El panel y los
+ *    comentarios se preguntan cada 4 segundos. Debajo, «Haz una pregunta».
  *
  * Todo lo que pasa en la sala lo decide el CMS (lib/salaEnVivo.ts); esta página
  * solo lo muestra.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CheckCircle2, ExternalLink, Loader2, MessageCircle, Send } from "lucide-react";
+import { CheckCircle2, ExternalLink, Loader2, MessageCircle, Pin, Send } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import SEOHead from "@/components/SEOHead";
 import CampoTelefono from "@/components/CampoTelefono";
@@ -20,7 +21,12 @@ import { TURNSTILE_SITE_KEY, useTurnstile } from "@/hooks/useTurnstile";
 import { telefonoAE164, TELEFONO_VACIO, type Telefono } from "@shared/telefono";
 import {
   INTERVALO_SONDEO_MS,
+  MAX_COMENTARIO,
   alternarOpcion,
+  comentar,
+  leerComentarios,
+  pestanaActiva,
+  pestanasVisibles,
   avisoEncuesta,
   esLigaSegura,
   fichaGuardada,
@@ -35,9 +41,13 @@ import {
   entrarConInvitacion,
   quitarInvitacionDeLaLiga,
   votar,
+  type ComentarioSala,
   type EncuestaSala,
   type EstadoSala,
+  type ForoSala,
   type PanelSala,
+  type Pestana,
+  type PestanasSala,
   type SalaInfo,
   type VideoSala,
 } from "@/lib/salaEnVivo";
@@ -328,7 +338,12 @@ function Sala({ sala, token, onSinFicha }: { sala: SalaInfo; token: string; onSi
   // Al votar se muestra de inmediato lo que respondió el CMS, sin esperar al siguiente sondeo.
   const alVotar = (myVote: number[]) => {
     etag.current = null;
-    setEstado((e) => (e && e.panel.mode === "encuesta" && e.panel.poll ? { ...e, panel: { ...e.panel, poll: { ...e.panel.poll, myVote } } } : e));
+    setEstado((e) => {
+      if (!e) return e;
+      const panel = e.panel.mode === "encuesta" && e.panel.poll ? { ...e.panel, poll: { ...e.panel.poll, myVote } } : e.panel;
+      const tabs = e.tabs?.encuesta ? { ...e.tabs, encuesta: { poll: { ...e.tabs.encuesta.poll, myVote } } } : e.tabs;
+      return { ...e, panel, tabs };
+    });
     void leer();
   };
 
@@ -347,7 +362,11 @@ function Sala({ sala, token, onSinFicha }: { sala: SalaInfo; token: string; onSi
           <Video video={estado.video} />
           {estado.participa && estado.open && <Preguntar slug={sala.slug} token={token} />}
         </div>
-        <Panel panel={estado.panel} slug={sala.slug} token={token} participa={estado.participa && estado.open} onVoto={alVotar} />
+        {estado.tabs ? (
+          <PanelPestanas tabs={estado.tabs} cta={estado.cta ?? null} slug={sala.slug} token={token} participa={estado.participa && estado.open} onVoto={alVotar} onSinFicha={onSinFicha} />
+        ) : (
+          <Panel panel={estado.panel} slug={sala.slug} token={token} participa={estado.participa && estado.open} onVoto={alVotar} />
+        )}
       </div>
     </div>
   );
@@ -442,7 +461,7 @@ function Video({ video }: { video: VideoSala | null }) {
   );
 }
 
-// ─── Panel ───────────────────────────────────────────────────────────────────
+// ─── Panel de una sola vista (CMS anterior a las pestañas) ───────────────────
 
 function Panel({ panel, slug, token, participa, onVoto }: { panel: PanelSala; slug: string; token: string; participa: boolean; onVoto: (v: number[]) => void }) {
   return (
@@ -451,28 +470,194 @@ function Panel({ panel, slug, token, participa, onVoto }: { panel: PanelSala; sl
       {panel.mode === "preguntas" && (
         <div>
           <h2 className="mb-3 font-semibold">Preguntas del público</h2>
-          {panel.questions.length === 0 && <p className="text-sm text-white/60">Todavía no hay preguntas en pantalla.</p>}
-          <ul className="space-y-3">
-            {panel.questions.map((q) => (
-              <li key={q.id} className="rounded-lg bg-white/5 p-3">
-                <p className="text-sm">{q.text}</p>
-                <p className="mt-1 text-xs text-white/50">{q.author}{q.answered ? " · Respondida" : ""}</p>
-              </li>
-            ))}
-          </ul>
+          <ListaPreguntas questions={panel.questions} />
         </div>
       )}
       {panel.mode === "encuesta" && (panel.poll ? <Encuesta key={panel.poll.id} poll={panel.poll} slug={slug} token={token} participa={participa} onVoto={onVoto} /> : <p className="text-white/70">La encuesta aparecerá en un momento.</p>)}
-      {panel.mode === "cta" && (
-        <div className="space-y-3">
-          {panel.buttons.filter((b) => esLigaSegura(b.href)).map((b) => (
-            <a key={b.href + b.label} href={b.href} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-center font-semibold" style={{ background: b.href.startsWith("https://wa.me/") ? "#25D366" : ACENTO }}>
-              {b.href.startsWith("https://wa.me/") && <MessageCircle className="h-4 w-4" />} {b.label}
-            </a>
+      {panel.mode === "cta" && <Botones buttons={panel.buttons} />}
+    </aside>
+  );
+}
+
+// ─── Panel en pestañas ───────────────────────────────────────────────────────
+
+const NOMBRE_PESTANA: Record<Pestana, string> = { encuesta: "Encuesta", preguntas: "Preguntas", comentarios: "Comentarios" };
+
+function PanelPestanas({ tabs, cta, slug, token, participa, onVoto, onSinFicha }: {
+  tabs: PestanasSala;
+  cta: { buttons: { label: string; href: string }[] } | null;
+  slug: string;
+  token: string;
+  participa: boolean;
+  onVoto: (v: number[]) => void;
+  onSinFicha: () => void;
+}) {
+  const [activa, setActiva] = useState<Pestana | null>(null);
+  const firstAnterior = useRef<Pestana | null | undefined>(undefined);
+  // Cuando el equipo destaca otra pestaña, todos cambian a ella; si no, cada quien se queda en la suya.
+  useEffect(() => {
+    setActiva((actual) => pestanaActiva(tabs, actual, firstAnterior.current));
+    firstAnterior.current = tabs.first;
+  }, [tabs]);
+  const visibles = pestanasVisibles(tabs);
+  const vista = activa && visibles.includes(activa) ? activa : (visibles[0] ?? null);
+
+  return (
+    <aside className="self-start rounded-2xl p-5" style={{ background: NAVY_CARD }}>
+      {cta && <Botones buttons={cta.buttons} />}
+      {visibles.length === 0 && !cta && <p className="text-white/70">Mantente atento: aquí aparecerán las encuestas y las preguntas durante la transmisión.</p>}
+      {visibles.length > 1 && (
+        <div role="tablist" className={`${cta ? "mt-5" : ""} mb-4 flex gap-1 rounded-lg bg-white/5 p-1`}>
+          {visibles.map((p) => (
+            <button key={p} role="tab" aria-selected={vista === p} onClick={() => setActiva(p)}
+              className="flex-1 rounded-md px-2 py-1.5 text-sm font-medium transition"
+              style={vista === p ? { background: ACENTO, color: "#fff" } : { color: "rgba(255,255,255,.7)" }}>
+              {NOMBRE_PESTANA[p]}
+            </button>
           ))}
         </div>
       )}
+      {visibles.length === 1 && <h2 className={`${cta ? "mt-5" : ""} mb-3 font-semibold`}>{NOMBRE_PESTANA[visibles[0]]}</h2>}
+      <div aria-live="polite">
+        {vista === "encuesta" && tabs.encuesta && <Encuesta key={tabs.encuesta.poll.id} poll={tabs.encuesta.poll} slug={slug} token={token} participa={participa} onVoto={onVoto} />}
+        {vista === "preguntas" && tabs.preguntas && <ListaPreguntas questions={tabs.preguntas.questions} />}
+      </div>
+      {/* Los comentarios se siguen preguntando aunque la pestaña no esté abierta, para no perder el hilo. */}
+      {tabs.comentarios && <Comentarios slug={slug} token={token} visible={vista === "comentarios"} onSinFicha={onSinFicha} />}
     </aside>
+  );
+}
+
+function Botones({ buttons }: { buttons: { label: string; href: string }[] }) {
+  return (
+    <div className="space-y-3">
+      {buttons.filter((b) => esLigaSegura(b.href)).map((b) => (
+        <a key={b.href + b.label} href={b.href} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-center font-semibold" style={{ background: b.href.startsWith("https://wa.me/") ? "#25D366" : ACENTO }}>
+          {b.href.startsWith("https://wa.me/") && <MessageCircle className="h-4 w-4" />} {b.label}
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function ListaPreguntas({ questions }: { questions: { id: number; author: string; text: string; answered: boolean }[] }) {
+  return (
+    <div>
+      {questions.length === 0 && <p className="text-sm text-white/60">Todavía no hay preguntas en pantalla.</p>}
+      <ul className="space-y-3">
+        {questions.map((q) => (
+          <li key={q.id} className="rounded-lg bg-white/5 p-3">
+            <p className="text-sm">{q.text}</p>
+            <p className="mt-1 text-xs text-white/50">{q.author}{q.answered ? " · Respondida" : ""}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// ─── Comentarios (foro) ──────────────────────────────────────────────────────
+
+const horaComentario = (iso: string) => new Date(iso).toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" });
+
+function Comentarios({ slug, token, visible, onSinFicha }: { slug: string; token: string; visible: boolean; onSinFicha: () => void }) {
+  const [foro, setForo] = useState<ForoSala | null>(null);
+  const etag = useRef<string | null>(null);
+  const lista = useRef<HTMLUListElement>(null);
+  const alFinal = useRef(true);
+
+  const leer = useCallback(async () => {
+    const r = await leerComentarios(slug, token, etag.current);
+    if (r.tipo === "sin-ficha") return onSinFicha();
+    if (r.tipo === "ok") {
+      etag.current = r.etag;
+      setForo(r.foro);
+    }
+  }, [slug, token, onSinFicha]);
+
+  useEffect(() => {
+    void leer();
+    const t = setInterval(() => void leer(), INTERVALO_SONDEO_MS);
+    return () => clearInterval(t);
+  }, [leer]);
+
+  // Si la persona está leyendo al final, los nuevos la siguen; si subió a leer, no se le mueve la lista.
+  useEffect(() => {
+    const el = lista.current;
+    if (el && alFinal.current) el.scrollTop = el.scrollHeight;
+  }, [foro?.comments, visible]);
+
+  if (!visible) return null;
+  if (!foro) return <p className="text-sm text-white/60">Cargando los comentarios…</p>;
+  return (
+    <div>
+      {foro.pinned && (
+        <div className="mb-3 rounded-lg border border-white/15 bg-white/10 p-3">
+          <p className="mb-1 flex items-center gap-1 text-xs font-semibold" style={{ color: ACENTO }}><Pin className="h-3 w-3" /> Fijado</p>
+          <Comentario c={foro.pinned} />
+        </div>
+      )}
+      <ul ref={lista} onScroll={(e) => { const el = e.currentTarget; alFinal.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40; }}
+        className="max-h-[22rem] space-y-2.5 overflow-y-auto pr-1">
+        {foro.comments.length === 0 && <li className="text-sm text-white/60">Sé la primera persona en comentar.</li>}
+        {foro.comments.map((c) => <li key={c.id}><Comentario c={c} /></li>)}
+      </ul>
+      <EscribirComentario foro={foro} slug={slug} token={token} onPublicado={() => { etag.current = null; alFinal.current = true; void leer(); }} />
+    </div>
+  );
+}
+
+function Comentario({ c }: { c: ComentarioSala }) {
+  return (
+    <div className="rounded-lg bg-white/5 px-3 py-2">
+      <p className="text-xs">
+        <span className="font-semibold" style={c.team ? { color: ACENTO } : undefined}>{c.author}</span>
+        <span className="ml-2 text-white/40">{horaComentario(c.at)}</span>
+      </p>
+      <p className="mt-0.5 whitespace-pre-wrap break-words text-sm">{c.text}</p>
+    </div>
+  );
+}
+
+function EscribirComentario({ foro, slug, token, onPublicado }: { foro: ForoSala; slug: string; token: string; onPublicado: () => void }) {
+  const [texto, setTexto] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [mensaje, setMensaje] = useState<{ ok: boolean; texto: string } | null>(null);
+
+  if (!foro.participa) return null;
+  if (foro.muted) return <p className="mt-3 rounded-lg bg-white/10 px-3 py-2 text-sm text-white/80">El equipo pausó tus comentarios en esta sala.</p>;
+  if (foro.paused) return <p className="mt-3 rounded-lg bg-white/10 px-3 py-2 text-sm text-white/80">Los comentarios están en pausa por un momento.</p>;
+  if (!foro.open) return null;
+
+  async function enviar(e: React.FormEvent) {
+    e.preventDefault();
+    if (!texto.trim()) return setMensaje({ ok: false, texto: "Escribe tu comentario." });
+    setEnviando(true);
+    const r = await comentar(slug, token, texto.trim());
+    setEnviando(false);
+    if (r.ok) {
+      setTexto("");
+      setMensaje(r.publicado ? null : { ok: true, texto: r.mensaje ?? "Tu comentario está en revisión." });
+      if (r.publicado) onPublicado();
+    } else {
+      setMensaje({ ok: false, texto: r.error });
+    }
+  }
+
+  return (
+    <form onSubmit={enviar} className="mt-3">
+      <div className="flex gap-2">
+        <input className={INPUT} value={texto} onChange={(e) => { setTexto(e.target.value); setMensaje(null); }} maxLength={MAX_COMENTARIO} placeholder="Escribe un comentario…" aria-label="Comentario" />
+        <button type="submit" disabled={enviando} className="flex items-center gap-1 rounded-lg px-4 font-semibold disabled:opacity-50" style={{ background: ACENTO }} aria-label="Publicar comentario">
+          {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+        </button>
+      </div>
+      <p className="mt-1 flex justify-between text-xs text-white/40">
+        <span>Sale con tu nombre y la inicial de tu apellido.{foro.slowSeconds > 10 ? ` Modo lento: un comentario cada ${foro.slowSeconds} s.` : ""}</span>
+        <span>{texto.length}/{MAX_COMENTARIO}</span>
+      </p>
+      {mensaje && <p className={`mt-1 text-sm ${mensaje.ok ? "text-emerald-200" : "text-red-200"}`}>{mensaje.texto}</p>}
+    </form>
   );
 }
 
