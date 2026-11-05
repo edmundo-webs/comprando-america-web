@@ -311,9 +311,9 @@ export async function votar(
     });
     const cuerpo = (await res.json().catch(() => ({}))) as { myVote?: number[] | null; error?: string };
     if (res.ok) return { ok: true, myVote: cuerpo.myVote ?? options };
-    return { ok: false, error: cuerpo.error ?? "No pudimos registrar tu voto.", myVote: cuerpo.myVote };
+    return { ok: false, error: cuerpo.error ?? "No pudimos registrar tu respuesta.", myVote: cuerpo.myVote };
   } catch {
-    return { ok: false, error: "No pudimos registrar tu voto. Revisa tu conexión." };
+    return { ok: false, error: "No pudimos registrar tu respuesta. Revisa tu conexión." };
   }
 }
 
@@ -361,8 +361,8 @@ export function alternarOpcion(kind: EncuestaSala["kind"], elegidas: number[], i
 
 /** Lo que se le dice a la persona en la encuesta según su estado. */
 export function avisoEncuesta(poll: EncuestaSala): string | null {
-  if (poll.myVote && !poll.results) return "Gracias por votar. Los resultados se muestran al cerrar la votación.";
-  if (!poll.open && !poll.myVote && !poll.results) return "La votación ya cerró.";
+  if (poll.myVote && !poll.results) return "Gracias, tu respuesta quedó registrada.";
+  if (!poll.open && !poll.myVote && !poll.results) return "Esta pregunta ya cerró.";
   return null;
 }
 
