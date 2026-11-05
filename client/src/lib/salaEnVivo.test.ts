@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SLUG_VALIDO, alternarOpcion, avisoEncuesta, esLigaSegura, salaPorSlug, type EncuestaSala,
+import { SLUG_VALIDO, alternarOpcion, mostrarCajaDePreguntas, avisoEncuesta, esLigaSegura, salaPorSlug, type EncuestaSala,
   pestanaActiva,
   pestanasVisibles,
   type PestanasSala,
@@ -57,5 +57,13 @@ describe("pestañas del panel", () => {
   it("si la pestaña de la persona se apaga, va a la destacada", () => {
     expect(pestanaActiva(tabs({ comentarios: null }), "comentarios", "preguntas")).toBe("preguntas");
     expect(pestanaActiva(tabs({ first: null, encuesta: null, preguntas: null, comentarios: null }), "encuesta", null)).toBe(null);
+  });
+});
+
+describe("caja de preguntas", () => {
+  it("sale solo si la consola la enciende; sin el dato (CMS anterior), como antes", () => {
+    expect(mostrarCajaDePreguntas({ askBox: true })).toBe(true);
+    expect(mostrarCajaDePreguntas({ askBox: false })).toBe(false);
+    expect(mostrarCajaDePreguntas({})).toBe(true);
   });
 });

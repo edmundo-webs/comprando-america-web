@@ -8,7 +8,8 @@
  *    consola del CMS: Diagnóstico (las encuestas de la consola), Preguntas
  *    aprobadas y Comentarios (el foro),
  *    con los botones arriba cuando el equipo los destaca. El panel y los
- *    comentarios se preguntan cada 4 segundos. Debajo, «Haz una pregunta».
+ *    comentarios se preguntan cada 4 segundos. Debajo, «Pregunta para el
+ *    ponente», solo cuando la consola enciende la caja de preguntas.
  *
  * Todo lo que pasa en la sala lo decide el CMS (lib/salaEnVivo.ts); esta página
  * solo lo muestra.
@@ -43,6 +44,7 @@ import {
   preguntar,
   registrarse,
   salaAbierta,
+  mostrarCajaDePreguntas,
   salaPorSlug,
   infoInvitacion,
   entrarConInvitacion,
@@ -399,7 +401,7 @@ function Sala({ sala, token, onSinFicha, onAbierta }: { sala: SalaInfo; token: s
       <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
         <div>
           <Video video={estado.video} />
-          {estado.participa && estado.open && <Preguntar slug={sala.slug} token={token} />}
+          {estado.participa && estado.open && mostrarCajaDePreguntas(estado) && <Preguntar slug={sala.slug} token={token} />}
         </div>
         {estado.tabs ? (
           <PanelPestanas tabs={estado.tabs} cta={estado.cta ?? null} slug={sala.slug} token={token} participa={estado.participa && estado.open} onVoto={alVotar} onSinFicha={onSinFicha} />
@@ -781,10 +783,10 @@ function Preguntar({ slug, token }: { slug: string; token: string }) {
 
   return (
     <form onSubmit={enviar} className="mt-5 rounded-2xl p-5" style={{ background: NAVY_CARD }}>
-      <h2 className="mb-2 font-semibold">Haz una pregunta</h2>
-      <p className="mb-3 text-xs text-white/50">El equipo la revisa antes de mostrarla. Sale con tu nombre y la inicial de tu apellido.</p>
+      <h2 className="mb-2 font-semibold">Pregunta para el ponente</h2>
+      <p className="mb-3 text-xs text-white/50">Para que el ponente la responda en vivo. Para platicar con los demás, usa Comentarios. El equipo la revisa antes de mostrarla; sale con tu nombre y la inicial de tu apellido.</p>
       <div className="flex gap-2">
-        <input className={INPUT} value={texto} onChange={(e) => setTexto(e.target.value)} maxLength={500} placeholder="Escribe tu pregunta…" />
+        <input className={INPUT} value={texto} onChange={(e) => setTexto(e.target.value)} maxLength={500} placeholder="Escribe tu pregunta para el ponente…" />
         <button type="submit" disabled={enviando} className="flex items-center gap-1 rounded-lg px-4 font-semibold disabled:opacity-50" style={{ background: ACENTO }} aria-label="Enviar pregunta">
           {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
         </button>
