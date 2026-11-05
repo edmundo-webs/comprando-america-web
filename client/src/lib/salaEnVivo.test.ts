@@ -18,8 +18,8 @@ describe("sala en vivo: piezas del navegador", () => {
 
   it("avisos de la encuesta", () => {
     expect(avisoEncuesta(encuesta())).toBeNull();
-    expect(avisoEncuesta(encuesta({ myVote: [0] }))).toMatch(/Gracias por votar/);
-    expect(avisoEncuesta(encuesta({ open: false }))).toBe("La votación ya cerró.");
+    expect(avisoEncuesta(encuesta({ myVote: [0] }))).toBe("Gracias, tu respuesta quedó registrada.");
+    expect(avisoEncuesta(encuesta({ open: false }))).toBe("Esta pregunta ya cerró.");
     expect(avisoEncuesta(encuesta({ myVote: [0], results: { voters: 1, options: [] } }))).toBeNull();
   });
 

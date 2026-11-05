@@ -5,16 +5,23 @@
  *    privacidad obligatorio, casilla opcional de información y Turnstile).
  * 2. Con ficha: el video de YouTube (con «Ver en YouTube» si no carga dentro
  *    de la página) y el panel en pestañas que el equipo maneja desde la
- *    consola del CMS: Encuesta, Preguntas aprobadas y Comentarios (el foro),
+ *    consola del CMS: Diagnóstico (las encuestas de la consola), Preguntas
+ *    aprobadas y Comentarios (el foro),
  *    con los botones arriba cuando el equipo los destaca. El panel y los
  *    comentarios se preguntan cada 4 segundos. Debajo, «Haz una pregunta».
  *
  * Todo lo que pasa en la sala lo decide el CMS (lib/salaEnVivo.ts); esta página
  * solo lo muestra.
+ *
+ * Sin distracciones: no lleva el menú ni el pie del sitio ni el botón flotante
+ * de WhatsApp. Arriba solo el logo (sin liga) y «En vivo» con la sala abierta;
+ * abajo solo el aviso de privacidad, en otra pestaña. El contacto va solo en
+ * los botones del panel que maneja la consola. Igual en el registro, la
+ * entrada con invitación y la sala de prueba.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CheckCircle2, ExternalLink, Loader2, MessageCircle, Pin, Send } from "lucide-react";
-import Navbar from "@/components/Navbar";
+import { IMAGES } from "@/lib/constants";
 import SEOHead from "@/components/SEOHead";
 import CampoTelefono from "@/components/CampoTelefono";
 import { TURNSTILE_SITE_KEY, useTurnstile } from "@/hooks/useTurnstile";
@@ -75,6 +82,8 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
   const [invitacion, setInvitacion] = useState<string | null>(() =>
     typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("i"));
   const [avisoInvitacion, setAvisoInvitacion] = useState<string | null>(null);
+  // «En vivo» arriba: lo que dice el CMS al cargar y, ya dentro, cada lectura del panel.
+  const [abierta, setAbierta] = useState(false);
 
   useEffect(() => {
     setSala(undefined);
@@ -82,6 +91,7 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
     (slugDirecto ? salaPorSlug(slugDirecto) : salaAbierta())
       .then((s) => {
         setSala(s);
+        setAbierta(s?.open ?? false);
         if (s) setToken(fichaGuardada(s.slug));
       })
       .catch(() => setErrorCarga(true));
@@ -106,14 +116,14 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
   }, [sala]);
 
   return (
-    <div style={{ background: NAVY, color: "#fff", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
+    <div className="flex flex-col" style={{ background: NAVY, color: "#fff", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       <SEOHead
         title="En vivo | Comprando América"
-        description="Sala en vivo de Comprando América: la transmisión, encuestas y preguntas en tiempo real."
+        description="Sala en vivo de Comprando América: la transmisión, el diagnóstico y las preguntas en tiempo real."
         path={slugDirecto ? `/en-vivo/${slugDirecto}` : "/en-vivo"}
       />
-      <Navbar />
-      <main className="mx-auto max-w-6xl px-4 pb-16 pt-28">
+      <EncabezadoSala abierta={abierta} />
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-10 pt-6">
         {sala === undefined && !errorCarga && <Cargando />}
         {errorCarga && <Aviso titulo="No pudimos cargar la sala" texto="Recarga la página en unos segundos." />}
         {sala === null && slugDirecto && <Aviso titulo="Esta sala no existe" texto="Revisa la liga que te compartieron." />}
@@ -133,9 +143,37 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
         {sala && !token && !(slugDirecto && invitacion) && (
           <Registro sala={sala} aviso={avisoInvitacion} onFicha={(t) => { guardarFicha(sala.slug, t); setToken(t); }} />
         )}
-        {sala && token && <Sala sala={sala} token={token} onSinFicha={salir} />}
+        {sala && token && <Sala sala={sala} token={token} onSinFicha={salir} onAbierta={setAbierta} />}
       </main>
+      <PieSala />
     </div>
+  );
+}
+
+/** Arriba: solo el logo, sin liga, y «En vivo» mientras la sala está abierta. */
+function EncabezadoSala({ abierta }: { abierta: boolean }) {
+  return (
+    <header className="border-b border-white/10">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+        <img src={IMAGES.logo} alt="Comprando América" className="h-10 w-10" />
+        {abierta && (
+          <span className="flex items-center gap-2 rounded-full bg-red-600 px-3 py-1 text-xs font-bold uppercase tracking-wider">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-white" aria-hidden="true" /> En vivo
+          </span>
+        )}
+      </div>
+    </header>
+  );
+}
+
+/** Abajo: solo el aviso de privacidad, en otra pestaña para no salir de la sala. */
+function PieSala() {
+  return (
+    <footer className="border-t border-white/10 py-5 text-center">
+      <a href="https://comprandoamerica.com/privacidad" target="_blank" rel="noreferrer" className="text-xs text-white/60 underline hover:text-white">
+        Aviso de privacidad
+      </a>
+    </footer>
   );
 }
 
@@ -209,7 +247,7 @@ function Registro({ sala, aviso, onFicha }: { sala: SalaInfo; aviso?: string | n
         {sala.kicker && <p className="text-sm font-semibold uppercase tracking-widest" style={{ color: ACENTO }}>{sala.kicker}</p>}
         <h1 className="mt-2 text-4xl font-bold leading-tight md:text-5xl" style={{ fontFamily: TITULOS }}>{sala.title}</h1>
         <p className="mt-5 max-w-lg text-lg text-white/75">
-          Regístrate para entrar a la sala en vivo: la transmisión, las encuestas y tus preguntas para los ponentes, en un solo lugar.
+          Regístrate para entrar a la sala en vivo: la transmisión, el diagnóstico y tus preguntas para los ponentes, en un solo lugar.
         </p>
         {!sala.open && <p className="mt-5 rounded-lg bg-white/10 px-4 py-3 text-sm text-white/80">El registro a la sala todavía no abre. Vuelve un poco antes de que empiece.</p>}
       </div>
@@ -313,7 +351,7 @@ function EntradaInvitacion({ sala, invitacion, onFicha, onInvalida }: {
 
 // ─── Sala ────────────────────────────────────────────────────────────────────
 
-function Sala({ sala, token, onSinFicha }: { sala: SalaInfo; token: string; onSinFicha: () => void }) {
+function Sala({ sala, token, onSinFicha, onAbierta }: { sala: SalaInfo; token: string; onSinFicha: () => void; onAbierta: (abierta: boolean) => void }) {
   const [estado, setEstado] = useState<EstadoSala | null>(null);
   const [sinConexion, setSinConexion] = useState(false);
   const etag = useRef<string | null>(null);
@@ -326,8 +364,9 @@ function Sala({ sala, token, onSinFicha }: { sala: SalaInfo; token: string; onSi
     if (r.tipo === "ok") {
       etag.current = r.etag;
       setEstado(r.estado);
+      onAbierta(r.estado.open);
     }
-  }, [sala.slug, token, onSinFicha]);
+  }, [sala.slug, token, onSinFicha, onAbierta]);
 
   useEffect(() => {
     void leer();
@@ -466,14 +505,14 @@ function Video({ video }: { video: VideoSala | null }) {
 function Panel({ panel, slug, token, participa, onVoto }: { panel: PanelSala; slug: string; token: string; participa: boolean; onVoto: (v: number[]) => void }) {
   return (
     <aside className="self-start rounded-2xl p-5" style={{ background: NAVY_CARD }} aria-live="polite">
-      {panel.mode === "vacio" && <p className="text-white/70">Mantente atento: aquí aparecerán las encuestas y las preguntas durante la transmisión.</p>}
+      {panel.mode === "vacio" && <p className="text-white/70">Mantente atento: aquí aparecerán el diagnóstico y las preguntas durante la transmisión.</p>}
       {panel.mode === "preguntas" && (
         <div>
           <h2 className="mb-3 font-semibold">Preguntas del público</h2>
           <ListaPreguntas questions={panel.questions} />
         </div>
       )}
-      {panel.mode === "encuesta" && (panel.poll ? <Encuesta key={panel.poll.id} poll={panel.poll} slug={slug} token={token} participa={participa} onVoto={onVoto} /> : <p className="text-white/70">La encuesta aparecerá en un momento.</p>)}
+      {panel.mode === "encuesta" && (panel.poll ? <Encuesta key={panel.poll.id} poll={panel.poll} slug={slug} token={token} participa={participa} onVoto={onVoto} /> : <p className="text-white/70">El diagnóstico aparecerá en un momento.</p>)}
       {panel.mode === "cta" && <Botones buttons={panel.buttons} />}
     </aside>
   );
@@ -481,7 +520,9 @@ function Panel({ panel, slug, token, participa, onVoto }: { panel: PanelSala; sl
 
 // ─── Panel en pestañas ───────────────────────────────────────────────────────
 
-const NOMBRE_PESTANA: Record<Pestana, string> = { encuesta: "Encuesta", preguntas: "Preguntas", comentarios: "Comentarios" };
+// «Diagnóstico»: las encuestas de la consola, como las ve el público. Fijo por
+// ahora; editable desde la consola más adelante.
+const NOMBRE_PESTANA: Record<Pestana, string> = { encuesta: "Diagnóstico", preguntas: "Preguntas", comentarios: "Comentarios" };
 
 function PanelPestanas({ tabs, cta, slug, token, participa, onVoto, onSinFicha }: {
   tabs: PestanasSala;
@@ -505,7 +546,7 @@ function PanelPestanas({ tabs, cta, slug, token, participa, onVoto, onSinFicha }
   return (
     <aside className="self-start rounded-2xl p-5" style={{ background: NAVY_CARD }}>
       {cta && <Botones buttons={cta.buttons} />}
-      {visibles.length === 0 && !cta && <p className="text-white/70">Mantente atento: aquí aparecerán las encuestas y las preguntas durante la transmisión.</p>}
+      {visibles.length === 0 && !cta && <p className="text-white/70">Mantente atento: aquí aparecerán el diagnóstico y las preguntas durante la transmisión.</p>}
       {visibles.length > 1 && (
         <div role="tablist" className={`${cta ? "mt-5" : ""} mb-4 flex gap-1 rounded-lg bg-white/5 p-1`}>
           {visibles.map((p) => (
@@ -695,7 +736,7 @@ function Encuesta({ poll, slug, token, participa, onVoto }: { poll: EncuestaSala
               <div className="mt-1 h-2 rounded-full bg-white/10"><div className="h-2 rounded-full transition-all duration-700" style={{ width: `${Math.min(100, o.percent)}%`, background: ACENTO }} /></div>
             </div>
           ))}
-          <p className="text-xs text-white/50">{poll.results.voters} {poll.results.voters === 1 ? "voto" : "votos"}{poll.open ? "" : " · Votación cerrada"}</p>
+          <p className="text-xs text-white/50">{poll.results.voters} {poll.results.voters === 1 ? "respuesta" : "respuestas"}{poll.open ? "" : " · Cerrada"}</p>
         </div>
       ) : (
         <div className="mt-3 space-y-2">
@@ -716,7 +757,7 @@ function Encuesta({ poll, slug, token, participa, onVoto }: { poll: EncuestaSala
       {error && <p className="mt-2 text-sm text-red-200">{error}</p>}
       {puedeVotar && (
         <button type="button" onClick={enviar} disabled={enviando} className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold disabled:opacity-50" style={{ background: ACENTO }}>
-          {enviando && <Loader2 className="h-4 w-4 animate-spin" />} Votar
+          {enviando && <Loader2 className="h-4 w-4 animate-spin" />} Continuar
         </button>
       )}
     </div>
