@@ -73,6 +73,11 @@ export interface EstadoSala {
   cta?: { buttons: { label: string; href: string }[] } | null;
   /** false: registro en revisión; puede ver, no votar ni preguntar. */
   participa: boolean;
+  /**
+   * La caja «Pregunta para el ponente»: solo cuando la consola la enciende. Un
+   * CMS anterior no lo manda: entonces se muestra como antes.
+   */
+  askBox?: boolean;
 }
 
 export interface ComentarioSala {
@@ -360,6 +365,11 @@ export function alternarOpcion(kind: EncuestaSala["kind"], elegidas: number[], i
 }
 
 /** Lo que se le dice a la persona en la encuesta según su estado. */
+/** ¿Sale la caja de preguntas? La decide la consola; sin el dato (CMS anterior), sí. */
+export function mostrarCajaDePreguntas(estado: Pick<EstadoSala, "askBox">): boolean {
+  return estado.askBox !== false;
+}
+
 export function avisoEncuesta(poll: EncuestaSala): string | null {
   if (poll.myVote && !poll.results) return "Gracias, tu respuesta quedó registrada.";
   if (!poll.open && !poll.myVote && !poll.results) return "Esta pregunta ya cerró.";
