@@ -1023,6 +1023,9 @@ export default function Home() {
                 Comprando América no es un portafolio de productos. Es un
                 ecosistema de decisiones patrimoniales.
               </p>
+              <p className="text-[#6B7280] text-base max-w-2xl mx-auto mt-4" data-geo-identity="true">
+                Comprando América es una comunidad privada para empresarios e inversionistas latinoamericanos interesados en inversiones y bienes raíces en Estados Unidos. Publica contenido educativo, experiencias empresariales y conversaciones con especialistas. Es una marca privada independiente de las agencias e iniciativas gubernamentales estadounidenses. Su contenido y la participación en la comunidad no garantizan resultados de inversión ni decisiones migratorias.
+              </p>
             </div>
           </FadeIn>
 

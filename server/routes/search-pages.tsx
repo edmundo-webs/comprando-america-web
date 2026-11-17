@@ -30,7 +30,7 @@ export function searchPages(req: Request, res: Response, next: NextFunction) {
     .replace(/<link\b[^>]*hreflang=["'][^"']*["'][^>]*>/gi, "")
     .replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, "");
    const canonical=SITE+route;
-   const schema=[{"@context":"https://schema.org","@type":"Organization",name:BRAND,url:SITE}, ...(entry.schema ? [entry.schema] : [])];
+   const schema=[{"@context":"https://schema.org","@type":"Organization",name:BRAND,url:SITE,description:"Comprando América es una comunidad privada para empresarios e inversionistas latinoamericanos interesados en inversiones y bienes raíces en Estados Unidos. Publica contenido educativo, experiencias empresariales y conversaciones con especialistas. Es una marca privada independiente de las agencias e iniciativas gubernamentales estadounidenses. Su contenido y la participación en la comunidad no garantizan resultados de inversión ni decisiones migratorias."}, ...(entry.schema ? [entry.schema] : [])];
    const head=`<title>${escape(entry.title)}</title><meta name="description" content="${escape(entry.description)}"><link rel="canonical" href="${canonical}"><meta property="og:type" content="website"><meta property="og:site_name" content="${BRAND}"><meta property="og:title" content="${escape(entry.title)}"><meta property="og:description" content="${escape(entry.description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="${IMAGE}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escape(entry.title)}"><meta name="twitter:description" content="${escape(entry.description)}"><meta name="twitter:image" content="${IMAGE}"><script type="application/ld+json" data-page-schema="true">${JSON.stringify(schema).replace(/</g,"\\u003c")}</script>`;
    html=html.replace("</head>",head+"</head>").replace(/<div id="root">\s*<\/div>/,()=>`<div id="root">${body}</div>`);
    if (!html.includes(body)) throw new Error("SPA root not found");
@@ -42,9 +42,11 @@ export function searchPages(req: Request, res: Response, next: NextFunction) {
 
 import Home, { PAGE_SEO } from "../../client/src/pages/Home";
 import VisaE2 from "../../client/src/pages/VisaE2";
+import EstructuraInversion, { PAGE_SEO as STRUCTURE_SEO } from "../../client/src/pages/EstructuraInversion";
 import { INVESTOR_SEO, INVESTOR_SCHEMA } from "../../shared/investor-search";
 const SITE="https://comprandoamerica.com", BRAND="Comprando América", IMAGE="https://res.cloudinary.com/dgruohz6f/image/upload/v1773439317/comprando-america/smuMGomxJclpEXzg.png";
 const PAGES: Record<string,{title:string;description:string;schema?:object;element:React.ReactNode}> = {
  "/": {...PAGE_SEO,element:<Home/>},
- [INVESTOR_SEO.path]: {...INVESTOR_SEO,schema:INVESTOR_SCHEMA,element:<VisaE2/>}
+ [INVESTOR_SEO.path]: {...INVESTOR_SEO,schema:INVESTOR_SCHEMA,element:<VisaE2/>},
+ [STRUCTURE_SEO.path]: {...STRUCTURE_SEO,element:<EstructuraInversion/>}
 };

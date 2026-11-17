@@ -59,7 +59,7 @@ function Modal({ open, onClose, title, children }: { open: boolean; onClose: () 
 function FadeIn({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const { ref, isInView } = useInView();
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 30 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: "easeOut" }} className={className}>
+    <motion.div ref={ref} initial={false} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay, ease: "easeOut" }} className={className}>
       {children}
     </motion.div>
   );
@@ -67,7 +67,7 @@ function FadeIn({ children, className = "", delay = 0 }: { children: React.React
 
 /* ─── SEO ─── */
 import SEOHead from "@/components/SEOHead";
-const PAGE_SEO = {
+export const PAGE_SEO = {
   title: "Estructura de Inversi\u00f3n en Estados Unidos | Comprando Am\u00e9rica",
   description: "Estructura tu veh\u00edculo de inversi\u00f3n en Estados Unidos con claridad y estrategia. LLC, C-Corp, S-Corp seg\u00fan tu caso.",
   path: "/estructura-de-inversion-en-usa",
