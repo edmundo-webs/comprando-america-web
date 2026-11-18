@@ -10,12 +10,33 @@
  *   registro al recargar.
  */
 import { cmsUrl } from "./cmsUrl";
+import { getVisitorId } from "./visitor";
+
+/**
+ * La fase de la sala (desde la repetición, 0102 del CMS): en vivo, cerrada
+ * (antes del evento), repetición, «La grabación ya no está disponible» o
+ * «Este evento ya terminó». Un CMS anterior no la manda.
+ */
+export type FaseSala = "en_vivo" | "cerrada" | "repeticion" | "grabacion_no_disponible" | "terminado";
+
+export interface VideoRepeticion {
+  videoId: string;
+  embedUrl: string;
+  watchUrl: string;
+  /** «Empezar en», en segundos. */
+  startSeconds: number;
+}
 
 export interface SalaInfo {
   slug: string;
   title: string;
   kicker: string | null;
   open: boolean;
+  fase?: FaseSala;
+  /** Solo en repetición: el video (público en YouTube) y el canal para «Suscríbete». */
+  repeticion?: { video: VideoRepeticion; subscribeUrl: string | null } | null;
+  /** Cuando el evento ya terminó: el WhatsApp de prospectos. */
+  whatsapp?: string | null;
 }
 
 export interface VideoSala {
@@ -78,6 +99,11 @@ export interface EstadoSala {
    * CMS anterior no lo manda: entonces se muestra como antes.
    */
   askBox?: boolean;
+  /** «repeticion» después del evento (un CMS anterior no lo manda: en vivo). */
+  mode?: "en_vivo" | "repeticion";
+  replay?: { startSeconds: number; subscribeUrl: string | null } | null;
+  /** «Continuar donde te quedaste»: el segundo, o null. */
+  resume?: number | null;
 }
 
 export interface ComentarioSala {
@@ -174,32 +200,124 @@ export type ResultadoRegistro =
   | { ok: true; token: string; enRevision: boolean }
   | { ok: false; error: string; ocupado?: boolean };
 
-export async function registrarse(datos: DatosRegistro): Promise<ResultadoRegistro> {
+/** En la repetición: el registro se está guardando en segundo plano; el video se muestra igual. */
+export type ResultadoRegistroRepeticion = ResultadoRegistro | { ok: true; provisional: true };
+
+export async function registrarse(datos: DatosRegistro & { repeticion?: boolean }): Promise<ResultadoRegistroRepeticion> {
   try {
+    sincronizarCookieVisitante();
     const res = await fetch("/api/en-vivo/registro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...datos, pageUrl: window.location.href, utm: utmDeLaPagina() }),
+      body: JSON.stringify({ ...datos, pageUrl: window.location.href, utm: utmDeLaPagina(), visitorId: visitante() }),
     });
-    const cuerpo = (await res.json().catch(() => ({}))) as { token?: string; enRevision?: boolean; error?: string; ocupado?: boolean };
+    const cuerpo = (await res.json().catch(() => ({}))) as { token?: string; enRevision?: boolean; error?: string; ocupado?: boolean; provisional?: boolean };
+    if (res.status === 202 && cuerpo.provisional) return { ok: true, provisional: true };
     if (res.ok && cuerpo.token) return { ok: true, token: cuerpo.token, enRevision: cuerpo.enRevision === true };
     return { ok: false, error: cuerpo.error ?? "No pudimos registrarte. Intenta de nuevo.", ocupado: cuerpo.ocupado === true };
   } catch {
+    // En la repetición, sin red hacia este sitio tampoco se pierde: el video se muestra igual.
+    if (datos.repeticion) return { ok: true, provisional: true };
     return { ok: false, error: "No pudimos registrarte. Revisa tu conexión e inténtalo de nuevo." };
+  }
+}
+
+/**
+ * Repetición: quien ya se registró en esa sala desde este navegador entra
+ * directo (por su `ca_visitor_id`). null si no hay registro (o no se pudo).
+ */
+export async function reingresar(slug: string): Promise<string | null> {
+  if (!SLUG_VALIDO.test(slug)) return null;
+  try {
+    sincronizarCookieVisitante();
+    const res = await fetch("/api/en-vivo/reingreso", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug, visitorId: visitante() }),
+    });
+    const cuerpo = (await res.json().catch(() => ({}))) as { token?: string };
+    return res.ok && cuerpo.token ? cuerpo.token : null;
+  } catch {
+    return null;
+  }
+}
+
+export type EventoReproduccion = "play" | "avance" | "termino" | "clic_whatsapp" | "clic_suscribete";
+
+/**
+ * Lo que pasa con el reproductor de la repetición (play, avance, terminó) y los
+ * clics en WhatsApp y «Suscríbete». Un fallo no interrumpe el video.
+ * `alSalir`: la persona se va de la página; se intenta con `keepalive` (no
+ * todos los navegadores lo aceptan con CORS, por eso solo ahí).
+ */
+export async function reportarReproduccion(
+  slug: string,
+  token: string,
+  evento: { kind: EventoReproduccion; position?: number; duration?: number; watchedDelta?: number },
+  alSalir = false,
+): Promise<void> {
+  try {
+    await fetch(`${cmsUrl()}/api/public/sala/${slug}/reproduccion`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify(limpiarEvento(evento)),
+      ...(alSalir ? { keepalive: true } : {}),
+    });
+  } catch {
+    /* sin red: el siguiente avance lo pone al día */
+  }
+}
+
+/** Números finitos y en rango (el CMS rechaza lo demás). */
+export function limpiarEvento(e: { kind: EventoReproduccion; position?: number; duration?: number; watchedDelta?: number }) {
+  const n = (v: number | undefined, max: number) => (typeof v === "number" && Number.isFinite(v) ? Math.min(max, Math.max(0, Math.round(v * 10) / 10)) : undefined);
+  const out: Record<string, unknown> = { kind: e.kind };
+  const position = n(e.position, 86_400);
+  const duration = n(e.duration, 86_400);
+  const watchedDelta = n(e.watchedDelta, 3_600);
+  if (position !== undefined) out.position = position;
+  if (duration !== undefined) out.duration = duration;
+  if (watchedDelta !== undefined) out.watchedDelta = watchedDelta;
+  return out;
+}
+
+// ─── Visitante ───────────────────────────────────────────────────────────────
+
+function visitante(): string | undefined {
+  try {
+    return getVisitorId();
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * El `ca_visitor_id` también va en una cookie del sitio (1 año): así el
+ * servidor del sitio reconoce a quien ya se registró a la repetición aunque
+ * no tenga su ficha guardada. No lleva datos de la persona.
+ */
+export function sincronizarCookieVisitante(): void {
+  try {
+    const id = visitante();
+    if (!id || !/^[A-Za-z0-9-]{8,64}$/.test(id)) return;
+    const segura = window.location.protocol === "https:" ? "; Secure" : "";
+    document.cookie = `ca_visitor_id=${id}; Max-Age=31536000; Path=/; SameSite=Lax${segura}`;
+  } catch {
+    /* sin cookies: queda la ficha y la liga personal */
   }
 }
 
 /** ¿Sirve la liga personal del correo? Solo devuelve la sala y el nombre de pila. */
 export type InfoInvitacion =
-  | { ok: true; sala: SalaInfo; nombre: string | null }
+  | { ok: true; sala: SalaInfo; nombre: string | null; directo: boolean }
   | { ok: false; error: string };
 
 export async function infoInvitacion(slug: string, invitacion: string): Promise<InfoInvitacion> {
   if (!SLUG_VALIDO.test(slug)) return { ok: false, error: "Esta sala no existe." };
   try {
     const res = await fetch(`${cmsUrl()}/api/public/sala/${slug}/invitacion?i=${encodeURIComponent(invitacion)}`, { cache: "no-store" });
-    const cuerpo = (await res.json().catch(() => ({}))) as { sala?: SalaInfo; nombre?: string | null; error?: string };
-    if (res.ok && cuerpo.sala) return { ok: true, sala: cuerpo.sala, nombre: cuerpo.nombre ?? null };
+    const cuerpo = (await res.json().catch(() => ({}))) as { sala?: SalaInfo; nombre?: string | null; error?: string; directo?: boolean };
+    if (res.ok && cuerpo.sala) return { ok: true, sala: cuerpo.sala, nombre: cuerpo.nombre ?? null, directo: cuerpo.directo === true };
     return { ok: false, error: cuerpo.error ?? "Tu liga ya no es válida. Puedes registrarte aquí mismo." };
   } catch {
     return { ok: false, error: "No pudimos revisar tu liga. Recarga la página." };
@@ -210,14 +328,16 @@ export async function infoInvitacion(slug: string, invitacion: string): Promise<
 export async function entrarConInvitacion(datos: {
   slug: string;
   invitacion: string;
-  privacyAccepted: true;
+  /** En la repetición, quien ya lo aceptó en esa sala entra directo sin volver a marcarlo. */
+  privacyAccepted?: true;
   marketingOptIn: boolean;
 }): Promise<ResultadoRegistro> {
   try {
+    sincronizarCookieVisitante();
     const res = await fetch("/api/en-vivo/invitacion", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
+      body: JSON.stringify({ ...datos, visitorId: visitante(), utm: utmDeLaPagina() }),
     });
     const cuerpo = (await res.json().catch(() => ({}))) as { token?: string; enRevision?: boolean; error?: string; ocupado?: boolean };
     if (res.ok && cuerpo.token) return { ok: true, token: cuerpo.token, enRevision: cuerpo.enRevision === true };
@@ -384,6 +504,34 @@ export function esLigaSegura(href: string): boolean {
   } catch {
     return false;
   }
+}
+
+// ─── Repetición: textos (probados en salaEnVivo.test.ts) ─────────────────────
+
+/**
+ * «Mira la grabación completa de la 2ª Cumbre Digital»: con la línea sobre el
+ * título (o, sin ella, el título), nunca un texto fijo. El artículo sale del
+ * ordinal: «2ª» → «de la», «2º» → «del»; sin ordinal, solo «de».
+ */
+export function fraseGrabacion(sala: Pick<SalaInfo, "kicker" | "title">): string {
+  const nombre = sala.kicker?.trim() || sala.title.trim();
+  const articulo = /\dª/.test(nombre) ? "de la " : /\dº/.test(nombre) ? "del " : "de ";
+  return `Mira la grabación completa ${articulo}${nombre}`;
+}
+
+/** «min 23» / «1 h 02 min»: para «Continuar donde te quedaste». */
+export function minutoLegible(segundos: number): string {
+  const total = Math.max(0, Math.floor(segundos / 60));
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  return h > 0 ? `${h} h ${String(m).padStart(2, "0")} min` : `min ${m}`;
+}
+
+/** Lo que se le dice a la persona cuando la sala ya no está abierta, según la fase. */
+export function avisoFinal(fase: FaseSala | undefined): { titulo: string; texto: string } | null {
+  if (fase === "grabacion_no_disponible") return { titulo: "La grabación ya no está disponible", texto: "Escríbenos por WhatsApp y te contamos de los próximos eventos." };
+  if (fase === "terminado") return { titulo: "Este evento ya terminó", texto: "Escríbenos por WhatsApp y te contamos de los próximos eventos." };
+  return null;
 }
 
 function utmDeLaPagina(): Record<string, string> | undefined {

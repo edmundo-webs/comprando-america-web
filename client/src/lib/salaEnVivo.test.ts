@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SLUG_VALIDO, alternarOpcion, mostrarCajaDePreguntas, avisoEncuesta, esLigaSegura, salaPorSlug, type EncuestaSala,
+import { SLUG_VALIDO, alternarOpcion, avisoFinal, fraseGrabacion, limpiarEvento, minutoLegible, mostrarCajaDePreguntas, avisoEncuesta, esLigaSegura, salaPorSlug, type EncuestaSala,
   pestanaActiva,
   pestanasVisibles,
   type PestanasSala,
@@ -65,5 +65,30 @@ describe("caja de preguntas", () => {
     expect(mostrarCajaDePreguntas({ askBox: true })).toBe(true);
     expect(mostrarCajaDePreguntas({ askBox: false })).toBe(false);
     expect(mostrarCajaDePreguntas({})).toBe(true);
+  });
+});
+
+describe("repetición", () => {
+  it("«Mira la grabación completa…» sale de la línea sobre el título, nunca de un texto fijo", () => {
+    expect(fraseGrabacion({ kicker: "2ª Cumbre Digital", title: "Casas, Negocios y Visas" })).toBe("Mira la grabación completa de la 2ª Cumbre Digital");
+    expect(fraseGrabacion({ kicker: "3º Encuentro Ficticio", title: "X" })).toBe("Mira la grabación completa del 3º Encuentro Ficticio");
+    expect(fraseGrabacion({ kicker: null, title: "Taller Ficticio" })).toBe("Mira la grabación completa de Taller Ficticio");
+  });
+
+  it("evento terminado: dos mensajes según si la repetición estuvo abierta", () => {
+    expect(avisoFinal("terminado")?.titulo).toBe("Este evento ya terminó");
+    expect(avisoFinal("grabacion_no_disponible")?.titulo).toBe("La grabación ya no está disponible");
+    expect(avisoFinal("cerrada")).toBeNull();
+    expect(avisoFinal(undefined)).toBeNull();
+  });
+
+  it("«Continuar donde te quedaste» en palabras", () => {
+    expect(minutoLegible(1_380)).toBe("min 23");
+    expect(minutoLegible(3_725)).toBe("1 h 02 min");
+  });
+
+  it("los eventos del reproductor van con números en rango", () => {
+    expect(limpiarEvento({ kind: "avance", position: 12.345, duration: Number.NaN, watchedDelta: -3 })).toEqual({ kind: "avance", position: 12.3, watchedDelta: 0 });
+    expect(limpiarEvento({ kind: "clic_whatsapp" })).toEqual({ kind: "clic_whatsapp" });
   });
 });

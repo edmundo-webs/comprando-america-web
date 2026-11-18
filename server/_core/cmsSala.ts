@@ -28,8 +28,12 @@ const TIEMPO_MAXIMO_MS = 8_000;
 /** Slug de sala que acepta el CMS. */
 export const SLUG_SALA = /^[a-z0-9-]{1,220}$/;
 
-/** A qué ruta del CMS va: el registro con el formulario o la entrada con la invitación del correo. */
-export type AccionSala = "registro" | "invitacion";
+/**
+ * A qué ruta del CMS va: el registro con el formulario, la entrada con la
+ * invitación del correo o, en la repetición, el reingreso de quien ya se
+ * registró desde ese navegador (por su `ca_visitor_id`).
+ */
+export type AccionSala = "registro" | "invitacion" | "reingreso";
 
 async function intentar(slug: string, accion: AccionSala, cuerpo: Record<string, unknown>, fetchImpl: Fetch) {
   const res = await fetchImpl(`${urlDelCms()}/api/public/sala/${slug}/${accion}`, {
@@ -57,10 +61,60 @@ export function registrarEnSala(
  */
 export function entrarConInvitacion(
   slug: string,
-  cuerpo: { invitacion: string; privacyAccepted: true; marketingOptIn: boolean },
+  cuerpo: { invitacion: string; privacyAccepted?: true; marketingOptIn: boolean; visitorId?: string; utm?: Record<string, string> },
   opciones: { fetchImpl?: Fetch; esperar?: Esperar } = {},
 ): Promise<ResultadoSala> {
   return enviarASala(slug, "invitacion", cuerpo, opciones);
+}
+
+/**
+ * Repetición: quien ya se registró en esa sala desde este navegador entra
+ * directo, sin el formulario ni la liga personal. 404 si no hay registro.
+ */
+export function reingresarEnSala(
+  slug: string,
+  visitorId: string,
+  opciones: { fetchImpl?: Fetch; esperar?: Esperar } = {},
+): Promise<ResultadoSala> {
+  return enviarASala(slug, "reingreso", { visitorId }, opciones);
+}
+
+// ─── Repetición: el registro no se pierde si el CMS no responde ──────────────
+
+/** Cuándo se reintenta un registro de la repetición que no entró (después del primer intento). */
+export const REINTENTOS_REPETICION_MS = [30_000, 120_000, 600_000] as const;
+
+/** ¿Vale la pena reintentar? Ocupado, error del CMS o sin respuesta; no un dato inválido. */
+export function esFallaReintentable(r: ResultadoSala): boolean {
+  if (r.ok) return false;
+  if (r.ocupado) return true;
+  return r.status >= 500;
+}
+
+/**
+ * En la repetición, el video se muestra aunque el registro no se haya podido
+ * guardar: aquí se reintenta en segundo plano. Si al final no entra, el envío
+ * completo queda en el registro del servidor (`ENVIO FALLIDO`), como los leads.
+ */
+export function reintentarRegistroEnSegundoPlano(
+  slug: string,
+  cuerpo: Record<string, unknown>,
+  opciones: { fetchImpl?: Fetch; esperar?: Esperar; pausas?: readonly number[] } = {},
+): Promise<boolean> {
+  const { pausas = REINTENTOS_REPETICION_MS, esperar = (ms) => new Promise<void>((r) => setTimeout(r, ms).unref?.()) } = opciones;
+  return (async () => {
+    for (const pausa of pausas) {
+      await esperar(pausa);
+      const r = await registrarEnSala(slug, cuerpo, { ...opciones, esperar });
+      if (r.ok) {
+        console.log(`[sala] Registro de la repetición ${slug} guardado en el reintento.`);
+        return true;
+      }
+      if (!esFallaReintentable(r)) break;
+    }
+    console.error(`[sala] ENVIO FALLIDO registro (repetición) ${slug} sin respuesta del CMS tras reintentar`, JSON.stringify(cuerpo));
+    return false;
+  })();
 }
 
 async function enviarASala(

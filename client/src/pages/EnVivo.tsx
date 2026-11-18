@@ -21,7 +21,7 @@
  * entrada con invitación y la sala de prueba.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CheckCircle2, ExternalLink, Loader2, MessageCircle, Pin, Send } from "lucide-react";
+import { CheckCircle2, ExternalLink, Loader2, MessageCircle, Pin, PlayCircle, RotateCcw, Send, Youtube } from "lucide-react";
 import { IMAGES } from "@/lib/constants";
 import SEOHead from "@/components/SEOHead";
 import CampoTelefono from "@/components/CampoTelefono";
@@ -50,6 +50,13 @@ import {
   entrarConInvitacion,
   quitarInvitacionDeLaLiga,
   votar,
+  avisoFinal,
+  fraseGrabacion,
+  minutoLegible,
+  reingresar,
+  reportarReproduccion,
+  sincronizarCookieVisitante,
+  type EventoReproduccion,
   type ComentarioSala,
   type EncuestaSala,
   type EstadoSala,
@@ -86,18 +93,34 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
   const [avisoInvitacion, setAvisoInvitacion] = useState<string | null>(null);
   // «En vivo» arriba: lo que dice el CMS al cargar y, ya dentro, cada lectura del panel.
   const [abierta, setAbierta] = useState(false);
+  // Repetición: el registro se guarda en segundo plano; mientras, el video se ve igual.
+  const [provisional, setProvisional] = useState(false);
+  // Repetición: ¿ya se registró desde este navegador? Se pregunta antes de mostrar el formulario.
+  const [buscandoReingreso, setBuscandoReingreso] = useState(false);
 
   useEffect(() => {
     setSala(undefined);
     setErrorCarga(false);
+    setProvisional(false);
     (slugDirecto ? salaPorSlug(slugDirecto) : salaAbierta())
       .then((s) => {
         setSala(s);
         setAbierta(s?.open ?? false);
-        if (s) setToken(fichaGuardada(s.slug));
+        if (!s) return;
+        const guardada = fichaGuardada(s.slug);
+        setToken(guardada);
+        // Quien ya se registró entra directo al video, también sin su liga personal.
+        if (s.fase === "repeticion" && !guardada && !new URLSearchParams(window.location.search).get("i")) {
+          setBuscandoReingreso(true);
+          reingresar(s.slug)
+            .then((t) => { if (t) { guardarFicha(s.slug, t); setToken(t); } })
+            .finally(() => setBuscandoReingreso(false));
+        }
       })
       .catch(() => setErrorCarga(true));
   }, [slugDirecto]);
+
+  useEffect(() => { sincronizarCookieVisitante(); }, []);
 
   useEffect(() => {
     if (!slugDirecto) return;
@@ -117,6 +140,9 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
     setToken(null);
   }, [sala]);
 
+  const final = sala ? avisoFinal(sala.fase) : null;
+  const repeticion = sala?.fase === "repeticion" && sala.repeticion ? sala.repeticion : null;
+
   return (
     <div className="flex flex-col" style={{ background: NAVY, color: "#fff", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
       <SEOHead
@@ -134,7 +160,18 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
             <a href="/eventos" className="mt-5 inline-block rounded-lg px-5 py-2.5 text-sm font-semibold" style={{ background: ACENTO }}>Ver eventos</a>
           </Aviso>
         )}
-        {sala && !token && slugDirecto && invitacion && (
+        {sala && final && <AvisoTerminado titulo={final.titulo} texto={final.texto} whatsapp={sala.whatsapp ?? null} />}
+        {sala && repeticion && buscandoReingreso && <Cargando />}
+        {sala && repeticion && !buscandoReingreso && (token || provisional) && (
+          <SalaRepeticion
+            sala={sala}
+            repeticion={repeticion}
+            token={token}
+            onFicha={(t) => { guardarFicha(sala.slug, t); setToken(t); setProvisional(false); }}
+            onSinFicha={() => { olvidarFicha(sala.slug); setToken(null); }}
+          />
+        )}
+        {sala && !final && !buscandoReingreso && !token && !provisional && slugDirecto && invitacion && (
           <EntradaInvitacion
             sala={sala}
             invitacion={invitacion}
@@ -142,10 +179,15 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
             onInvalida={(msg) => { quitarInvitacionDeLaLiga(); setInvitacion(null); setAvisoInvitacion(msg); }}
           />
         )}
-        {sala && !token && !(slugDirecto && invitacion) && (
-          <Registro sala={sala} aviso={avisoInvitacion} onFicha={(t) => { guardarFicha(sala.slug, t); setToken(t); }} />
+        {sala && !final && !buscandoReingreso && !token && !provisional && !(slugDirecto && invitacion) && (
+          <Registro
+            sala={sala}
+            aviso={avisoInvitacion}
+            onFicha={(t) => { guardarFicha(sala.slug, t); setToken(t); }}
+            onProvisional={() => setProvisional(true)}
+          />
         )}
-        {sala && token && <Sala sala={sala} token={token} onSinFicha={salir} onAbierta={setAbierta} />}
+        {sala && !final && !repeticion && token && <Sala sala={sala} token={token} onSinFicha={salir} onAbierta={setAbierta} />}
       </main>
       <PieSala />
     </div>
@@ -187,6 +229,29 @@ function Cargando() {
   );
 }
 
+/** El evento ya terminó (o la grabación ya no está disponible): el WhatsApp de prospectos, grande. */
+function AvisoTerminado({ titulo, texto, whatsapp }: { titulo: string; texto: string; whatsapp: string | null }) {
+  return (
+    <Aviso titulo={titulo} texto={texto}>
+      {whatsapp && esLigaSegura(whatsapp) && (
+        <a href={whatsapp} target="_blank" rel="noreferrer" className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-6 py-4 text-lg font-semibold" style={{ background: "#25D366" }}>
+          <MessageCircle className="h-5 w-5" /> Escríbenos por WhatsApp
+        </a>
+      )}
+    </Aviso>
+  );
+}
+
+/** Junto al formulario y junto al video: se guarda la actividad de visualización (desde la repetición). */
+function AvisoActividad({ className = "" }: { className?: string }) {
+  return (
+    <p className={`text-sm text-white/60 ${className}`}>
+      Al ver la grabación guardamos tu avance (qué tanto la ves y los botones que usas) para darte seguimiento. Consulta el{" "}
+      <a href="/privacidad" target="_blank" rel="noreferrer" className="underline" style={{ color: ACENTO }}>aviso de privacidad</a>.
+    </p>
+  );
+}
+
 function Aviso({ titulo, texto, children }: { titulo: string; texto: string; children?: React.ReactNode }) {
   return (
     <div className="mx-auto max-w-xl rounded-2xl p-8 text-center" style={{ background: NAVY_CARD }}>
@@ -199,7 +264,9 @@ function Aviso({ titulo, texto, children }: { titulo: string; texto: string; chi
 
 // ─── Registro ────────────────────────────────────────────────────────────────
 
-function Registro({ sala, aviso, onFicha }: { sala: SalaInfo; aviso?: string | null; onFicha: (token: string) => void }) {
+function Registro({ sala, aviso, onFicha, onProvisional }: { sala: SalaInfo; aviso?: string | null; onFicha: (token: string) => void; onProvisional?: () => void }) {
+  // Repetición: el mismo formulario, con el texto de la grabación y letra más grande.
+  const repeticion = sala.fase === "repeticion";
   const [nombre, setNombre] = useState("");
   const [correo, setCorreo] = useState("");
   const [telefono, setTelefono] = useState<Telefono>(TELEFONO_VACIO);
@@ -236,10 +303,12 @@ function Registro({ sala, aviso, onFicha }: { sala: SalaInfo; aviso?: string | n
       marketingOptIn: informacion,
       ...(turnstileToken ? { turnstileToken } : {}),
       ...(website ? { website } : {}),
+      ...(repeticion ? { repeticion: true } : {}),
     });
     setEnviando(false);
     turnstile.reiniciar();
-    if (r.ok) onFicha(r.token);
+    if (r.ok && "token" in r) onFicha(r.token);
+    else if (r.ok) onProvisional?.();
     else setError(r.error);
   }
 
@@ -248,14 +317,21 @@ function Registro({ sala, aviso, onFicha }: { sala: SalaInfo; aviso?: string | n
       <div className="pt-4">
         {sala.kicker && <p className="text-sm font-semibold uppercase tracking-widest" style={{ color: ACENTO }}>{sala.kicker}</p>}
         <h1 className="mt-2 text-4xl font-bold leading-tight md:text-5xl" style={{ fontFamily: TITULOS }}>{sala.title}</h1>
-        <p className="mt-5 max-w-lg text-lg text-white/75">
-          Regístrate para entrar a la sala en vivo: la transmisión, el diagnóstico y tus preguntas para los ponentes, en un solo lugar.
-        </p>
-        {!sala.open && <p className="mt-5 rounded-lg bg-white/10 px-4 py-3 text-sm text-white/80">El registro a la sala todavía no abre. Vuelve un poco antes de que empiece.</p>}
+        {repeticion ? (
+          <>
+            <p className="mt-5 max-w-lg text-xl font-semibold text-white">{fraseGrabacion(sala)}.</p>
+            <p className="mt-3 max-w-lg text-lg text-white/75">Déjanos tus datos y dale play cuando quieras, desde el principio.</p>
+          </>
+        ) : (
+          <p className="mt-5 max-w-lg text-lg text-white/75">
+            Regístrate para entrar a la sala en vivo: la transmisión, el diagnóstico y tus preguntas para los ponentes, en un solo lugar.
+          </p>
+        )}
+        {!sala.open && !repeticion && <p className="mt-5 rounded-lg bg-white/10 px-4 py-3 text-sm text-white/80">El registro a la sala todavía no abre. Vuelve un poco antes de que empiece.</p>}
       </div>
 
-      <form onSubmit={enviar} className="space-y-4 rounded-2xl p-6" style={{ background: NAVY_CARD }} noValidate>
-        <h2 className="text-xl font-bold" style={{ fontFamily: TITULOS }}>Entra a la sala</h2>
+      <form onSubmit={enviar} className={`space-y-4 rounded-2xl p-6 ${repeticion ? "text-base" : ""}`} style={{ background: NAVY_CARD }} noValidate>
+        <h2 className="text-xl font-bold" style={{ fontFamily: TITULOS }}>{repeticion ? "Ver la grabación" : "Entra a la sala"}</h2>
         {aviso && <p className="rounded-lg bg-amber-500/15 px-3 py-2 text-sm text-amber-100">{aviso}</p>}
         <label className="block">
           <span className="mb-1 block text-xs text-white/60">Nombre completo</span>
@@ -281,9 +357,10 @@ function Registro({ sala, aviso, onFicha }: { sala: SalaInfo; aviso?: string | n
         </label>
         {TURNSTILE_SITE_KEY && <div ref={turnstile.contenedor} />}
         {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{error}</p>}
-        <button type="submit" disabled={enviando || !sala.open} className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 font-semibold disabled:opacity-50" style={{ background: ACENTO }}>
-          {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : null} Entrar a la sala
+        <button type="submit" disabled={enviando || !(sala.open || repeticion)} className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 font-semibold disabled:opacity-50 ${repeticion ? "py-4 text-lg" : "py-3"}`} style={{ background: ACENTO }}>
+          {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : repeticion ? <PlayCircle className="h-5 w-5" /> : null} {repeticion ? "Ver la grabación" : "Entrar a la sala"}
         </button>
+        {repeticion && <AvisoActividad />}
       </form>
     </div>
   );
@@ -298,6 +375,7 @@ function EntradaInvitacion({ sala, invitacion, onFicha, onInvalida }: {
   onInvalida: (mensaje: string) => void;
 }) {
   const [nombre, setNombre] = useState<string | null | undefined>(undefined);
+  const repeticion = sala.fase === "repeticion";
   const [privacidad, setPrivacidad] = useState(false);
   const [informacion, setInformacion] = useState(false);
   const [enviando, setEnviando] = useState(false);
@@ -306,13 +384,21 @@ function EntradaInvitacion({ sala, invitacion, onFicha, onInvalida }: {
   // El aviso de «liga inválida» se lee de una ref: la página lo pasa en línea y no debe volver a pedir la liga.
   const alInvalida = useRef(onInvalida);
   alInvalida.current = onInvalida;
+  const alFicha = useRef(onFicha);
+  alFicha.current = onFicha;
 
   useEffect(() => {
     let vivo = true;
-    infoInvitacion(sala.slug, invitacion).then((r) => {
+    infoInvitacion(sala.slug, invitacion).then(async (r) => {
       if (!vivo) return;
-      if (r.ok) setNombre(r.nombre);
-      else alInvalida.current(r.error);
+      if (!r.ok) return alInvalida.current(r.error);
+      // Repetición: quien ya aceptó el aviso de privacidad en esta sala pasa directo al video.
+      if (r.directo) {
+        const e = await entrarConInvitacion({ slug: sala.slug, invitacion, marketingOptIn: false });
+        if (!vivo) return;
+        if (e.ok) return alFicha.current(e.token);
+      }
+      setNombre(r.nombre);
     });
     return () => { vivo = false; };
   }, [sala.slug, invitacion]);
@@ -333,8 +419,12 @@ function EntradaInvitacion({ sala, invitacion, onFicha, onInvalida }: {
     <form onSubmit={entrar} className="mx-auto max-w-lg space-y-4 rounded-2xl p-7" style={{ background: NAVY_CARD }} noValidate>
       {sala.kicker && <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: ACENTO }}>{sala.kicker}</p>}
       <h1 className="text-2xl font-bold leading-tight md:text-3xl" style={{ fontFamily: TITULOS }}>{nombre ? `Hola, ${nombre}` : "Hola"}</h1>
-      <p className="text-white/75">Tu lugar en <b>{sala.title}</b> ya está listo. Confirma y entra a la sala; no tienes que volver a registrarte.</p>
-      {!sala.open && <p className="rounded-lg bg-white/10 px-4 py-3 text-sm text-white/80">La sala todavía no abre. Vuelve un poco antes de que empiece con esta misma liga.</p>}
+      {repeticion ? (
+        <p className="text-lg text-white/80">{fraseGrabacion(sala)}. Confirma y dale play; no tienes que volver a registrarte.</p>
+      ) : (
+        <p className="text-white/75">Tu lugar en <b>{sala.title}</b> ya está listo. Confirma y entra a la sala; no tienes que volver a registrarte.</p>
+      )}
+      {!sala.open && !repeticion && <p className="rounded-lg bg-white/10 px-4 py-3 text-sm text-white/80">La sala todavía no abre. Vuelve un poco antes de que empiece con esta misma liga.</p>}
       <label className="flex items-start gap-2 text-sm text-white/80">
         <input type="checkbox" className="mt-1" checked={privacidad} onChange={(e) => setPrivacidad(e.target.checked)} />
         <span>He leído y acepto el <a href="/privacidad" target="_blank" rel="noreferrer" className="underline" style={{ color: ACENTO }}>aviso de privacidad</a>.</span>
@@ -344,9 +434,10 @@ function EntradaInvitacion({ sala, invitacion, onFicha, onInvalida }: {
         <span>Quiero recibir información de Comprando América por correo y WhatsApp (opcional).</span>
       </label>
       {error && <p className="rounded-lg bg-red-500/15 px-3 py-2 text-sm text-red-200">{error}</p>}
-      <button type="submit" disabled={enviando || !sala.open} className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 font-semibold disabled:opacity-50" style={{ background: ACENTO }}>
-        {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : null} Entrar a la sala
+      <button type="submit" disabled={enviando || !(sala.open || repeticion)} className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 font-semibold disabled:opacity-50 ${repeticion ? "py-4 text-lg" : "py-3"}`} style={{ background: ACENTO }}>
+        {enviando ? <Loader2 className="h-4 w-4 animate-spin" /> : repeticion ? <PlayCircle className="h-5 w-5" /> : null} {repeticion ? "Ver la grabación" : "Entrar a la sala"}
       </button>
+      {repeticion && <AvisoActividad />}
     </form>
   );
 }
@@ -571,11 +662,12 @@ function PanelPestanas({ tabs, cta, slug, token, participa, onVoto, onSinFicha }
   );
 }
 
-function Botones({ buttons }: { buttons: { label: string; href: string }[] }) {
+function Botones({ buttons, onClic, grandes = false }: { buttons: { label: string; href: string }[]; onClic?: (href: string) => void; grandes?: boolean }) {
   return (
     <div className="space-y-3">
       {buttons.filter((b) => esLigaSegura(b.href)).map((b) => (
-        <a key={b.href + b.label} href={b.href} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-center font-semibold" style={{ background: b.href.startsWith("https://wa.me/") ? "#25D366" : ACENTO }}>
+        <a key={b.href + b.label} href={b.href} target="_blank" rel="noreferrer" onClick={() => onClic?.(b.href)}
+          className={`flex items-center justify-center gap-2 rounded-lg px-4 text-center font-semibold ${grandes ? "py-4 text-lg" : "py-3"}`} style={{ background: b.href.startsWith("https://wa.me/") ? "#25D366" : ACENTO }}>
           {b.href.startsWith("https://wa.me/") && <MessageCircle className="h-4 w-4" />} {b.label}
         </a>
       ))}
@@ -793,5 +885,266 @@ function Preguntar({ slug, token }: { slug: string; token: string }) {
       </div>
       {mensaje && <p className={`mt-2 text-sm ${mensaje.ok ? "text-emerald-200" : "text-red-200"}`}>{mensaje.texto}</p>}
     </form>
+  );
+}
+
+// ─── Repetición ──────────────────────────────────────────────────────────────
+//
+// Después del evento, la misma sala muestra la grabación completa. Cada
+// persona le da play cuando quiere, desde «Empezar en» (no es un en vivo
+// simulado ni un bucle). El panel es sencillo: los botones de WhatsApp,
+// «Suscríbete» si hay canal y, si el foro está encendido, los comentarios.
+// Sin encuesta, sin preguntas para el ponente y sin «Conectados ahora».
+//
+// Si el registro todavía no se guardó (el CMS no respondió), el video se ve
+// igual y cada 20 s se pregunta si ya quedó (reingreso por el visitante): en
+// cuanto llega la ficha empieza el seguimiento, sin cortar el video.
+
+/** Cada cuánto manda el avance el reproductor (el CMS acepta uno cada 10 s). */
+const AVANCE_CADA_MS = 15_000;
+/** Mientras el registro está pendiente: cada cuánto y cuántas veces se pregunta si ya quedó. */
+const REINGRESO_CADA_MS = 20_000;
+const REINGRESO_INTENTOS = 30;
+
+function SalaRepeticion({ sala, repeticion, token, onFicha, onSinFicha }: {
+  sala: SalaInfo;
+  repeticion: NonNullable<SalaInfo["repeticion"]>;
+  token: string | null;
+  onFicha: (token: string) => void;
+  onSinFicha: () => void;
+}) {
+  const [estado, setEstado] = useState<EstadoSala | null>(null);
+  const [resume, setResume] = useState<number | null>(null);
+  const etag = useRef<string | null>(null);
+  const resumeLeido = useRef(false);
+  const tokenRef = useRef(token);
+  tokenRef.current = token;
+
+  // El panel (botones, comentarios) y «Continuar donde te quedaste», con la ficha.
+  const leer = useCallback(async () => {
+    if (!token) return;
+    const r = await leerEstado(sala.slug, token, etag.current);
+    if (r.tipo === "sin-ficha") return onSinFicha();
+    if (r.tipo === "ok") {
+      etag.current = r.etag;
+      setEstado(r.estado);
+      // Solo la primera lectura: después la posición cambia mientras ve.
+      if (!resumeLeido.current) {
+        resumeLeido.current = true;
+        setResume(r.estado.resume ?? null);
+      }
+    }
+  }, [sala.slug, token, onSinFicha]);
+
+  useEffect(() => {
+    void leer();
+    const t = setInterval(() => void leer(), INTERVALO_SONDEO_MS);
+    return () => clearInterval(t);
+  }, [leer]);
+
+  // Registro pendiente: se pregunta si ya quedó, sin cortar el video.
+  useEffect(() => {
+    if (token) return;
+    let intentos = 0;
+    const t = setInterval(async () => {
+      intentos += 1;
+      if (intentos > REINGRESO_INTENTOS) return clearInterval(t);
+      const nuevo = await reingresar(sala.slug);
+      if (nuevo) {
+        clearInterval(t);
+        onFicha(nuevo);
+      }
+    }, REINGRESO_CADA_MS);
+    return () => clearInterval(t);
+  }, [token, sala.slug, onFicha]);
+
+  const reportar = useCallback((evento: { kind: EventoReproduccion; position?: number; duration?: number; watchedDelta?: number }, alSalir = false) => {
+    if (tokenRef.current) void reportarReproduccion(sala.slug, tokenRef.current, evento, alSalir);
+  }, [sala.slug]);
+
+  const video = estado?.video
+    ? { ...estado.video, startSeconds: estado.replay?.startSeconds ?? repeticion.video.startSeconds }
+    : repeticion.video;
+  const subscribeUrl = estado?.replay?.subscribeUrl ?? repeticion.subscribeUrl;
+  const botones = estado?.cta?.buttons ?? [];
+  const comentarios = estado?.tabs?.comentarios ?? null;
+
+  return (
+    <div>
+      <div className="mb-5">
+        {sala.kicker && <p className="text-sm font-semibold uppercase tracking-widest" style={{ color: ACENTO }}>{sala.kicker}</p>}
+        <h1 className="text-3xl font-bold leading-tight md:text-4xl" style={{ fontFamily: TITULOS }}>{sala.title}</h1>
+        <p className="mt-2 text-lg text-white/80">{fraseGrabacion(sala)}.</p>
+      </div>
+      {estado && !estado.participa && <p className="mb-3 rounded-lg bg-white/10 px-3 py-2 text-sm text-white/80">Tu registro está en revisión. Mientras tanto puedes ver la grabación.</p>}
+      <div className="grid gap-5 lg:grid-cols-[1fr_360px]">
+        <div>
+          <ReproductorRepeticion video={video} resume={resume} onEvento={reportar} />
+          <AvisoActividad className="mt-4" />
+        </div>
+        {(botones.length > 0 || subscribeUrl || comentarios) && (
+          <aside className="self-start space-y-5 rounded-2xl p-5" style={{ background: NAVY_CARD }}>
+            {botones.length > 0 && (
+              <Botones grandes buttons={botones} onClic={(href) => reportar({ kind: href.startsWith("https://wa.me/") ? "clic_whatsapp" : "clic_suscribete" })} />
+            )}
+            {subscribeUrl && esLigaSegura(subscribeUrl) && (
+              <a href={subscribeUrl} target="_blank" rel="noreferrer" onClick={() => reportar({ kind: "clic_suscribete" })}
+                className="flex items-center justify-center gap-2 rounded-lg px-4 py-4 text-lg font-semibold" style={{ background: "#FF0000" }}>
+                <Youtube className="h-5 w-5" /> Suscríbete al canal
+              </a>
+            )}
+            {comentarios && token && (
+              <div>
+                <h2 className="mb-3 font-semibold">Comentarios</h2>
+                <Comentarios slug={sala.slug} token={token} visible onSinFicha={onSinFicha} />
+              </div>
+            )}
+          </aside>
+        )}
+      </div>
+    </div>
+  );
+}
+
+type PlayerYT = {
+  destroy: () => void;
+  getCurrentTime: () => number;
+  getDuration: () => number;
+  seekTo: (segundos: number, permitir: boolean) => void;
+  playVideo: () => void;
+};
+
+/**
+ * El video de la grabación con la IFrame Player API de YouTube (youtube.com,
+ * rel=0, playsinline=1, enablejsapi=1, origin y start). No arranca solo y se
+ * puede ver a pantalla completa en el celular. Manda play, el avance (cada
+ * 15 s, solo mientras corre) y «terminó»; si YouTube no deja verlo aquí, se
+ * cambia por «Ver en YouTube».
+ */
+function ReproductorRepeticion({ video, resume, onEvento }: {
+  video: { videoId: string; watchUrl: string; startSeconds: number };
+  resume: number | null;
+  onEvento: (e: { kind: EventoReproduccion; position?: number; duration?: number; watchedDelta?: number }, alSalir?: boolean) => void;
+}) {
+  const contenedor = useRef<HTMLDivElement>(null);
+  const player = useRef<PlayerYT | null>(null);
+  const [listo, setListo] = useState(false);
+  const [falla, setFalla] = useState(false);
+  const [elegido, setElegido] = useState(false);
+  const alEvento = useRef(onEvento);
+  alEvento.current = onEvento;
+
+  useEffect(() => {
+    setFalla(false);
+    setListo(false);
+    if (!contenedor.current) return;
+    let vivo = true;
+    let jugandoDesde: number | null = null;
+    let playEnviado = false;
+    let reloj: ReturnType<typeof setInterval> | null = null;
+    const destino = document.createElement("div");
+    contenedor.current.replaceChildren(destino);
+
+    const posicion = () => ({ position: player.current?.getCurrentTime() ?? 0, duration: player.current?.getDuration() ?? 0 });
+    // Lo que se vio desde la última vez (reloj real); el CMS le pone tope.
+    const avance = (kind: "avance" | "termino", alSalir = false) => {
+      const ahora = Date.now();
+      const watchedDelta = jugandoDesde !== null ? (ahora - jugandoDesde) / 1000 : 0;
+      jugandoDesde = jugandoDesde !== null ? ahora : null;
+      alEvento.current({ kind, ...posicion(), watchedDelta }, alSalir);
+    };
+    const detener = () => {
+      if (reloj) clearInterval(reloj);
+      reloj = null;
+    };
+    const alOcultar = () => { if (document.visibilityState === "hidden" && jugandoDesde !== null) avance("avance", true); };
+    document.addEventListener("visibilitychange", alOcultar);
+
+    cargarYoutube()
+      .then((yt) => {
+        if (!vivo) return;
+        player.current = new yt.Player(destino, {
+          videoId: video.videoId,
+          width: "100%",
+          height: "100%",
+          playerVars: {
+            autoplay: 0, playsinline: 1, rel: 0, enablejsapi: 1, fs: 1,
+            origin: window.location.origin,
+            ...(video.startSeconds > 0 ? { start: video.startSeconds } : {}),
+          },
+          events: {
+            onReady: () => vivo && setListo(true),
+            onError: () => vivo && setFalla(true),
+            onStateChange: (e: { data: number }) => {
+              if (e.data === 1) {
+                // Reproduciendo.
+                if (!playEnviado) {
+                  playEnviado = true;
+                  alEvento.current({ kind: "play", ...posicion() });
+                }
+                jugandoDesde = Date.now();
+                if (!reloj) reloj = setInterval(() => avance("avance"), AVANCE_CADA_MS);
+              } else if (e.data === 0) {
+                // Terminó.
+                detener();
+                avance("termino");
+                jugandoDesde = null;
+              } else if (e.data === 2) {
+                // En pausa: lo visto hasta aquí.
+                detener();
+                if (jugandoDesde !== null) avance("avance");
+                jugandoDesde = null;
+              }
+            },
+          },
+        }) as unknown as PlayerYT;
+      })
+      .catch(() => vivo && setFalla(true));
+    return () => {
+      vivo = false;
+      detener();
+      document.removeEventListener("visibilitychange", alOcultar);
+      player.current?.destroy();
+      player.current = null;
+    };
+  }, [video.videoId, video.startSeconds]);
+
+  const irA = (segundos: number) => {
+    setElegido(true);
+    player.current?.seekTo(segundos, true);
+    player.current?.playVideo();
+  };
+
+  return (
+    <div>
+      {resume !== null && !elegido && !falla && (
+        <div className="mb-3 flex flex-col gap-2 rounded-xl p-4 sm:flex-row sm:items-center" style={{ background: NAVY_CARD }}>
+          <p className="flex-1 text-base text-white/85">Te quedaste en el {minutoLegible(resume)}.</p>
+          <button type="button" disabled={!listo} onClick={() => irA(resume)} className="flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-base font-semibold disabled:opacity-50" style={{ background: ACENTO }}>
+            <PlayCircle className="h-5 w-5" /> Continuar donde te quedaste
+          </button>
+          <button type="button" disabled={!listo} onClick={() => irA(video.startSeconds)} className="flex items-center justify-center gap-2 rounded-lg border border-white/20 px-4 py-3 text-base font-semibold disabled:opacity-50">
+            <RotateCcw className="h-4 w-4" /> Ver desde el inicio
+          </button>
+        </div>
+      )}
+      <div className="relative aspect-video overflow-hidden rounded-2xl bg-black">
+        <div ref={contenedor} className={`absolute inset-0 ${falla ? "hidden" : ""} [&_iframe]:h-full [&_iframe]:w-full`} />
+        {falla && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center">
+            <p className="text-white/80">No pudimos mostrar la grabación aquí.</p>
+            <a href={video.watchUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-lg px-5 py-3 font-semibold" style={{ background: "#FF0000" }}>
+              <ExternalLink className="h-4 w-4" /> Ver en YouTube
+            </a>
+          </div>
+        )}
+      </div>
+      {!falla && (
+        <p className="mt-2 text-sm text-white/60">
+          Toca ▶ para empezar. Para verla en pantalla completa, toca el ícono de la esquina del video.{" "}
+          <a href={video.watchUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 underline">¿No carga? Ver en YouTube <ExternalLink className="h-3 w-3" /></a>
+        </p>
+      )}
+    </div>
   );
 }
