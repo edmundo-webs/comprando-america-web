@@ -221,3 +221,79 @@ describe("candados en el código", () => {
     expect(leer("client/src/lib/whatsapp.ts")).toMatch(/VITE_WHATSAPP_COMERCIAL[\s\S]*export const WHATSAPP_E164 = numeroComercial\(\)/);
   });
 });
+
+describe("repetición (0102 del CMS)", () => {
+  it("si el CMS no responde, el video se muestra igual (202 provisional) y el registro se reintenta en segundo plano", async () => {
+    red.mockResolvedValueOnce(turnstileOk()).mockResolvedValueOnce(new Response("caído", { status: 500 }));
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await registrar({ ...valido, repeticion: true, visitorId: "11111111-2222-3333-4444-555555555555" });
+    spy.mockRestore();
+    expect(res.status).toBe(202);
+    expect(await res.json()).toEqual({ ok: true, provisional: true });
+    const cuerpo = JSON.parse(String((red.mock.calls[1] as [string, RequestInit])[1].body));
+    expect(cuerpo.visitorId).toBe("11111111-2222-3333-4444-555555555555");
+  });
+
+  it("en vivo, un error del CMS se sigue explicando como hoy (sin provisional)", async () => {
+    red.mockResolvedValueOnce(turnstileOk()).mockResolvedValueOnce(new Response("caído", { status: 500 }));
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const res = await registrar(valido);
+    spy.mockRestore();
+    expect(res.status).toBe(502);
+  });
+
+  it("un dato inválido no se reintenta (ni en la repetición)", async () => {
+    red.mockResolvedValueOnce(turnstileOk()).mockResolvedValueOnce(new Response(JSON.stringify({ error: "Revisa tus datos." }), { status: 400 }));
+    const res = await registrar({ ...valido, repeticion: true });
+    expect(res.status).toBe(400);
+  });
+
+  it("reintento en segundo plano: entra al segundo intento; si nunca entra, queda «ENVIO FALLIDO» en el registro", async () => {
+    const esperar = vi.fn(async () => {});
+    const okAlSegundo = vi.fn().mockResolvedValueOnce(new Response("caído", { status: 500 })).mockResolvedValueOnce(fichaOk());
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const log = vi.spyOn(console, "log").mockImplementation(() => {});
+    expect(await cmsSala.reintentarRegistroEnSegundoPlano("cumbre-ficticia", { name: "Ana" }, { fetchImpl: okAlSegundo, esperar, pausas: [1, 1, 1] })).toBe(true);
+    const nunca = vi.fn(async () => new Response("caído", { status: 500 }));
+    expect(await cmsSala.reintentarRegistroEnSegundoPlano("cumbre-ficticia", { name: "Ana" }, { fetchImpl: nunca, esperar, pausas: [1, 1] })).toBe(false);
+    expect(spy.mock.calls.some((c) => String(c[0]).includes("ENVIO FALLIDO"))).toBe(true);
+    spy.mockRestore();
+    log.mockRestore();
+  });
+
+  it("reingreso: con la cookie del visitante va al CMS con la llave y devuelve la ficha", async () => {
+    red.mockResolvedValueOnce(fichaOk());
+    const res = await realFetch(`${base}/api/en-vivo/reingreso`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-forwarded-for": `10.3.0.${++ipSiguiente}`, cookie: "ca_visitor_id=aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee" },
+      body: JSON.stringify({ slug: "cumbre-ficticia" }),
+    });
+    expect(res.status).toBe(200);
+    expect((await res.json()).token).toBe("ficha-ficticia");
+    const [url, init] = red.mock.calls[0] as [string, RequestInit];
+    expect(url).toBe("https://cms.prueba/api/public/sala/cumbre-ficticia/reingreso");
+    expect((init.headers as Record<string, string>)["x-api-key"]).toBe("clave-de-prueba");
+    expect(JSON.parse(String(init.body))).toEqual({ visitorId: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee" });
+  });
+
+  it("reingreso sin visitante: no llama al CMS", async () => {
+    const res = await realFetch(`${base}/api/en-vivo/reingreso`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-forwarded-for": `10.3.0.${++ipSiguiente}` },
+      body: JSON.stringify({ slug: "cumbre-ficticia" }),
+    });
+    expect(res.status).toBe(404);
+    expect(red).not.toHaveBeenCalled();
+  });
+
+  it("la liga personal de la repetición puede entrar sin volver a marcar el aviso (lo decide el CMS)", async () => {
+    red.mockResolvedValueOnce(fichaOk());
+    const res = await realFetch(`${base}/api/en-vivo/invitacion`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-forwarded-for": `10.3.0.${++ipSiguiente}` },
+      body: JSON.stringify({ slug: "cumbre-ficticia", invitacion: "ficha.de.la.invitacion", marketingOptIn: false }),
+    });
+    expect(res.status).toBe(200);
+    expect(JSON.parse(String((red.mock.calls[0] as [string, RequestInit])[1].body))).toEqual({ invitacion: "ficha.de.la.invitacion", marketingOptIn: false });
+  });
+});
