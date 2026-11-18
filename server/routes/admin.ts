@@ -662,6 +662,7 @@ const ALLOWED_BRANDS = new Set<Brand>([
   "comprando-america",
   "edmundo-trevino",
   "theusmarketer",
+  "buying-america",
 ]);
 const ALLOWED_NETWORKS = new Set<Network>([
   "facebook",
