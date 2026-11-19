@@ -82,8 +82,20 @@ const NUMERO = "min-w-0 flex-1 rounded-lg border border-white/15 bg-white/5 px-3
  * /en-vivo/<slug>: esa sala por su liga directa (así se entra a una sala de
  * prueba, que no sale en /en-vivo). Esas ligas no se indexan.
  */
+/**
+ * ¿El servidor ya escribió los metadatos de esta sala en el HTML? Solo en la
+ * primera página que se cargó (al navegar dentro del sitio no hay marca).
+ */
+function metaDelServidorPara(slug: string | undefined): boolean {
+  if (!slug || typeof document === "undefined") return false;
+  const marca = document.querySelector('meta[name="ca-sala-meta"]');
+  const canonical = document.querySelector('link[rel="canonical"]')?.getAttribute("href") ?? "";
+  return !!marca && canonical.endsWith(`/en-vivo/${slug}`);
+}
+
 export default function EnVivo({ params }: { params?: { slug?: string } }) {
   const slugDirecto = params?.slug;
+  const [metaDelServidor] = useState(() => metaDelServidorPara(slugDirecto));
   const [sala, setSala] = useState<SalaInfo | null | undefined>(undefined);
   const [token, setToken] = useState<string | null>(null);
   const [errorCarga, setErrorCarga] = useState(false);
@@ -124,6 +136,8 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
 
   useEffect(() => {
     if (!slugDirecto) return;
+    // El servidor ya lo puso junto con los metadatos de la sala (server/routes/salaMeta.ts).
+    if (metaDelServidor) return;
     const meta = document.createElement("meta");
     meta.name = "robots";
     meta.content = "noindex";
@@ -145,11 +159,14 @@ export default function EnVivo({ params }: { params?: { slug?: string } }) {
 
   return (
     <div className="flex flex-col" style={{ background: NAVY, color: "#fff", minHeight: "100vh", fontFamily: "Inter, system-ui, sans-serif" }}>
-      <SEOHead
-        title="En vivo | Comprando América"
-        description="Sala en vivo de Comprando América: la transmisión, el diagnóstico y las preguntas en tiempo real."
-        path={slugDirecto ? `/en-vivo/${slugDirecto}` : "/en-vivo"}
-      />
+      {/* Si el servidor ya escribió los metadatos de la sala, no se sobrescriben (título, descripción, imagen, canonical). */}
+      {!metaDelServidor && (
+        <SEOHead
+          title="En vivo | Comprando América"
+          description="Sala en vivo de Comprando América: la transmisión, el diagnóstico y las preguntas en tiempo real."
+          path={slugDirecto ? `/en-vivo/${slugDirecto}` : "/en-vivo"}
+        />
+      )}
       <EncabezadoSala abierta={abierta} />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-10 pt-6">
         {sala === undefined && !errorCarga && <Cargando />}

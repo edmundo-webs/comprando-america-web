@@ -12,6 +12,7 @@ import { startScheduler } from "../cron/scheduler";
 import { adminRouter } from "../routes/admin";
 import { searchPages } from "../routes/search-pages";
 import { botMetaMiddleware } from "../routes/bot-meta";
+import { salaMetaMiddleware } from "../routes/salaMeta";
 import { episodesRouter } from "../routes/episodes";
 import { seoRouter } from "../routes/seo";
 import { trackRouter } from "../routes/track";
@@ -91,6 +92,8 @@ async function startServer() {
   // executes JS) pass through to the SPA.
   app.use(searchPages);
   app.use(botMetaMiddleware);
+  // /en-vivo/:slug: los metadatos del evento en el HTML, para las vistas previas al compartir.
+  app.use(salaMetaMiddleware);
 
   // ═══ IMAGE UPLOAD ENDPOINT ═══
   app.post("/api/upload", async (req, res) => {
